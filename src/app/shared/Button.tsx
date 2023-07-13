@@ -17,7 +17,7 @@ function Button({type = 'button', children, onClick, disabled = false, loading =
 
   switch (theme) {
     case 'light':
-      themeClasses = "bg-white text-gray-700";
+      themeClasses = "bg-white hover:bg-stone-100 text-neutral-900";
       spinnerClasses = "fill-white text-gray-400";
       break;
     case 'danger':
@@ -25,7 +25,7 @@ function Button({type = 'button', children, onClick, disabled = false, loading =
       spinnerClasses = "fill-red-600 text-white";
       break;
     default:
-      themeClasses = "bg-neutral-900 dark:bg-sky-900 hover:bg-gray-700 dark:hover:bg-sky-700 text-white";
+      themeClasses = "bg-neutral-900 dark:bg-neutral-800 hover:bg-neutral-700 dark:hover:bg-neutral-700 text-white";
       spinnerClasses = "fill-gray-900 text-blue-400";
   }
 

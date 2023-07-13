@@ -6,9 +6,9 @@ import { Bars3Icon, BellIcon, XMarkIcon } from '@heroicons/react/24/outline'
 
 const navigation = [
   { name: 'Dashboard', href: '#', current: true },
-  { name: 'Team', href: '#', current: false },
-  { name: 'Projects', href: '#', current: false },
-  { name: 'Calendar', href: '#', current: false },
+  { name: 'Departures', href: '#', current: false },
+  { name: 'News', href: '#', current: false },
+  { name: 'Apply', href: '#', current: false },
 ]
 
 function classNames(...classes: string[]) {
@@ -17,10 +17,10 @@ function classNames(...classes: string[]) {
 
 export default function MainNavigation() {
   return (
-    <Disclosure as="nav" className="bg-zinc-900">
+    <Disclosure as="nav" className="sticky top-0 z-40 w-full backdrop-blur flex-none supports-backdrop-blur:bg-white/100 dark:bg-transparent">
       {({ open }) => (
         <>
-          <div className="mx-auto px-6 md:px-12 lg:px-24 bg-black">
+          <div className="pt-3 sticky top-0 z-40 w-full backdrop-blur mx-auto px-6 md:px-12 lg:px-24">
             <div className="relative flex h-16 items-center justify-between">
               <div className="absolute inset-y-0 left-0 flex items-center sm:hidden">
                 {/* Mobile menu button*/}
@@ -53,8 +53,8 @@ export default function MainNavigation() {
                         key={item.name}
                         href={item.href}
                         className={classNames(
-                          item.current ? 'bg-zinc-900 text-white' : 'text-gray-300 hover:bg-zinc-700 hover:text-white',
-                          'rounded-md px-3 py-2 text-sm font-medium'
+                          item.current ? 'font-bold text-black dark:text-white' : 'text-gray-900 dark:text-gray-300 hover:text-black dark:hover:text-white',
+                          'rounded-md px-3 py-2 text-sm'
                         )}
                         aria-current={item.current ? 'page' : undefined}
                       >
@@ -67,7 +67,7 @@ export default function MainNavigation() {
               <div className="absolute inset-y-0 right-0 flex items-center pr-2 sm:static sm:inset-auto sm:ml-6 sm:pr-0">
                 <button
                   type="button"
-                  className="rounded-full bg-zinc-800 p-1 text-gray-400 hover:text-white focus:outline-none"
+                  className="rounded-full bg-stone-300 border border-gray-300 dark:bg-neutral-800 dark:border-neutral-800 p-1 text-gray-400 hover:text-white focus:outline-none"
                 >
                   <span className="sr-only">View notifications</span>
                   <BellIcon className="h-6 w-6" aria-hidden="true" />
@@ -80,7 +80,7 @@ export default function MainNavigation() {
                       <span className="sr-only">Open user menu</span>
                       <img
                         className="h-8 w-8 rounded-full"
-                        src="https://images.unsplash.com/photo-1472099645785-5658abf4ff4e?ixlib=rb-1.2.1&ixid=eyJhcHBfaWQiOjEyMDd9&auto=format&fit=facearea&facepad=2&w=256&h=256&q=80"
+                        src="/me.jpg"
                         alt=""
                       />
                     </Menu.Button>

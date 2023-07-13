@@ -14,7 +14,7 @@ export default async function Home() {
   const { data, meta, links } = schedule
 
   return (
-    <main className="flex flex-col px-6 md:px-12 lg:px-24 py-8 mx-auto text-neutral-800 dark:text-neutral-200">
+    <main className="flex flex-col px-6 md:px-12 lg:px-24 py-6 mx-auto text-neutral-800 dark:text-neutral-200">
       <h2 className="uppercase text-3xl mb-5">FCOC - Fleet Carrier Services</h2>
       <div className="items-center justify-between">
         <h2>Departure Board</h2>
@@ -24,7 +24,7 @@ export default async function Home() {
       </div>
       <div className="grid grid-cols-1 md:grid-cols-2 gap-6 mt-6">
         <div>
-          <h2 className="uppercase text-3xl mb-3">Galnet News</h2>
+          <h2 className="uppercase text-3xl mb-5">Galnet News</h2>
           {news.data.slice(0,3).map((article: GalnetNews) => {
             return <div className="relative mb-3">
               <Image
@@ -39,7 +39,7 @@ export default async function Home() {
           })}
         </div>
         <div>
-          <h2 className="uppercase text-3xl mb-3">Departure Board</h2>
+          <h2 className="uppercase text-3xl mb-5">Departure Information</h2>
           <div>
             <Filter className="mb-5" />
             <Table columns={scheduleColumns} data={data} meta={meta} links={links} />

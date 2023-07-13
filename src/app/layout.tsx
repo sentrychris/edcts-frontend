@@ -2,6 +2,7 @@ import './globals.css'
 import type { Metadata } from 'next'
 import { Jura } from 'next/font/google'
 import MainNavigation from './shared/MainNavigation'
+import Image from 'next/image'
 
 const jura = Jura({ subsets: ['latin'] })
 
@@ -17,7 +18,13 @@ export default function RootLayout({
 }) {
   return (
     <html lang="en">
-      <body className={jura.className}>
+      <body className={jura.className + ` antialiased`}>
+      <div className="absolute z-20 top-0 inset-x-0 flex justify-center overflow-hidden pointer-events-none">
+        <div className="w-[108rem] flex-none flex justify-end">
+          <Image width="100" height="100" src="/avifb.png" className="w-[100rem] flex-none max-w-none dark:hidden" decoding="async" alt="glow"></Image>
+          <Image width="100" height="100" src="/tinyb.png" className="w-[150rem] flex-none max-w-none hidden dark:block" decoding="async" alt="glow"></Image>
+        </div>
+      </div>
         <MainNavigation />
         {children}
       </body>

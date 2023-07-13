@@ -18,9 +18,9 @@ const Filter: FunctionComponent<Props> = ({ onClick, className }) => {
 
   return (
     <div className={`w-full relative ` + className}>
-      <form className="flex flex-row items-center gap-4 font-mono">
+      <form className="flex flex-row items-center gap-4">
         <Input
-          placeholder="Search departure system"
+          placeholder="Search by departure system..."
           value={searchString}
           onChange={handleSearchStringChange}
           extraStyling="w-[400px]"
