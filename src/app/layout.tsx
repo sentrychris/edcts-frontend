@@ -1,9 +1,9 @@
 import './globals.css'
 import type { Metadata } from 'next'
-import { Inter } from 'next/font/google'
+import { Jura } from 'next/font/google'
 import MainNavigation from './shared/MainNavigation'
 
-const inter = Inter({ subsets: ['latin'] })
+const jura = Jura({ subsets: ['latin'] })
 
 export const metadata: Metadata = {
   title: 'FCOC - Fleet Carrier Services | Departure Board',
@@ -17,7 +17,7 @@ export default function RootLayout({
 }) {
   return (
     <html lang="en">
-      <body className={inter.className}>
+      <body className={jura.className}>
         <MainNavigation />
         {children}
       </body>

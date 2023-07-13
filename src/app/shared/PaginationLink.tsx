@@ -15,8 +15,8 @@ function PaginationLink({ url, active, children }: Props) {
       href={url}
       className={
         active ?
-          `bg-zinc-900 text-white px-4 py-2 rounded text-sm ${disabledClass}` :
-          `text-zinc-500 hover:bg-zinc-900 hover:text-white hover:rounded transition px-4 py-2 text-sm ${disabledClass}`
+          `bg-zinc-900 text-white px-3 py-2 rounded text-sm ${disabledClass}` :
+          `text-zinc-500 dark:text-zinc-300 hover:bg-zinc-900 hover:text-white hover:rounded transition px-3 py-2 text-sm ${disabledClass}`
       }
     >
       {children}

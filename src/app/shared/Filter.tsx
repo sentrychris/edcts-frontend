@@ -1,10 +1,15 @@
 "use client"
 
-import { FormEvent, useState } from "react";
+import { FormEvent, FunctionComponent, useState } from "react";
 import Input from "./Input";
 import Button from "./Button";
 
-export default function Filter() {
+interface Props {
+  onClick?: (str: string) => any;
+  className?: string;
+}
+
+const Filter: FunctionComponent<Props> = ({ onClick, className }) => {
   const [searchString, setSearchString] = useState<string>('');
 
   function handleSearchStringChange(e: FormEvent) {
@@ -12,7 +17,7 @@ export default function Filter() {
   }
 
   return (
-    <div className="w-full relative mt-6">
+    <div className={`w-full relative ` + className}>
       <form className="flex flex-row items-center gap-4 font-mono">
         <Input
           placeholder="Search departure system"
@@ -26,19 +31,18 @@ export default function Filter() {
           disabled={false}
           onClick={(e: FormEvent) => {
             e.preventDefault();
-
+            return searchString
           }}
         >Search</Button>
         <Button
           type="submit"
           theme="light"
           disabled={false}
-          onClick={(e: FormEvent) => {
-            e.preventDefault();
-            setSearchString('')
-          }}
+          onClick={() => {}}
         >Clear</Button>
       </form>
     </div>
   )
 }
+
+export default Filter

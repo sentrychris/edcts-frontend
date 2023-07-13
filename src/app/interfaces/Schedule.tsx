@@ -7,11 +7,13 @@ export interface Schedule {
   title: string;
   description: string;
   departs_at: string;
-  departed_at: string | null;
-  arrives_at: string | null;
-  arrived_at: string | null;
-  is_boarding: boolean;
-  is_cancelled: boolean;
-  has_departed: boolean;
-  has_arrived: boolean;
+  arrives_at?: string;
+  status: {
+    cancelled: boolean,
+    boarding: boolean,
+    departed: boolean,
+    departed_at: boolean | string,
+    arrived: boolean,
+    arrived_at: boolean | string
+  }
 }
