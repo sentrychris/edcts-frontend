@@ -76,7 +76,7 @@ function Table<T extends RequiredAttribute>({ columns, data, meta, links }: Prop
           <thead className="text-xs text-gray-400 uppercase bg-slate-50 dark:bg-zinc-800 dark:text-gray-400 dark:border-b dark:border-b-gray-600">
             <tr>
               {Object.keys(columns).map(key =>
-                <th key={`columnHeader_${key}`} scope="col" className="p-6 font-bold tracking-wide">
+                <th key={`columnHeader_${key}`} scope="col" className="p-6 font-bold tracking-wider">
                   {'title' in columns[key] ? columns[key].title : key}
                 </th>
               )}

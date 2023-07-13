@@ -13,14 +13,14 @@ interface Props {
 const DepartureCard: FunctionComponent<Props> = ({className, title, description, departure, destination, departsAt, status}) => {
   const departed = status === 'DEPARTED' ? 'line-through' : ''
   return (
-    <div className={`p-6 rounded-lg shadow-lg bg-zinc-800 ` + className}>
+    <div className={`p-6 rounded-lg shadow-lg bg-slate-50 dark:bg-zinc-800 ` + className}>
       <a href="#" className="flex flex-col md:max-w-xl">
-        <h5 className={`mb-3 text-lg font-bold tracking-tight text-gray-900 dark:text-gray-200 ` + departed}>{title}</h5>
-        <p className="mb-4 font-normal text-gray-800 dark:text-gray-300">
+        <h5 className={`mb-3 text-lg font-bold tracking-tight text-neutral-800 dark:text-gray-200 ` + departed}>{title}</h5>
+        <p className="mb-4 font-normal text-neutral-800 dark:text-gray-300">
           {description.slice(0,65) + `...`}
         </p>
         <hr className="w-full"/>
-        <div className="flex flex-row justify-between items-center text-sm mt-3 text-gray-100">
+        <div className="flex flex-row justify-between items-center text-sm mt-3 text-neutral-800 dark:text-gray-100">
           <div>
             <div className="flex flex-row gap-2">
               <p>From:</p>
@@ -43,9 +43,9 @@ const DepartureCard: FunctionComponent<Props> = ({className, title, description,
             </div>
             <div className="flex flex-col gap-2">
               <p className={
-                status === 'DEPARTED' ? `text-blue-200`
-                  : (status === 'NOT READY') ? 'text-orange-300' : (status === 'DELAYED')
-                  ? 'text-red-300' : 'text-green-200'}>
+                status === 'DEPARTED' ? `text-blue-500 dark:text-blue-200`
+                  : (status === 'NOT READY') ? 'text-orange-500 dark:text-orange-300' : (status === 'DELAYED')
+                  ? 'text-red-500 dark:text-red-300' : 'text-green-500 dark:text-green-200'}>
                     {status}
               </p>
             </div>
