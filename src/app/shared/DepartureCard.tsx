@@ -1,24 +1,28 @@
 import { FunctionComponent } from "react";
 
 interface Props {
+  className?: string;
   title: string;
-  departure?: string;
-  destination?: string;
-  departsAt?: string;
+  description: string;
+  departure: string;
+  destination: string;
+  departsAt: string;
+  status: string;
 }
 
-const DepartureCard: FunctionComponent<Props> = ({title, departure, destination, departsAt}) => {
+const DepartureCard: FunctionComponent<Props> = ({className, title, description, departure, destination, departsAt, status}) => {
+  const departed = status === 'DEPARTED' ? 'line-through' : ''
   return (
-    <div className="p-6 rounded-lg shadow-lg bg-zinc-800">
+    <div className={`p-6 rounded-lg shadow-lg bg-zinc-800 ` + className}>
       <a href="#" className="flex flex-col md:max-w-xl">
-        <h5 className="mb-3 text-lg font-bold tracking-tight text-gray-900 dark:text-white">{title}</h5>
-        <p className="mb-4 font-normal text-gray-700 dark:text-gray-400">
-          [[ Description Goes Here]]
+        <h5 className={`mb-3 text-lg font-bold tracking-tight text-gray-900 dark:text-gray-200 ` + departed}>{title}</h5>
+        <p className="mb-4 font-normal text-gray-800 dark:text-gray-300">
+          {description.slice(0,65) + `...`}
         </p>
         <hr className="w-full"/>
-        <div className="flex flex-row justify-between items-center text-sm">
+        <div className="flex flex-row justify-between items-center text-sm mt-3 text-gray-100">
           <div>
-            <div className="flex flex-row gap-2 mt-3">
+            <div className="flex flex-row gap-2">
               <p>From:</p>
               <p>{departure}</p>
             </div>
@@ -28,8 +32,22 @@ const DepartureCard: FunctionComponent<Props> = ({title, departure, destination,
             </div>
           </div>
           <div>
-            <div className="flex flex-col gap-2 mt-3">
-              <p>{departsAt}</p>
+            <div className="flex flex-col gap-2">
+              <p>{new Date(departsAt).toLocaleString('en-GB', {
+                day: '2-digit',
+                month: 'short',
+                year: '2-digit',
+                hour: '2-digit',
+                minute: '2-digit'
+              })}</p>
+            </div>
+            <div className="flex flex-col gap-2">
+              <p className={
+                status === 'DEPARTED' ? `text-blue-200`
+                  : (status === 'NOT READY') ? 'text-orange-300' : (status === 'DELAYED')
+                  ? 'text-red-300' : 'text-green-200'}>
+                    {status}
+              </p>
             </div>
           </div>
         </div>
