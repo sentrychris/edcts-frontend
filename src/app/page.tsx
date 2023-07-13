@@ -25,7 +25,7 @@ export default async function Home() {
       <div className="grid grid-cols-1 md:grid-cols-2 gap-6 mt-6">
         <div>
           <h2 className="uppercase text-3xl mb-3">Galnet News</h2>
-          {news.data.map((article: GalnetNews) => {
+          {news.data.slice(0,3).map((article: GalnetNews) => {
             return <div className="relative mb-3">
               <Image
                 src={article.banner_image}
