@@ -1,3 +1,4 @@
+import { JSX } from "react";
 import { Meta, Links } from "../interfaces/Pagination";
 import PaginationLink from "./PaginationLink";
 

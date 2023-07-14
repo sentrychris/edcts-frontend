@@ -1,7 +1,6 @@
 "use client"
 
-import React, {ForwardedRef, RefObject} from "react";
-import { FormEvent } from "react";
+import { FormEvent, ForwardedRef, RefObject, memo } from "react";
 
 export interface Props {
   innerRef?: RefObject<HTMLInputElement> | ForwardedRef<any>;
@@ -58,4 +57,4 @@ function Input({
   )
 }
 
-export default React.memo(Input);
+export default memo(Input)

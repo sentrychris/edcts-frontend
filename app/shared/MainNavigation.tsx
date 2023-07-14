@@ -1,13 +1,13 @@
-'use client'
+"use client"
 
-import { Fragment } from 'react'
-import { Disclosure, Menu, Transition } from '@headlessui/react'
-import { Bars3Icon, BellIcon, XMarkIcon } from '@heroicons/react/24/outline'
+import { Fragment } from "react";
+import { Disclosure, Menu, Transition } from "@headlessui/react";
+import { Bars3Icon, BellIcon, XMarkIcon } from "@heroicons/react/24/outline";
 
 const navigation = [
-  { name: 'Dashboard', href: '#', current: true },
+  { name: 'Home', href: '/', current: true },
   { name: 'Departures', href: '#', current: false },
-  { name: 'News', href: '#', current: false },
+  { name: 'News', href: '/galnet', current: false },
   { name: 'Apply', href: '#', current: false },
 ]
 

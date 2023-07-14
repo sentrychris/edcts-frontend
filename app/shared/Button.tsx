@@ -1,7 +1,6 @@
 "use client"
 
-import React from "react";
-import { FormEvent } from "react";
+import { FormEvent, JSX, memo } from "react";
 
 interface Props {
   type?: 'button' | 'submit';
@@ -56,4 +55,4 @@ function Button({type = 'button', children, onClick, disabled = false, loading =
   )
 }
 
-export default React.memo(Button);
+export default memo(Button);

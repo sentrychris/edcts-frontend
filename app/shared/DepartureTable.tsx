@@ -3,7 +3,7 @@
 import { FunctionComponent, useState } from "react";
 import { Response } from "../interfaces/Response";
 import { Schedule } from "../interfaces/Schedule";
-import { scheduleColumns } from '../mappings/schedule'
+import { scheduleColumns } from "../services/schedule";
 import Filter from "./Filter";
 import Table from "./Table";
 
@@ -16,8 +16,7 @@ const DepartureTable: FunctionComponent<Props> = ({ schedule }) => {
   const [rows, setRows] = useState(data)
 
   const searchData = (text: string) => {
-    const regexp = new RegExp(text, 'i')
-    setRows(data.filter(s => regexp.test(s.title)))
+    setRows(data.filter(s => (new RegExp(text, 'i')).test(s.title)))
   }
 
   return (

@@ -1,7 +1,7 @@
 import { FunctionComponent } from "react";
 import { Schedule } from "../interfaces/Schedule";
 import { formatDate } from "../util";
-import { getStatus, renderStatus } from "../mappings/schedule";
+import { getStatus, renderStatus } from "../services/schedule";
 
 interface Props {
   className?: string;

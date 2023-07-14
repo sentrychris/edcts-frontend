@@ -1,6 +1,6 @@
 "use client"
 
-import { FormEvent, FunctionComponent, useState } from "react";
+import { FormEvent, FunctionComponent, memo, useState } from "react";
 import Input from "./Input";
 import Button from "./Button";
 
@@ -10,39 +10,34 @@ interface Props {
 }
 
 const Filter: FunctionComponent<Props> = ({ className, handleInput }) => {
-  const [searchString, setSearchString] = useState<string>('');
+  const [filterString, setFilterString] = useState<string>('');
 
-  async function handleSearchStringChange(e: FormEvent) {
-    setSearchString((e.target as HTMLInputElement).value);
-    if (handleInput) {
-      handleInput(searchString)
-    }
+  async function handleFilterStringChange(e: FormEvent) {
+    setFilterString((e.target as HTMLInputElement).value);
+    handleInput(filterString)
+  }
+
+  async function clearFilter() {
+    setFilterString('')
+    handleInput('')
   }
 
   return (
     <div className={`w-full relative ` + className}>
       <form className="flex flex-row items-center gap-4">
         <Input
-          placeholder="Search by departure system..."
-          value={searchString}
-          onChange={handleSearchStringChange}
+          placeholder="Filter by departure system..."
+          value={filterString}
+          onChange={handleFilterStringChange}
           extraStyling="w-[400px]"
         />
         <Button
           type="submit"
-          theme="dark"
-          disabled={false}
-          onClick={(e: FormEvent) => {
-            e.preventDefault();
-            return searchString
-          }}
-        >Search</Button>
-        <Button
-          type="submit"
           theme="light"
           disabled={false}
-          onClick={async () => {
-            handleInput(searchString)
+          onClick={async (e: FormEvent) => {
+            e.preventDefault()
+            clearFilter();
           }}
         >Clear</Button>
       </form>
@@ -50,4 +45,4 @@ const Filter: FunctionComponent<Props> = ({ className, handleInput }) => {
   )
 }
 
-export default Filter
+export default memo(Filter)
