@@ -1,3 +1,5 @@
+"use client"
+
 import React, {ForwardedRef, RefObject} from "react";
 import { FormEvent } from "react";
 

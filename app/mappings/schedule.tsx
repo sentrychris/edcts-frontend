@@ -1,8 +1,8 @@
 import Link from "next/link"
 import { formatDate } from "../util"
-import { Schedule } from "../interfaces/Schedule"
+import { Schedule, GetSchedule } from "../interfaces/Schedule"
 
-export const getSchedule = async (params?: any) => {
+export const getSchedule: GetSchedule = async (params?) => {
   const url = 'http://localhost/api/fleet/schedule'
   const query: string = params
     ? new URLSearchParams(params).toString()

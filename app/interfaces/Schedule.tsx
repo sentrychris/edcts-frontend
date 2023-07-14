@@ -1,4 +1,5 @@
 import { Carrier } from "./Carrier";
+import { Response } from "./Response";
 
 export interface Schedule {
   carrier: Carrier;
@@ -16,4 +17,8 @@ export interface Schedule {
     arrived: boolean,
     arrived_at: boolean | string
   }
+}
+
+export interface GetSchedule {
+  (params?: Record<string, string>): Promise<Response<Schedule>>
 }

@@ -5,15 +5,18 @@ import Input from "./Input";
 import Button from "./Button";
 
 interface Props {
-  onClick?: (str: string) => any;
   className?: string;
+  handleInput: (text: string) => void
 }
 
-const Filter: FunctionComponent<Props> = ({ onClick, className }) => {
+const Filter: FunctionComponent<Props> = ({ className, handleInput }) => {
   const [searchString, setSearchString] = useState<string>('');
 
-  function handleSearchStringChange(e: FormEvent) {
+  async function handleSearchStringChange(e: FormEvent) {
     setSearchString((e.target as HTMLInputElement).value);
+    if (handleInput) {
+      handleInput(searchString)
+    }
   }
 
   return (
@@ -38,7 +41,9 @@ const Filter: FunctionComponent<Props> = ({ onClick, className }) => {
           type="submit"
           theme="light"
           disabled={false}
-          onClick={() => {}}
+          onClick={async () => {
+            handleInput(searchString)
+          }}
         >Clear</Button>
       </form>
     </div>

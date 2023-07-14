@@ -1,4 +1,4 @@
-import {Meta, Links} from "../interfaces/Pagination";
+import { Meta, Links } from "../interfaces/Pagination";
 import PaginationLink from "./PaginationLink";
 
 type RenderColumn<T> = (item: T) => string | JSX.Element;
@@ -36,7 +36,7 @@ function Table<T extends RequiredAttribute>({ columns, data, meta, links }: Prop
 
     return <tbody>
       <>
-        {data.map((item: any) => (
+        {data.map((item: T) => (
           <tr key={`row_${item.id}`} className="bg-white dark:bg-neutral-900 border-b dark:border-b-gray-600 last:border-b-0">
             {Object.keys(columns).map(key =>
               <td key={`rowColumn_${item.id}_${key}`} scope="row" className="py-4 px-6 font-medium whitespace-nowrap text-gray-900 dark:text-gray-200">
@@ -49,23 +49,23 @@ function Table<T extends RequiredAttribute>({ columns, data, meta, links }: Prop
     </tbody>
   }
 
-  function renderContent(item: T, key: string) {
-    if ('render' in columns[key]) {
-      //@ts-ignore
-      return columns[key].render(item);
+  type Mode = { accessor?: string; render?: RenderColumn<T> }
+  const isRender = (ctx: Mode): ctx is Required<Mode> => !!ctx.render
+  const isAccessor = (ctx: Mode): ctx is Required<Mode> => !!ctx.accessor
+
+  function renderContent(item: any, key: string) {
+    const column = columns[key]
+
+    if (isRender(column)) {
+      return column.render(item);
     }
 
-    if ('accessor' in columns[key]) {
-      //@ts-ignore
-      if (columns[key].accessor.includes('.')) {
-        //@ts-ignore
-        return columns[key].accessor.split('.').reduce((obj,key)=> obj[key], item);
+    if (isAccessor(column)) {
+      if (column.accessor.includes('.')) {
+        return column.accessor.split('.').reduce((obj,key)=> obj[key], item);
       }
-      //@ts-ignore
-      return item[columns[key].accessor];
+      return item[column.accessor];
     }
-
-    //@ts-ignore
     return item[key];
   }
 
