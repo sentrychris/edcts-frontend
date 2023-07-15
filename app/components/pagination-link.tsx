@@ -23,12 +23,11 @@ const PaginationLink: FunctionComponent<Props> = ({ url, active, children, pagin
 
   return (
   <button
-      data-url={url}
       onClick={handlePagination}
       className={
         active ?
-          `bg-zinc-900 text-white px-3 py-2 rounded text-sm ${disabledClass}` :
-          `text-zinc-500 dark:text-zinc-300 hover:bg-zinc-900 hover:text-white hover:rounded transition px-3 py-2 text-sm ${disabledClass}`
+          `bg-stone-300 dark:bg-neutral-900 text-black dark:text-white px-3 py-2 rounded text-sm ${disabledClass}` :
+          `text-neutral-900 dark:text-neutral-400 hover-bg-stone-900 dark:hover:bg-neutral-900 hover:text-stone-500 dark:hover:text-white hover:rounded transition px-3 py-2 text-sm ${disabledClass}`
       }
     >
       {children}
