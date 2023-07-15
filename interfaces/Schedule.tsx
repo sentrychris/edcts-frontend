@@ -1,5 +1,5 @@
 import { Carrier } from "./Carrier";
-import { Response } from "./Response";
+import { Pagination } from "./Pagination";
 
 export interface Schedule {
   carrier: Carrier;
@@ -20,5 +20,5 @@ export interface Schedule {
 }
 
 export interface GetSchedule {
-  (params?: Record<string, any>): Promise<Response<Schedule>>
+  (params?: Record<string, any>): Promise<Pagination<Schedule>>
 }

@@ -1,14 +1,14 @@
 "use client"
 
 import { FunctionComponent, useState } from "react";
-import { Response } from "../../../interfaces/Response";
+import { Pagination } from "../../../interfaces/Pagination";
 import { Schedule } from "../../../interfaces/Schedule";
 import { scheduleColumns } from "../schedule";
 import Filter from "../../components/filter";
 import Table from "../../components/table";
 
 interface Props {
-  schedule: Response<Schedule>
+  schedule: Pagination<Schedule>
 }
 
 const DepartureTable: FunctionComponent<Props> = ({ schedule }) => {

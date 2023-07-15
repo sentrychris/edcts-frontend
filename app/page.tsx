@@ -22,17 +22,24 @@ export default async function Home() {
       </div>
       <div className="grid grid-cols-1 md:grid-cols-2 gap-6 mt-6">
         <div>
-          <h2 className="uppercase text-3xl mb-5">Galnet News</h2>
+          <h2 className="uppercase text-3xl mb-3">Galnet News</h2>
           {news.data.slice(0,3).map((article: GalnetNews) => {
-            return <div className="relative mb-3">
-              <Image
+            return <div className="relative">
+              {/* <Image
                 src={article.banner_image}
                 alt="article image"
                 className="w-full rounded-lg shadow-lg border border-neutral-800 mb-3"
                 width={1200}
                 height={200}
-              ></Image>
-              <Link href={`/galnet/article/${article.id}`} className='text-lg block'>{article.title}</Link>
+              ></Image> */}
+              <div className="relative border-b border-neutral-800 py-4">
+                  <h1 className='text-3xl mb-2'>{article.title}</h1>
+                  <p className="text-xs mb-4">{article.uploaded_at}</p>
+                  <p className="tracking-wider mb-6" dangerouslySetInnerHTML={{ __html: article.content.slice(0, 140) + '...' }}></p>
+                  <Link href={`/galnet/article/${article.id}`} className="text-orange-400">
+                    Read More
+                  </Link>
+              </div>
             </div>
           })}
         </div>

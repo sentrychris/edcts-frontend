@@ -22,7 +22,7 @@ export interface Meta {
   total: number;
 }
 
-export default interface Pagination<T> {
+export interface Pagination<T> {
   links: Links;
   meta: Meta;
   data: T[];

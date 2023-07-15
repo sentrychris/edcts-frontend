@@ -1,9 +1,10 @@
 import { getAllGalnetNewsArticles } from './galnet'
 import { GalnetNews } from '../../interfaces/GalnetNews'
 import PaginationLink from '../components/pagination-link'
+import Link from 'next/link'
 
 export default async function GalnetNews() {
-  const { data, meta, links } = await getAllGalnetNewsArticles({ limit: 3 })
+  const { data, meta, links } = await getAllGalnetNewsArticles({ limit: 10 })
 
   return (
     <main className="flex flex-col px-6 md:px-12 lg:px-24 py-6 mx-auto text-neutral-800 dark:text-neutral-200">
@@ -13,13 +14,14 @@ export default async function GalnetNews() {
           <h2 className="uppercase text-3xl pb-3 border-b border-neutral-800">Galnet News</h2>
           {data.map((article: GalnetNews) => {
             return (
-              <>
-                <div className="relative border-b border-neutral-800 py-12">
-                  <h1 className='text-4xl'>{article.title}</h1>
-                  <small>{article.uploaded_at}</small>
-                  <p className="mt-4 tracking-wider" dangerouslySetInnerHTML={{ __html: article.content }}></p>
-                </div>
-              </>
+              <div className="relative border-b border-neutral-800 py-12">
+                <h1 className='text-4xl mb-2'>{article.title}</h1>
+                <p className="text-xs mb-6">{article.uploaded_at}</p>
+                <p className="tracking-wider mb-6" dangerouslySetInnerHTML={{ __html: article.content.slice(0, 90) + '...' }}></p>
+                <Link href={`/galnet/article/${article.id}`} className="py-2 px-4 bg-neutral-800 rounded text-sm">
+                  Read More
+                </Link>
+              </div>
             )
           })}
         </div>

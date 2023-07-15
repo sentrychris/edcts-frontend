@@ -4,12 +4,12 @@ import { Disclosure, Menu, Transition } from "@headlessui/react";
 import { Bars3Icon, XMarkIcon } from "@heroicons/react/24/outline";
 import { Fragment } from "react";
 import Link from "next/link";
+import Image from "next/image";
 
 const navigation = [
   { name: 'Home', href: '/', current: true },
   { name: 'Departures', href: '/departures', current: false },
   { name: 'News', href: '/galnet', current: false },
-  { name: 'Apply', href: '#', current: false },
 ]
 
 function classNames(...classes: string[]) {
@@ -36,16 +36,7 @@ export default function MainNavigation() {
               </div>
               <div className="flex flex-1 items-center justify-center sm:items-stretch sm:justify-start">
                 <div className="flex flex-shrink-0 items-center">
-                  <img
-                    className="block h-8 w-auto lg:hidden"
-                    src="https://tailwindui.com/img/logos/mark.svg?color=orange&shade=500"
-                    alt="Your Company"
-                  />
-                  <img
-                    className="hidden h-8 w-auto lg:block"
-                    src="https://tailwindui.com/img/logos/mark.svg?color=orange&shade=500"
-                    alt="Your Company"
-                  />
+                  <Image src="/logo-light.svg" alt="logo" width="80" height="80"></Image>
                 </div>
                 <div className="hidden sm:ml-6 sm:block">
                   <div className="flex space-x-4">
