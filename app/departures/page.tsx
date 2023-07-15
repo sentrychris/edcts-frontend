@@ -1,9 +1,9 @@
 "use server"
 
-import { Schedule } from '../interfaces/Schedule'
-import DepartureCard from '../shared/DepartureCard'
-import DepartureTable from '../shared/DepartureTable'
-import { getSchedule } from '../services/schedule'
+import { Schedule } from '../../interfaces/Schedule'
+import DepartureCard from './components/departure-card'
+import DepartureTable from './components/departure-table'
+import { getSchedule } from './schedule'
 
 export default async function Home() {
   const schedule = await getSchedule({ limit: 100 })

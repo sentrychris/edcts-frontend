@@ -1,15 +1,15 @@
-import { Schedule } from './interfaces/Schedule'
-import DepartureCard from './shared/DepartureCard'
-import DepartureTable from './shared/DepartureTable'
-import { getSchedule } from './services/schedule'
-import { getGalnetNews } from './services/galnet'
-import { GalnetNews } from './interfaces/GalnetNews'
+import { Schedule } from '../interfaces/Schedule'
+import DepartureCard from './departures/components/departure-card'
+import DepartureTable from './departures/components/departure-table'
+import { getSchedule } from './departures/schedule'
+import { getAllGalnetNewsArticles } from './galnet/galnet'
+import { GalnetNews } from '../interfaces/GalnetNews'
 import Link from 'next/link'
 import Image from 'next/image'
 
 export default async function Home() {
   const schedule = await getSchedule()
-  const news = await getGalnetNews()
+  const news = await getAllGalnetNewsArticles()
 
   return (
     <main className="flex flex-col px-6 md:px-12 lg:px-24 py-6 mx-auto text-neutral-800 dark:text-neutral-200">
@@ -32,7 +32,7 @@ export default async function Home() {
                 width={1200}
                 height={200}
               ></Image>
-              <Link href="#" className='text-lg block'>{article.title}</Link>
+              <Link href={`/galnet/article/${article.id}`} className='text-lg block'>{article.title}</Link>
             </div>
           })}
         </div>

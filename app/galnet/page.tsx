@@ -1,11 +1,9 @@
-"use server"
-
-import { getGalnetNews } from '../services/galnet'
-import { GalnetNews } from '../interfaces/GalnetNews'
-import PaginationLink from '../shared/PaginationLink'
+import { getAllGalnetNewsArticles } from './galnet'
+import { GalnetNews } from '../../interfaces/GalnetNews'
+import PaginationLink from '../components/pagination-link'
 
 export default async function GalnetNews() {
-  const { data, meta, links } = await getGalnetNews({ limit: 3 })
+  const { data, meta, links } = await getAllGalnetNewsArticles({ limit: 3 })
 
   return (
     <main className="flex flex-col px-6 md:px-12 lg:px-24 py-6 mx-auto text-neutral-800 dark:text-neutral-200">

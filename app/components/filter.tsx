@@ -1,8 +1,8 @@
 "use client"
 
 import { FormEvent, FunctionComponent, memo, useState } from "react";
-import Input from "./Input";
-import Button from "./Button";
+import Input from "./input";
+import Button from "./button";
 
 interface Props {
   className?: string;

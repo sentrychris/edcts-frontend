@@ -2,8 +2,8 @@ import './globals.css'
 import type { Metadata } from 'next'
 import { Jura } from 'next/font/google'
 import Image from 'next/image'
-import LocalStorageNoSSR from './shared/LocalStorageNoSSR'
-import MainNavigation from './shared/MainNavigation'
+import LocalStorageNoSSR from './components/local-storage-no-ssr'
+import MainNavigation from './components/main-navigation'
 
 const jura = Jura({ subsets: ['latin'] })
 

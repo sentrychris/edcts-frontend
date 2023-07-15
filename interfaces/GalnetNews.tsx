@@ -1,4 +1,5 @@
 export interface GalnetNews {
+  id: number;
   title: string;
   content: string;
   uploaded_at: string;

@@ -1,11 +1,11 @@
 "use client"
 
 import { FunctionComponent, useState } from "react";
-import { Response } from "../interfaces/Response";
-import { Schedule } from "../interfaces/Schedule";
-import { scheduleColumns } from "../services/schedule";
-import Filter from "./Filter";
-import Table from "./Table";
+import { Response } from "../../../interfaces/Response";
+import { Schedule } from "../../../interfaces/Schedule";
+import { scheduleColumns } from "../schedule";
+import Filter from "../../components/filter";
+import Table from "../../components/table";
 
 interface Props {
   schedule: Response<Schedule>
