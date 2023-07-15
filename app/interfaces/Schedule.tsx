@@ -20,5 +20,5 @@ export interface Schedule {
 }
 
 export interface GetSchedule {
-  (params?: Record<string, string>): Promise<Response<Schedule>>
+  (params?: Record<string, any>): Promise<Response<Schedule>>
 }

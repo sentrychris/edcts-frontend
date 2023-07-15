@@ -18,21 +18,10 @@ export const getSchedule: GetSchedule = async (params?) => {
 
 export const getStatus = (schedule: Schedule) => {
   const { status } = schedule
-  if (status.boarding) {
-    return "BOARDING OPEN"
-  }
-
-  if (status.departed) {
-    return "DEPARTED"
-  }
-
-  if (status.arrived) {
-    return "ARRIVED"
-  }
-
-  if (status.cancelled) {
-    return "CANCELLED"
-  }
+  if (status.boarding) return "BOARDING OPEN"
+  if (status.departed) return "DEPARTED"
+  if (status.arrived) return "ARRIVED"
+  if (status.cancelled) return "CANCELLED"
 
   return "NOT READY"
 }

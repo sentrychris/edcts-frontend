@@ -1,8 +1,9 @@
 import './globals.css'
 import type { Metadata } from 'next'
 import { Jura } from 'next/font/google'
-import MainNavigation from './shared/MainNavigation'
 import Image from 'next/image'
+import LocalStorageNoSSR from './shared/LocalStorageNoSSR'
+import MainNavigation from './shared/MainNavigation'
 
 const jura = Jura({ subsets: ['latin'] })
 
@@ -18,6 +19,7 @@ export default function RootLayout({
 }) {
   return (
     <html lang="en">
+      <LocalStorageNoSSR />
       <body className={jura.className + ` antialiased`}>
       <div className="absolute z-20 top-0 inset-x-0 flex justify-center overflow-hidden pointer-events-none">
         <div className="w-[108rem] flex-none flex justify-end">

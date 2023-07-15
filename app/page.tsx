@@ -1,5 +1,3 @@
-"use server"
-
 import { Schedule } from './interfaces/Schedule'
 import DepartureCard from './shared/DepartureCard'
 import DepartureTable from './shared/DepartureTable'
