@@ -1,15 +1,16 @@
-export const getAllGalnetNewsArticles = async (params?: any) => {
-  const url = 'http://localhost/api/galnet/news'
-  const query: string = params
-    ? new URLSearchParams(params).toString()
-    : ''
+import { GetGalnetNews } from "../../interfaces/GalnetNews"
+import { isAbsoluteUrl } from "../util"
 
-  const res = await fetch(`${url}?${query}`)
-  if (!res.ok) {
+export const getAllGalnetNewsArticles: GetGalnetNews = async (uri, params?: any) => {
+  const url = !isAbsoluteUrl(uri) ? `http://localhost/api/${uri}` : uri
+  const query: string = params ? `?` + new URLSearchParams(params).toString() : ''
+  const response = await fetch(`${url}${query}`)
+
+  if (!response.ok) {
     throw new Error('Failed to fetch data')
   }
   
-  return res.json()
+  return response.json()
 }
 
 export const getGalnetNewsArticle = async (id: number) => {

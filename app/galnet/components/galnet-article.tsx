@@ -6,7 +6,7 @@ import { getGalnetNewsArticle } from "../galnet"
 import { useEffect, useState } from "react"
 import { usePathname } from "next/navigation"
 
-const Article = () => {
+const GalnetArticle = () => {
   const [article, setArticle] = useState<GalnetNews>({
     id: 0,
     title: '',
@@ -37,5 +37,5 @@ const Article = () => {
   )
 }
 
-export default Article;
+export default GalnetArticle;
   
