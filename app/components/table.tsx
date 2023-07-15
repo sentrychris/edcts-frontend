@@ -70,6 +70,10 @@ function Table<T extends RequiredAttribute>({ columns, data, meta, links }: Prop
     return item[key];
   }
 
+  function paginate(link: string) {
+    console.log(link);
+  }
+
   return (
     <>
       <div className="overflow-x-auto relative sm:rounded-lg shadow-lg">
@@ -92,6 +96,7 @@ function Table<T extends RequiredAttribute>({ columns, data, meta, links }: Prop
             key={`link_first`}
             url={(meta.current_page !== 1) && links.first ? links.first : null}
             active={false}
+            handleApiPagination={paginate}
           >First</PaginationLink>
         </li>
         <li>
@@ -99,6 +104,7 @@ function Table<T extends RequiredAttribute>({ columns, data, meta, links }: Prop
             key={`link_prev`}
             url={links.prev}
             active={false}
+            handleApiPagination={paginate}
           >Previous</PaginationLink>
         </li>
         {meta.links.map(link =>
@@ -107,6 +113,7 @@ function Table<T extends RequiredAttribute>({ columns, data, meta, links }: Prop
               <PaginationLink
                 url={link.url}
                 active={link.active}
+                handleApiPagination={paginate}
               >
                 {link.label}
               </PaginationLink>
@@ -117,6 +124,7 @@ function Table<T extends RequiredAttribute>({ columns, data, meta, links }: Prop
             key={`link_next`}
             url={links.next}
             active={false}
+            handleApiPagination={paginate}
           >Next</PaginationLink>
         </li>
         <li>
@@ -124,6 +132,7 @@ function Table<T extends RequiredAttribute>({ columns, data, meta, links }: Prop
             key={`link_last`}
             url={(meta.current_page !== meta.last_page) && links.last ? links.last : null}
             active={false}
+            handleApiPagination={paginate}
           >Last</PaginationLink>
         </li>
       </ul>

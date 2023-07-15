@@ -1,19 +1,30 @@
-import Link from "next/link";
-import { JSX } from "react";
+"use client"
+
+import { FormEvent, FunctionComponent, JSX } from "react";
 
 interface Props {
   url: string | null;
   active: boolean;
-  children: string | JSX.Element | JSX.Element[]
+  children: string | JSX.Element | JSX.Element[];
+  handleApiPagination: (link: string) => void
 }
 
-function PaginationLink({ url, active, children }: Props) {
+const PaginationLink: FunctionComponent<Props> = ({ url, active, children, handleApiPagination }) => {
   const disabledClass = url ? '' : 'pointer-events-none opacity-70';
   if (!url) url = '#'
 
+  async function handlePagination(e: FormEvent) {
+    if (!(e.target instanceof HTMLButtonElement)) {
+      return false;
+    }
+
+    handleApiPagination((e.target.dataset.url as string))
+  }
+
   return (
-  <Link
-      href={url}
+  <button
+      data-url={url}
+      onClick={handlePagination}
       className={
         active ?
           `bg-zinc-900 text-white px-3 py-2 rounded text-sm ${disabledClass}` :
@@ -21,7 +32,7 @@ function PaginationLink({ url, active, children }: Props) {
       }
     >
       {children}
-    </Link>
+    </button>
   )
 }
 

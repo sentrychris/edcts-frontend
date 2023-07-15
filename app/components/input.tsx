@@ -1,6 +1,6 @@
 "use client"
 
-import { FormEvent, ForwardedRef, RefObject, memo } from "react";
+import { FormEvent, ForwardedRef, FunctionComponent, RefObject, memo } from "react";
 
 export interface Props {
   innerRef?: RefObject<HTMLInputElement> | ForwardedRef<any>;
@@ -17,7 +17,7 @@ export interface Props {
   onClick?: (event: FormEvent) => void;
 }
 
-function Input({
+const Input: FunctionComponent<Props> = ({
   innerRef,
   id,
   label,
@@ -30,7 +30,7 @@ function Input({
   error,
   extraStyling,
   onClick,
-}: Props) {
+}) => {
   return (
     <div className="grow">
       {label && <label htmlFor={id} className="block text-sm font-semibold text-gray-700 dark:text-gray-200 mb-1">{label}</label>}

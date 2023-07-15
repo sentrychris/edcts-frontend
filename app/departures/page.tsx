@@ -3,10 +3,10 @@
 import { Schedule } from '../../interfaces/Schedule'
 import DepartureCard from './components/departure-card'
 import DepartureTable from './components/departure-table'
-import { getSchedule } from './schedule'
+import { getAllScheduledCarrierTrips } from './departures'
 
 export default async function Home() {
-  const schedule = await getSchedule({ limit: 100 })
+  const schedule = await getAllScheduledCarrierTrips({ limit: 100 })
 
   return (
     <main className="flex flex-col px-6 md:px-12 lg:px-24 py-6 mx-auto text-neutral-800 dark:text-neutral-200">

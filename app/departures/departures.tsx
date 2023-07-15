@@ -2,7 +2,7 @@ import Link from "next/link"
 import { formatDate } from "../util"
 import { Schedule, GetSchedule } from "../../interfaces/Schedule"
 
-export const getSchedule: GetSchedule = async (params?) => {
+export const getAllScheduledCarrierTrips: GetSchedule = async (params?) => {
   const url = 'http://localhost/api/fleet/schedule'
   const query: string = params
     ? new URLSearchParams(params).toString()
@@ -62,7 +62,7 @@ export const scheduleColumns = {
     render: (schedule: any) => formatDate(schedule.departs_at)
   },
   arrives_at: {
-    title: "Estimated Arrival",
+    title: "Est. Arrival",
     render: (schedule: any) => schedule.arrives_at ? formatDate(schedule.arrives_at) : '---'
   },
   commander_name: {

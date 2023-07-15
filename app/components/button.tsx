@@ -1,6 +1,6 @@
 "use client"
 
-import { FormEvent, JSX, memo } from "react";
+import { FormEvent, FunctionComponent, JSX, memo } from "react";
 
 interface Props {
   type?: 'button' | 'submit';
@@ -12,7 +12,7 @@ interface Props {
   extraStyling?: string;
 }
 
-function Button({type = 'button', children, onClick, disabled = false, loading = false, theme = 'dark', extraStyling}: Props) {
+const Button: FunctionComponent<Props> = ({type = 'button', children, onClick, disabled = false, loading = false, theme = 'dark', extraStyling}) => {
   let themeClasses,
     spinnerClasses;
 

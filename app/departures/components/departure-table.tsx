@@ -3,7 +3,7 @@
 import { FunctionComponent, useState } from "react";
 import { Pagination } from "../../../interfaces/Pagination";
 import { Schedule } from "../../../interfaces/Schedule";
-import { scheduleColumns } from "../schedule";
+import { scheduleColumns } from "../departures";
 import Filter from "../../components/filter";
 import Table from "../../components/table";
 
