@@ -8,7 +8,7 @@ import Link from 'next/link'
 
 export default async function Home() {
   const news = await getAllGalnetNewsArticles()
-  const schedule = await getAllScheduledCarrierTrips()
+  const schedule = await getAllScheduledCarrierTrips('fleet/schedule')
 
   return (
     <main className="flex flex-col px-6 md:px-12 lg:px-24 py-6 mx-auto text-neutral-800 dark:text-neutral-200">

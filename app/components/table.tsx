@@ -21,9 +21,10 @@ interface Props<T extends RequiredAttribute> {
   data: T[];
   meta: Meta;
   links: Links;
+  page?: (link: string) => void;
 }
 
-function Table<T extends RequiredAttribute>({ columns, data, meta, links }: Props<T>) {
+function Table<T extends RequiredAttribute>({ columns, data, meta, links, page }: Props<T>) {
   function renderBody(data: any) {
     if (!data || data.length === 0) {
       return <tbody>
@@ -54,7 +55,7 @@ function Table<T extends RequiredAttribute>({ columns, data, meta, links }: Prop
   const isRender = (ctx: Mode): ctx is Required<Mode> => !!ctx.render
   const isAccessor = (ctx: Mode): ctx is Required<Mode> => !!ctx.accessor
 
-  function renderContent(item: any, key: string) {
+  const renderContent = (item: any, key: string) => {
     const column = columns[key]
 
     if (isRender(column)) {
@@ -70,9 +71,7 @@ function Table<T extends RequiredAttribute>({ columns, data, meta, links }: Prop
     return item[key];
   }
 
-  function paginate(link: string) {
-    console.log(link);
-  }
+  const paginate = (link: string) => { if (page) page(link) }
 
   return (
     <>

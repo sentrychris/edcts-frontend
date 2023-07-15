@@ -20,5 +20,5 @@ export interface Schedule {
 }
 
 export interface GetSchedule {
-  (params?: Record<string, any>): Promise<Pagination<Schedule>>
+  (uri: string, params?: Record<string, any>): Promise<Pagination<Schedule>>
 }

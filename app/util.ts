@@ -7,3 +7,7 @@ export function formatDate(datestr: string) {
     minute: '2-digit'
   });
 }
+
+export function isAbsoluteUrl(url: string) {
+  return url.indexOf('http://') === 0 || url.indexOf('https://') === 0
+}

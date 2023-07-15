@@ -1,19 +1,17 @@
 import Link from "next/link"
-import { formatDate } from "../util"
+import { formatDate, isAbsoluteUrl } from "../util"
 import { Schedule, GetSchedule } from "../../interfaces/Schedule"
 
-export const getAllScheduledCarrierTrips: GetSchedule = async (params?) => {
-  const url = 'http://localhost/api/fleet/schedule'
-  const query: string = params
-    ? new URLSearchParams(params).toString()
-    : ''
+export const getAllScheduledCarrierTrips: GetSchedule = async (uri, params?) => {
+  const url = !isAbsoluteUrl(uri) ? `http://localhost/api/${uri}` : uri
+  const query: string = params ? `?` + new URLSearchParams(params).toString() : ''
+  const response = await fetch(`${url}${query}`)
 
-  const res = await fetch(`${url}?${query}`)
-  if (!res.ok) {
+  if (!response.ok) {
     throw new Error('Failed to fetch data')
   }
   
-  return res.json()
+  return response.json()
 }
 
 export const getStatus = (schedule: Schedule) => {

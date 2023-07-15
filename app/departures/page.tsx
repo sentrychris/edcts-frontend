@@ -6,7 +6,7 @@ import DepartureTable from './components/departure-table'
 import { getAllScheduledCarrierTrips } from './departures'
 
 export default async function Home() {
-  const schedule = await getAllScheduledCarrierTrips({ limit: 100 })
+  const schedule = await getAllScheduledCarrierTrips('fleet/schedule')
 
   return (
     <main className="flex flex-col px-6 md:px-12 lg:px-24 py-6 mx-auto text-neutral-800 dark:text-neutral-200">
