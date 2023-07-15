@@ -19,7 +19,7 @@ const DepartureTable: FunctionComponent<Props> = ({ schedule }) => {
     setRows(data.filter(s => (new RegExp(text, 'i')).test(s.title)))
   }
 
-  const paginateTable = async (link: string) => {
+  const paginate = async (link: string) => {
     const { data } = await getAllScheduledCarrierTrips(link)
     setRows(data)
   }
@@ -27,7 +27,7 @@ const DepartureTable: FunctionComponent<Props> = ({ schedule }) => {
   return (
     <div>
       <Filter handleInput={searchData} className="mb-5" />
-      <Table columns={scheduleColumns} data={rows} meta={meta} links={links} page={paginateTable} />
+      <Table columns={scheduleColumns} data={rows} meta={meta} links={links} page={paginate} />
     </div>
   )
 }

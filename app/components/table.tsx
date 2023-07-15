@@ -25,7 +25,12 @@ interface Props<T extends RequiredAttribute> {
 }
 
 function Table<T extends RequiredAttribute>({ columns, data, meta, links, page }: Props<T>) {
-  function renderBody(data: any) {
+  
+  type Mode = { accessor?: string; render?: RenderColumn<T> }
+  const isRender = (ctx: Mode): ctx is Required<Mode> => !!ctx.render
+  const isAccessor = (ctx: Mode): ctx is Required<Mode> => !!ctx.accessor
+  
+  const renderBody = (data: any) => {
     if (!data || data.length === 0) {
       return <tbody>
         <tr className="bg-white dark:bg-neutral-900 border-b dark:border-b-gray-600 last:border-b-0">
@@ -51,10 +56,6 @@ function Table<T extends RequiredAttribute>({ columns, data, meta, links, page }
     </tbody>
   }
 
-  type Mode = { accessor?: string; render?: RenderColumn<T> }
-  const isRender = (ctx: Mode): ctx is Required<Mode> => !!ctx.render
-  const isAccessor = (ctx: Mode): ctx is Required<Mode> => !!ctx.accessor
-
   const renderContent = (item: any, key: string) => {
     const column = columns[key]
 
@@ -71,7 +72,9 @@ function Table<T extends RequiredAttribute>({ columns, data, meta, links, page }
     return item[key];
   }
 
-  const paginate = (link: string) => { if (page) page(link) }
+  const paginate = (link: string) => {
+    if (page) page(link)
+  }
 
   return (
     <>
@@ -95,7 +98,7 @@ function Table<T extends RequiredAttribute>({ columns, data, meta, links, page }
             key={`link_first`}
             url={(meta.current_page !== 1) && links.first ? links.first : null}
             active={false}
-            handleApiPagination={paginate}
+            paginate={paginate}
           >First</PaginationLink>
         </li>
         <li>
@@ -103,7 +106,7 @@ function Table<T extends RequiredAttribute>({ columns, data, meta, links, page }
             key={`link_prev`}
             url={links.prev}
             active={false}
-            handleApiPagination={paginate}
+            paginate={paginate}
           >Previous</PaginationLink>
         </li>
         {meta.links.map(link =>
@@ -112,7 +115,7 @@ function Table<T extends RequiredAttribute>({ columns, data, meta, links, page }
               <PaginationLink
                 url={link.url}
                 active={link.active}
-                handleApiPagination={paginate}
+                paginate={paginate}
               >
                 {link.label}
               </PaginationLink>
@@ -123,7 +126,7 @@ function Table<T extends RequiredAttribute>({ columns, data, meta, links, page }
             key={`link_next`}
             url={links.next}
             active={false}
-            handleApiPagination={paginate}
+            paginate={paginate}
           >Next</PaginationLink>
         </li>
         <li>
@@ -131,7 +134,7 @@ function Table<T extends RequiredAttribute>({ columns, data, meta, links, page }
             key={`link_last`}
             url={(meta.current_page !== meta.last_page) && links.last ? links.last : null}
             active={false}
-            handleApiPagination={paginate}
+            paginate={paginate}
           >Last</PaginationLink>
         </li>
       </ul>

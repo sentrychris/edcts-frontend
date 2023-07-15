@@ -6,10 +6,10 @@ interface Props {
   url: string | null;
   active: boolean;
   children: string | JSX.Element | JSX.Element[];
-  handleApiPagination: (link: string) => void
+  paginate: (link: string) => void
 }
 
-const PaginationLink: FunctionComponent<Props> = ({ url, active, children, handleApiPagination }) => {
+const PaginationLink: FunctionComponent<Props> = ({ url, active, children, paginate }) => {
   const disabledClass = url ? '' : 'pointer-events-none opacity-70';
   if (!url) url = '#'
 
@@ -18,7 +18,7 @@ const PaginationLink: FunctionComponent<Props> = ({ url, active, children, handl
       return false;
     }
 
-    handleApiPagination((e.target.dataset.url as string))
+    paginate((e.target.dataset.url as string))
   }
 
   return (
