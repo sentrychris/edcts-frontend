@@ -1,13 +1,13 @@
 
 'use client';
 
-import { GalnetNews} from '../../../interfaces/GalnetNews';
+import { Galnet} from '../../../interfaces/Galnet';
 import { defaultState, getGalnetNewsArticle } from '../galnet';
 import { useEffect, useState } from 'react';
 import { usePathname } from 'next/navigation';
 
 const GalnetArticle = () => {
-  const [article, setArticle] = useState<GalnetNews>(defaultState);
+  const [article, setArticle] = useState<Galnet>(defaultState);
 
   const path = usePathname();
   const id = path.split('/').pop();
@@ -17,7 +17,7 @@ const GalnetArticle = () => {
       const data = await getGalnetNewsArticle(parseInt(id as string));
       setArticle(data);
     })();
-  });
+  }, []);
 
   return (
     <>

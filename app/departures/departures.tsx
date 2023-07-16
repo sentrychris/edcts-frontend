@@ -1,6 +1,7 @@
 import Link from 'next/link';
-import { formatDate, isAbsoluteUrl } from '../util';
-import { Schedule, GetSchedule } from '../../interfaces/Schedule';
+import { formatDate, isAbsoluteUrl, request } from '../util';
+import { Schedule } from '../../interfaces/Schedule';
+import { Request } from '../../interfaces/Request';
 
 export const defaultState = {
   id: 0,
@@ -33,27 +34,8 @@ export const defaultState = {
   }
 };
 
-export const getAllScheduledCarrierTrips: GetSchedule = async (uri, params?) => {
-  const url = !isAbsoluteUrl(uri) ? `http://localhost/api/${uri}` : uri;
-  const query: string = params ? '?' + new URLSearchParams(params).toString() : '';
-  const response = await fetch(`${url}${query}`);
-
-  if (!response.ok) {
-    throw new Error('Failed to fetch data');
-  }
-  
-  return response.json();
-};
-
-export const getScheduledCarrierTrip = async (id: number) => {
-  const url = `http://localhost/api/fleet/schedule/${id}`;
-  const response = await fetch(url);
-  if (!response.ok) {
-    throw new Error('Failed to fetch data');
-  }
-  
-  return response.json();
-};
+export const getAllScheduledCarrierTrips: Request<Schedule> = async (uri, params?: any) => await request(uri, params);
+export const getScheduledCarrierTrip = async (id: number) => await request(`fleet/schedule/${id}`);
 
 export const getStatus = (schedule: Schedule) => {
   const { status } = schedule;

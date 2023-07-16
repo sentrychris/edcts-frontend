@@ -1,5 +1,5 @@
 import { Schedule } from '../interfaces/Schedule';
-import { GalnetNews } from '../interfaces/GalnetNews';
+import { Galnet } from '../interfaces/Galnet';
 import { getAllGalnetNewsArticles } from './galnet/galnet';
 import { getAllScheduledCarrierTrips } from './departures/departures';
 import DepartureCard from './departures/components/departure-card';
@@ -21,7 +21,7 @@ export default async function Home() {
       <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6 mt-8">
         <div className="col-span-1">
           <h2 className="uppercase text-3xl mb-3">Galnet News</h2>
-          {news.data.slice(0, 5).map((article: GalnetNews) => {
+          {news.data.slice(0, 5).map((article: Galnet) => {
             return <div key={article.id} className="relative">
               <div className="relative border-b border-neutral-800 py-4">
                   <h3 className='text-2xl mb-2'>{article.title}</h3>

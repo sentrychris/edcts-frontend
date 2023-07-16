@@ -17,7 +17,7 @@ const DepartureSchedule = () => {
       const data = await getScheduledCarrierTrip(parseInt(id as string));
       setSchedule(data);
     })();
-  });
+  }, []);
 
   return (
     <>

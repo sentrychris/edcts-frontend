@@ -1,7 +1,7 @@
 
 'use client';
 
-import { GalnetNews} from '../../../interfaces/GalnetNews';
+import { Galnet} from '../../../interfaces/Galnet';
 import { Pagination } from '../../../interfaces/Pagination';
 import { getAllGalnetNewsArticles } from '../galnet';
 import PaginationLink from '../../components/pagination-link';
@@ -9,7 +9,7 @@ import { FunctionComponent, useState } from 'react';
 import Link from 'next/link';
 
 interface Props {
-  articles: Pagination<GalnetNews>
+  articles: Pagination<Galnet>
 }
 
 const GalnetList: FunctionComponent<Props> = ({ articles }) => {
@@ -29,7 +29,7 @@ const GalnetList: FunctionComponent<Props> = ({ articles }) => {
     <>
       <div>
         <h2 className="uppercase text-3xl pb-3 border-b border-neutral-800">Galnet News</h2>
-        {rows.map((article: GalnetNews) => {
+        {rows.map((article: Galnet) => {
           return (
             <div key={article.id} className="relative border-b border-neutral-800 py-12">
               <h1 className='text-4xl mb-2'>{article.title}</h1>

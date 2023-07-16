@@ -1,5 +1,4 @@
-import { Carrier } from "./Carrier";
-import { Pagination } from "./Pagination";
+import { Carrier } from './Carrier';
 
 export interface Schedule {
   id: number;
@@ -18,8 +17,4 @@ export interface Schedule {
     arrived: boolean,
     arrived_at: boolean | string
   }
-}
-
-export interface GetSchedule {
-  (uri: string, params?: Record<string, any>): Promise<Pagination<Schedule>>
 }
