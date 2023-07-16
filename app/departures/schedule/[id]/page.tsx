@@ -1,6 +1,6 @@
 
-import { FunctionComponent } from "react"
-import DepartureSchedule from "../../components/departure-schedule"
+import DepartureSchedule from '../../components/departure-schedule';
+import { FunctionComponent } from 'react';
 
 const Page: FunctionComponent = async () => {
   return (
@@ -9,8 +9,8 @@ const Page: FunctionComponent = async () => {
         <DepartureSchedule />
       </div>
     </>
-  )
-}
+  );
+};
 
 export default Page;
   

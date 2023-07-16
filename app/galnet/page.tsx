@@ -1,8 +1,8 @@
-import { getAllGalnetNewsArticles } from './galnet'
-import GalnetList from './components/galnet-list'
+import { getAllGalnetNewsArticles } from './galnet';
+import GalnetList from './components/galnet-list';
 
 export default async function Page() {
-  const articles = (await getAllGalnetNewsArticles('galnet/news'))
+  const articles = (await getAllGalnetNewsArticles('galnet/news'));
 
   return (
     <>
@@ -10,6 +10,6 @@ export default async function Page() {
         <GalnetList articles={articles} />
       </div>
     </>
-  )
+  );
 }
   

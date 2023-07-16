@@ -1,23 +1,23 @@
 
-"use client";
+'use client';
 
-import { GalnetNews} from "../../../interfaces/GalnetNews"
-import { defaultState, getGalnetNewsArticle } from "../galnet"
-import { useEffect, useState } from "react"
-import { usePathname } from "next/navigation"
+import { GalnetNews} from '../../../interfaces/GalnetNews';
+import { defaultState, getGalnetNewsArticle } from '../galnet';
+import { useEffect, useState } from 'react';
+import { usePathname } from 'next/navigation';
 
 const GalnetArticle = () => {
   const [article, setArticle] = useState<GalnetNews>(defaultState);
 
-  const path = usePathname()
-  const id = path.split('/').pop()
+  const path = usePathname();
+  const id = path.split('/').pop();
 
   useEffect(() => {
     (async () => {
-      const data = await getGalnetNewsArticle(parseInt(id as string))
-      setArticle(data)
-    })()
-  }, [])
+      const data = await getGalnetNewsArticle(parseInt(id as string));
+      setArticle(data);
+    })();
+  });
 
   return (
     <>
@@ -28,8 +28,8 @@ const GalnetArticle = () => {
         <p className="mt-4 tracking-wider" dangerouslySetInnerHTML={{ __html: article.content }}></p>
       </div>
     </>
-  )
-}
+  );
+};
 
 export default GalnetArticle;
   

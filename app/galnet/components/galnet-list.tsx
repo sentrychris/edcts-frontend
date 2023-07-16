@@ -1,29 +1,29 @@
 
-"use client";
+'use client';
 
-import { GalnetNews} from "../../../interfaces/GalnetNews"
-import { Pagination } from "../../../interfaces/Pagination";
-import { getAllGalnetNewsArticles } from "../galnet";
-import PaginationLink from "../../components/pagination-link";
-import { FunctionComponent, useState } from "react"
-import Link from "next/link";
+import { GalnetNews} from '../../../interfaces/GalnetNews';
+import { Pagination } from '../../../interfaces/Pagination';
+import { getAllGalnetNewsArticles } from '../galnet';
+import PaginationLink from '../../components/pagination-link';
+import { FunctionComponent, useState } from 'react';
+import Link from 'next/link';
 
 interface Props {
   articles: Pagination<GalnetNews>
 }
 
 const GalnetList: FunctionComponent<Props> = ({ articles }) => {
-  const { data, meta, links } = articles
-  const [rows, setRows] = useState(data)
-  const [metadata, setMetadata] = useState(meta)
-  const [navigation, setNavigation] = useState(links)
+  const { data, meta, links } = articles;
+  const [rows, setRows] = useState(data);
+  const [metadata, setMetadata] = useState(meta);
+  const [navigation, setNavigation] = useState(links);
 
   const paginate = async (link: string) => {
-    const { data, meta, links } = await getAllGalnetNewsArticles(link)
-    setRows(data)
-    setMetadata(meta)
-    setNavigation(links)
-  }
+    const { data, meta, links } = await getAllGalnetNewsArticles(link);
+    setRows(data);
+    setMetadata(meta);
+    setNavigation(links);
+  };
 
   return (
     <>
@@ -31,21 +31,21 @@ const GalnetList: FunctionComponent<Props> = ({ articles }) => {
         <h2 className="uppercase text-3xl pb-3 border-b border-neutral-800">Galnet News</h2>
         {rows.map((article: GalnetNews) => {
           return (
-            <div className="relative border-b border-neutral-800 py-12">
+            <div key={article.id} className="relative border-b border-neutral-800 py-12">
               <h1 className='text-4xl mb-2'>{article.title}</h1>
               <p className="text-xs mb-6">{article.uploaded_at}</p>
               <Link href={`/galnet/article/${article.id}`} className="py-2 text-orange-400">
                 Read Article...
               </Link>
             </div>
-          )
+          );
         })}
       </div>
       <div>
         <ul className="flex items-center mx-auto my-7 content-evenly">
           <li>
             <PaginationLink
-              key={`link_first`}
+              key={'link_first'}
               url={(metadata.current_page !== 1) && navigation.first ? navigation.first : null}
               active={false}
               paginate={paginate}
@@ -53,7 +53,7 @@ const GalnetList: FunctionComponent<Props> = ({ articles }) => {
           </li>
           <li>
             <PaginationLink
-              key={`link_prev`}
+              key={'link_prev'}
               url={navigation.prev}
               active={false}
               paginate={paginate}
@@ -73,7 +73,7 @@ const GalnetList: FunctionComponent<Props> = ({ articles }) => {
           )}
           <li>
             <PaginationLink
-              key={`link_next`}
+              key={'link_next'}
               url={navigation.next}
               active={false}
               paginate={paginate}
@@ -81,7 +81,7 @@ const GalnetList: FunctionComponent<Props> = ({ articles }) => {
           </li>
           <li>
             <PaginationLink
-              key={`link_last`}
+              key={'link_last'}
               url={(metadata.current_page !== metadata.last_page) && navigation.last ? navigation.last : null}
               active={false}
               paginate={paginate}
@@ -90,8 +90,8 @@ const GalnetList: FunctionComponent<Props> = ({ articles }) => {
         </ul>
       </div>
     </>
-  )
-}
+  );
+};
 
 export default GalnetList;
   

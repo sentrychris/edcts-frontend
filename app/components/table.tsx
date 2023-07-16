@@ -1,13 +1,13 @@
-import { JSX } from "react";
-import { Meta, Links } from "../../interfaces/Pagination";
-import PaginationLink from "./pagination-link";
+import { Meta, Links } from '../../interfaces/Pagination';
+import PaginationLink from './pagination-link';
+import { JSX } from 'react';
 
 type RenderColumn<T> = (item: T) => string | JSX.Element;
 
 interface Column<T> {
   title: string;
   accessor?: string;
-  render?: RenderColumn<T>
+  render?: RenderColumn<T>;
 }
 
 interface RequiredAttribute {
@@ -26,9 +26,9 @@ interface Props<T extends RequiredAttribute> {
 
 function Table<T extends RequiredAttribute>({ columns, data, meta, links, page }: Props<T>) {
   
-  type Mode = { accessor?: string; render?: RenderColumn<T> }
-  const isRender = (ctx: Mode): ctx is Required<Mode> => !!ctx.render
-  const isAccessor = (ctx: Mode): ctx is Required<Mode> => !!ctx.accessor
+  type Mode = { accessor?: string; render?: RenderColumn<T> };
+  const isRender = (ctx: Mode): ctx is Required<Mode> => !!ctx.render;
+  const isAccessor = (ctx: Mode): ctx is Required<Mode> => !!ctx.accessor;
   
   const renderBody = (data: any) => {
     if (!data || data.length === 0) {
@@ -38,7 +38,7 @@ function Table<T extends RequiredAttribute>({ columns, data, meta, links, page }
             No data found...
           </td>
         </tr>
-      </tbody>
+      </tbody>;
     }
 
     return <tbody>
@@ -53,11 +53,11 @@ function Table<T extends RequiredAttribute>({ columns, data, meta, links, page }
           </tr>
         ))}
       </>
-    </tbody>
-  }
+    </tbody>;
+  };
 
   const renderContent = (item: any, key: string) => {
-    const column = columns[key]
+    const column = columns[key];
 
     if (isRender(column)) {
       return column.render(item);
@@ -70,11 +70,11 @@ function Table<T extends RequiredAttribute>({ columns, data, meta, links, page }
       return item[column.accessor];
     }
     return item[key];
-  }
+  };
 
   const paginate = (link: string) => {
-    if (page) page(link)
-  }
+    if (page) page(link);
+  };
 
   return (
     <>
@@ -95,7 +95,7 @@ function Table<T extends RequiredAttribute>({ columns, data, meta, links, page }
       <ul className="flex items-center mx-auto my-7 content-evenly">
         <li>
           <PaginationLink
-            key={`link_first`}
+            key={'link_first'}
             url={(meta.current_page !== 1) && links.first ? links.first : null}
             active={false}
             paginate={paginate}
@@ -103,7 +103,7 @@ function Table<T extends RequiredAttribute>({ columns, data, meta, links, page }
         </li>
         <li>
           <PaginationLink
-            key={`link_prev`}
+            key={'link_prev'}
             url={links.prev}
             active={false}
             paginate={paginate}
@@ -123,7 +123,7 @@ function Table<T extends RequiredAttribute>({ columns, data, meta, links, page }
         )}
         <li>
           <PaginationLink
-            key={`link_next`}
+            key={'link_next'}
             url={links.next}
             active={false}
             paginate={paginate}
@@ -131,7 +131,7 @@ function Table<T extends RequiredAttribute>({ columns, data, meta, links, page }
         </li>
         <li>
           <PaginationLink
-            key={`link_last`}
+            key={'link_last'}
             url={(meta.current_page !== meta.last_page) && links.last ? links.last : null}
             active={false}
             paginate={paginate}
@@ -139,7 +139,7 @@ function Table<T extends RequiredAttribute>({ columns, data, meta, links, page }
         </li>
       </ul>
     </>
-  )
+  );
 }
 
 export default Table;

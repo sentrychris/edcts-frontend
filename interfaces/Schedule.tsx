@@ -2,6 +2,7 @@ import { Carrier } from "./Carrier";
 import { Pagination } from "./Pagination";
 
 export interface Schedule {
+  id: number;
   carrier: Carrier;
   departure: string;
   destination: string;

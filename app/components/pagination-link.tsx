@@ -1,24 +1,24 @@
-"use client"
+'use client';
 
-import { FormEvent, FunctionComponent, JSX } from "react";
+import { FormEvent, FunctionComponent, JSX } from 'react';
 
 interface Props {
   url: string | null;
   active: boolean;
   children: string | JSX.Element | JSX.Element[];
-  paginate: (link: string) => void
+  paginate: (link: string) => void;
 }
 
 const PaginationLink: FunctionComponent<Props> = ({ url, active, children, paginate }) => {
   const disabledClass = url ? '' : 'pointer-events-none opacity-70';
-  if (!url) url = '#'
+  if (!url) url = '#';
 
   async function handlePagination(e: FormEvent) {
     if (!(e.target instanceof HTMLButtonElement)) {
       return false;
     }
 
-    paginate((e.target.dataset.url as string))
+    paginate((e.target.dataset.url as string));
   }
 
   return (
@@ -33,7 +33,7 @@ const PaginationLink: FunctionComponent<Props> = ({ url, active, children, pagin
     >
       {children}
     </button>
-  )
-}
+  );
+};
 
 export default PaginationLink;

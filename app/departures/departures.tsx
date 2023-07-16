@@ -1,8 +1,9 @@
-import Link from "next/link"
-import { formatDate, isAbsoluteUrl } from "../util"
-import { Schedule, GetSchedule } from "../../interfaces/Schedule"
+import Link from 'next/link';
+import { formatDate, isAbsoluteUrl } from '../util';
+import { Schedule, GetSchedule } from '../../interfaces/Schedule';
 
 export const defaultState = {
+  id: 0,
   carrier: {
     name: '',
     identifier: '',
@@ -30,81 +31,85 @@ export const defaultState = {
     arrived: false,
     arrived_at: false
   }
-}
+};
 
 export const getAllScheduledCarrierTrips: GetSchedule = async (uri, params?) => {
-  const url = !isAbsoluteUrl(uri) ? `http://localhost/api/${uri}` : uri
-  const query: string = params ? `?` + new URLSearchParams(params).toString() : ''
-  const response = await fetch(`${url}${query}`)
+  const url = !isAbsoluteUrl(uri) ? `http://localhost/api/${uri}` : uri;
+  const query: string = params ? '?' + new URLSearchParams(params).toString() : '';
+  const response = await fetch(`${url}${query}`);
 
   if (!response.ok) {
-    throw new Error('Failed to fetch data')
+    throw new Error('Failed to fetch data');
   }
   
-  return response.json()
-}
+  return response.json();
+};
 
 export const getScheduledCarrierTrip = async (id: number) => {
-  const url = `http://localhost/api/fleet/schedule/${id}`
-  const res = await fetch(url)
-  if (!res.ok) {
-    throw new Error('Failed to fetch data')
+  const url = `http://localhost/api/fleet/schedule/${id}`;
+  const response = await fetch(url);
+  if (!response.ok) {
+    throw new Error('Failed to fetch data');
   }
   
-  return res.json()
-}
+  return response.json();
+};
 
 export const getStatus = (schedule: Schedule) => {
-  const { status } = schedule
-  if (status.boarding) return "BOARDING OPEN"
-  if (status.departed) return "DEPARTED"
-  if (status.arrived) return "ARRIVED"
-  if (status.cancelled) return "CANCELLED"
+  const { status } = schedule;
+  if (status.boarding) return 'BOARDING OPEN';
+  if (status.departed) return 'DEPARTED';
+  if (status.arrived) return 'ARRIVED';
+  if (status.cancelled) return 'CANCELLED';
 
-  return "NOT READY"
-}
+  return 'NOT READY';
+};
 
 export const renderStatus = (schedule: Schedule) => {
-  const status = getStatus(schedule)
+  const status = getStatus(schedule);
   return <p className={
-    status === 'DEPARTED' ? `text-blue-500 dark:text-blue-200`
+    status === 'DEPARTED' ? 'text-blue-500 dark:text-blue-200'
       : (status === 'NOT READY') ? 'text-orange-500 dark:text-orange-300' : (status === 'CANCELLED')
       ? 'text-red-500 dark:text-red-300' : 'text-green-500 dark:text-green-200'}>
         {status}
-  </p>
-}
+  </p>;
+};
 
 export const scheduleColumns = {
   status: {
-    title: "Status",
+    title: 'Status',
     render: (schedule: any) => renderStatus(schedule)
   },
   carrier_id: {
-    title: "Carrier",
+    title: 'Carrier',
     render: (schedule: any) => {
       return <Link className="underline text-blue-500 dark:text-blue-200" href='#'>
         {schedule.carrier.identifier}
-      </Link>
+      </Link>;
     }
   },
   departure: {
-    title: "From",
-    accessor: "departure"
+    title: 'From',
+    accessor: 'departure'
   },
   destination: {
-    title: "To",
-    accessor: "destination"
+    title: 'To',
+    accessor: 'destination'
   },
   departs_at: {
-    title: "Departure",
+    title: 'Departure',
     render: (schedule: any) => formatDate(schedule.departs_at)
   },
   arrives_at: {
-    title: "Est. Arrival",
+    title: 'Est. Arrival',
     render: (schedule: any) => schedule.arrives_at ? formatDate(schedule.arrives_at) : '---'
   },
-  commander_name: {
-    title: "Commander",
-    accessor: "carrier.commander.name"
-  },
-}
+  view: {
+    title: 'View',
+    render: (schedule: any) => {
+      return <Link className="underline text-blue-500 dark:text-blue-200" href={`/departures/schedule/${schedule.id}`}>
+        View
+      </Link>;
+    }
+  }
+};

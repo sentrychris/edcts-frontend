@@ -1,19 +1,19 @@
-"use client"
+'use client';
 
-import { Disclosure, Menu, Transition } from "@headlessui/react";
-import { Bars3Icon, XMarkIcon } from "@heroicons/react/24/outline";
-import { Fragment } from "react";
-import Link from "next/link";
-import Image from "next/image";
+import { Disclosure, Menu, Transition } from '@headlessui/react';
+import { Bars3Icon, XMarkIcon } from '@heroicons/react/24/outline';
+import { Fragment } from 'react';
+import Link from 'next/link';
+import Image from 'next/image';
 
 const navigation = [
   { name: 'Home', href: '/', current: true },
   { name: 'Departures', href: '/departures', current: false },
   { name: 'News', href: '/galnet', current: false },
-]
+];
 
 function classNames(...classes: string[]) {
-  return classes.filter(Boolean).join(' ')
+  return classes.filter(Boolean).join(' ');
 }
 
 export default function MainNavigation() {
@@ -61,8 +61,10 @@ export default function MainNavigation() {
                   <div>
                     <Menu.Button className="flex rounded-full bg-zinc-800 text-sm focus:outline-none">
                       <span className="sr-only">Open user menu</span>
-                      <img
+                      <Image
                         className="h-8 w-8 rounded-full"
+                        width={32}
+                        height={32}
                         src="/me.jpg"
                         alt=""
                       />
@@ -136,5 +138,5 @@ export default function MainNavigation() {
         </>
       )}
     </Disclosure>
-  )
+  );
 }

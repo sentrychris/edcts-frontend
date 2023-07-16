@@ -1,6 +1,6 @@
-"use client"
+'use client';
 
-import { FormEvent, ForwardedRef, FunctionComponent, RefObject, memo } from "react";
+import { FormEvent, ForwardedRef, FunctionComponent, RefObject, memo } from 'react';
 
 export interface Props {
   innerRef?: RefObject<HTMLInputElement> | ForwardedRef<any>;
@@ -54,7 +54,7 @@ const Input: FunctionComponent<Props> = ({
         </div>
       }
     </div>
-  )
-}
+  );
+};
 
-export default memo(Input)
+export default memo(Input);

@@ -1,7 +1,8 @@
-import { FunctionComponent } from "react";
-import { Schedule } from "../../../interfaces/Schedule";
-import { formatDate } from "../../util";
-import { getStatus, renderStatus } from "../departures";
+import { Schedule } from '../../../interfaces/Schedule';
+import { formatDate } from '../../util';
+import { getStatus, renderStatus } from '../departures';
+import { FunctionComponent } from 'react';
+import Link from 'next/link';
 
 interface Props {
   className?: string;
@@ -9,14 +10,14 @@ interface Props {
 }
 
 const DepartureCard: FunctionComponent<Props> = ({schedule, className}) => {
-  const status = getStatus(schedule)
-  const departed = status === 'DEPARTED' ? 'line-through' : ''
+  const status = getStatus(schedule);
+  const departed = status === 'DEPARTED' ? 'line-through' : '';
   return (
-    <div className={`p-6 rounded shadow-lg bg-slate-50 dark:bg-neutral-900 ` + className}>
-      <a href="#" className="flex flex-col md:max-w-xl">
-        <h5 className={`mb-3 text-lg font-bold tracking-tight text-neutral-800 dark:text-gray-200 ` + departed}>{schedule.title}</h5>
+    <div className={'p-6 rounded shadow-lg bg-slate-50 dark:bg-neutral-900 ' + className}>
+      <Link href={`/departures/schedule/${schedule.id}`} className="flex flex-col md:max-w-xl">
+        <h5 className={'mb-3 text-lg font-bold tracking-tight text-neutral-800 dark:text-gray-200 ' + departed}>{schedule.title}</h5>
         <p className="mb-4 text-sm font-normal text-neutral-800 dark:text-gray-300">
-          {schedule.description.slice(0,65) + `...`}
+          {schedule.description.slice(0,65) + '...'}
         </p>
         <hr className="w-full"/>
         <div className="flex flex-row justify-between items-center text-sm mt-3 text-neutral-800 dark:text-gray-100">
@@ -39,9 +40,9 @@ const DepartureCard: FunctionComponent<Props> = ({schedule, className}) => {
             </div>
           </div>
         </div>
-      </a>
+      </Link>
     </div>
   );
-}
+};
 
 export default DepartureCard;

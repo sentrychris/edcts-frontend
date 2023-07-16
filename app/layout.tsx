@@ -1,15 +1,15 @@
-import './globals.css'
-import type { Metadata } from 'next'
-import { Jura } from 'next/font/google'
-import Image from 'next/image'
-import MainNavigation from './components/main-navigation'
+import './globals.css';
+import type { Metadata } from 'next';
+import { Jura } from 'next/font/google';
+import Image from 'next/image';
+import MainNavigation from './components/main-navigation';
 
-const jura = Jura({ subsets: ['latin'] })
+const jura = Jura({ subsets: ['latin'] });
 
 export const metadata: Metadata = {
   title: 'SJ3F - Fleet Carrier Services',
   description: 'Check out the discord channel - https://discord.gg/KFaakj2',
-}
+};
 
 export default function RootLayout({
   children,
@@ -18,7 +18,7 @@ export default function RootLayout({
 }) {
   return (
     <html lang="en" className="scroll-smooth">
-      <body className={jura.className + ` antialiased`}>
+      <body className={jura.className + ' antialiased'}>
       <div className="absolute z-20 top-0 inset-x-0 flex justify-center overflow-hidden pointer-events-none">
         <div className="w-[108rem] flex-none flex justify-end">
           <Image width="100" height="100" src="/avifb.png" className="w-[100rem] flex-none max-w-none dark:hidden" decoding="async" alt="glow"></Image>
@@ -32,5 +32,5 @@ export default function RootLayout({
       </main>
       </body>
     </html>
-  )
+  );
 }

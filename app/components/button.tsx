@@ -1,6 +1,6 @@
-"use client"
+'use client';
 
-import { FormEvent, FunctionComponent, JSX, memo } from "react";
+import { FormEvent, FunctionComponent, JSX, memo } from 'react';
 
 interface Props {
   type?: 'button' | 'submit';
@@ -18,20 +18,20 @@ const Button: FunctionComponent<Props> = ({type = 'button', children, onClick, d
 
   switch (theme) {
     case 'light':
-      themeClasses = "bg-white hover:bg-stone-100 text-neutral-900";
-      spinnerClasses = "fill-white text-gray-400";
+      themeClasses = 'bg-white hover:bg-stone-100 text-neutral-900';
+      spinnerClasses = 'fill-white text-gray-400';
       break;
     case 'danger':
-      themeClasses = "bg-red-600 hover:bg-red-400 text-white";
-      spinnerClasses = "fill-red-600 text-white";
+      themeClasses = 'bg-red-600 hover:bg-red-400 text-white';
+      spinnerClasses = 'fill-red-600 text-white';
       break;
     default:
-      themeClasses = "bg-neutral-900 dark:bg-neutral-800 hover:bg-neutral-700 dark:hover:bg-neutral-700 text-white";
-      spinnerClasses = "fill-gray-900 text-blue-400";
+      themeClasses = 'bg-neutral-900 dark:bg-neutral-800 hover:bg-neutral-700 dark:hover:bg-neutral-700 text-white';
+      spinnerClasses = 'fill-gray-900 text-blue-400';
   }
 
   const baseClassNames = `outline-none text-sm font-semibold tracking-wide rounded-lg text-sm px-3 h-[37px] shadow-sm text-center ${extraStyling}`;
-  const disabledClasses = "pointer-events-none";
+  const disabledClasses = 'pointer-events-none';
 
   if (loading || disabled) {
     return (
@@ -43,7 +43,7 @@ const Button: FunctionComponent<Props> = ({type = 'button', children, onClick, d
         {loading}
         {disabled && children}
       </button>
-    )
+    );
   }
 
   return (
@@ -52,7 +52,7 @@ const Button: FunctionComponent<Props> = ({type = 'button', children, onClick, d
       className={`${themeClasses} ${baseClassNames}`}
       onClick={onClick}
     >{children}</button>
-  )
-}
+  );
+};
 
 export default memo(Button);

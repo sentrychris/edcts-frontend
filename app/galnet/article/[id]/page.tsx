@@ -1,6 +1,6 @@
 
-import { FunctionComponent } from "react"
-import GalnetArticle from "../../components/galnet-article"
+import { FunctionComponent } from 'react';
+import GalnetArticle from '../../components/galnet-article';
 
 const Page: FunctionComponent = async () => {
   return (
@@ -9,8 +9,8 @@ const Page: FunctionComponent = async () => {
         <GalnetArticle />
       </div>
     </>
-  )
-}
+  );
+};
 
 export default Page;
   

@@ -1,5 +1,5 @@
-import { GetGalnetNews } from "../../interfaces/GalnetNews"
-import { isAbsoluteUrl } from "../util"
+import { GetGalnetNews } from '../../interfaces/GalnetNews';
+import { isAbsoluteUrl } from '../util';
 
 export const defaultState = {
   id: 0,
@@ -7,26 +7,26 @@ export const defaultState = {
   content: '',
   uploaded_at: '',
   banner_image: '',
-}
+};
 
 export const getAllGalnetNewsArticles: GetGalnetNews = async (uri, params?: any) => {
-  const url = !isAbsoluteUrl(uri) ? `http://localhost/api/${uri}` : uri
-  const query: string = params ? `?` + new URLSearchParams(params).toString() : ''
-  const response = await fetch(`${url}${query}`)
+  const url = !isAbsoluteUrl(uri) ? `http://localhost/api/${uri}` : uri;
+  const query: string = params ? '?' + new URLSearchParams(params).toString() : '';
+  const response = await fetch(`${url}${query}`);
 
   if (!response.ok) {
-    throw new Error('Failed to fetch data')
+    throw new Error('Failed to fetch data');
   }
   
-  return response.json()
-}
+  return response.json();
+};
 
 export const getGalnetNewsArticle = async (id: number) => {
-  const url = `http://localhost/api/galnet/news/${id}`
-  const res = await fetch(url)
+  const url = `http://localhost/api/galnet/news/${id}`;
+  const res = await fetch(url);
   if (!res.ok) {
-    throw new Error('Failed to fetch data')
+    throw new Error('Failed to fetch data');
   }
   
-  return res.json()
-}
+  return res.json();
+};

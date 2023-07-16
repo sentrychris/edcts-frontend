@@ -1,23 +1,23 @@
 
-"use client";
+'use client';
 
-import { useEffect, useState } from "react"
-import { usePathname } from "next/navigation"
-import { Schedule } from "../../../interfaces/Schedule";
-import { defaultState, getScheduledCarrierTrip } from "../departures";
+import { Schedule } from '../../../interfaces/Schedule';
+import { defaultState, getScheduledCarrierTrip } from '../departures';
+import { usePathname } from 'next/navigation';
+import { useEffect, useState } from 'react';
 
 const DepartureSchedule = () => {
   const [schedule, setSchedule] = useState<Schedule>(defaultState);
 
-  const path = usePathname()
-  const id = path.split('/').pop()
+  const path = usePathname();
+  const id = path.split('/').pop();
 
   useEffect(() => {
     (async () => {
-      const data = await getScheduledCarrierTrip(parseInt(id as string))
-      setSchedule(data)
-    })()
-  }, [])
+      const data = await getScheduledCarrierTrip(parseInt(id as string));
+      setSchedule(data);
+    })();
+  });
 
   return (
     <>
@@ -37,8 +37,8 @@ const DepartureSchedule = () => {
         </div>
       </div>
     </>
-  )
-}
+  );
+};
 
 export default DepartureSchedule;
   
