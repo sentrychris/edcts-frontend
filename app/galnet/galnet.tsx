@@ -1,5 +1,5 @@
 import { Galnet } from '../../interfaces/Galnet';
-import { Request } from '../../interfaces/Request';
+import { Collection, Resource } from '../../interfaces/Request';
 import { request } from '../util';
 
 export const defaultState = {
@@ -10,5 +10,5 @@ export const defaultState = {
   banner_image: '',
 };
 
-export const getAllGalnetNewsArticles: Request<Galnet> = async (uri, params?: any) => await request(uri, params);
-export const getGalnetNewsArticle = async (id: number) => await request(`galnet/news/${id}`);
+export const getAllGalnetNewsArticles: Collection<Galnet> = async (uri, params?: any) => await request(uri, params);
+export const getGalnetNewsArticle: Resource<Galnet> = async (id: number) => await request(`galnet/news/${id}`);

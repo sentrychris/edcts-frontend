@@ -1,5 +1,9 @@
 import { Pagination } from './Pagination';
 
-export interface Request<T> {
+export interface Collection<T> {
   (uri: string, params?: Record<string, any>): Promise<Pagination<T>>
+}
+
+export interface Resource<T> {
+  (id: number): Promise<T>
 }

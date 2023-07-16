@@ -1,7 +1,7 @@
 import Link from 'next/link';
-import { formatDate, isAbsoluteUrl, request } from '../util';
+import { formatDate, request } from '../util';
 import { Schedule } from '../../interfaces/Schedule';
-import { Request } from '../../interfaces/Request';
+import { Collection, Resource } from '../../interfaces/Request';
 
 export const defaultState = {
   id: 0,
@@ -34,8 +34,8 @@ export const defaultState = {
   }
 };
 
-export const getAllScheduledCarrierTrips: Request<Schedule> = async (uri, params?: any) => await request(uri, params);
-export const getScheduledCarrierTrip = async (id: number) => await request(`fleet/schedule/${id}`);
+export const getAllScheduledCarrierTrips: Collection<Schedule> = async (uri, params?: any) => await request(uri, params);
+export const getScheduledCarrierTrip: Resource<Schedule> = async (id: number) => await request(`fleet/schedule/${id}`);
 
 export const getStatus = (schedule: Schedule) => {
   const { status } = schedule;
