@@ -21,12 +21,11 @@ export default async function Home() {
       <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6 mt-8">
         <div className="col-span-1">
           <h2 className="uppercase text-3xl mb-3">Galnet News</h2>
-          {news.data.slice(0,3).map((article: GalnetNews) => {
+          {news.data.slice(0, 5).map((article: GalnetNews) => {
             return <div className="relative">
               <div className="relative border-b border-neutral-800 py-4">
-                  <h1 className='text-3xl mb-2'>{article.title}</h1>
-                  <p className="text-xs mb-4">{article.uploaded_at}</p>
-                  <p className="tracking-wider mb-4 text-sm" dangerouslySetInnerHTML={{ __html: article.content.slice(0, 140) + '...' }}></p>
+                  <h3 className='text-2xl mb-1'>{article.title}</h3>
+                  <p className="text-xs mb-6">{article.uploaded_at}</p>
                   <Link href={`/galnet/article/${article.id}`} className="text-orange-400">
                     Read More
                   </Link>

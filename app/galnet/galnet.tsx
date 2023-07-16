@@ -1,6 +1,14 @@
 import { GetGalnetNews } from "../../interfaces/GalnetNews"
 import { isAbsoluteUrl } from "../util"
 
+export const defaultState = {
+  id: 0,
+  title: '',
+  content: '',
+  uploaded_at: '',
+  banner_image: '',
+}
+
 export const getAllGalnetNewsArticles: GetGalnetNews = async (uri, params?: any) => {
   const url = !isAbsoluteUrl(uri) ? `http://localhost/api/${uri}` : uri
   const query: string = params ? `?` + new URLSearchParams(params).toString() : ''

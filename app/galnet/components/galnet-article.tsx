@@ -2,18 +2,12 @@
 "use client";
 
 import { GalnetNews} from "../../../interfaces/GalnetNews"
-import { getGalnetNewsArticle } from "../galnet"
+import { defaultState, getGalnetNewsArticle } from "../galnet"
 import { useEffect, useState } from "react"
 import { usePathname } from "next/navigation"
 
 const GalnetArticle = () => {
-  const [article, setArticle] = useState<GalnetNews>({
-    id: 0,
-    title: '',
-    content: '',
-    uploaded_at: '',
-    banner_image: '',
-  });
+  const [article, setArticle] = useState<GalnetNews>(defaultState);
 
   const path = usePathname()
   const id = path.split('/').pop()

@@ -23,6 +23,7 @@ const PaginationLink: FunctionComponent<Props> = ({ url, active, children, pagin
 
   return (
   <button
+      data-url={url}
       onClick={handlePagination}
       className={
         active ?
