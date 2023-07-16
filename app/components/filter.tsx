@@ -10,15 +10,16 @@ interface Props {
 }
 
 const Filter: FunctionComponent<Props> = ({ className, handleInput }) => {
-  const [filterString, setFilterString] = useState<string>('');
+  const [filterInputState, setFilterInputState] = useState<string>('');
 
   async function handleFilterStringChange(e: FormEvent) {
-    setFilterString((e.target as HTMLInputElement).value);
-    handleInput(filterString);
+    const { value } = (e.target as HTMLInputElement);
+    setFilterInputState(value);
+    handleInput(value);
   }
 
   async function clearFilter() {
-    setFilterString('');
+    setFilterInputState('');
     handleInput('');
   }
 
@@ -27,7 +28,7 @@ const Filter: FunctionComponent<Props> = ({ className, handleInput }) => {
       <form className="flex flex-row items-center gap-4">
         <Input
           placeholder="Filter by departure system..."
-          value={filterString}
+          value={filterInputState}
           onChange={handleFilterStringChange}
           extraStyling="w-[400px]"
         />
