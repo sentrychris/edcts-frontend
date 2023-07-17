@@ -3,7 +3,7 @@ import { formatDate, request } from '../util';
 import { Schedule } from '../../interfaces/Schedule';
 import { Collection, Resource } from '../../interfaces/Request';
 
-export const defaultState = {
+export const defaultState: Schedule = {
   id: 0,
   carrier: {
     name: '',
@@ -60,11 +60,11 @@ export const renderStatus = (schedule: Schedule) => {
 export const scheduleColumns = {
   status: {
     title: 'Status',
-    render: (schedule: any) => renderStatus(schedule)
+    render: (schedule: Schedule) => renderStatus(schedule)
   },
   carrier_id: {
     title: 'Carrier',
-    render: (schedule: any) => {
+    render: (schedule: Schedule) => {
       return <Link className="underline text-blue-500 dark:text-blue-200" href='#'>
         {schedule.carrier.identifier}
       </Link>;
@@ -80,15 +80,15 @@ export const scheduleColumns = {
   },
   departs_at: {
     title: 'Departure',
-    render: (schedule: any) => formatDate(schedule.departs_at)
+    render: (schedule: Schedule) => formatDate(schedule.departs_at)
   },
   arrives_at: {
     title: 'Est. Arrival',
-    render: (schedule: any) => schedule.arrives_at ? formatDate(schedule.arrives_at) : '---'
+    render: (schedule: Schedule) => schedule.arrives_at ? formatDate(schedule.arrives_at) : '---'
   },
   view: {
     title: 'View',
-    render: (schedule: any) => {
+    render: (schedule: Schedule) => {
       return <Link className="underline text-blue-500 dark:text-blue-200" href={`/departures/schedule/${schedule.id}`}>
         View
       </Link>;

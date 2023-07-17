@@ -2,7 +2,7 @@ import { Galnet } from '../../interfaces/Galnet';
 import { Collection, Resource } from '../../interfaces/Request';
 import { request } from '../util';
 
-export const defaultState = {
+export const defaultState: Galnet = {
   id: 0,
   title: '',
   content: '',

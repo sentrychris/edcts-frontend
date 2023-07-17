@@ -27,7 +27,7 @@ const Filter: FunctionComponent<Props> = ({ className, handleInput }) => {
     <div className={'w-full relative ' + className}>
       <form className="flex flex-row items-center gap-4">
         <Input
-          placeholder="Filter by departure system..."
+          placeholder="Filter..."
           value={filterInputState}
           onChange={handleFilterStringChange}
           extraStyling="w-[400px]"
