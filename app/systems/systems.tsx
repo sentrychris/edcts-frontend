@@ -26,8 +26,8 @@ export const defaultState: System = {
   updated_at: ''
 };
 
-export const getAllSystems: Collection<System> = async (uri, params?: any) => await request(uri, params);
-export const getSystem: Resource<System> = async (id: number) => await request(`systems/${id}`);
+export const getAllSystems: Collection<System> = async (uri, params?) => await request(uri, params);
+export const getSystem: Resource<System> = async (id) => await request(`systems/${id}`);
 
 export const renderSecurityLevel = (level: string) => {
   return <p className={

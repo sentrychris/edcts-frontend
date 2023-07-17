@@ -14,8 +14,10 @@ const DepartureSchedule = () => {
 
   useEffect(() => {
     (async () => {
-      const data = await getScheduledCarrierTrip(parseInt(id as string));
-      setSchedule(data);
+      if (id) {
+        const data = await getScheduledCarrierTrip(id);
+        setSchedule(data);
+      }
     })();
   }, []);
 

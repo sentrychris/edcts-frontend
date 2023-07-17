@@ -34,8 +34,8 @@ export const defaultState: Schedule = {
   }
 };
 
-export const getAllScheduledCarrierTrips: Collection<Schedule> = async (uri, params?: any) => await request(uri, params);
-export const getScheduledCarrierTrip: Resource<Schedule> = async (id: number) => await request(`fleet/schedule/${id}`);
+export const getAllScheduledCarrierTrips: Collection<Schedule> = async (uri, params?) => await request(uri, params);
+export const getScheduledCarrierTrip: Resource<Schedule> = async (id) => await request(`fleet/schedule/${id}`);
 
 export const getStatus = (schedule: Schedule) => {
   const { status } = schedule;

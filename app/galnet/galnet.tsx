@@ -10,5 +10,5 @@ export const defaultState: Galnet = {
   banner_image: '',
 };
 
-export const getAllGalnetNewsArticles: Collection<Galnet> = async (uri, params?: any) => await request(uri, params);
-export const getGalnetNewsArticle: Resource<Galnet> = async (id: number) => await request(`galnet/news/${id}`);
+export const getAllGalnetNewsArticles: Collection<Galnet> = async (uri, params?) => await request(uri, params);
+export const getGalnetNewsArticle: Resource<Galnet> = async (id) => await request(`galnet/news/${id}`);
