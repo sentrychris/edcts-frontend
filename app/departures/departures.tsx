@@ -2,6 +2,7 @@ import Link from 'next/link';
 import { formatDate, request } from '../util';
 import { Schedule } from '../../interfaces/Schedule';
 import { Collection, Resource } from '../../interfaces/Request';
+import { defaultState as systemState } from '../systems/systems';
 
 export const defaultState: Schedule = {
   id: 0,
@@ -18,8 +19,8 @@ export const defaultState: Schedule = {
     has_outfitting: false,
     has_cartogrpahics: false,
   },
-  departure: '',
-  destination: '',
+  departure: systemState,
+  destination: systemState,
   title: '',
   description: '',
   departs_at: '',
@@ -37,7 +38,7 @@ export const defaultState: Schedule = {
 export const getAllScheduledCarrierTrips: Collection<Schedule> = async (uri, params?) => await request(uri, params);
 export const getScheduledCarrierTrip: Resource<Schedule> = async (id) => await request(`fleet/schedule/${id}`);
 
-export const getStatus = (schedule: Schedule) => {
+export const getStatusText = (schedule: Schedule) => {
   const { status } = schedule;
   if (status.boarding) return 'BOARDING OPEN';
   if (status.departed) return 'DEPARTED';
@@ -47,8 +48,11 @@ export const getStatus = (schedule: Schedule) => {
   return 'NOT READY';
 };
 
-export const renderStatus = (schedule: Schedule) => {
-  const status = getStatus(schedule);
+export const renderStatus = (value: Schedule | string) => {
+  const status = (typeof value === 'string')
+    ? value
+    : getStatusText(value);
+
   return <p className={
     status === 'DEPARTED' ? 'text-blue-500 dark:text-blue-200'
       : (status === 'NOT READY') ? 'text-orange-500 dark:text-orange-300' : (status === 'CANCELLED')
@@ -65,18 +69,26 @@ export const scheduleColumns = {
   carrier_id: {
     title: 'Carrier',
     render: (schedule: Schedule) => {
-      return <Link className="underline text-blue-500 dark:text-blue-200" href='#'>
+      return <Link className="hover:underline text-blue-500 dark:text-blue-200" href='#'>
         {schedule.carrier.identifier}
       </Link>;
     }
   },
   departure: {
     title: 'From',
-    accessor: 'departure'
+    render: (schedule: Schedule) => {
+      return <Link className="hover:underline text-blue-500 dark:text-blue-200" href={encodeURI(`/systems/system/${schedule.departure.id}`)}>
+        {schedule.departure.name}
+      </Link>;
+    }
   },
   destination: {
     title: 'To',
-    accessor: 'destination'
+    render: (schedule: Schedule) => {
+      return <Link className="hover:underline text-blue-500 dark:text-blue-200" href={encodeURI(`/systems/system/${schedule.destination.id}`)}>
+        {schedule.destination.name}
+      </Link>;
+    }
   },
   departs_at: {
     title: 'Departure',
