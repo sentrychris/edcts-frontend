@@ -1,6 +1,4 @@
-import { System } from '../../../../interfaces/System';
 import SystemDetail from '../../components/system-detail';
-import { getSystem } from '../../systems';
 
 export default async function Page() {
   return (

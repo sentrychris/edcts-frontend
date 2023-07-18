@@ -1,7 +1,7 @@
 import { getAllSystems } from './systems';
 import SystemsTable from './components/systems-table';
 
-export default async function Home() {
+export default async function Page() {
   const systems = await getAllSystems('systems');
 
   return (
