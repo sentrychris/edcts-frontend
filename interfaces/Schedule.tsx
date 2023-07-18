@@ -18,4 +18,5 @@ export interface Schedule {
     arrived: boolean,
     arrived_at: boolean | string
   }
+  slug: string;
 }

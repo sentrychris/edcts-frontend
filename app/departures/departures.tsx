@@ -3,6 +3,7 @@ import { formatDate, request } from '../util';
 import { Schedule } from '../../interfaces/Schedule';
 import { Collection, Resource } from '../../interfaces/Request';
 import { defaultState as systemState } from '../systems/systems';
+import { EyeIcon } from '@heroicons/react/24/outline';
 
 export const defaultState: Schedule = {
   id: 0,
@@ -18,6 +19,7 @@ export const defaultState: Schedule = {
     has_shipyard: false,
     has_outfitting: false,
     has_cartogrpahics: false,
+    slug: ''
   },
   departure: systemState,
   destination: systemState,
@@ -32,7 +34,8 @@ export const defaultState: Schedule = {
     departed_at: false,
     arrived: false,
     arrived_at: false
-  }
+  },
+  slug: ''
 };
 
 export const getAllScheduledCarrierTrips: Collection<Schedule> = async (uri, params?) => await request(uri, params);
@@ -68,16 +71,12 @@ export const scheduleColumns = {
   },
   carrier_id: {
     title: 'Carrier',
-    render: (schedule: Schedule) => {
-      return <Link className="hover:underline text-blue-500 dark:text-blue-200" href='#'>
-        {schedule.carrier.identifier}
-      </Link>;
-    }
+    accessor: 'carrier.identifier'
   },
   departure: {
     title: 'From',
     render: (schedule: Schedule) => {
-      return <Link className="hover:underline text-blue-500 dark:text-blue-200" href={encodeURI(`/systems/system/${schedule.departure.id}`)}>
+      return <Link className="hover:underline text-blue-500 dark:text-blue-200" href={encodeURI(`/systems/system/${schedule.departure.slug}`)}>
         {schedule.departure.name}
       </Link>;
     }
@@ -85,7 +84,7 @@ export const scheduleColumns = {
   destination: {
     title: 'To',
     render: (schedule: Schedule) => {
-      return <Link className="hover:underline text-blue-500 dark:text-blue-200" href={encodeURI(`/systems/system/${schedule.destination.id}`)}>
+      return <Link className="hover:underline text-blue-500 dark:text-blue-200" href={encodeURI(`/systems/system/${schedule.destination.slug}`)}>
         {schedule.destination.name}
       </Link>;
     }
@@ -101,8 +100,8 @@ export const scheduleColumns = {
   view: {
     title: 'View',
     render: (schedule: Schedule) => {
-      return <Link className="underline text-blue-500 dark:text-blue-200" href={`/departures/schedule/${schedule.id}`}>
-        View
+      return <Link className="underline text-blue-500 dark:text-blue-200" href={`/departures/schedule/${schedule.slug}`}>
+        <EyeIcon className="w-6 h-6" />
       </Link>;
     }
   }

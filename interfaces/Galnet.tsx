@@ -4,4 +4,5 @@ export interface Galnet {
   content: string;
   uploaded_at: string;
   banner_image: string;
+  slug: string;
 }

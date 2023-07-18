@@ -8,6 +8,7 @@ export const defaultState: Galnet = {
   content: '',
   uploaded_at: '',
   banner_image: '',
+  slug: ''
 };
 
 export const getAllGalnetNewsArticles: Collection<Galnet> = async (uri, params?) => await request(uri, params);

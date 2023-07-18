@@ -2,6 +2,7 @@ import Link from 'next/link';
 import { request } from '../util';
 import { System } from '../../interfaces/System';
 import { Collection, Resource } from '../../interfaces/Request';
+import { EyeIcon } from '@heroicons/react/24/outline';
 
 export const defaultState: System = {
   id: 0,
@@ -23,7 +24,8 @@ export const defaultState: System = {
         allegiance: ''
     }
   },
-  updated_at: ''
+  updated_at: '',
+  slug: ''
 };
 
 export const getAllSystems: Collection<System> = async (uri, params?) => await request(uri, params);
@@ -41,11 +43,21 @@ export const renderSecurityLevel = (level: string) => {
   </p>;
 };
 
+export const renderAllegianceText = (value: string) => {
+  return <p className={
+    (value === 'Federation' ? 'text-blue-500 dark:text-blue-200'
+      : (value === 'Empire') ? 'text-yellow-500 dark:text-yellow-400'
+      : (value === 'Independent') ? 'text-green-500 dark:text-green-300'
+      : 'text-stone-500 dark:text-stone-300') + ` uppercase tracking-wide`}>
+        {value}
+  </p>;
+};
+
 export const systemColumns = {
   name: {
     title: 'Name',
     render: (system: System) => {
-      return <Link className="underline text-blue-500 dark:text-blue-200" href='#'>
+      return <Link className="hover:underline text-blue-500 dark:text-blue-200" href={`/systems/system/${system.slug}`}>
         {system.name}
       </Link>;
     }
@@ -56,7 +68,7 @@ export const systemColumns = {
   },
   allegiance: {
     title: 'Allegiance',
-    render: (system: System) => system.information.allegiance ?? 'None'
+    render: (system: System) => renderAllegianceText(system.information.allegiance ?? 'None')
   },
   faction: {
     title: 'Faction',
@@ -77,8 +89,8 @@ export const systemColumns = {
   view: {
     title: 'View',
     render: (system: System) => {
-      return <Link className="underline text-blue-500 dark:text-blue-200" href={`/systems/system/${system.id}`}>
-        View
+      return <Link className="underline text-blue-500 dark:text-blue-200" href={`/systems/system/${system.slug}`}>
+        <EyeIcon className="w-6 h-6" />
       </Link>;
     }
   }
