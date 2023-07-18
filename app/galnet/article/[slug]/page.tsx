@@ -1,8 +1,6 @@
-
-import { FunctionComponent } from 'react';
 import GalnetArticle from '../../components/galnet-article';
 
-const Page: FunctionComponent = async () => {
+export default async function Page() {
   return (
     <>
       <div className="grid grid-cols-1 mt-6">
@@ -11,6 +9,4 @@ const Page: FunctionComponent = async () => {
     </>
   );
 };
-
-export default Page;
   

@@ -18,7 +18,8 @@ export interface System {
     x: number;
     y: number;
     z: number;
-  },
+  }
   information: SystemInformation,
   updated_at: string;
+  slug: string;
 }

@@ -1,6 +1,6 @@
 import { Schedule } from '../../../interfaces/Schedule';
 import { formatDate } from '../../util';
-import { getStatus, renderStatus } from '../departures';
+import { renderStatus } from '../departures';
 import { FunctionComponent } from 'react';
 import Link from 'next/link';
 
@@ -10,8 +10,8 @@ interface Props {
 }
 
 const DepartureCard: FunctionComponent<Props> = ({schedule, className}) => {
-  const status = getStatus(schedule);
-  const departed = status === 'DEPARTED' ? 'line-through' : '';
+  const departed = schedule.status.departed ? 'line-through' : '';
+
   return (
     <div className={'p-6 rounded shadow-lg bg-slate-50 dark:bg-neutral-900 ' + className}>
       <Link href={`/departures/schedule/${schedule.id}`} className="flex flex-col md:max-w-xl">
@@ -24,11 +24,11 @@ const DepartureCard: FunctionComponent<Props> = ({schedule, className}) => {
           <div>
             <div className="flex flex-row gap-2">
               <p>From:</p>
-              <p>{schedule.departure}</p>
+              <p>{schedule.departure.name}</p>
             </div>
             <div className="flex flex-row gap-2">
               <p>To:</p>
-              <p>{schedule.destination}</p>
+              <p>{schedule.destination.name}</p>
             </div>
           </div>
           <div>

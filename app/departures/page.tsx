@@ -3,7 +3,7 @@ import { getAllScheduledCarrierTrips } from './departures';
 import DepartureCard from './components/departure-card';
 import DepartureTable from './components/departure-table';
 
-export default async function Home() {
+export default async function Page() {
   const schedule = await getAllScheduledCarrierTrips('fleet/schedule');
 
   return (

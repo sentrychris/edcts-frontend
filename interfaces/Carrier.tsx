@@ -10,4 +10,5 @@ export interface Carrier {
   has_shipyard: boolean;
   has_outfitting: boolean;
   has_cartogrpahics: boolean;
+  slug: string;
 }

@@ -1,8 +1,6 @@
-
 import DepartureSchedule from '../../components/departure-schedule';
-import { FunctionComponent } from 'react';
 
-const Page: FunctionComponent = async () => {
+export default async function Page() {
   return (
     <>
       <div className="grid grid-cols-1 mt-6">
@@ -11,6 +9,4 @@ const Page: FunctionComponent = async () => {
     </>
   );
 };
-
-export default Page;
   

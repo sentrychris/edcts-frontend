@@ -32,8 +32,8 @@ const DepartureSchedule = () => {
             <p>Captain: CMDR {schedule.carrier.commander.name}</p>
           </div>
           <div>
-            <p>Departs from: {schedule.departure}</p>
-            <p>Destination: {schedule.destination}</p>
+            <p>Departs from: {schedule.departure.name}</p>
+            <p>Destination: {schedule.destination.name}</p>
             {/* TODO travel map */}
           </div>
         </div>

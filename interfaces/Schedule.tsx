@@ -1,10 +1,11 @@
 import { Carrier } from './Carrier';
+import { System } from './System';
 
 export interface Schedule {
   id: number;
   carrier: Carrier;
-  departure: string;
-  destination: string;
+  departure: System;
+  destination: System;
   title: string;
   description: string;
   departs_at: string;
@@ -17,4 +18,5 @@ export interface Schedule {
     arrived: boolean,
     arrived_at: boolean | string
   }
+  slug: string;
 }
