@@ -31,7 +31,7 @@ export const defaultState: System = {
 export const getAllSystems: Collection<System> = async (uri, params?) => await request(uri, params);
 export const getSystem: Resource<System> = async (id) => await request(`systems/${id}`);
 
-export const renderSecurityLevel = (level: string) => {
+export const renderSecurityText = (level: string) => {
   return <p className={
     (level === 'Medium'
       ? 'text-orange-500 dark:text-orange-300'
@@ -43,14 +43,70 @@ export const renderSecurityLevel = (level: string) => {
   </p>;
 };
 
+export const renderSecurityBadge = (text: string) => {
+  text = text.toLocaleLowerCase();
+  let color: string = 'bg-stone-700';
+  if (text === 'high') {
+    color = 'bg-green-900';
+  } else if (text === 'medium') {
+    color = 'bg-amber-600';
+  } else if (text === 'low') {
+    color = 'bg-red-700';
+  }
+
+  return (
+    <button className={color + ' px-3 py-1 rounded-lg uppercase'}>
+      {text}
+    </button>
+  );
+};
+
 export const renderAllegianceText = (value: string) => {
   return <p className={
     (value === 'Federation' ? 'text-blue-500 dark:text-blue-200'
       : (value === 'Empire') ? 'text-yellow-500 dark:text-yellow-400'
       : (value === 'Independent') ? 'text-green-500 dark:text-green-300'
-      : 'text-stone-500 dark:text-stone-300') + ` uppercase tracking-wide`}>
+      : 'text-stone-500 dark:text-stone-300') + ' uppercase tracking-wide'}>
         {value}
   </p>;
+};
+
+export const renderAllegianceBadge = (allegiance: string) => {
+  allegiance = allegiance.toLocaleLowerCase();
+  let color: string = 'bg-stone-700';
+  if (allegiance === 'independent') {
+    color = 'bg-green-900';
+  } else if (allegiance === 'empire') {
+    color = 'bg-amber-600';
+  } else if (allegiance === 'federation') {
+    color = 'bg-sky-900';
+  }
+
+  return (
+    <button className={color + ' px-3 py-1 rounded-lg uppercase'}>
+      {allegiance}
+    </button>
+  );
+};
+
+export const renderGovernmentBadge = (text: string) => {
+  text = text.toLocaleLowerCase();
+  let color: string = 'bg-stone-700';
+  if (text === 'corporate' || text === 'patronage') {
+    color = 'bg-sky-900';
+  } else if (text === 'confederacy' || text === 'feudal' || text === 'theocracy') {
+    color = 'bg-purple-800';
+  } else if (text === 'communism' || text === 'dictatorship' || text  === 'prison colony') {
+    color = 'bg-red-700';
+  } else if (text === 'cooperative' || text === 'democracy') {
+    color = 'bg-green-900';
+  }
+
+  return (
+    <button className={color + ' ml-4 px-3 py-1 rounded-lg uppercase'}>
+      {text}
+    </button>
+  );
 };
 
 export const systemColumns = {
@@ -84,7 +140,7 @@ export const systemColumns = {
   },
   security: {
     title: 'Security',
-    render: (system: System) => renderSecurityLevel(system.information.security)
+    render: (system: System) => renderSecurityText(system.information.security)
   },
   view: {
     title: 'View',

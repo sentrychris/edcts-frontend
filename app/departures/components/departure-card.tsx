@@ -14,7 +14,7 @@ const DepartureCard: FunctionComponent<Props> = ({schedule, className}) => {
 
   return (
     <div className={'p-6 rounded shadow-lg bg-slate-50 dark:bg-neutral-900 ' + className}>
-      <Link href={`/departures/schedule/${schedule.id}`} className="flex flex-col md:max-w-xl">
+      <Link href={`/departures/schedule/${schedule.slug}`} className="flex flex-col md:max-w-xl">
         <h5 className={'mb-3 text-lg font-bold tracking-tight text-neutral-800 dark:text-gray-200 ' + departed}>{schedule.title}</h5>
         <p className="mb-4 text-sm font-normal text-neutral-800 dark:text-gray-300">
           {schedule.description.slice(0,65) + '...'}

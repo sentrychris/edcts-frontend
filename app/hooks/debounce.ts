@@ -9,4 +9,4 @@ export const useDebounce = (value: any, timeout: number) => {
   }, [value, timeout]);
 
   return state;
-}
+};

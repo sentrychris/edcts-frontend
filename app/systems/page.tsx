@@ -24,7 +24,7 @@ export default async function Page() {
             <p><span className="font-bold tracking-widest">11,459</span> trade routes in last 24 hours</p>
           </div>
         </div>
-        <div className={`text-xs text-center tracking-wider`}>
+        <div className={'text-xs text-center tracking-wider'}>
           <p className="mt-6 mb-1">
             <span className="font-bold tracking-widest">0.019897%</span> of the galaxy has been discovered so far -
             it will take <span className="font-bold">40,565 years, 1 month, 12 days</span> to discover it entirely.

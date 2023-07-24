@@ -25,7 +25,7 @@ const SystemsTable: FunctionComponent<Props> = ({ systems }) => {
     setRows(data);
     setMetadata(meta);
     setNavigation(links);
-  }
+  };
 
   const searchData = async (text: string) => {
     setQuery(text);
@@ -43,7 +43,7 @@ const SystemsTable: FunctionComponent<Props> = ({ systems }) => {
     }
 
     if (response) {
-      const { data, meta, links } = response
+      const { data, meta, links } = response;
       await setState(data, meta, links);
     }
   };

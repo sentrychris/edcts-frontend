@@ -10,12 +10,12 @@ const DepartureSchedule = () => {
   const [schedule, setSchedule] = useState<Schedule>(defaultState);
 
   const path = usePathname();
-  const id = path.split('/').pop();
+  const slug = path.split('/').pop();
 
   useEffect(() => {
     (async () => {
-      if (id) {
-        const data = await getScheduledCarrierTrip(id);
+      if (slug) {
+        const data = await getScheduledCarrierTrip(slug);
         setSchedule(data);
       }
     })();

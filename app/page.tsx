@@ -24,9 +24,9 @@ export default async function Home() {
           {news.data.slice(0, 5).map((article: Galnet) => {
             return <div key={article.id} className="relative">
               <div className="relative border-b border-neutral-800 py-4">
-                  <h3 className='text-2xl mb-2'>{article.title}</h3>
+                  <h3 className='text-2xl mb-2 lg:mb-4'>{article.title}</h3>
                   <p className="text-xs mb-4">{article.uploaded_at}</p>
-                  <Link href={`/galnet/article/${article.id}`} className="text-orange-400">
+                  <Link href={`/galnet/article/${article.slug}`} className="text-orange-400">
                     Read More
                   </Link>
               </div>
