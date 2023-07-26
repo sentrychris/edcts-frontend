@@ -8,7 +8,7 @@ interface Props {
   onClick: (event: FormEvent) => void;
   disabled?: boolean;
   loading?: boolean;
-  theme?: 'dark' | 'light' | 'danger';
+  theme?: 'dark' | 'light' | 'elite' | 'danger';
   extraStyling?: string;
 }
 
@@ -24,6 +24,9 @@ const Button: FunctionComponent<Props> = ({type = 'button', children, onClick, d
     case 'danger':
       themeClasses = 'bg-red-600 hover:bg-red-400 text-white';
       spinnerClasses = 'fill-red-600 text-white';
+      break;
+    case 'elite':
+      themeClasses = 'bg-orange-500 shadow shadow-orange-500 hover:bg-orange-400 text-glow-white'
       break;
     default:
       themeClasses = 'bg-neutral-900 dark:bg-neutral-800 hover:bg-neutral-700 dark:hover:bg-neutral-700 text-white';

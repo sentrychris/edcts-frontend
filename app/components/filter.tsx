@@ -34,7 +34,7 @@ const Filter: FunctionComponent<Props> = ({ className, handleInput }) => {
         />
         <Button
           type="submit"
-          theme="light"
+          theme="elite"
           disabled={false}
           onClick={async (e: FormEvent) => {
             e.preventDefault();

@@ -24,6 +24,7 @@ export const defaultState: System = {
         allegiance: ''
     }
   },
+  bodies: [],
   updated_at: '',
   slug: ''
 };
@@ -54,11 +55,19 @@ export const renderAllegianceText = (value: string) => {
   </p>;
 };
 
-export const renderBadge = (text: string, className?: string) => {
+export const renderBadge = (text: string, options?: {className?: string, icon?: string}) => {
+  let classes = `flex items-center gap-2 bg-neutral-600 shadow-neutral-500 px-3 py-1 rounded-lg uppercase text-glow-white shadow text-sm `;
+  if (options && options.className) {
+    classes = classes + options.className
+  }
+
   return (
-    <button className={`bg-neutral-600 shadow-neutral-500 px-3 py-1 rounded-lg uppercase text-glow-white shadow ` + className}>
+    <span className={classes}>
+      {options && options.icon && 
+        <i className={options.icon}></i>
+      }
       {text}
-    </button>
+    </span>
   );
 };
 

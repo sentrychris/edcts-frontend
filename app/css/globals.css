@@ -61,6 +61,7 @@ body {
 }
 
 .text-glow-orange {
+  font-weight: bold;
   color: rgb(251 146 60 / 1);
-  text-shadow: var(--text-shadow);
+  text-shadow: 0px 0 20px rgb(251 146 60 / 1);
 }

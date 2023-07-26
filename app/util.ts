@@ -8,6 +8,10 @@ export function formatDate(datestr: string) {
   });
 }
 
+export function formatNumber(n: number) {
+  return n.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ",");
+}
+
 export function isAbsoluteUrl(url: string) {
   return url.indexOf('http://') === 0 || url.indexOf('https://') === 0;
 }

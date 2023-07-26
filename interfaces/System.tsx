@@ -10,6 +10,16 @@ export interface SystemInformation {
   }
 }
 
+export interface SystemBody {
+  name: string;
+  type: string;
+  sub_type: string;
+  discovery: {
+    commander: string;
+    date: string;
+  }
+}
+
 export interface System {
   id: number;
   id64: number;
@@ -19,7 +29,8 @@ export interface System {
     y: number;
     z: number;
   }
-  information: SystemInformation,
+  information: SystemInformation;
+  bodies: SystemBody[];
   updated_at: string;
   slug: string;
 }

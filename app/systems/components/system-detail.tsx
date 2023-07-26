@@ -6,7 +6,7 @@ import { defaultState as systemState, getSystem } from '../systems';
 import { paginatedState, getAllScheduledCarrierTrips } from '../../departures/departures';
 import DepartureTable from '../../departures/components/departure-table';
 import SystemInformation from './system-information';
-import SystemStar from './system-star';
+import SystemBody from './system-body';
 import { usePathname } from 'next/navigation';
 import { useEffect, useState } from 'react';
 import { Schedule } from '@/interfaces/Schedule';
@@ -42,26 +42,37 @@ const SystemDetail = () => {
           <i className="icarus-terminal-system-orbits" style={{fontSize: "1.5rem"}}></i>
           <h2 className="uppercase text-3xl">{system.name} system</h2>
         </div>
-        <h4 className="text-glow-orange font-bold uppercase">32 bodies found in system</h4>
+        <h4 className="text-glow-orange font-bold uppercase">8 bodies found in system</h4>
       </div>
       <SystemInformation information={system.information} />
-      <div className="grid grid-cols-12 gap-5 py-5">
-        <div className="col-span-3">
-          <h2 className="text-glow-white uppercase pb-5">Primary Star</h2>
-          <div className="flex items-center content-center gap-2">
-            <SystemStar system={system.name} starType="F4 (WHITE) STAR" small="false" className="w-20 text-glow-white" />
-            <div className="star_information uppercase">
-              <h2>F4 (White) Star</h2>
-              <span className="text-glow-orange">31 orbiting bodies found</span>
-            </div>
-          </div>
+      <div className="py-5 w-7xl overflow">
+        <h2 className="text-glow-white uppercase pb-5">System Bodies</h2>
+        <div className="flex items-center content-center gap-4">
+          {!isLoading && system.bodies.length > 0 &&
+          <SystemBody name={system.bodies[0].name}
+            type={system.bodies[0].type}
+            subType={system.bodies[0].sub_type}
+            main={true}
+            small="false"
+            className="w-32 text-glow-white"
+          />}
+          <span className="me-10"></span>
+          {!isLoading && system.bodies && system.bodies.slice(-7).map(body => {
+            return (
+              <SystemBody key={body.name} name={body.name}
+                type={body.type}
+                subType={`${body.type}`}
+                small="false"
+                className="w-20 text-glow-white" />
+            );
+          })}
         </div>
-        <div className="col-span-9">
-          <h2 className="text-glow-white uppercase pb-5">Scheduled Departures</h2>
-          {!isLoading && 
-            <DepartureTable schedule={schedule}/>
-          }
-        </div>
+      </div>
+      <div className="py-5">
+        <h2 className="text-glow-white uppercase pb-5">Scheduled Departures</h2>
+        {!isLoading && 
+          <DepartureTable schedule={schedule}/>
+        }
       </div>
     </>
   );
