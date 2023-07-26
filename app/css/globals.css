@@ -1,4 +1,6 @@
 @import url('https://fonts.googleapis.com/css2?family=Jura:wght@300;400;500;700&display=swap');
+@import url('./variables.css');
+@import url('./system.css');
 
 @tailwind base;
 @tailwind components;
@@ -47,4 +49,18 @@ body {
       rgb(var(--background-end-rgb))
     )
     rgb(var(--background-start-rgb));
+}
+
+.text-glow {
+  text-shadow: var(--text-shadow);
+}
+
+.text-glow-white {
+  color: rgb(255 255 255 / 1);
+  text-shadow: var(--text-shadow);
+}
+
+.text-glow-orange {
+  color: rgb(251 146 60 / 1);
+  text-shadow: var(--text-shadow);
 }

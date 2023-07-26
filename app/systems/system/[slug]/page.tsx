@@ -9,9 +9,7 @@ export default async function Page() {
 
         </div>
       </div>
-      <div className="mt-6">
-        <SystemDetail />
-      </div>
+      <SystemDetail />
     </>
   );
 }

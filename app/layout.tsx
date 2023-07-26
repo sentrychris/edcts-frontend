@@ -1,4 +1,5 @@
-import './globals.css';
+import '../public/fonts/icarus-terminal/icarus-terminal.css';
+import './css/globals.css';
 import type { Metadata } from 'next';
 import { Jura } from 'next/font/google';
 import Image from 'next/image';
@@ -26,8 +27,8 @@ export default function RootLayout({
         </div>
       </div>
       <MainNavigation />
-      <main className="flex flex-col px-6 md:px-12 lg:px-24 py-6 mx-auto text-neutral-800 dark:text-neutral-200">
-      <h1 className="uppercase text-4xl mb-5">SJ3F - Fleet Carrier Services</h1>
+      <main className="flex flex-col px-6 md:px-12 lg:px-24 py-6 mx-auto text-neutral-800 dark:text-neutral-200 text-glow">
+      <h1 className="uppercase text-glow-white text-4xl mb-5 ">FCOC - Fleet Carrier Services</h1>
         {children}
       </main>
       </body>
