@@ -11,11 +11,12 @@ import { usePathname } from 'next/navigation';
 import { useEffect, useState } from 'react';
 import { Schedule } from '@/interfaces/Schedule';
 import { Pagination } from '@/interfaces/Pagination';
+import Loader from '@/app/components/loader';
 
 const SystemDetail = () => {
   const [system, setSystem] = useState<System>(systemState);
   const [schedule, setSchedule] = useState<Pagination<Schedule>>(paginatedState);
-  const [isLoading, setLoading] = useState(false);
+  const [isLoading, setLoading] = useState(true);
 
   const path = usePathname();
   const slug = path.split('/').pop();
@@ -29,7 +30,10 @@ const SystemDetail = () => {
           departure: system.name
         }).then((schedule) => {
           setSchedule(schedule);
-          setLoading(false);
+
+          setTimeout(() => {
+            setLoading(false)
+          }, 500);
         });
       });
     }
@@ -37,6 +41,7 @@ const SystemDetail = () => {
 
   return (
     <>
+      <Loader visible={isLoading} />
       <div className="pb-3 border-b border-neutral-800">
         <div className="flex gap-2 items-center text-glow-white">
           <i className="icarus-terminal-system-orbits" style={{fontSize: '3rem'}}></i>

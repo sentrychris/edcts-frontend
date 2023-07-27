@@ -98,52 +98,6 @@
   right: 0;
 }
 
-
-.system-map__system-information {
-  position: absolute;
-  left: 4.5rem;
-  bottom: 0;
-  height: auto;
-  width: auto;
-  box-sizing: border-box;
-  z-index: 101;
-  padding: .5rem;
-  font-size: 1rem;
-  border-radius: .1rem;
-  min-height: 4rem;
-}
-
-.system-map__system-information--open {
-  background: rgba(0,0,0,.75);
-  backdrop-filter: blur(.5rem) brightness(.25);
-  clip-path: polygon(0 2.00rem,2.00rem 0,100% 0,100% calc(100% - 2.00rem),calc(100% - 2.00rem) 100%,0 100%);
-  border-radius: .2rem;
-  padding: .5rem 2.5rem .6rem .75rem;
-  background: var(--linear-gradient-background);
-  margin-right: 1.5rem;
-}
-
-.system-map__system-information--open:hover {
-  background: var(--color-primary-dark);
-}
-
-.system-map__system-information--open:before {
-  content: "";
-  position: absolute;
-  inset: 0;
-  z-index: -1;
-  background: var(--color-info);
-  background: var(--color-primary);
-  opacity: .25;
-  clip-path: polygon(0 2.00rem,2.00rem 0,100% 0,100% calc(100% - 2.00rem),calc(100% - 2.00rem) 100%,0 100%,0 2.00rem,.15rem  calc(2.00rem + 0.06rem),.15rem calc(100% - .15rem),calc(100% - 2.00rem - 0.06rem) calc(100% - .15rem),calc(100% - .15rem) calc(100% - 2.00rem - 0.06rem),calc(100% - .15rem) .15rem,calc(2.00rem + 0.06rem) .15rem,.15rem calc(2.00rem + 0.06rem));
-  border-radius: .2rem;
-}
-
-.system-map__system-information--open:hover:before {
-  background: var(--color-primary);
-  opacity: 1;
-}
-
 .system-map__system-position {
   position: absolute;
   top: 4rem;
@@ -419,11 +373,9 @@
   filter: contrast(0.2) sepia(100%) hue-rotate(300deg) saturate(1.4) brightness(.4)  contrast(2) drop-shadow(0 0 15rem rgb(200,20,20));
 }
 
-/* 
 .system-map__system-object:focus .system-map__planet-surface {
   fill: url(#svg-pattern__planet-surface-animated);
 }
- */
 
 .system-map__planetary-system-map {
   position: relative;
@@ -435,43 +387,6 @@
   z-index: 2;
   user-select: none;
 }
-
-
-/*
-.system-map__planetary-system-map {
-  position: relative;
-  padding: 2rem;
-}
-
-.system-map__planetary-system-map::after {
-  content: " ";
-  display: block;
-  position: absolute;
-  top: 0;
-  left: 0;
-  bottom: 0;
-  right: 0;
-  background: rgba(18, 16, 16, 0.1);
-  opacity: 0;
-  z-index: 2;
-  pointer-events: none;
-  animation: text-flicker-animation 5s infinite;
-}
-
-.system-map__planetary-system-map::before {
-  content: " ";
-  display: block;
-  position: absolute;
-  top: 0;
-  left: 0;
-  bottom: 0;
-  right: 0;
-  background: linear-gradient(rgba(18, 16, 16, 0) 50%, rgba(0, 0, 0, 0.5) 50%), linear-gradient(90deg, rgba(138, 73, 0, .25), rgba(0, 255, 0, 0.02), rgba(0, 0, 255, 0.06));
-  z-index: 2;
-  background-size: 100% 2px, 3px 100%;
-  pointer-events: none;
-}
-*/
 
 .system-map__planet-name-text {
   font-size: 26rem;
