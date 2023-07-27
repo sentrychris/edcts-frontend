@@ -1,9 +1,9 @@
 'use client';
 
+import { FunctionComponent, useState } from 'react';
 import { Links, Meta, Pagination } from '../../../interfaces/Pagination';
 import { System } from '../../../interfaces/System';
 import { getAllSystems, systemColumns } from '../systems';
-import { FunctionComponent, useState } from 'react';
 import { useDebounce } from '../../hooks/debounce';
 import Filter from '../../components/filter';
 import Table from '../../components/table';

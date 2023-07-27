@@ -1,17 +1,17 @@
+import Link from 'next/link';
 import { Schedule } from '../interfaces/Schedule';
 import { Galnet } from '../interfaces/Galnet';
 import { getAllGalnetNewsArticles } from './galnet/galnet';
 import { getAllScheduledCarrierTrips } from './departures/departures';
 import DepartureCard from './departures/components/departure-card';
 import DepartureTable from './departures/components/departure-table';
-import Link from 'next/link';
 
 export default async function Home() {
   const news = await getAllGalnetNewsArticles('galnet/news');
   const schedule = await getAllScheduledCarrierTrips('fleet/schedule');
 
   return (
-    <div className="z-20">
+    <>
       <div className="items-center justify-between">
         <div className="flex items-center gap-2">
           <i className="icarus-terminal-route"></i>
@@ -47,7 +47,7 @@ export default async function Home() {
           <DepartureTable schedule={schedule} />
         </div>
       </div>
-    </div>
+    </>
   );
 }
   

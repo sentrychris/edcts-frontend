@@ -19,10 +19,10 @@ function classNames(...classes: string[]) {
 
 export default function MainNavigation() {
   return (
-    <Disclosure as="nav" className="sticky top-0 z-40 w-full backdrop-blur flex-none supports-backdrop-blur:bg-white/100 dark:bg-transparent">
+    <Disclosure as="nav" className="sticky top-0 w-full backdrop-blur flex-none supports-backdrop-blur:bg-white/100 dark:bg-transparent">
       {({ open }) => (
         <>
-          <div className="pt-3 sticky top-0 z-40 w-full backdrop-blur mx-auto px-6 md:px-12 lg:px-24">
+          <div className="pt-3 sticky top-0 z-40 w-full backdrop-blur mx-auto px-6 md:px-12 lg:px-24 uppercase text-glow-white">
             <div className="relative flex h-16 items-center justify-between">
               <div className="absolute inset-y-0 left-0 flex items-center sm:hidden">
                 {/* Mobile menu button*/}
@@ -59,17 +59,17 @@ export default function MainNavigation() {
               </div>
               <div className="absolute inset-y-0 right-0 flex items-center pr-2 sm:static sm:inset-auto sm:ml-6 sm:pr-0">
                 <Menu as="div" className="relative ml-3">
-                  <div>
+                  <div className="flex items-center gap-3">
                     <Menu.Button className="flex rounded-full bg-zinc-800 text-sm focus:outline-none">
-                      <span className="sr-only">Open user menu</span>
                       <Image
-                        className="h-8 w-8 rounded-full"
+                        className="h-10 w-10 rounded-full border-2 border-orange-600 shadow shadow-orange-500"
                         width={32}
                         height={32}
                         src="/me.jpg"
                         alt=""
                       />
                     </Menu.Button>
+                    <i className="icarus-terminal-chevron-down text-glow-white"></i>
                   </div>
                   <Transition
                     as={Fragment}

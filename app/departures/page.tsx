@@ -7,7 +7,7 @@ export default async function Page() {
   const schedule = await getAllScheduledCarrierTrips('fleet/schedule');
 
   return (
-    <div className="z-20">
+    <>
       <div className="items-center justify-between">
         <div className="flex items-center gap-2">
           <i className="icarus-terminal-route"></i>
@@ -26,7 +26,7 @@ export default async function Page() {
           <DepartureTable schedule={schedule} />
         </div>
       </div>
-    </div>
+    </>
   );
 }
   

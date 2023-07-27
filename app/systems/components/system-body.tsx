@@ -4,19 +4,17 @@ interface Props {
   name: string;
   type: string;
   subType: string;
-  small: string;
   main?: boolean;
   total?: number;
   className?: string;
 }
 
-const SystemBody: FunctionComponent<Props> = ({name, type, subType, small, main, total, className}) => {
+const SystemBody: FunctionComponent<Props> = ({name, type, subType, main, total, className}) => {
   return (
     <>
       <svg viewBox="-2500 -2500 5000 5000" preserveAspectRatio="xMinYMid meet" className={className}>
         <g className="system-map__system-object" data-system-object-type={type}
           data-system-object-sub-type={subType}
-          data-system-object-small={small}
           data-system-object-name={name}
           tabIndex={0}>
           <g className="system-map__body">

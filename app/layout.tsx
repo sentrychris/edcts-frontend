@@ -1,10 +1,9 @@
-import '../public/fonts/icarus-terminal/icarus-terminal.css';
-import './css/globals.css';
 import type { Metadata } from 'next';
 import { Jura } from 'next/font/google';
 import Image from 'next/image';
 import MainNavigation from './components/main-navigation';
 import SvgFilters from './components/svg-filters';
+import './css/main.css';
 
 const jura = Jura({ subsets: ['latin'] });
 
@@ -30,7 +29,7 @@ export default function RootLayout({
         </div>
         <MainNavigation />
         <main className="flex flex-col px-6 md:px-12 lg:px-24 py-6 mx-auto text-neutral-800 dark:text-neutral-200 text-glow">
-          <h1 className="z-20 uppercase text-glow-white text-4xl mb-5 ">FCOC - Fleet Carrier Services</h1>
+          <h1 className="uppercase text-glow-white text-4xl mb-5 ">ED:CTS - Carrier Transport Services</h1>
           {children}
         </main>
       </body>

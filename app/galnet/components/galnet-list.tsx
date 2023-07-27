@@ -1,12 +1,12 @@
 
 'use client';
 
+import { FunctionComponent, useState } from 'react';
+import Link from 'next/link';
 import { Galnet} from '../../../interfaces/Galnet';
 import { Pagination } from '../../../interfaces/Pagination';
 import { getAllGalnetNewsArticles } from '../galnet';
 import PaginationLink from '../../components/pagination-link';
-import { FunctionComponent, useState } from 'react';
-import Link from 'next/link';
 
 interface Props {
   articles: Pagination<Galnet>

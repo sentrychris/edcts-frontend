@@ -1,9 +1,7 @@
-import { SystemInformation } from '@/interfaces/System';
-import {
-  renderBadge,
-} from '../systems';
 import { FunctionComponent } from 'react';
-import { formatNumber } from '@/app/util';
+import { SystemInformation } from '../../../interfaces/System';
+import { renderBadge } from '../systems';
+import { formatNumber } from '../../util';
 
 interface Props {
   coords: {

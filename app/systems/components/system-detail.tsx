@@ -1,17 +1,17 @@
 
 'use client';
 
+import { usePathname } from 'next/navigation';
+import { useEffect, useState } from 'react';
 import { System } from '../../../interfaces/System';
+import { Schedule } from '../../../interfaces/Schedule';
+import { Pagination } from '../../../interfaces/Pagination';
 import { defaultState as systemState, getSystem } from '../systems';
 import { paginatedState, getAllScheduledCarrierTrips } from '../../departures/departures';
 import DepartureTable from '../../departures/components/departure-table';
 import SystemInformation from './system-information';
 import SystemBody from './system-body';
-import { usePathname } from 'next/navigation';
-import { useEffect, useState } from 'react';
-import { Schedule } from '@/interfaces/Schedule';
-import { Pagination } from '@/interfaces/Pagination';
-import Loader from '@/app/components/loader';
+import Loader from '../../components/loader';
 
 const SystemDetail = () => {
   const [system, setSystem] = useState<System>(systemState);
@@ -32,7 +32,7 @@ const SystemDetail = () => {
           setSchedule(schedule);
 
           setTimeout(() => {
-            setLoading(false)
+            setLoading(false);
           }, 500);
         });
       });
@@ -41,7 +41,7 @@ const SystemDetail = () => {
 
   return (
     <>
-      <Loader visible={isLoading} />
+      {isLoading && <Loader visible={isLoading} />}
       <div className="pb-3 border-b border-neutral-800">
         <div className="flex gap-2 items-center text-glow-white">
           <i className="icarus-terminal-system-orbits" style={{fontSize: '3rem'}}></i>
@@ -64,7 +64,6 @@ const SystemDetail = () => {
             subType={system.bodies[0].sub_type}
             main={true}
             total={system.bodies.length}
-            small="false"
             className="w-32 text-glow-white"
           />}
           <span className="me-"></span>
@@ -73,7 +72,6 @@ const SystemDetail = () => {
               <SystemBody key={body.name} name={body.name}
                 type={body.type}
                 subType={body.sub_type}
-                small="false"
                 className="w-20 text-glow-white text-sm" />
             );
           })}

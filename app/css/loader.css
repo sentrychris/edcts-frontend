@@ -1,16 +1,29 @@
 
-.dank-ass-loader-container {
+.elite-loader-container {
   position: absolute;
   top: 0;
   height: 100%;
   width: 100%;
   background: black;
-  opacity: 0.9;
+  opacity: 1;
+  animation: fade 2s linear;
   left: 0;
   z-index: 3000;
 }
 
-.dank-ass-loader {
+@keyframes fade {
+  0% {
+    opacity: 1;
+  }
+  50% {
+    opacity: 0.75;
+  }
+  100% {
+    opacity: 0;
+  }
+}
+
+.elite-loader {
   display: flex;
   flex-direction: column;
   align-items: center;
@@ -20,7 +33,7 @@
   z-index: 3000;
   opacity: 1;
 }
-.dank-ass-loader .row {
+.elite-loader .row {
   display: flex;
 }
 

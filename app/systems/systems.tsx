@@ -1,8 +1,8 @@
 import Link from 'next/link';
-import { request } from '../util';
+import { EyeIcon } from '@heroicons/react/24/outline';
 import { System } from '../../interfaces/System';
 import { Collection, Resource } from '../../interfaces/Request';
-import { EyeIcon } from '@heroicons/react/24/outline';
+import { request } from '../util';
 
 export const defaultState: System = {
   id: 0,

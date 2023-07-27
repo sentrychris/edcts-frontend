@@ -1,4 +1,4 @@
-import { FunctionComponent } from "react";
+import { FunctionComponent } from 'react';
 
 const SvgFilters: FunctionComponent = () =>{
   return (
@@ -150,7 +150,7 @@ const SvgFilters: FunctionComponent = () =>{
         \`)
       </script>`}}
     />
-  )
-}
+  );
+};
 
 export default SvgFilters;

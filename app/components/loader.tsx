@@ -1,14 +1,15 @@
-import { FunctionComponent } from "react";
+import { FunctionComponent } from 'react';
 
 interface Props {
   visible: boolean;
+  message?: string;
 }
 
-const Loader: FunctionComponent<Props> = ({ visible = true }) => {
+const Loader: FunctionComponent<Props> = ({ visible = true, message = 'Loading, please wait...' }) => {
   return (
-    <div className="dank-ass-loader-container" style={{opacity: visible ? '0.75' : '0'}}>
-      <div className="dank-ass-loader">
-        <h2 className="uppercase text-glow-orange mb-3 text-xs">Loading, please wait...</h2>
+    <div className="elite-loader-container" style={{opacity: visible ? '0.75' : '0'}}>
+      <div className="elite-loader">
+        <h2 className="uppercase text-glow-orange mb-3 text-xs">{visible ? message : 'Loading completed!'}</h2>
         <div className="row">
           <div className="arrow up outer outer-18"></div>
           <div className="arrow down outer outer-17"></div>
@@ -44,7 +45,7 @@ const Loader: FunctionComponent<Props> = ({ visible = true }) => {
       </div>
     </div>
   );
-}
+};
 
 
 export default Loader;

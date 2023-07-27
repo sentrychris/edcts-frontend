@@ -1,11 +1,10 @@
 
 'use client';
 
-import { Galnet} from '../../../interfaces/Galnet';
-import { defaultState, getGalnetNewsArticle } from '../galnet';
 import { useEffect, useState } from 'react';
 import { usePathname } from 'next/navigation';
-import Image from 'next/image';
+import { Galnet} from '../../../interfaces/Galnet';
+import { defaultState, getGalnetNewsArticle } from '../galnet';
 
 const GalnetArticle = () => {
   const [article, setArticle] = useState<Galnet>(defaultState);
