@@ -34,7 +34,7 @@ export default async function Page() {
         </div>
       </div>
       <div className="flex items-center gap-3 my-5">
-        <i className="icarus-terminal-system-orbits" style={{fontSize: "1.5rem"}}></i>
+        <i className="icarus-terminal-system-orbits" style={{fontSize: '1.5rem'}}></i>
         <h2 className="uppercase text-3xl text-glow-white">Systems Information</h2>
       </div>
       <SystemsTable systems={systems} />

@@ -9,7 +9,7 @@ export function formatDate(datestr: string) {
 }
 
 export function formatNumber(n: number) {
-  return n.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ",");
+  return n.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ',');
 }
 
 export function isAbsoluteUrl(url: string) {

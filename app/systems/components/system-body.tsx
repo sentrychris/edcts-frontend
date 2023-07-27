@@ -1,4 +1,4 @@
-import { FunctionComponent } from "react";
+import { FunctionComponent } from 'react';
 
 interface Props {
   name: string;
@@ -34,6 +34,6 @@ const SystemBody: FunctionComponent<Props> = ({name, type, subType, small, main,
       </div>
     </>
   );
-}
+};
 
 export default SystemBody;

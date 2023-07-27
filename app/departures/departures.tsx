@@ -57,7 +57,7 @@ export const paginatedState: Pagination<Schedule> = {
     to: 0,
     total: 0
   }
-}
+};
 
 export const getAllScheduledCarrierTrips: Collection<Schedule> = async (uri, params?) => await request(uri, params);
 export const getScheduledCarrierTrip: Resource<Schedule> = async (id) => await request(`fleet/schedule/${id}`);

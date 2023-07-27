@@ -24,7 +24,7 @@ export default async function Home() {
       <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6 mt-8">
         <div className="col-span-1">
           <div className="flex items-center text-3xl gap-3 mb-3">
-            <i className="icarus-terminal-notifications" style={{fontSize: "1.5rem"}}></i>
+            <i className="icarus-terminal-notifications" style={{fontSize: '1.5rem'}}></i>
             <h2 className="uppercase text-glow-white">Galnet News</h2>
           </div>
           {news.data.slice(0, 5).map((article: Galnet) => {
@@ -41,7 +41,7 @@ export default async function Home() {
         </div>
         <div className="col-span-1 lg:col-span-2">
           <div className="flex items-center text-3xl gap-3 mb-5">
-            <i className="icarus-terminal-route" style={{fontSize: "1.5rem"}}></i>
+            <i className="icarus-terminal-route" style={{fontSize: '1.5rem'}}></i>
             <h2 className="uppercase text-glow-white">Scheduled Departures</h2>
           </div>
           <DepartureTable schedule={schedule} />

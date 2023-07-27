@@ -1,9 +1,9 @@
-import { SystemInformation } from "@/interfaces/System";
+import { SystemInformation } from '@/interfaces/System';
 import {
   renderBadge,
 } from '../systems';
-import { FunctionComponent } from "react";
-import { formatNumber } from "@/app/util";
+import { FunctionComponent } from 'react';
+import { formatNumber } from '@/app/util';
 
 interface Props {
   coords: {
@@ -39,9 +39,9 @@ const SystemInformation: FunctionComponent<Props> = ({ coords, information }) =>
               <i className="icarus-terminal-system-authority"></i>
               <p>
                 <span className="me-3">{information.allegiance ?? 'No Allegiance'}</span>
-                //
+                <span>/</span>
                 <span className="mx-3">{information.government ?? 'No Government'}</span>
-                //
+                <span>/</span>
                 <span className="ms-3">{information.security ?? 'No'} security</span>
               </p>
           </span>
@@ -60,7 +60,7 @@ const SystemInformation: FunctionComponent<Props> = ({ coords, information }) =>
         </div>
       </div>
     </div>
-  )
-}
+  );
+};
 
 export default SystemInformation;

@@ -31,7 +31,7 @@ const SystemDetail = () => {
           setSchedule(schedule);
           setLoading(false);
         });
-      })
+      });
     }
   }, []);
 
@@ -39,7 +39,7 @@ const SystemDetail = () => {
     <>
       <div className="pb-3 border-b border-neutral-800">
         <div className="flex gap-2 items-center text-glow-white">
-          <i className="icarus-terminal-system-orbits" style={{fontSize: "3rem"}}></i>
+          <i className="icarus-terminal-system-orbits" style={{fontSize: '3rem'}}></i>
           <div>
             <h2 className="uppercase text-3xl">{system.name} system</h2>
             <h4 className="text-glow-orange font-bold uppercase">{system.bodies.length} bodies found in system</h4>
