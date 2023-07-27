@@ -1,6 +1,6 @@
 import Link from 'next/link';
-import { Schedule } from '../interfaces/Schedule';
-import { Galnet } from '../interfaces/Galnet';
+import { Schedule } from './interfaces/Schedule';
+import { Galnet } from './interfaces/Galnet';
 import { getAllGalnetNewsArticles } from './galnet/galnet';
 import { getAllScheduledCarrierTrips } from './departures/departures';
 import DepartureCard from './departures/components/departure-card';

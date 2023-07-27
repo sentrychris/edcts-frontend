@@ -3,7 +3,7 @@
 
 import { useEffect, useState } from 'react';
 import { usePathname } from 'next/navigation';
-import { Galnet} from '../../../interfaces/Galnet';
+import { Galnet} from '../../interfaces/Galnet';
 import { defaultState, getGalnetNewsArticle } from '../galnet';
 
 const GalnetArticle = () => {

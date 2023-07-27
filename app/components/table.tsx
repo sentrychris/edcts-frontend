@@ -1,5 +1,5 @@
 import { JSX } from 'react';
-import { Meta, Links } from '../../interfaces/Pagination';
+import { Meta, Links } from '../interfaces/Pagination';
 import PaginationLink from './pagination-link';
 
 type RenderColumn<T> = (item: T) => string | JSX.Element;

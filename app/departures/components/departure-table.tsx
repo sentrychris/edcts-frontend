@@ -1,8 +1,8 @@
 'use client';
 
 import { FunctionComponent, useState } from 'react';
-import { Links, Meta, Pagination } from '../../../interfaces/Pagination';
-import { Schedule } from '../../../interfaces/Schedule';
+import { Links, Meta, Pagination } from '../../interfaces/Pagination';
+import { Schedule } from '../../interfaces/Schedule';
 import { getAllScheduledCarrierTrips, scheduleColumns } from '../departures';
 import { useDebounce } from '../../hooks/debounce';
 import Filter from '../../components/filter';

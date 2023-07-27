@@ -3,7 +3,7 @@
 
 import { usePathname } from 'next/navigation';
 import { useEffect, useState } from 'react';
-import { Schedule } from '../../../interfaces/Schedule';
+import { Schedule } from '../../interfaces/Schedule';
 import { defaultState, getScheduledCarrierTrip } from '../departures';
 
 const DepartureSchedule = () => {

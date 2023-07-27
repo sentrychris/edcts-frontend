@@ -1,8 +1,8 @@
 'use client';
 
 import { FunctionComponent, useState } from 'react';
-import { Links, Meta, Pagination } from '../../../interfaces/Pagination';
-import { System } from '../../../interfaces/System';
+import { Links, Meta, Pagination } from '../../interfaces/Pagination';
+import { System } from '../../interfaces/System';
 import { getAllSystems, systemColumns } from '../systems';
 import { useDebounce } from '../../hooks/debounce';
 import Filter from '../../components/filter';

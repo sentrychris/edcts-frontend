@@ -3,9 +3,9 @@
 
 import { usePathname } from 'next/navigation';
 import { useEffect, useState } from 'react';
-import { System } from '../../../interfaces/System';
-import { Schedule } from '../../../interfaces/Schedule';
-import { Pagination } from '../../../interfaces/Pagination';
+import { System } from '../../interfaces/System';
+import { Schedule } from '../../interfaces/Schedule';
+import { Pagination } from '../../interfaces/Pagination';
 import { defaultState as systemState, getSystem } from '../systems';
 import { paginatedState, getAllScheduledCarrierTrips } from '../../departures/departures';
 import DepartureTable from '../../departures/components/departure-table';

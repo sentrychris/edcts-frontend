@@ -1,7 +1,7 @@
 import Link from 'next/link';
 import { EyeIcon } from '@heroicons/react/24/outline';
-import { System } from '../../interfaces/System';
-import { Collection, Resource } from '../../interfaces/Request';
+import { System } from '../interfaces/System';
+import { Collection, Resource } from '../interfaces/Request';
 import { request } from '../util';
 
 export const defaultState: System = {

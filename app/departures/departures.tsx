@@ -1,8 +1,8 @@
 import Link from 'next/link';
 import { EyeIcon } from '@heroicons/react/24/outline';
-import { Schedule } from '../../interfaces/Schedule';
-import { Pagination } from '../../interfaces/Pagination';
-import { Collection, Resource } from '../../interfaces/Request';
+import { Schedule } from '../interfaces/Schedule';
+import { Pagination } from '../interfaces/Pagination';
+import { Collection, Resource } from '../interfaces/Request';
 import { formatDate, request } from '../util';
 import { defaultState as systemState } from '../systems/systems';
 

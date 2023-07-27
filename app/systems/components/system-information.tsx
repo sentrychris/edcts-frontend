@@ -1,5 +1,5 @@
 import { FunctionComponent } from 'react';
-import { SystemInformation } from '../../../interfaces/System';
+import { SystemInformation } from '../../interfaces/System';
 import { renderBadge } from '../systems';
 import { formatNumber } from '../../util';
 

@@ -1,6 +1,6 @@
 import { FunctionComponent } from 'react';
 import Link from 'next/link';
-import { Schedule } from '../../../interfaces/Schedule';
+import { Schedule } from '../../interfaces/Schedule';
 import { formatDate } from '../../util';
 import { renderStatus } from '../departures';
 
