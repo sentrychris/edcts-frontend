@@ -37,7 +37,7 @@ const GalnetList: FunctionComponent<Props> = ({ articles }) => {
             <div key={article.id} className="relative border-b border-neutral-800 py-12">
               <h1 className='text-4xl mb-2'>{article.title}</h1>
               <p className="text-xs mb-6">{article.uploaded_at}</p>
-              <Link href={`/galnet/article/${article.slug}`} className="py-2 text-orange-400">
+              <Link href={`/galnet/news/${article.slug}`} className="py-2 text-orange-400">
                 Read Article...
               </Link>
             </div>
