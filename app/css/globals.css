@@ -51,17 +51,41 @@ body {
     rgb(var(--background-start-rgb));
 }
 
-.text-glow {
-  text-shadow: var(--text-shadow);
+@layer utilities {
+  .text-glow {
+    text-shadow: var(--text-shadow);
+  }
+
+  .text-glow-white {
+    @apply text-black dark:text-white;
+    text-shadow: var(--text-shadow);
+  }
+  
+  .text-glow-orange {
+    font-weight: bold;
+    color: rgb(251 146 60 / 1);
+    text-shadow: 0px 0 20px rgb(251 146 60 / 1);
+  }
 }
 
-.text-glow-white {
-  color: rgb(255 255 255 / 1);
-  text-shadow: var(--text-shadow);
+.overlay {
+  opacity: 0.4;
+  background-image: url(/images/textures/galaxy.jpg);
+  background-position-y: -25rem;
+  background-position-x: -36rem;
 }
 
-.text-glow-orange {
-  font-weight: bold;
-  color: rgb(251 146 60 / 1);
-  text-shadow: 0px 0 20px rgb(251 146 60 / 1);
+.overlay:before {
+  content: " ";
+  display: block;
+  position: absolute;
+  top: 0;
+  left: 0;
+  bottom: 0;
+  right: 0;
+  z-index: -1;
+  opacity: 0.025;
+  content: ' ';
+  background-size: 5rem 5rem;
+  background-image: url(/images/grid.svg);
 }

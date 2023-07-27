@@ -6,10 +6,11 @@ interface Props {
   subType: string;
   small: string;
   main?: boolean;
+  total?: number;
   className?: string;
 }
 
-const SystemBody: FunctionComponent<Props> = ({name, type, subType, small, main, className}) => {
+const SystemBody: FunctionComponent<Props> = ({name, type, subType, small, main, total, className}) => {
   return (
     <>
       <svg viewBox="-2500 -2500 5000 5000" preserveAspectRatio="xMinYMid meet" className={className}>
@@ -27,9 +28,9 @@ const SystemBody: FunctionComponent<Props> = ({name, type, subType, small, main,
         </g>
       </svg>
       <div className="star_information uppercase">
-        <p>{name}</p>
-        <p>{subType}</p>
-        {main && <span className="text-glow-orange text-sm">7 orbiting bodies found</span>}
+        <p className="whitespace-nowrap">{name}</p>
+        <p className="whitespace-nowrap text-xs">{subType}</p>
+        {main && total && <span className="text-glow-orange text-sm">{total} orbiting bodies found</span>}
       </div>
     </>
   );

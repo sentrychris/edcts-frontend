@@ -11,16 +11,22 @@ export default async function Home() {
   const schedule = await getAllScheduledCarrierTrips('fleet/schedule');
 
   return (
-    <>
+    <div className="z-20">
       <div className="items-center justify-between">
-        <h2>Departure Board</h2>
+        <div className="flex items-center gap-2">
+          <i className="icarus-terminal-route"></i>
+          <h2 className="uppercase text-glow-white">Departure Board</h2>
+        </div>
         <div className="mt-5 grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6 font-bold">
           {schedule.data.slice(0, 4).map((schedule: Schedule) => <DepartureCard key={schedule.id} schedule={schedule}/>)}
         </div>
       </div>
       <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6 mt-8">
         <div className="col-span-1">
-          <h2 className="uppercase text-3xl mb-3">Galnet News</h2>
+          <div className="flex items-center text-3xl gap-3 mb-3">
+            <i className="icarus-terminal-notifications" style={{fontSize: "1.5rem"}}></i>
+            <h2 className="uppercase text-glow-white">Galnet News</h2>
+          </div>
           {news.data.slice(0, 5).map((article: Galnet) => {
             return <div key={article.id} className="relative">
               <div className="relative border-b border-neutral-800 py-4">
@@ -34,11 +40,14 @@ export default async function Home() {
           })}
         </div>
         <div className="col-span-1 lg:col-span-2">
-          <h2 className="uppercase text-3xl mb-5">Departure Information</h2>
+          <div className="flex items-center text-3xl gap-3 mb-5">
+            <i className="icarus-terminal-route" style={{fontSize: "1.5rem"}}></i>
+            <h2 className="uppercase text-glow-white">Scheduled Departures</h2>
+          </div>
           <DepartureTable schedule={schedule} />
         </div>
       </div>
-    </>
+    </div>
   );
 }
   

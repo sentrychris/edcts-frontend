@@ -5,8 +5,8 @@ export default async function Page() {
   const systems = await getAllSystems('systems');
 
   return (
-    <>
-      <h2>Systems Statistics</h2>
+    <div className="z-20">
+      <h2 className="uppercase">Systems Statistics</h2>
       <div className={'mt-5 p-6 rounded shadow-lg bg-slate-50 dark:bg-neutral-900'}>
         <div className="grid grid-cols-1 md:grid-cols-3 gap-6 text-center text-sm tracking-wider">
           <div>
@@ -33,9 +33,12 @@ export default async function Page() {
           <p>Current commodities stock in galactic market: <span className="font-bold tracking-widest">99,689,890,482</span></p>
         </div>
       </div>
-      <h2 className="uppercase text-3xl my-5">Systems Information</h2>
+      <div className="flex items-center gap-3 my-5">
+        <i className="icarus-terminal-system-orbits" style={{fontSize: "1.5rem"}}></i>
+        <h2 className="uppercase text-3xl text-glow-white">Systems Information</h2>
+      </div>
       <SystemsTable systems={systems} />
-    </>
+    </div>
   );
 }
   

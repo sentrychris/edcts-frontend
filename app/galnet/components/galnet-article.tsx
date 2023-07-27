@@ -22,11 +22,13 @@ const GalnetArticle = () => {
 
   return (
     <>
-      <h2 className="uppercase text-3xl pb-3 border-b border-neutral-800">Galnet News</h2>
+      <div className="flex items-center gap-2 pb-3 border-b border-neutral-800">
+        <i className="icarus-terminal-notifications" style={{fontSize: '1.5rem'}}></i>
+        <h2 className="uppercase text-3xl">Galnet News</h2>
+      </div>
       <div className="relative border-b border-neutral-800 py-12">
         <h1 className='text-4xl'>{article.title}</h1>
         <small>{article.uploaded_at}</small>
-        <Image className="mt-4" alt="article-image" src={`${article.banner_image}`} width={0} height={0} sizes="100vw" style={{ width: '100%', height: 'auto' }} />
         <p className="mt-4 tracking-wider" dangerouslySetInnerHTML={{ __html: article.content }}></p>
       </div>
     </>

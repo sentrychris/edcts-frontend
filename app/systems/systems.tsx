@@ -56,7 +56,7 @@ export const renderAllegianceText = (value: string) => {
 };
 
 export const renderBadge = (text: string, options?: {className?: string, icon?: string}) => {
-  let classes = `flex items-center gap-2 bg-neutral-600 shadow-neutral-500 px-3 py-1 rounded-lg uppercase text-glow-white shadow text-sm `;
+  let classes = `flex items-center gap-2 bg-neutral-900 shadow-neutral-900 px-3 py-1 rounded-lg uppercase text-glow-white shadow `;
   if (options && options.className) {
     classes = classes + options.className
   }

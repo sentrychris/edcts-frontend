@@ -28,7 +28,10 @@ const GalnetList: FunctionComponent<Props> = ({ articles }) => {
   return (
     <>
       <div>
-        <h2 className="uppercase text-3xl pb-3 border-b border-neutral-800">Galnet News</h2>
+        <div className="flex items-center gap-2 pb-3 border-b border-neutral-800">
+          <i className="icarus-terminal-notifications" style={{fontSize: '1.5rem'}}></i>
+          <h2 className="uppercase text-3xl">Galnet News</h2>
+        </div>
         {rows.map((article: Galnet) => {
           return (
             <div key={article.id} className="relative border-b border-neutral-800 py-12">

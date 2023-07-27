@@ -162,15 +162,15 @@ export default function RootLayout({
             \`)
           </script>`}}
         />
-        <div className="absolute z-20 top-0 inset-x-0 flex justify-center overflow-hidden pointer-events-none">
+        <div className="hidden overlay absolute top-0 inset-x-0 dark:flex justify-center overflow-hidden pointer-events-none">
           <div className="w-[108rem] flex-none flex justify-end">
             <Image width="100" height="100" src="/avifb.png" className="w-[100rem] flex-none max-w-none dark:hidden" decoding="async" alt="glow"></Image>
             <Image width="100" height="100" src="/tinyb.png" className="w-[150rem] flex-none max-w-none hidden dark:block" decoding="async" alt="glow"></Image>
           </div>
         </div>
         <MainNavigation />
-        <main className="flex flex-col px-6 md:px-12 lg:px-24 py-6 mx-auto text-neutral-800 dark:text-neutral-200 text-glow">
-        <h1 className="uppercase text-glow-white text-4xl mb-5 ">FCOC - Fleet Carrier Services</h1>
+        <main className="z-20 flex flex-col px-6 md:px-12 lg:px-24 py-6 mx-auto text-neutral-800 dark:text-neutral-200 text-glow">
+          <h1 className="z-20 uppercase text-glow-white text-4xl mb-5 ">FCOC - Fleet Carrier Services</h1>
           {children}
         </main>
       </body>

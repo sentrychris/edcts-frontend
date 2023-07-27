@@ -39,37 +39,46 @@ const SystemDetail = () => {
     <>
       <div className="pb-3 border-b border-neutral-800">
         <div className="flex gap-2 items-center text-glow-white">
-          <i className="icarus-terminal-system-orbits" style={{fontSize: "1.5rem"}}></i>
-          <h2 className="uppercase text-3xl">{system.name} system</h2>
+          <i className="icarus-terminal-system-orbits" style={{fontSize: "3rem"}}></i>
+          <div>
+            <h2 className="uppercase text-3xl">{system.name} system</h2>
+            <h4 className="text-glow-orange font-bold uppercase">{system.bodies.length} bodies found in system</h4>
+          </div>
         </div>
-        <h4 className="text-glow-orange font-bold uppercase">8 bodies found in system</h4>
       </div>
-      <SystemInformation information={system.information} />
+      <SystemInformation coords={system.coords} information={system.information} />
       <div className="py-5 w-7xl overflow">
-        <h2 className="text-glow-white uppercase pb-5">System Bodies</h2>
+        <div className="flex items-center gap-2 pb-5">
+          <i className="icarus-terminal-system-bodies"></i>
+          <h2 className="text-glow-white uppercase">System Bodies</h2>
+        </div>
         <div className="flex items-center content-center gap-4">
           {!isLoading && system.bodies.length > 0 &&
           <SystemBody name={system.bodies[0].name}
             type={system.bodies[0].type}
             subType={system.bodies[0].sub_type}
             main={true}
+            total={system.bodies.length}
             small="false"
             className="w-32 text-glow-white"
           />}
-          <span className="me-10"></span>
-          {!isLoading && system.bodies && system.bodies.slice(-7).map(body => {
+          <span className="me-"></span>
+          {!isLoading && system.bodies && system.bodies.slice(1, 7).map(body => {
             return (
               <SystemBody key={body.name} name={body.name}
                 type={body.type}
-                subType={`${body.type}`}
+                subType={body.sub_type}
                 small="false"
-                className="w-20 text-glow-white" />
+                className="w-20 text-glow-white text-sm" />
             );
           })}
         </div>
       </div>
       <div className="py-5">
-        <h2 className="text-glow-white uppercase pb-5">Scheduled Departures</h2>
+        <div className="flex items-center gap-2 pb-5">
+          <i className="icarus-terminal-route"></i>
+          <h2 className="text-glow-white uppercase">Scheduled Departures</h2>
+        </div>
         {!isLoading && 
           <DepartureTable schedule={schedule}/>
         }
