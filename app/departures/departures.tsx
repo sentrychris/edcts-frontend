@@ -3,10 +3,10 @@ import { EyeIcon } from '@heroicons/react/24/outline';
 import { Schedule } from '../interfaces/Schedule';
 import { Pagination } from '../interfaces/Pagination';
 import { Collection, Resource } from '../interfaces/Request';
-import { formatDate, request } from '../util';
-import { defaultState as systemState } from '../systems/systems';
+import { formatDate, pagination, request } from '../util';
+import { systemState } from '../systems/systems';
 
-export const defaultState: Schedule = {
+export const scheduleState: Schedule = {
   id: 0,
   carrier: {
     name: '',
@@ -39,25 +39,7 @@ export const defaultState: Schedule = {
   slug: ''
 };
 
-export const paginatedState: Pagination<Schedule> = {
-  data: [],
-  links: {
-    first: '',
-    last: '',
-    next: null,
-    prev: null,
-  },
-  meta: {
-    current_page: 1,
-    from: 1,
-    last_page: 1,
-    links: [],
-    path: '',
-    per_page: 10,
-    to: 0,
-    total: 0
-  }
-};
+export const paginatedScheduleState: Pagination<Schedule> = pagination;
 
 export const getAllScheduledCarrierTrips: Collection<Schedule> = async (uri, params?) => await request(uri, params);
 export const getScheduledCarrierTrip: Resource<Schedule> = async (id, params?) => await request(`fleet/schedule/${id}`, params);

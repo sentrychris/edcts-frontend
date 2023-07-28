@@ -6,8 +6,8 @@ import { useEffect, useState } from 'react';
 import { System } from '../../interfaces/System';
 import { Schedule } from '../../interfaces/Schedule';
 import { Pagination } from '../../interfaces/Pagination';
-import { defaultState as systemState, getSystem } from '../systems';
-import { paginatedState, getAllScheduledCarrierTrips } from '../../departures/departures';
+import { systemState, getSystem } from '../systems';
+import { paginatedScheduleState, getAllScheduledCarrierTrips } from '../../departures/departures';
 import DepartureTable from '../../departures/components/departure-table';
 import SystemInformation from './system-information';
 import SystemCelestial from './system-celestial';
@@ -17,7 +17,7 @@ import Heading from '../../components/heading';
 
 const SystemDetail = () => {
   const [system, setSystem] = useState<System>(systemState);
-  const [schedule, setSchedule] = useState<Pagination<Schedule>>(paginatedState);
+  const [schedule, setSchedule] = useState<Pagination<Schedule>>(paginatedScheduleState);
   const [isLoading, setLoading] = useState(true);
 
   const path = usePathname();

@@ -4,10 +4,10 @@
 import { usePathname } from 'next/navigation';
 import { useEffect, useState } from 'react';
 import { Schedule } from '../../interfaces/Schedule';
-import { defaultState, getScheduledCarrierTrip } from '../departures';
+import { scheduleState, getScheduledCarrierTrip } from '../departures';
 
 const DepartureSchedule = () => {
-  const [schedule, setSchedule] = useState<Schedule>(defaultState);
+  const [schedule, setSchedule] = useState<Schedule>(scheduleState);
 
   const path = usePathname();
   const slug = path.split('/').pop();

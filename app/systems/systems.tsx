@@ -2,9 +2,10 @@ import Link from 'next/link';
 import { EyeIcon } from '@heroicons/react/24/outline';
 import { System } from '../interfaces/System';
 import { Collection, Resource } from '../interfaces/Request';
-import { request } from '../util';
+import { pagination, request } from '../util';
+import { Pagination } from '../interfaces/Pagination';
 
-export const defaultState: System = {
+export const systemState: System = {
   id: 0,
   id64: 0,
   name: '',
@@ -28,6 +29,8 @@ export const defaultState: System = {
   updated_at: '',
   slug: ''
 };
+
+export const paginatedSystemState: Pagination<System> = pagination;
 
 export const getAllSystems: Collection<System> = async (uri, params?) => await request(uri, params);
 export const getSystem: Resource<System> = async (id, params) => await request(`systems/${id}`, params);

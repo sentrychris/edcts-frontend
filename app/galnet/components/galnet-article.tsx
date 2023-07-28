@@ -4,11 +4,11 @@
 import { useEffect, useState } from 'react';
 import { usePathname } from 'next/navigation';
 import { Galnet} from '../../interfaces/Galnet';
-import { defaultState, getGalnetNewsArticle } from '../galnet';
+import { galnetState, getGalnetNewsArticle } from '../galnet';
 import Heading from '@/app/components/heading';
 
 const GalnetArticle = () => {
-  const [article, setArticle] = useState<Galnet>(defaultState);
+  const [article, setArticle] = useState<Galnet>(galnetState);
 
   const path = usePathname();
   const slug = path.split('/').pop();
