@@ -34,7 +34,7 @@ export const pagination = {
     to: 0,
     total: 0
   }
-}
+};
 
 export async function request(uri: string, params?: Record<string, string>) {
   const url = !isAbsoluteUrl(uri) ? `http://localhost/api/${uri}` : uri;

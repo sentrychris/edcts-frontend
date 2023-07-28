@@ -1,6 +1,6 @@
-import { FunctionComponent } from "react";
-import PaginationLink from "./pagination-link";
-import { Links, Meta } from "../interfaces/Pagination";
+import { FunctionComponent } from 'react';
+import PaginationLink from './pagination-link';
+import { Links, Meta } from '../interfaces/Pagination';
 
 interface Props {
   metadata: Meta;
@@ -56,7 +56,7 @@ const PaginationLinks: FunctionComponent<Props> = ({ metadata, links, paginate }
         >Last</PaginationLink>
       </li>
     </ul>
-  )
-}
+  );
+};
 
 export default PaginationLinks;

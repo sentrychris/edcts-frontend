@@ -1,4 +1,4 @@
-import { FunctionComponent } from "react";
+import { FunctionComponent } from 'react';
 
 interface Props {
   title: string;
@@ -15,6 +15,6 @@ const SystemTitle: FunctionComponent<Props> = ({title, celestials}) => {
       </div>
     </div>
   );
-}
+};
 
 export default SystemTitle;
