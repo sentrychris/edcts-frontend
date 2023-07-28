@@ -10,8 +10,10 @@ import { defaultState as systemState, getSystem } from '../systems';
 import { paginatedState, getAllScheduledCarrierTrips } from '../../departures/departures';
 import DepartureTable from '../../departures/components/departure-table';
 import SystemInformation from './system-information';
-import SystemBody from './system-body';
+import SystemCelestial from './system-celestial';
 import Loader from '../../components/loader';
+import SystemTitle from './system-title';
+import Heading from '../../components/heading';
 
 const SystemDetail = () => {
   const [system, setSystem] = useState<System>(systemState);
@@ -24,13 +26,17 @@ const SystemDetail = () => {
   useEffect(() => {
     if (slug) {
       setLoading(true);
-      getSystem(slug).then((system) => {
+      getSystem(slug, {
+        withInformation: 1,
+        withBodies: 1
+      }).then((system) => {
         setSystem(system);
         getAllScheduledCarrierTrips('fleet/schedule', {
-          departure: system.name
+          departure: system.name,
+          withCarrierInformation: 1,
+          withSystemInformation: 1,
         }).then((schedule) => {
           setSchedule(schedule);
-
           setTimeout(() => {
             setLoading(false);
           }, 500);
@@ -43,45 +49,31 @@ const SystemDetail = () => {
     <>
       {isLoading && <Loader visible={isLoading} />}
       <div className="pb-3 border-b border-neutral-800">
-        <div className="flex gap-2 items-center text-glow-white">
-          <i className="icarus-terminal-system-orbits" style={{fontSize: '3rem'}}></i>
-          <div>
-            <h2 className="uppercase text-3xl">{system.name} system</h2>
-            <h4 className="text-glow-orange font-bold uppercase">{system.bodies.length} bodies found in system</h4>
-          </div>
-        </div>
+        <SystemTitle title={system.name} celestials={system.bodies.length} />
       </div>
       <SystemInformation coords={system.coords} information={system.information} />
       <div className="py-5 w-7xl overflow">
-        <div className="flex items-center gap-2 pb-5">
-          <i className="icarus-terminal-system-bodies"></i>
-          <h2 className="text-glow-white uppercase">System Bodies</h2>
-        </div>
-        <div className="flex items-center content-center gap-4">
-          {!isLoading && system.bodies.length > 0 &&
-          <SystemBody name={system.bodies[0].name}
+        <Heading icon="icarus-terminal-system-bodies" title="System Bodies" className="gap-2 pb-5" />
+        {system.bodies.length > 0 ? <div className="flex items-center content-center gap-4">
+          {!isLoading && system.bodies.length > 0 && <SystemCelestial name={system.bodies[0].name}
             type={system.bodies[0].type}
             subType={system.bodies[0].sub_type}
             main={true}
             total={system.bodies.length}
             className="w-32 text-glow-white"
           />}
-          <span className="me-"></span>
           {!isLoading && system.bodies && system.bodies.slice(1, 7).map(body => {
             return (
-              <SystemBody key={body.name} name={body.name}
+              <SystemCelestial key={body.name} name={body.name}
                 type={body.type}
                 subType={body.sub_type}
                 className="w-20 text-glow-white text-sm" />
             );
           })}
-        </div>
+        </div> : <div>No celestial bodies found in this system...</div>}
       </div>
       <div className="py-5">
-        <div className="flex items-center gap-2 pb-5">
-          <i className="icarus-terminal-route"></i>
-          <h2 className="text-glow-white uppercase">Scheduled Departures</h2>
-        </div>
+        <Heading icon="icarus-terminal-route" title="Scheduled Departures" className="gap-2 pb-5" />
         {!isLoading && 
           <DepartureTable schedule={schedule}/>
         }

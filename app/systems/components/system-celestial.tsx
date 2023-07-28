@@ -9,7 +9,7 @@ interface Props {
   className?: string;
 }
 
-const SystemBody: FunctionComponent<Props> = ({name, type, subType, main, total, className}) => {
+const SystemCelestial: FunctionComponent<Props> = ({name, type, subType, main, total, className}) => {
   return (
     <>
       <svg viewBox="-2500 -2500 5000 5000" preserveAspectRatio="xMinYMid meet" className={className}>
@@ -34,4 +34,4 @@ const SystemBody: FunctionComponent<Props> = ({name, type, subType, main, total,
   );
 };
 
-export default SystemBody;
+export default SystemCelestial;

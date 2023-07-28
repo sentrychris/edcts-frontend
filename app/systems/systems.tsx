@@ -30,7 +30,7 @@ export const defaultState: System = {
 };
 
 export const getAllSystems: Collection<System> = async (uri, params?) => await request(uri, params);
-export const getSystem: Resource<System> = async (id) => await request(`systems/${id}`);
+export const getSystem: Resource<System> = async (id, params) => await request(`systems/${id}`, params);
 
 export const renderSecurityText = (level: string) => {
   return <p className={

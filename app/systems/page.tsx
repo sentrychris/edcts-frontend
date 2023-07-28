@@ -1,8 +1,11 @@
 import { getAllSystems } from './systems';
 import SystemsTable from './components/systems-table';
+import Heading from '../components/heading';
 
 export default async function Page() {
-  const systems = await getAllSystems('systems');
+  const systems = await getAllSystems('systems', {
+    withInformation: 1
+  });
 
   return (
     <>
@@ -33,10 +36,10 @@ export default async function Page() {
           <p>Current commodities stock in galactic market: <span className="font-bold tracking-widest">99,689,890,482</span></p>
         </div>
       </div>
-      <div className="flex items-center gap-3 my-5">
-        <i className="icarus-terminal-system-orbits" style={{fontSize: '1.5rem'}}></i>
-        <h2 className="uppercase text-3xl text-glow-white">Systems Information</h2>
-      </div>
+      <Heading icon="icarus-terminal-system-orbits"
+        largeIcon={true}
+        title="Systems Information"
+        className="gap-3 my-5 text-2xl" />
       <SystemsTable systems={systems} />
     </>
   );

@@ -60,16 +60,17 @@ export default function MainNavigation() {
               <div className="absolute inset-y-0 right-0 flex items-center pr-2 sm:static sm:inset-auto sm:ml-6 sm:pr-0">
                 <Menu as="div" className="relative ml-3">
                   <div className="flex items-center gap-3">
-                    <Menu.Button className="flex rounded-full bg-zinc-800 text-sm focus:outline-none">
+                    <Menu.Button className="flex items-center gap-3 text-sm focus:outline-none align-items">
+                      <span className="hidden md:flex text-glow-orange text-xs[">CMDR Shaki Kazaro</span>
                       <Image
-                        className="h-10 w-10 rounded-full border-2 border-orange-600 shadow shadow-orange-500"
+                        className="h-10 w-10 rounded-lg border-2 border-neutral-700"
                         width={32}
                         height={32}
-                        src="/me.jpg"
+                        src="/me.jpg?v=2.0"
                         alt=""
                       />
+                      <i className="icarus-terminal-chevron-down text-glow-white"></i>
                     </Menu.Button>
-                    <i className="icarus-terminal-chevron-down text-glow-white"></i>
                   </div>
                   <Transition
                     as={Fragment}
