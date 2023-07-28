@@ -56,7 +56,11 @@ const SystemsTable: FunctionComponent<Props> = ({ systems }) => {
   return (
     <div>
       <Filter handleInput={searchData} className="mb-5" />
-      <Table columns={systemColumns} data={rows} meta={metadata} links={navigation} page={paginate} />
+      <Table columns={systemColumns}
+        data={rows}
+        meta={metadata}
+        links={navigation}
+        page={paginate} />
     </div>
   );
 };

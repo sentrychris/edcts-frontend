@@ -56,7 +56,11 @@ const DepartureTable: FunctionComponent<Props> = ({ schedule }) => {
   return (
     <div>
       <Filter handleInput={searchData} className="mb-5" />
-      <Table columns={scheduleColumns} data={rows} meta={metadata} links={navigation} page={paginate} />
+      <Table columns={scheduleColumns}
+        data={rows}
+        meta={metadata}
+        links={navigation}
+        page={paginate} />
     </div>
   );
 };
