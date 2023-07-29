@@ -1,10 +1,11 @@
-import { getAllScheduledCarrierTrips } from './departures';
+import { Schedule } from '../interfaces/Schedule';
 import DepartureCard from './components/departure-card';
 import DepartureTable from './components/departure-table';
 import Heading from '../components/heading';
+import { getCollection } from '../service/api';
 
 export default async function Page() {
-  const schedule = await getAllScheduledCarrierTrips('fleet/schedule', {
+  const schedule = await getCollection<Schedule>('fleet/schedule', {
     withCarrierInformation: 1,
     withSystemInformation: 1
   });

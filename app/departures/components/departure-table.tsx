@@ -3,10 +3,11 @@
 import { FunctionComponent, useState } from 'react';
 import { Links, Meta, Pagination } from '../../interfaces/Pagination';
 import { Schedule } from '../../interfaces/Schedule';
-import { getAllScheduledCarrierTrips, scheduleColumns } from '../departures';
+import { scheduleColumns } from '../service/departures';
 import { useDebounce } from '../../hooks/debounce';
 import Filter from '../../components/filter';
 import Table from '../../components/table';
+import { getCollection } from '@/app/service/api';
 
 interface Props {
   schedule: Pagination<Schedule>;
@@ -32,12 +33,17 @@ const DepartureTable: FunctionComponent<Props> = ({ schedule }) => {
 
     let response;
     if (text.length === 0) {
-      response = await getAllScheduledCarrierTrips('fleet/schedule');
+      response = await getCollection<Schedule>('fleet/schedule', {
+        withCarrierInformation: 1,
+        withSystemInformation: 1
+      });
     } else {
       if (debouncedQuery?.length > 1) {
-        response = await getAllScheduledCarrierTrips('fleet/schedule', {
+        response = await getCollection<Schedule>('fleet/schedule', {
           departure: text,
-          operand: 'like'
+          exactMatch: false,
+          withCarrierInformation: 1,
+          withSystemInformation: 1
         });
       }
     }
@@ -49,7 +55,7 @@ const DepartureTable: FunctionComponent<Props> = ({ schedule }) => {
   };
 
   const paginate = async (link: string) => {
-    const { data, meta, links } = await getAllScheduledCarrierTrips(link);
+    const { data, meta, links } = await getCollection<Schedule>(link);
     await setState(data, meta, links);
   };
 

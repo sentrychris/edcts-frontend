@@ -1,13 +1,14 @@
 import Link from 'next/link';
-import { getAllGalnetNewsArticles } from './galnet/galnet';
-import { getAllScheduledCarrierTrips } from './departures/departures';
+import { Schedule } from './interfaces/Schedule';
+import { Galnet } from './interfaces/Galnet';
 import DepartureCard from './departures/components/departure-card';
 import DepartureTable from './departures/components/departure-table';
 import Heading from './components/heading';
+import { getCollection } from './service/api';
 
 export default async function Home() {
-  const news = await getAllGalnetNewsArticles('galnet/news');
-  const schedule = await getAllScheduledCarrierTrips('fleet/schedule', {
+  const news = await getCollection<Galnet>('galnet/news');
+  const schedule = await getCollection<Schedule>('fleet/schedule', {
     withCarrierInformation: 1,
     withSystemInformation: 1
   });

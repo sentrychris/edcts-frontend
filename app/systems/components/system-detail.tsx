@@ -6,14 +6,15 @@ import { useEffect, useState } from 'react';
 import { System } from '../../interfaces/System';
 import { Schedule } from '../../interfaces/Schedule';
 import { Pagination } from '../../interfaces/Pagination';
-import { systemState, getSystem } from '../systems';
-import { paginatedScheduleState, getAllScheduledCarrierTrips } from '../../departures/departures';
+import { systemState } from '../service/systems';
+import { paginatedScheduleState } from '../../departures/service/departures';
 import DepartureTable from '../../departures/components/departure-table';
 import SystemInformation from './system-information';
 import SystemCelestial from './system-celestial';
 import Loader from '../../components/loader';
 import SystemTitle from './system-title';
 import Heading from '../../components/heading';
+import { getCollection, getResource } from '@/app/service/api';
 
 const SystemDetail = () => {
   const [system, setSystem] = useState<System>(systemState);
@@ -26,12 +27,12 @@ const SystemDetail = () => {
   useEffect(() => {
     if (slug) {
       setLoading(true);
-      getSystem(`systems/${slug}`, {
+      getResource<System>(`systems/${slug}`, {
         withInformation: 1,
         withBodies: 1
       }).then((system) => {
         setSystem(system);
-        getAllScheduledCarrierTrips('fleet/schedule', {
+        getCollection<Schedule>('fleet/schedule', {
           departure: system.name,
           withCarrierInformation: 1,
           withSystemInformation: 1,

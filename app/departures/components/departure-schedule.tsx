@@ -4,7 +4,8 @@
 import { usePathname } from 'next/navigation';
 import { useEffect, useState } from 'react';
 import { Schedule } from '../../interfaces/Schedule';
-import { scheduleState, getScheduledCarrierTrip } from '../departures';
+import { scheduleState } from '../service/departures';
+import { getResource } from '../../service/api';
 
 const DepartureSchedule = () => {
   const [schedule, setSchedule] = useState<Schedule>(scheduleState);
@@ -15,7 +16,7 @@ const DepartureSchedule = () => {
   useEffect(() => {
     (async () => {
       if (slug) {
-        const data = await getScheduledCarrierTrip(`fleet/schedule/${slug}`, {
+        const data = await getResource<Schedule>(`fleet/schedule/${slug}`, {
           withCarrierInformation: 1,
           withSystemInformation: 1
         });

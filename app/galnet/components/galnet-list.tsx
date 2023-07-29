@@ -5,9 +5,9 @@ import { FunctionComponent, useState } from 'react';
 import Link from 'next/link';
 import { Galnet} from '../../interfaces/Galnet';
 import { Pagination } from '../../interfaces/Pagination';
-import { getAllGalnetNewsArticles } from '../galnet';
-import Heading from '@/app/components/heading';
-import PaginationLinks from '@/app/components/pagination-links';
+import Heading from '../../components/heading';
+import PaginationLinks from '../../components/pagination-links';
+import { getCollection } from '../../service/api';
 
 interface Props {
   articles: Pagination<Galnet>
@@ -20,7 +20,7 @@ const GalnetList: FunctionComponent<Props> = ({ articles }) => {
   const [navigation, setNavigation] = useState(links);
 
   const paginate = async (link: string) => {
-    const { data, meta, links } = await getAllGalnetNewsArticles(link);
+    const { data, meta, links } = await getCollection<Galnet>(link);
     setRows(data);
     setMetadata(meta);
     setNavigation(links);

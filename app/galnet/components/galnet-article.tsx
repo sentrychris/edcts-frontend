@@ -4,8 +4,9 @@
 import { useEffect, useState } from 'react';
 import { usePathname } from 'next/navigation';
 import { Galnet} from '../../interfaces/Galnet';
-import { galnetState, getGalnetNewsArticle } from '../galnet';
-import Heading from '@/app/components/heading';
+import { galnetState } from '../service/galnet';
+import Heading from '../../components/heading';
+import { getResource } from '../../service/api';
 
 const GalnetArticle = () => {
   const [article, setArticle] = useState<Galnet>(galnetState);
@@ -15,7 +16,7 @@ const GalnetArticle = () => {
 
   useEffect(() => {
     (async () => {
-      const data = await getGalnetNewsArticle(`galnet/news/${slug}`);
+      const data = await getResource<Galnet>(`galnet/news/${slug}`);
       setArticle(data);
     })();
   }, []);

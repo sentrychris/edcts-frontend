@@ -1,10 +1,10 @@
 import Link from 'next/link';
 import { EyeIcon } from '@heroicons/react/24/outline';
-import { Schedule } from '../interfaces/Schedule';
-import { Pagination } from '../interfaces/Pagination';
-import { Collection, Resource } from '../interfaces/Request';
-import { formatDate, pagination, request } from '../util';
-import { systemState } from '../systems/systems';
+import { Schedule } from '../../interfaces/Schedule';
+import { Pagination } from '../../interfaces/Pagination';
+import { formatDate } from '../../util';
+import { pagination } from '../../service/api';
+import { systemState } from '../../systems/service/systems';
 
 export const scheduleState: Schedule = {
   id: 0,
@@ -40,9 +40,6 @@ export const scheduleState: Schedule = {
 };
 
 export const paginatedScheduleState: Pagination<Schedule> = pagination;
-
-export const getAllScheduledCarrierTrips: Collection<Schedule> = async (uri, params?) => await request(uri, params);
-export const getScheduledCarrierTrip: Resource<Schedule> = async (uri, params?) => await request(uri, params);
 
 export const getStatusText = (schedule: Schedule) => {
   const { status } = schedule;

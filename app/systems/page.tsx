@@ -1,9 +1,11 @@
-import { getAllSystems } from './systems';
+
 import SystemsTable from './components/systems-table';
 import Heading from '../components/heading';
+import { getCollection } from '../service/api';
+import { System } from '../interfaces/System';
 
 export default async function Page() {
-  const systems = await getAllSystems('systems', {
+  const systems = await getCollection<System>('systems', {
     withInformation: 1
   });
 

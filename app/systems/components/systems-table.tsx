@@ -3,10 +3,11 @@
 import { FunctionComponent, useState } from 'react';
 import { Links, Meta, Pagination } from '../../interfaces/Pagination';
 import { System } from '../../interfaces/System';
-import { getAllSystems, systemColumns } from '../systems';
+import { systemColumns } from '../service/systems';
 import { useDebounce } from '../../hooks/debounce';
 import Filter from '../../components/filter';
 import Table from '../../components/table';
+import { getCollection } from '@/app/service/api';
 
 interface Props {
   systems: Pagination<System>;
@@ -32,12 +33,15 @@ const SystemsTable: FunctionComponent<Props> = ({ systems }) => {
 
     let response;
     if (text.length === 0) {
-      response = await getAllSystems('systems');
+      response = await getCollection<System>('systems', {
+        withInformation: 1
+      });
     } else {
       if (debouncedQuery?.length > 1) {
-        response = await getAllSystems('systems', {
+        response = await getCollection<System>('systems', {
           name: text,
-          operand: 'like'
+          exactSearch: false,
+          withInformation: 1
         });
       }
     }
@@ -49,7 +53,7 @@ const SystemsTable: FunctionComponent<Props> = ({ systems }) => {
   };
 
   const paginate = async (link: string) => {
-    const { data, meta, links } = await getAllSystems(link);
+    const { data, meta, links } = await getCollection<System>(link);
     await setState(data, meta, links);
   };
 

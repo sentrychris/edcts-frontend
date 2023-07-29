@@ -1,9 +1,8 @@
 import Link from 'next/link';
 import { EyeIcon } from '@heroicons/react/24/outline';
-import { System } from '../interfaces/System';
-import { Collection, Resource } from '../interfaces/Request';
-import { pagination, request } from '../util';
-import { Pagination } from '../interfaces/Pagination';
+import { System } from '../../interfaces/System';
+import { Pagination } from '../../interfaces/Pagination';
+import { pagination } from '../../service/api';
 
 export const systemState: System = {
   id: 0,
@@ -32,9 +31,6 @@ export const systemState: System = {
 
 export const paginatedSystemState: Pagination<System> = pagination;
 
-export const getAllSystems: Collection<System> = async (uri, params?) => await request(uri, params);
-export const getSystem: Resource<System> = async (uri, params?) => await request(uri, params);
-
 export const renderSecurityText = (level: string) => {
   return <p className={
     (level === 'Medium'
@@ -46,7 +42,6 @@ export const renderSecurityText = (level: string) => {
     {level}
   </p>;
 };
-
 
 export const renderAllegianceText = (value: string) => {
   return <p className={

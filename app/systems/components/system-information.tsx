@@ -1,6 +1,6 @@
 import { FunctionComponent } from 'react';
 import { SystemInformation } from '../../interfaces/System';
-import { renderBadge } from '../systems';
+import { renderBadge } from '../service/systems';
 import { formatNumber } from '../../util';
 
 interface Props {
