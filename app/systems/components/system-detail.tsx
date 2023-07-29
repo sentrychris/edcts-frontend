@@ -44,7 +44,7 @@ const SystemDetail = () => {
         });
       });
     }
-  }, []);
+  }, [slug]);
 
   return (
     <>

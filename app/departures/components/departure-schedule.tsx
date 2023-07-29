@@ -23,7 +23,7 @@ const DepartureSchedule = () => {
         setSchedule(data);
       }
     })();
-  }, []);
+  }, [slug]);
 
   return (
     <>

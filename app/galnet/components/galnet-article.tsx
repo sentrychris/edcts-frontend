@@ -19,7 +19,7 @@ const GalnetArticle = () => {
       const data = await getResource<Galnet>(`galnet/news/${slug}`);
       setArticle(data);
     })();
-  }, []);
+  }, [slug]);
 
   return (
     <>
