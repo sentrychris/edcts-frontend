@@ -15,7 +15,7 @@ const GalnetArticle = () => {
 
   useEffect(() => {
     (async () => {
-      const data = await getGalnetNewsArticle(slug as string);
+      const data = await getGalnetNewsArticle(`galnet/news/${slug}`);
       setArticle(data);
     })();
   }, []);

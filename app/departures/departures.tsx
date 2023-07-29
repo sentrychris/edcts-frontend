@@ -42,7 +42,7 @@ export const scheduleState: Schedule = {
 export const paginatedScheduleState: Pagination<Schedule> = pagination;
 
 export const getAllScheduledCarrierTrips: Collection<Schedule> = async (uri, params?) => await request(uri, params);
-export const getScheduledCarrierTrip: Resource<Schedule> = async (id, params?) => await request(`fleet/schedule/${id}`, params);
+export const getScheduledCarrierTrip: Resource<Schedule> = async (uri, params?) => await request(uri, params);
 
 export const getStatusText = (schedule: Schedule) => {
   const { status } = schedule;

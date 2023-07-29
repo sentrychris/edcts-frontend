@@ -15,7 +15,7 @@ const DepartureSchedule = () => {
   useEffect(() => {
     (async () => {
       if (slug) {
-        const data = await getScheduledCarrierTrip(slug, {
+        const data = await getScheduledCarrierTrip(`fleet/schedule/${slug}`, {
           withCarrierInformation: 1,
           withSystemInformation: 1
         });

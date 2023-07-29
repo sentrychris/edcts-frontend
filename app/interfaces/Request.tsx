@@ -5,5 +5,5 @@ export interface Collection<T> {
 }
 
 export interface Resource<T> {
-  (id: string | number, params?: Record<string, any>): Promise<T>
+  (uri: string, params?: Record<string, any>): Promise<T>
 }

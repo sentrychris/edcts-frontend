@@ -26,7 +26,7 @@ const SystemDetail = () => {
   useEffect(() => {
     if (slug) {
       setLoading(true);
-      getSystem(slug, {
+      getSystem(`systems/${slug}`, {
         withInformation: 1,
         withBodies: 1
       }).then((system) => {

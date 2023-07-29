@@ -33,7 +33,7 @@ export const systemState: System = {
 export const paginatedSystemState: Pagination<System> = pagination;
 
 export const getAllSystems: Collection<System> = async (uri, params?) => await request(uri, params);
-export const getSystem: Resource<System> = async (id, params) => await request(`systems/${id}`, params);
+export const getSystem: Resource<System> = async (uri, params?) => await request(uri, params);
 
 export const renderSecurityText = (level: string) => {
   return <p className={

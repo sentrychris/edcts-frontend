@@ -15,4 +15,4 @@ export const galnetState: Galnet = {
 export const paginatedGalnetState: Pagination<Galnet> = pagination;
 
 export const getAllGalnetNewsArticles: Collection<Galnet> = async (uri, params?) => await request(uri, params);
-export const getGalnetNewsArticle: Resource<Galnet> = async (id) => await request(`galnet/news/${id}`);
+export const getGalnetNewsArticle: Resource<Galnet> = async (uri, params?) => await request(uri, params);
