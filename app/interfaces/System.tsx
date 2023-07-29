@@ -10,6 +10,14 @@ export interface SystemInformation {
   }
 }
 
+export interface SystemRing {
+  name: string;
+  type: string;
+  mass: number;
+  innerRadius: number;
+  outerRadius: number;
+}
+
 export interface SystemBody {
   id: number;
   name: string;
@@ -18,7 +26,8 @@ export interface SystemBody {
   discovery: {
     commander: string;
     date: string;
-  }
+  };
+  rings: SystemRing[];
 }
 
 export interface System {

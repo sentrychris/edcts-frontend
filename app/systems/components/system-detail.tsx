@@ -46,11 +46,15 @@ const SystemDetail = () => {
     }
   }, [slug]);
 
+  const mainCelestial = system.bodies[0];
+
   return (
     <>
       {isLoading && <Loader visible={isLoading} />}
       <div className="pb-3 border-b border-neutral-800">
-        <SystemTitle title={system.name} celestials={system.bodies.length} />
+        <SystemTitle title={system.name}
+          celestials={system.bodies.length}
+          special="(Collection of Wonders)"/>
       </div>
       <SystemInformation coords={system.coords} information={system.information} />
       <div className="py-5 w-7xl overflow">
@@ -58,15 +62,16 @@ const SystemDetail = () => {
         {system.bodies.length > 0 ? <div className="flex items-center content-center gap-4">
           {!isLoading && system.bodies.length > 0 &&
           <SystemCelestial
-            id={system.bodies[0].id}
-            name={system.bodies[0].name}
-            type={system.bodies[0].type}
-            subType={system.bodies[0].sub_type}
+            id={mainCelestial.id}
+            name={mainCelestial.name}
+            type={mainCelestial.type}
+            subType={mainCelestial.sub_type}
             main={true}
-            total={system.bodies.length}
+            orbiting={(system.bodies.length-1)}
+            ringed={mainCelestial.rings && mainCelestial.rings.length > 0}
             className="w-48 text-glow-white"
           />}
-          {!isLoading && system.bodies && system.bodies.slice(1, 7).map(body => {
+          {!isLoading && system.bodies && system.bodies.slice(1, 6).map(body => {
             console.log(body.id)
             return (
               <SystemCelestial key={body.id}
@@ -74,6 +79,7 @@ const SystemDetail = () => {
                 name={body.name}
                 type={body.type}
                 subType={body.sub_type}
+                ringed={body.rings && body.rings.length > 0}
                 className="w-32 text-glow-white text-sm" />
             );
           })}

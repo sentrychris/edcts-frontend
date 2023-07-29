@@ -6,13 +6,14 @@ interface Props {
   type: string;
   subType: string;
   main?: boolean;
-  total?: number;
+  orbiting?: number;
+  ringed?: boolean;
   className?: string;
 }
 
 const r = 2000;
 
-const SystemCelestial: FunctionComponent<Props> = ({id, name, type, subType, main, total, className}) => {
+const SystemCelestial: FunctionComponent<Props> = ({id, name, type, subType, main, orbiting, ringed, className}) => {
   return (
     <>
       <svg viewBox="-4000 -4000 8000 8000" preserveAspectRatio="xMinYMid meet" className={className}>
@@ -22,56 +23,56 @@ const SystemCelestial: FunctionComponent<Props> = ({id, name, type, subType, mai
           tabIndex={0}>
           <g className="system-map__body">
             <g className="system-map__planet">
-              <circle cx="0" cy="0" r={r}></circle>
-              <circle className="system-map__planet-surface" cx="0" cy="0" r={r}></circle>
-              <>
-                  <defs>
-                    <mask
-                      id={`planet-ring-mask-${id}`}
-                      className='system-map__planet-ring-mask'
-                    >
-                      <ellipse
-                        cx={0}
-                        cy={0}
-                        rx={r * 2}
-                        ry={r / 3}
-                        fill='white'
-                      />
-                      <ellipse
-                        cx={0}
-                        cy={0 - (r / 5)}
-                        rx={r}
-                        ry={r / 3}
-                        fill='black'
-                      />
-                      <ellipse
-                        cx={0}
-                        cy={0 - (r / 15)}
-                        rx={r * 1.2}
-                        ry={r / 5}
-                        fill='black'
-                      />
-                    </mask>
-                  </defs>
-                  <ellipse
-                    className='system-map__planet-ring'
-                    cx={0}
-                    cy={0}
-                    rx={r * 2}
-                    ry={r / 3}
-                    mask={`url(#planet-ring-mask-${id})`}
-                    opacity='1'
-                  />
-                  <ellipse
-                    className='system-map__planet-ring'
-                    cx={0}
-                    cy={0 - (r / 80)}
-                    rx={r * 1.85}
-                    ry={r / 4.2}
-                    mask={`url(#planet-ring-mask-${id})`}
-                    opacity='.25'
-                  />
-                </>
+              <circle cx="50" cy="50" r={r}></circle>
+              <circle className="system-map__planet-surface" cx="50" cy="50" r={r}></circle>
+              {ringed && <>
+                <defs>
+                  <mask
+                    id={`planet-ring-mask-${id}`}
+                    className='system-map__planet-ring-mask'
+                  >
+                    <ellipse
+                      cx={0}
+                      cy={0}
+                      rx={r * 2}
+                      ry={r / 3}
+                      fill='white'
+                    />
+                    <ellipse
+                      cx={0}
+                      cy={0 - (r / 5)}
+                      rx={r}
+                      ry={r / 3}
+                      fill='black'
+                    />
+                    <ellipse
+                      cx={0}
+                      cy={0 - (r / 15)}
+                      rx={r * 1.2}
+                      ry={r / 5}
+                      fill='black'
+                    />
+                  </mask>
+                </defs>
+                <ellipse
+                  className='system-map__planet-ring'
+                  cx={0}
+                  cy={0}
+                  rx={r * 2}
+                  ry={r / 3}
+                  mask={`url(#planet-ring-mask-${id})`}
+                  opacity='1'
+                />
+                <ellipse
+                  className='system-map__planet-ring'
+                  cx={0}
+                  cy={0 - (r / 80)}
+                  rx={r * 1.85}
+                  ry={r / 4.2}
+                  mask={`url(#planet-ring-mask-${id})`}
+                  opacity='.25'
+                />
+              </>}
             </g>
           </g>
         </g>
@@ -79,7 +80,7 @@ const SystemCelestial: FunctionComponent<Props> = ({id, name, type, subType, mai
       <div className="star_information uppercase">
         <p className="whitespace-nowrap">{name}</p>
         <p className="whitespace-nowrap text-xs">{subType}</p>
-        {main && total && <span className="text-glow-orange text-sm">{(total-1)} orbiting bodies found</span>}
+        {main && orbiting && <span className="text-glow-orange text-sm">{(orbiting)} orbiting bodies found</span>}
       </div>
     </>
   );
