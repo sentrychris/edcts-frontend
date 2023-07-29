@@ -1,0 +1,340 @@
+table {
+  position: relative;
+  top: 0;
+  margin: 0;
+  border: 0;
+  padding: 0;
+  border-spacing: 0;
+  border-collapse: collapse;
+  width: 100%;
+  background-color: #222;
+  --color-icon: var(--color-primary);
+  padding-right: .25rem;
+}
+
+table thead tr th {
+  text-shadow: var(--text-shadow);
+  text-transform: uppercase;
+  color: var(--color-info);
+  padding: .5rem .5rem .9rem .5rem;
+  text-align: left;
+  user-select: none;
+  font-weight: bold;
+  text-shadow: none;
+
+  /* Don't let table heading text wrap (breaks UI) */
+  white-space: nowrap !important;
+  text-overflow: ellipsis !important;
+  overflow-x: clip !important; /* avoids clipping text shadow on y axis */
+}
+
+table thead tr {
+  position: sticky !important;
+  top: 0;
+  z-index: 2;
+}
+
+table thead tr th:after {
+  opacity: 0.5;
+  position: absolute;
+  content: '';
+  display: block;
+  width: 100%;
+  top: 2.6rem;
+  left: 0;
+  right: 0;
+  border-bottom: .2rem solid var(--color-primary);
+  box-shadow: 0 .03rem .5rem var(--color-primary);
+}
+
+table td {
+  padding: 0.5rem 1rem;
+  overflow: hidden;
+  text-shadow: var(--text-shadow);
+  text-transform: uppercase;
+  font-weight: bold;
+  vertical-align: middle;
+}
+
+table tbody tr {
+  border-top: .25rem solid transparent;
+  outline: 0 !important;
+  animation: fade-in-animation .25s ease;
+  color: var(--color-primary);
+  background: var(--color-background-panel-translucent);
+}
+
+table tbody tr.table__row--highlighted td {
+  background: rgba(var(--color-secondary-dark-r),var(--color-secondary-dark-g),var(--color-secondary-dark-b),.5) !important;
+  color: var(--color-secondary) !important;
+}
+
+table:not(.table--inline).table--interactive tbody tr.table__row--highlighted:hover td {
+  background: var(--color-secondary) !important;
+  color: var(--color-secondary-dark) !important;
+  text-shadow: none;
+}
+
+table:not(.table--inline).table--interactive tbody tr.table__row--highlight-primary-hover:hover td {
+  background: var(--color-primary) !important;
+  color: var(--color-primary-dark) !important;
+  text-shadow: none;
+}
+
+table tbody tr.table__row--selected td:first-of-type {
+  box-shadow: .5rem 0 0 0 var(--color-primary) inset !important;
+}
+
+table tbody tr.table__row--large td {
+  padding-top: 1rem !important;
+  padding-bottom: 1rem !important;
+}
+
+table:not(.table--inline).table--interactive tbody tr:hover:not(.table-row--disabled):not(:focus) td {
+  color: var(--color-primary);
+  background: var(--color-primary-dark);
+  transition: all .1s ease;
+}
+
+table:not(.table--inline).table--interactive tbody tr:focus:not(.table-row--disabled) td {
+  color: var(--color-primary-dark) !important;
+  background: var(--color-primary) !important;
+  text-shadow: none;
+}
+
+table:not(.table--inline).table--interactive tbody tr:focus:not(.table-row--disabled) .icon {
+  color: var(--color-primary-dark) !important; 
+  font-weight: bold;
+  text-shadow: none;
+}
+
+table td.wrap:last-child {
+  white-space: pre-wrap;
+  word-wrap: break-word;
+}
+
+table.table--layout {
+  margin: .5rem 0;
+  table-layout: fixed;
+}
+
+table.table--layout tbody tr {
+  background: transparent;
+}
+
+table.table--layout tbody tr td {
+  padding: 0;
+  border: .5rem solid transparent;
+  vertical-align: middle;
+  overflow: visible;
+}
+
+table.table__bordered {
+  border: 0;
+  padding-right: 0;
+}
+
+table.table__bordered tbody tr {
+  border-bottom: 0;
+}
+
+table.table__bordered tbody tr:not(.table-row--disabled) {
+  background: transparent !important;
+}
+
+table.table__bordered tbody tr {
+  background: var(--color-background-panel-translucent);
+  border: .2rem solid var(--color-primary-dark);
+}
+
+table.table--inline {
+  display: inline-block;
+  font-size: 1.25rem;
+}
+
+table.table--inline tbody tr td {
+  padding: .125rem 1.5rem .125rem 0;
+}
+
+table.table--inline tbody tr {
+  border-spacing: 0;
+  border-bottom: 0;
+  background: transparent;
+}
+
+table.table--flex-inline tbody {
+  display: flex;
+  flex-wrap: wrap;
+  border: 0;
+}
+
+table.table--flex-inline tbody tr {
+  background: none;
+  width: 25%;
+  box-sizing: border-box;
+  margin: 0;
+  padding: .1rem .25rem;
+}
+
+@media only screen and (max-width: 1280px) {
+  table.table--flex-inline tbody tr {
+    width: 33.33%;
+  }
+}
+
+@media only screen and (max-width: 799px) {
+  table.table--flex-inline tbody tr {
+    width: 50%;
+  }
+}
+
+@media only screen and (max-width: 599px) {
+  table.table--flex-inline tbody tr {
+    width: 100%;
+  }
+}
+
+table.table--flex-inline tbody tr td {
+  display: block;
+  height: 100%;
+  box-sizing: border-box;
+  position: relative;
+  background: var(--color-background-panel-translucent);
+}
+
+table.table--flex-inline.table--interactive tbody tr:hover td,
+table.table--flex-inline.table--interactive tbody tr:focus td,
+table.table--flex-inline.table--interactive tbody tr.table__row--active td {
+  background: var(--color-primary) !important;
+  color: var(--color-primary-dark) !important;
+  opacity: 1;
+  text-shadow: none;
+  border-radius: .1rem;
+}
+
+table.table--flex-inline.table--interactive tbody tr:not(.table__row--active):hover td {
+  filter: var(--filter-hover-element);
+}
+
+table.table--animated tbody tr {
+  opacity: 0; 
+}
+
+table.table--animated tbody tr.--shown {
+  animation: fx-flash-in-animation .5s;
+  animation-fill-mode: forwards;
+  opacity: 0;
+}
+
+table.table--flex-inline.table--animated tbody tr {
+  animation: none;
+  opacity: 1;
+}
+
+table.table--flex-inline.table--animated tbody tr td {
+  animation: fx-fade-in-animation .5s;
+  animation-fill-mode: forwards;
+  animation-delay: 0.5s;
+  opacity: 0;
+}
+
+table.table--flex-inline.table--animated tbody tr:nth-child(1) td {
+  animation: fx-flash-in-animation .5s;
+  animation-fill-mode: forwards;
+  animation-delay: 0s;
+}
+table.table--flex-inline.table--animated tbody tr:nth-child(2) td {
+  animation: fx-flash-in-animation .5s;
+  animation-fill-mode: forwards;
+  animation-delay: .025s;
+}
+table.table--flex-inline.table--animated tbody tr:nth-child(3) td {
+  animation: fx-flash-in-animation .5s;
+  animation-fill-mode: forwards;
+  animation-delay: .05s;
+}
+table.table--flex-inline.table--animated tbody tr:nth-child(4) td {
+  animation: fx-flash-in-animation .5s;
+  animation-fill-mode: forwards;
+  animation-delay: .075s;
+}
+table.table--flex-inline.table--animated tbody tr:nth-child(5) td {
+  animation: fx-flash-in-animation .5s;
+  animation-fill-mode: forwards;
+  animation-delay: .1s;
+}
+table.table--flex-inline.table--animated tbody tr:nth-child(6) td {
+  animation: fx-flash-in-animation .5s;
+  animation-fill-mode: forwards;
+  animation-delay: .125s;
+}
+table.table--flex-inline.table--animated tbody tr:nth-child(7) td {
+  animation: fx-flash-in-animation .5s;
+  animation-fill-mode: forwards;
+  animation-delay: .15s;
+}
+table.table--flex-inline.table--animated tbody tr:nth-child(8) td {
+  animation: fx-flash-in-animation .5s;
+  animation-fill-mode: forwards;
+  animation-delay: .175s;
+}
+table.table--flex-inline.table--animated tbody tr:nth-child(9) td {
+  animation: fx-flash-in-animation .5s;
+  animation-fill-mode: forwards;
+  animation-delay: .2s;
+}
+table.table--flex-inline.table--animated tbody tr:nth-child(10) td {
+  animation: fx-flash-in-animation .5s;
+  animation-fill-mode: forwards;
+  animation-delay: .225s;
+}
+table.table--flex-inline.table--animated tbody tr:nth-child(11) td {
+  animation: fx-flash-in-animation .5s;
+  animation-fill-mode: forwards;
+  animation-delay: .25s;
+}
+table.table--flex-inline.table--animated tbody tr:nth-child(12) td {
+  animation: fx-flash-in-animation .5s;
+  animation-fill-mode: forwards;
+  animation-delay: .275s;
+}
+table.table--flex-inline.table--animated tbody tr:nth-child(13) td {
+  animation: fx-flash-in-animation .5s;
+  animation-fill-mode: forwards;
+  animation-delay: .3s;
+}
+table.table--flex-inline.table--animated tbody tr:nth-child(14) td {
+  animation: fx-flash-in-animation .5s;
+  animation-fill-mode: forwards;
+  animation-delay: .325s;
+}
+table.table--flex-inline.table--animated tbody tr:nth-child(15) td {
+  animation: fx-flash-in-animation .5s;
+  animation-fill-mode: forwards;
+  animation-delay: .35s;
+}
+table.table--flex-inline.table--animated tbody tr:nth-child(16) td {
+  animation: fx-flash-in-animation .5s;
+  animation-fill-mode: forwards;
+  animation-delay: .375s;
+}
+table.table--flex-inline.table--animated tbody tr:nth-child(17) td {
+  animation: fx-flash-in-animation .5s;
+  animation-fill-mode: forwards;
+  animation-delay: .4s;
+}
+table.table--flex-inline.table--animated tbody tr:nth-child(18) td {
+  animation: fx-flash-in-animation .5s;
+  animation-fill-mode: forwards;
+  animation-delay: .425s;
+}
+table.table--flex-inline.table--animated tbody tr:nth-child(19) td {
+  animation: fx-flash-in-animation .5s;
+  animation-fill-mode: forwards;
+  animation-delay: .45s;
+}
+table.table--flex-inline.table--animated tbody tr:nth-child(20) td {
+  animation: fx-flash-in-animation .5s;
+  animation-fill-mode: forwards;
+  animation-delay: .475s;
+}

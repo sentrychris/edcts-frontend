@@ -1,7 +1,10 @@
 @import url('https://fonts.googleapis.com/css2?family=Jura:wght@300;400;500;700&display=swap');
 @import url('/fonts/icarus-terminal/icarus-terminal.css');
 @import url('./variables.css');
+@import url("./fx/fx.css");
+@import url("./fx/crt.css");
 @import url('./system.css');
+@import url('./table.css');
 @import url('./loader.css');
 
 @tailwind base;

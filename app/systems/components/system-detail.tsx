@@ -56,19 +56,25 @@ const SystemDetail = () => {
       <div className="py-5 w-7xl overflow">
         <Heading icon="icarus-terminal-system-bodies" title="System Bodies" className="gap-2 pb-5" />
         {system.bodies.length > 0 ? <div className="flex items-center content-center gap-4">
-          {!isLoading && system.bodies.length > 0 && <SystemCelestial name={system.bodies[0].name}
+          {!isLoading && system.bodies.length > 0 &&
+          <SystemCelestial
+            id={system.bodies[0].id}
+            name={system.bodies[0].name}
             type={system.bodies[0].type}
             subType={system.bodies[0].sub_type}
             main={true}
             total={system.bodies.length}
-            className="w-32 text-glow-white"
+            className="w-48 text-glow-white"
           />}
           {!isLoading && system.bodies && system.bodies.slice(1, 7).map(body => {
+            console.log(body.id)
             return (
-              <SystemCelestial key={body.name} name={body.name}
+              <SystemCelestial key={body.id}
+                id={body.id}
+                name={body.name}
                 type={body.type}
                 subType={body.sub_type}
-                className="w-20 text-glow-white text-sm" />
+                className="w-32 text-glow-white text-sm" />
             );
           })}
         </div> : <div>No celestial bodies found in this system...</div>}

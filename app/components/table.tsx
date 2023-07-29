@@ -1,6 +1,7 @@
-import { JSX } from 'react';
+import { JSX, useEffect } from 'react';
 import { Meta, Links } from '../interfaces/Pagination';
 import PaginationLinks from './pagination-links';
+import animateTableEffect from '../hooks/animate';
 
 type RenderColumn<T> = (item: T) => string | JSX.Element;
 
@@ -29,6 +30,8 @@ function Table<T extends RequiredAttribute>({ columns, data, meta, links, page }
   type Mode = { accessor?: string; render?: RenderColumn<T> };
   const isRender = (ctx: Mode): ctx is Required<Mode> => !!ctx.render;
   const isAccessor = (ctx: Mode): ctx is Required<Mode> => !!ctx.accessor;
+
+  useEffect(animateTableEffect)
   
   const renderBody = (data: any) => {
     if (!data || data.length === 0) {
@@ -44,7 +47,7 @@ function Table<T extends RequiredAttribute>({ columns, data, meta, links, page }
     return <tbody>
       <>
         {data.map((item: T) => (
-          <tr key={`row_${item.id}`} className="bg-white dark:bg-neutral-900 border-b dark:border-b-gray-600 last:border-b-0">
+          <tr key={`row_${item.id}`} className="bg-white dark:bg-neutral-900 border-b dark:border-b-gray-600 last:border-b-0 table-row--disabled">
             {Object.keys(columns).map(key =>
               <td key={`rowColumn_${item.id}_${key}`} scope="row" className="py-4 px-6 font-medium whitespace-nowrap text-gray-900 dark:text-gray-200">
                 {renderContent(item, key)}
@@ -79,7 +82,7 @@ function Table<T extends RequiredAttribute>({ columns, data, meta, links, page }
   return (
     <>
       <div className="overflow-x-auto relative sm:rounded-lg shadow-lg">
-        <table className="w-full text-sm text-left text-gray-500 dark:text-gray-400">
+        <table className="w-full text-sm text-left text-gray-500 dark:text-gray-400 table--animated table--interactive">
           <thead className="text-gray-400 uppercase bg-slate-50 dark:bg-neutral-900 dark:text-gray-400 dark:border-b dark:border-b-gray-600">
             <tr>
               {Object.keys(columns).map(key =>

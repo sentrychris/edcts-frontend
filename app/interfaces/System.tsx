@@ -11,6 +11,7 @@ export interface SystemInformation {
 }
 
 export interface SystemBody {
+  id: number;
   name: string;
   type: string;
   sub_type: string;

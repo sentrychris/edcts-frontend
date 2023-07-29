@@ -31,7 +31,7 @@ export const systemState: System = {
 
 export const paginatedSystemState: Pagination<System> = pagination;
 
-export const renderSecurityText = (level: string) => {
+export const renderSecurityText = (level: string = 'None') => {
   return <p className={
     (level === 'Medium'
       ? 'text-orange-500 dark:text-orange-300'
@@ -43,7 +43,7 @@ export const renderSecurityText = (level: string) => {
   </p>;
 };
 
-export const renderAllegianceText = (value: string) => {
+export const renderAllegianceText = (value: string = 'None') => {
   return <p className={
     (value === 'Federation' ? 'text-blue-500 dark:text-blue-200'
       : (value === 'Empire') ? 'text-yellow-500 dark:text-yellow-400'
