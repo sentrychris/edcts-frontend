@@ -72,7 +72,6 @@ const SystemDetail = () => {
             className="w-48 text-glow-white"
           />}
           {!isLoading && system.bodies && system.bodies.slice(1, 6).map(body => {
-            console.log(body.id)
             return (
               <SystemCelestial key={body.id}
                 id={body.id}

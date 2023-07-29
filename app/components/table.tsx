@@ -31,7 +31,7 @@ function Table<T extends RequiredAttribute>({ columns, data, meta, links, page }
   const isRender = (ctx: Mode): ctx is Required<Mode> => !!ctx.render;
   const isAccessor = (ctx: Mode): ctx is Required<Mode> => !!ctx.accessor;
 
-  useEffect(animateTableEffect)
+  useEffect(animateTableEffect);
   
   const renderBody = (data: any) => {
     if (!data || data.length === 0) {
