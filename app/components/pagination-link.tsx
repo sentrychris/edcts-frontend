@@ -1,6 +1,6 @@
 'use client';
 
-import { FormEvent, FunctionComponent, JSX } from 'react';
+import { FormEvent, FunctionComponent, JSX, memo } from 'react';
 
 interface Props {
   url: string | null;
@@ -36,4 +36,4 @@ const PaginationLink: FunctionComponent<Props> = ({ url, active, children, pagin
   );
 };
 
-export default PaginationLink;
+export default memo(PaginationLink);

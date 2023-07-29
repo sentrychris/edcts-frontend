@@ -1,4 +1,4 @@
-import { FunctionComponent } from 'react';
+import { FunctionComponent, memo } from 'react';
 
 interface Props {
   visible: boolean;
@@ -48,4 +48,4 @@ const Loader: FunctionComponent<Props> = ({ visible = true, message = 'Loading, 
 };
 
 
-export default Loader;
+export default memo(Loader);

@@ -1,6 +1,6 @@
-import { FunctionComponent } from 'react';
-import PaginationLink from './pagination-link';
+import { FunctionComponent, memo } from 'react';
 import { Links, Meta } from '../interfaces/Pagination';
+import PaginationLink from './pagination-link';
 
 interface Props {
   metadata: Meta;
@@ -59,4 +59,4 @@ const PaginationLinks: FunctionComponent<Props> = ({ metadata, links, paginate }
   );
 };
 
-export default PaginationLinks;
+export default memo(PaginationLinks);

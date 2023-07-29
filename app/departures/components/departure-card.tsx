@@ -1,4 +1,4 @@
-import { FunctionComponent } from 'react';
+import { FunctionComponent, memo } from 'react';
 import Link from 'next/link';
 import { Schedule } from '../../interfaces/Schedule';
 import { formatDate } from '../../util';
@@ -45,4 +45,4 @@ const DepartureCard: FunctionComponent<Props> = ({schedule, className}) => {
   );
 };
 
-export default DepartureCard;
+export default memo(DepartureCard);

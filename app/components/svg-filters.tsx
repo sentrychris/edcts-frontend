@@ -1,4 +1,4 @@
-import { FunctionComponent } from 'react';
+import { FunctionComponent, memo } from 'react';
 
 const SvgFilters: FunctionComponent = () =>{
   return (
@@ -153,4 +153,4 @@ const SvgFilters: FunctionComponent = () =>{
   );
 };
 
-export default SvgFilters;
+export default memo(SvgFilters);

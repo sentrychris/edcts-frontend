@@ -1,4 +1,4 @@
-import { FunctionComponent } from 'react';
+import { FunctionComponent, memo } from 'react';
 import { SystemInformation } from '../../interfaces/System';
 import { renderBadge } from '../service/systems';
 import { formatNumber } from '../../util';
@@ -61,4 +61,4 @@ const SystemInformation: FunctionComponent<Props> = ({ coords, information }) =>
   );
 };
 
-export default SystemInformation;
+export default memo(SystemInformation);

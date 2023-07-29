@@ -1,4 +1,4 @@
-import { FunctionComponent } from 'react';
+import { FunctionComponent, memo } from 'react';
 
 interface Props {
   name: string;
@@ -34,4 +34,4 @@ const SystemCelestial: FunctionComponent<Props> = ({name, type, subType, main, t
   );
 };
 
-export default SystemCelestial;
+export default memo(SystemCelestial);

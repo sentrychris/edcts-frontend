@@ -1,4 +1,4 @@
-import { FunctionComponent } from 'react';
+import { FunctionComponent, memo } from 'react';
 
 interface Props {
   title: string;
@@ -16,4 +16,4 @@ const Heading: FunctionComponent<Props> = ({ title, icon, largeIcon = false, cla
   );
 };
 
-export default Heading;
+export default memo(Heading);

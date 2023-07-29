@@ -1,4 +1,4 @@
-import { FunctionComponent } from 'react';
+import { FunctionComponent, memo } from 'react';
 
 interface Props {
   title: string;
@@ -17,4 +17,4 @@ const SystemTitle: FunctionComponent<Props> = ({title, celestials}) => {
   );
 };
 
-export default SystemTitle;
+export default memo(SystemTitle);
