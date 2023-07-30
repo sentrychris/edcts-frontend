@@ -3,7 +3,7 @@
 
 import { usePathname } from 'next/navigation';
 import { useEffect, useState } from 'react';
-import { System } from '../../interfaces/System';
+import { System, SystemBody } from '../../interfaces/System';
 import { Schedule } from '../../interfaces/Schedule';
 import { Pagination } from '../../interfaces/Pagination';
 import { systemState } from '../service/systems';
@@ -46,41 +46,58 @@ const SystemDetail = () => {
     }
   }, [slug]);
 
-  const mainCelestial = system.bodies[0];
+  function renderMainStar(celestials: SystemBody[]) {
+    return (
+      <SystemCelestial key={celestials[0].id}
+        id={celestials[0].id}
+        name={celestials[0].name}
+        type={celestials[0].type}
+        subType={celestials[0].sub_type}
+        main={true}
+        ringed={celestials[0].rings && celestials[0].rings.length > 0}
+        orbiting={(celestials.length-1)}
+        className="w-32 text-glow-white text-sm" />
+    );
+  }
+
+  function renderCelestials(
+    celestials: SystemBody[],
+    {slice, filter, level}: {slice?: number[] | null, filter: 'Planet' | 'Star', level: number}
+  ) {
+    const [start, end] = slice ?? [0, celestials.length];
+
+    return celestials.filter((c: SystemBody) => {
+      return c.type === filter && c.parents && c.parents.length === level
+    }).slice(start, end).map((celestial: SystemBody) => {
+      return (
+        <SystemCelestial key={celestial.id}
+          id={celestial.id}
+          name={celestial.name}
+          type={celestial.type}
+          subType={celestial.sub_type}
+          ringed={celestial.rings && celestial.rings.length > 0}
+          className="w-32 text-glow-white text-sm" />
+      );
+    })
+  }
 
   return (
     <>
       {isLoading && <Loader visible={isLoading} />}
       <div className="pb-3 border-b border-neutral-800">
         <SystemTitle title={system.name}
-          celestials={system.bodies.length}
-          special="(Collection of Wonders)"/>
+          celestials={system.bodies.length}/>
       </div>
       <SystemInformation coords={system.coords} information={system.information} />
       <div className="py-5 w-7xl overflow">
         <Heading icon="icarus-terminal-system-bodies" title="System Bodies" className="gap-2 pb-5" />
-        {system.bodies.length > 0 ? <div className="flex items-center content-center gap-4">
-          {!isLoading && system.bodies.length > 0 &&
-          <SystemCelestial
-            id={mainCelestial.id}
-            name={mainCelestial.name}
-            type={mainCelestial.type}
-            subType={mainCelestial.sub_type}
-            main={true}
-            orbiting={(system.bodies.length-1)}
-            ringed={mainCelestial.rings && mainCelestial.rings.length > 0}
-            className="w-48 text-glow-white"
-          />}
-          {!isLoading && system.bodies && system.bodies.slice(1, 6).map(body => {
-            return (
-              <SystemCelestial key={body.id}
-                id={body.id}
-                name={body.name}
-                type={body.type}
-                subType={body.sub_type}
-                ringed={body.rings && body.rings.length > 0}
-                className="w-32 text-glow-white text-sm" />
-            );
+        {!isLoading && system.bodies && system.bodies.length > 0 ?
+        <div className="flex items-center content-center gap-4">
+          {renderMainStar(system.bodies)}
+          {renderCelestials(system.bodies, {
+            filter: 'Planet',
+            level: 1,
+            slice: [0,8]
           })}
         </div> : <div>No celestial bodies found in this system...</div>}
       </div>

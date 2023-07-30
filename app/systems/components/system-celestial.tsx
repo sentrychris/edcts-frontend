@@ -23,8 +23,8 @@ const SystemCelestial: FunctionComponent<Props> = ({id, name, type, subType, mai
           tabIndex={0}>
           <g className="system-map__body">
             <g className="system-map__planet">
-              <circle cx="50" cy="50" r={r}></circle>
-              <circle className="system-map__planet-surface" cx="50" cy="50" r={r}></circle>
+              <circle cx="0" cy="0" r={r}></circle>
+              <circle className="system-map__planet-surface" cx="0" cy="0" r={r}></circle>
               {ringed && <>
                 <defs>
                   <mask

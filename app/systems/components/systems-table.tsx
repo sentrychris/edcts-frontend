@@ -40,7 +40,7 @@ const SystemsTable: FunctionComponent<Props> = ({ systems }) => {
       if (debouncedQuery?.length > 1) {
         response = await getCollection<System>('systems', {
           name: text,
-          exactSearch: false,
+          exactSearch: 0,
           withInformation: 1
         });
       }

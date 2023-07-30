@@ -28,6 +28,7 @@ export interface SystemBody {
     date: string;
   };
   rings: SystemRing[];
+  parents: Array<Record<string, number>> | null;
 }
 
 export interface System {
