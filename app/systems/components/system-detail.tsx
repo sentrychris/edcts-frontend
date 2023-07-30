@@ -51,6 +51,7 @@ const SystemDetail = () => {
       <SystemCelestial key={celestials[0].id}
         id={celestials[0].id}
         celestial={celestials[0]}
+        system={system.name}
         main={true}
         orbiting={(celestials.length-1)}
         className="w-32 text-glow-white text-sm" />
@@ -71,6 +72,7 @@ const SystemDetail = () => {
         <SystemCelestial key={celestial.id}
           id={celestial.id}
           celestial={celestial}
+          system={system.name}
           className="w-32 text-glow-white text-sm" />
       );
     });
@@ -89,11 +91,11 @@ const SystemDetail = () => {
         {!isLoading && system.bodies && system.bodies.length > 0 ?
         <div className="flex items-center content-center gap-4">
           <div className="border-r pe-12 border-neutral-700 rounded-full">{renderMainStar(system.bodies)}</div>
-          <div className="flex items-center">
+          <div className="flex items-center gap-3">
             <span className="text-xs">L1 Orbitals</span>
             {renderCelestials(system.bodies, {
               level: 1,
-              slice: [1, system.bodies.length]
+              slice: [0, 8]
             })}
           </div>
         </div>

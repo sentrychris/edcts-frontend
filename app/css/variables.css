@@ -73,7 +73,7 @@
   --filter-system-map-planet-landable: contrast(1.15) brightness(1.2);
   
   --base-font-size: 1.25rem;
-  --text-shadow: 0 0 5px;
+  --text-shadow: 0 0 20px;
 
   --breakpoint-small: 600px; /* Where Small starts. Anything below this is Tiny */
   --breakpoint-medium: 800px; /* Where Medium starts. */

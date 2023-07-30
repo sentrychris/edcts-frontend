@@ -5,6 +5,7 @@ import Icons from '../../icons';
 interface Props {
   id: number;
   celestial: SystemBody;
+  system: string;
   main?: boolean;
   orbiting?: number;
   className?: string;
@@ -13,6 +14,7 @@ interface Props {
 const SystemCelestial: FunctionComponent<Props> = ({
   id,
   celestial,
+  system,
   main,
   orbiting,
   className
@@ -35,6 +37,20 @@ const SystemCelestial: FunctionComponent<Props> = ({
 
   const imageX = 0 - CORRECT_FOR_IMAGE_OFFSET_X;
   const imageY = 0 - CORRECT_FOR_IMAGE_OFFSET_Y;
+
+  const displayName = main ? celestial.name : celestial.name.split(system).pop()?.trim();
+
+  const shortSubType = (subType: string) => {
+    let value = subType;
+    if (subType === 'High metal content world') value = 'High metal'
+    if (subType === 'Class I gas giant') value = 'Gas giant'
+    if (subType === 'M (Red dwarf) Star') value = 'M Red dwarf'
+    if (subType === 'White Dwarf (DA) Star') value = 'DA White dwarf'
+  
+    value = value.replace('world', '');
+
+    return value;
+  }
 
   return (
     <div className="flex gap-1 items-center">
@@ -127,9 +143,9 @@ const SystemCelestial: FunctionComponent<Props> = ({
         </g>
       </svg>
       <div className="star_information uppercase text-xs">
-        <p className="whitespace-nowrap">{celestial.name}</p>
-        <p className="whitespace-nowrap">{celestial.sub_type}</p>
-        {main && orbiting && <span className="text-glow-orange text-sm">{(orbiting)} orbiting bodies found</span>}
+        <p className="whitespace-nowrap">{displayName}</p>
+        <p className="w-16" style={{fontSize: '0.6rem'}}>{shortSubType(celestial.sub_type)}</p>
+        {main && orbiting && <span className="text-glow-orange text-xs">{(orbiting)} orbiting bodies found</span>}
       </div>
     </div>
   );

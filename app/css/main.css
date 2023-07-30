@@ -58,6 +58,27 @@ body {
   background: var(--color-primary-dark)
 }
 
+nav.main-nav__nav {
+  top: 0;
+  position: sticky;
+  width: full;
+  z-index: 40;
+  padding-bottom: 0.75rem;
+}
+
+nav.main-nav__nav .main-nav__menu {
+  top: 0;
+  padding-top: 0.35rem;
+  padding-bottom: 0.35rem;
+  margin-left: auto;
+  margin-right: auto;
+  background: black;
+  border-bottom: 2px solid var(--color-primary-dark);
+  box-shadow: 0 0 8px var(--color-primary);
+  text-shadow: var(--text-shadow);
+  z-index: 40;
+}
+
 .overlay {
   opacity: 0.4;
   z-index: -1;
@@ -87,7 +108,7 @@ body {
   }
 
   .text-glow-white {
-    @apply text-black dark:text-white;
+    color: white;
     text-shadow: var(--text-shadow);
   }
   
