@@ -1,3 +1,5 @@
+@import url('./variables.css');
+
 .system-map,
 .system-map__planetary-system {
   --system-map-left-margin: 5rem;
@@ -130,10 +132,7 @@
   position: relative;
   display: block;
   left: 0;
-  min-height: 5rem;
   height: auto;
-  padding-top: 1rem;
-  padding-left: var(--system-map-left-margin);
 }
 
 .system-map__planetary-system:last-child {
@@ -142,13 +141,11 @@
 
 .system-map__planetary-system svg {
   max-width: 100%;
-  /* Don't display map SVG on page load for performance reasons */
   opacity: 0;
   visibility: hidden;
   animation: svg-fade-in-animation 1s ease-in-out;
   animation-fill-mode: forwards;
-  /* Wait until after other animations on page are done for best performance on slow devices */
-  animation-delay: 1s; 
+  animation-delay: .05s; 
 }
 
 .system-map__planetary-system-star-icon svg {
@@ -161,8 +158,9 @@
 }
 
 @keyframes svg-fade-in-animation {
-  from { filter: contrast(2) blur(2rem); visibility: visible; opacity : 0; }
-  to { filter: contrast(1) blur(0); visibility: visible; opacity: 1; }
+  0% { filter: contrast(2) blur(2rem); visibility: visible; opacity : 0; }
+  50% { filter: contrast(1) blur(0); visibility: visible; opacity: .75; }
+  100% { filter: contrast(1) blur(0); visibility: visible; opacity: 1; }
 }
 
 
@@ -241,17 +239,6 @@
 
 .system-map__system-object[data-system-object-type="Planet"][data-system-object-small="true"][data-system-object-landable="true"]:focus .system-map__planet {
   filter: url(#svg-filter__planet-shadow--small) drop-shadow(0 0 4rem var(--color-primary-dark)) var(--filter-system-map-planet-landable) !important;
-}
-
-/* .system-map__system-object[data-system-object-type="Planet"]:focus + .system-map__planet-ring {
-  stroke: var(--color-icon-focus);
-  stroke-width: 10rem;
-  transition: all .1s ease; 
-  opacity: 0.7;
-} */
-
-.system-map__system-object[data-system-object-type="Planet"]:not([data-system-object-atmosphere="No atmosphere"]) .system-map__planet {
-
 }
 
 .system-map__system-object[data-system-object-type="Star"][data-system-object-sub-type="Supermassive Black Hole" i] .system-map__planet,
@@ -375,34 +362,6 @@
 
 .system-map__system-object:focus .system-map__planet-surface {
   fill: url(#svg-pattern__planet-surface-animated);
-}
-
-.system-map__planetary-system-map {
-  position: relative;
-  animation: fade-in-animation ease 1s;
-  animation-fill-mode: forwards;
-  animation-delay: .5s;
-  opacity: 0;
-  margin: 1rem auto auto auto;
-  z-index: 2;
-  user-select: none;
-}
-
-.system-map__planet-name-text {
-  font-size: 26rem;
-  fill: var(--color-primary);
-  color: var(--color-primary);
-  text-shadow: var(--text-shadow);
-  opacity: 1;
-  text-transform: uppercase;
-}
-
-.system-map__planet-distance-text {
-  font-size: 22rem;
-  fill: var(--color-info);
-  color: var(--color-info);
-  text-shadow: var(--text-shadow);
-  opacity: 0.5;
 }
 
 .system-map__planet-surface {

@@ -1,5 +1,5 @@
 
-export default function animateTableEffect() {
+export function useAnimateTable() {
   const observer = new IntersectionObserver(callbackFunction, {});
 
   function callbackFunction (entries: any) {

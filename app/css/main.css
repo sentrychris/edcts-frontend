@@ -48,12 +48,14 @@
 
 body {
   color: rgb(var(--foreground-rgb));
-  background: linear-gradient(
-      to bottom,
-      transparent,
-      rgb(var(--background-end-rgb))
-    )
-    rgb(var(--background-start-rgb));
+  background: radial-gradient(circle at 240%, var(--color-primary-dark) 25%, #000000);
+}
+
+.bg-primary {
+  background: var(--color-primary);
+}
+.bg-primary-dark {
+  background: var(--color-primary-dark)
 }
 
 .overlay {

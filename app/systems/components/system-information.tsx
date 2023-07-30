@@ -33,8 +33,8 @@ const SystemInformation: FunctionComponent<Props> = ({ coords, information }) =>
       <div className="flex flex-row align-center justify-start gap-20 uppercase">
         <div>
           <p className="mb-2">Governance:</p>
-          <span className="flex items-center gap-2 bg-neutral-900 shadow-neutral-900 px-3 py-1 rounded-lg uppercase text-glow-white shadow">
-              <i className="icarus-terminal-system-authority"></i>
+          <span className="flex items-center gap-2 py-1 uppercase text-glow-white">
+              <i className="icarus-terminal-system-authority text-glow-orange"></i>
               <p>
                 <span className="me-3">{information.allegiance ?? 'No Allegiance'}</span>
                 <span>/</span>

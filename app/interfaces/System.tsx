@@ -27,6 +27,9 @@ export interface SystemBody {
     commander: string;
     date: string;
   };
+  radius: number;
+  atmosphere_type: string;
+  is_landable: number;
   rings: SystemRing[];
   parents: Array<Record<string, number>> | null;
 }
