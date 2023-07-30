@@ -15,6 +15,7 @@ import Loader from '../../components/loader';
 import SystemTitle from './system-title';
 import Heading from '../../components/heading';
 import { getCollection, getResource } from '@/app/service/api';
+import { mapSystemHeirarchy } from '../service/mapper';
 
 const SystemDetail = () => {
   const [system, setSystem] = useState<System>(systemState);
@@ -32,6 +33,9 @@ const SystemDetail = () => {
         withBodies: 1
       }).then((system) => {
         setSystem(system);
+        if (system.bodies) {
+          mapSystemHeirarchy(system.bodies);
+        }
         getCollection<Schedule>('fleet/schedule', {
           departure: system.name,
           withCarrierInformation: 1,

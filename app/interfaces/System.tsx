@@ -20,6 +20,7 @@ export interface SystemRing {
 
 export interface SystemBody {
   id: number;
+  body_id: number;
   name: string;
   type: string;
   sub_type: string;
@@ -31,7 +32,7 @@ export interface SystemBody {
   atmosphere_type: string;
   is_landable: number;
   rings: SystemRing[];
-  parents: Array<Record<string, number>> | null;
+  parents: Array<Record<string, any>> | null;
 }
 
 export interface System {
