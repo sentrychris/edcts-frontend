@@ -1,7 +1,7 @@
-import { SystemCelestial } from '@/app/interfaces/System';
 import { FunctionComponent, memo } from 'react';
 import Icons from '../../icons';
-import { Dispatcher } from '@/app/interfaces/Dispatcher';
+import { SystemCelestial } from '../../lib/interfaces/System';
+import { Dispatcher } from '../../lib/interfaces/Dispatcher';
 
 interface Props {
   id: number;

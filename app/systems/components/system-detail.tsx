@@ -3,20 +3,20 @@
 
 import { usePathname } from 'next/navigation';
 import { FunctionComponent, useEffect, useState } from 'react';
-import { System, SystemCelestial as ISystemCelestial } from '../../interfaces/System';
-import { Schedule } from '../../interfaces/Schedule';
-import { Pagination } from '../../interfaces/Pagination';
-import { systemState } from '../service/systems';
-import { paginatedScheduleState } from '../../departures/service/departures';
+import { System, SystemCelestial as ISystemCelestial } from '../../lib/interfaces/System';
+import { Schedule } from '../../lib/interfaces/Schedule';
+import { Pagination } from '../../lib/interfaces/Pagination';
+import { systemState } from '../lib/systems';
+import { paginatedScheduleState } from '../../departures/lib/departures';
+import { getCollection, getResource } from '../../lib/api';
+import { systemDispatcher } from '../../lib/events/system';
+import SystemMap from '../lib/mapper';
 import DepartureTable from '../../departures/components/departure-table';
 import SystemInformation from './system-information';
 import SystemCelestial from './system-celestial';
 import Loader from '../../components/loader';
 import SystemTitle from './system-title';
 import Heading from '../../components/heading';
-import { getCollection, getResource } from '@/app/service/api';
-import { systemDispatcher } from '@/app/service/events/system';
-import SystemMap from '../service/mapper';
 
 const SystemDetail: FunctionComponent = () => {
   const [system, setSystem] = useState<System>(systemState);

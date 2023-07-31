@@ -1,6 +1,6 @@
 import { JSX, useEffect } from 'react';
-import { Meta, Links } from '../interfaces/Pagination';
-import { useAnimateTable } from '../hooks/animate';
+import { Meta, Links } from '../lib/interfaces/Pagination';
+import { useAnimateTable } from '../lib/hooks/animate';
 import PaginationLinks from './pagination-links';
 
 type RenderColumn<T> = (item: T) => string | JSX.Element;

@@ -1,8 +1,8 @@
 import { FunctionComponent, memo } from 'react';
 import Link from 'next/link';
-import { Schedule } from '../../interfaces/Schedule';
-import { formatDate } from '../../util';
-import { renderStatus } from '../service/departures';
+import { Schedule } from '../../lib/interfaces/Schedule';
+import { formatDate } from '../../lib/util';
+import { renderStatus } from '../lib/departures';
 
 interface Props {
   className?: string;

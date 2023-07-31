@@ -1,8 +1,8 @@
 import Link from 'next/link';
 import { EyeIcon } from '@heroicons/react/24/outline';
-import { System } from '../../interfaces/System';
-import { Pagination } from '../../interfaces/Pagination';
-import { pagination } from '../../service/api';
+import { System } from '../../lib/interfaces/System';
+import { Pagination } from '../../lib/interfaces/Pagination';
+import { pagination } from '../../lib/api';
 
 export const systemState: System = {
   id: 0,

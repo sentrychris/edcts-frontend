@@ -1,4 +1,4 @@
-import Heading from '@/app/components/heading';
+import Heading from '../../../components/heading';
 import SystemDetail from '../../components/system-detail';
 
 export default async function Page() {

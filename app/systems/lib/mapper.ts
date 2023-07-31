@@ -2,7 +2,7 @@ import {
   System,
   SystemCelestial,
   MappedSystemCelestial
-} from '../../interfaces/System';
+} from '../../lib/interfaces/System';
 
 const SOLAR_RADIUS = 696340;
 
