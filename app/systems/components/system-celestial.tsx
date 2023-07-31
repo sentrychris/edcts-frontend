@@ -1,13 +1,15 @@
-import { SystemBody } from '@/app/interfaces/System';
+import { SystemCelestial } from '@/app/interfaces/System';
 import { FunctionComponent, memo } from 'react';
 import Icons from '../../icons';
+import { Dispatcher } from '@/app/interfaces/Dispatcher';
 
 interface Props {
   id: number;
-  celestial: SystemBody;
+  celestial: SystemCelestial;
   system: string;
   main?: boolean;
   orbiting?: number;
+  dispatcher: Dispatcher;
   className?: string;
 }
 

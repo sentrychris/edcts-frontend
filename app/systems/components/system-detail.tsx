@@ -2,8 +2,8 @@
 'use client';
 
 import { usePathname } from 'next/navigation';
-import { useEffect, useState } from 'react';
-import { System, SystemBody } from '../../interfaces/System';
+import { FunctionComponent, useEffect, useState } from 'react';
+import { System, SystemCelestial as ISystemCelestial } from '../../interfaces/System';
 import { Schedule } from '../../interfaces/Schedule';
 import { Pagination } from '../../interfaces/Pagination';
 import { systemState } from '../service/systems';
@@ -15,12 +15,17 @@ import Loader from '../../components/loader';
 import SystemTitle from './system-title';
 import Heading from '../../components/heading';
 import { getCollection, getResource } from '@/app/service/api';
-import { mapSystemHeirarchy } from '../service/mapper';
+import { systemDispatcher } from '@/app/service/events/system';
+import SystemMap from '../service/mapper';
 
-const SystemDetail = () => {
+const SystemDetail: FunctionComponent = () => {
   const [system, setSystem] = useState<System>(systemState);
   const [schedule, setSchedule] = useState<Pagination<Schedule>>(paginatedScheduleState);
   const [isLoading, setLoading] = useState(true);
+
+  systemDispatcher.addEventListener('map', (event) => {
+    console.log(event.message);
+  });
 
   const path = usePathname();
   const slug = path.split('/').pop();
@@ -28,55 +33,63 @@ const SystemDetail = () => {
   useEffect(() => {
     if (slug) {
       setLoading(true);
+
       getResource<System>(`systems/${slug}`, {
         withInformation: 1,
         withBodies: 1
       }).then((system) => {
+
         setSystem(system);
-        if (system.bodies) {
-          mapSystemHeirarchy(system.bodies);
-        }
+
+        const map = new SystemMap(system);
+        console.log({ map })
+
         getCollection<Schedule>('fleet/schedule', {
           departure: system.name,
           withCarrierInformation: 1,
           withSystemInformation: 1,
         }).then((schedule) => {
+
           setSchedule(schedule);
+          
           setTimeout(() => {
             setLoading(false);
           }, 500);
         });
+
       });
     }
   }, [slug]);
 
-  function renderMainStar(celestials: SystemBody[]) {
+  function renderMainStar(celestials: ISystemCelestial[]) {
     return (
-      <SystemCelestial key={celestials[0].id}
-        id={celestials[0].id}
+      <SystemCelestial key={celestials[0].id64}
+        id={celestials[0].id64}
         celestial={celestials[0]}
         system={system.name}
         main={true}
         orbiting={(celestials.length-1)}
+        dispatcher={systemDispatcher}
         className="w-32 text-glow-white text-sm" />
     );
   }
 
   function renderCelestials(
-    celestials: SystemBody[],
+    celestials: ISystemCelestial[],
     {slice, filter, level}: {slice?: number[] | null, filter?: 'Planet' | 'Star', level?: number}
   ) {
     const [start, end] = slice ?? [0, celestials.length];
 
-    return celestials.filter((c: SystemBody) => {
+    return celestials.filter((c: ISystemCelestial) => {
       return (filter ? c.type === filter : true)
         && (level ? c.parents && c.parents.length === level : true);
-    }).slice(start, end).map((celestial: SystemBody) => {
+    }).slice(start, end).map((celestial: ISystemCelestial) => {
       return (
-        <SystemCelestial key={celestial.id}
-          id={celestial.id}
+        <SystemCelestial key={celestial.id64}
+          id={celestial.id64}
           celestial={celestial}
           system={system.name}
+          dispatcher={systemDispatcher}
           className="w-32 text-glow-white text-sm" />
       );
     });
