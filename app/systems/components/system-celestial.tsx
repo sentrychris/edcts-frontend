@@ -44,15 +44,15 @@ const SystemCelestial: FunctionComponent<Props> = ({
 
   const shortSubType = (subType: string) => {
     let value = subType;
-    if (subType === 'High metal content world') value = 'High metal'
-    if (subType === 'Class I gas giant') value = 'Gas giant'
-    if (subType === 'M (Red dwarf) Star') value = 'M Red dwarf'
-    if (subType === 'White Dwarf (DA) Star') value = 'DA White dwarf'
+    if (subType === 'High metal content world') value = 'High metal';
+    if (subType === 'Class I gas giant') value = 'Gas giant';
+    if (subType === 'M (Red dwarf) Star') value = 'M Red dwarf';
+    if (subType === 'White Dwarf (DA) Star') value = 'DA White dwarf';
   
     value = value.replace('world', '');
 
     return value;
-  }
+  };
 
   return (
     <div className="flex gap-1 items-center">

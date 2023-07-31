@@ -1,10 +1,10 @@
-import { Dispatcher, ListenerEvent, ListenerEventCallback } from "@/app/interfaces/Dispatcher";
+import { Dispatcher, ListenerEvent, ListenerEventCallback } from '@/app/interfaces/Dispatcher';
 
 export default class EventDispatcher implements Dispatcher
 {
   public _listeners?: {
     [index: string]: ListenerEventCallback[];
-  }
+  };
   
   addEventListener(type: string, listener: ListenerEventCallback): void
   {
@@ -24,7 +24,7 @@ export default class EventDispatcher implements Dispatcher
   {
     if (this._listeners === undefined) return false;
     const listeners = this._listeners;
-    return listeners[type] !== undefined && listeners[type].indexOf(listener) !== -1
+    return listeners[type] !== undefined && listeners[type].indexOf(listener) !== -1;
   }
 
   removeEventListener(type: string, listener: ListenerEventCallback): void
@@ -53,7 +53,7 @@ export default class EventDispatcher implements Dispatcher
       const copy = listenerA.slice(0);
 
       for (let i = 0, j = copy.length; i < j; ++i) {
-        copy[i].call(this, event)
+        copy[i].call(this, event);
       }
     }
   }

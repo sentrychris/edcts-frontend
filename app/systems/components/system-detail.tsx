@@ -42,7 +42,7 @@ const SystemDetail: FunctionComponent = () => {
         setSystem(system);
 
         const map = new SystemMap(system);
-        console.log({ map })
+        console.log({ map });
 
         getCollection<Schedule>('fleet/schedule', {
           departure: system.name,

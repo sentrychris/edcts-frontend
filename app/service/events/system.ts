@@ -1,4 +1,4 @@
-import EventDispatcher from "./dispatcher";
+import EventDispatcher from './dispatcher';
 
 export class SystemDispatch extends EventDispatcher {
   map() {
