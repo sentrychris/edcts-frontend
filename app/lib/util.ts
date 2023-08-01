@@ -11,3 +11,7 @@ export function formatDate(datestr: string) {
 export function formatNumber(n: number) {
   return n.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ',');
 }
+
+export function escapeRegExp (text: string) {
+  return text.replace(/[[\]{}()*+?.,\-\\^$|#\s]/g, '\\$&')
+}

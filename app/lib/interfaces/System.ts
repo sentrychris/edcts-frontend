@@ -36,10 +36,8 @@ export interface SystemCelestial {
   parents?: any;
 }
 
-export interface MappedSystemCelestial extends SystemCelestial {
-  description: string;
-  _children: MappedSystemCelestial[];
-  [key: string]: string|undefined|null|boolean|number|number[]|MappedSystemCelestial|MappedSystemCelestial[];
+export interface MappedSystemCelestial {
+  [key: string]: any;
 }
 
 export interface SystemInformation {
