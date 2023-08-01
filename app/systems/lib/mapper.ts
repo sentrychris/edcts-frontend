@@ -1,12 +1,14 @@
 import {
   System,
   SystemCelestial,
-  MappedSystemCelestial
+  MappedSystemCelestial,
+  SystemCelestialParent
 } from '../../lib/interfaces/System';
 
 import {
   SOL_RADIUS_IN_KM
 } from '../../lib/consts';
+
 import { escapeRegExp } from '../../lib/util';
 
 export default class SystemMap
@@ -14,15 +16,14 @@ export default class SystemMap
   detail: System;
   name: string;
   stars: MappedSystemCelestial[];
-  planets: MappedSystemCelestial[];
   objectsInSystem: MappedSystemCelestial[];
 
-  constructor (system: System) {
+  constructor(system: System) {
     this.detail = system;
     
     let { name = '', bodies: _bodies } = this.detail;
 
-    this.name = this.getSystemObjectName(name);
+    this.name = this.getNameFromSystemObject(name);
 
     // For this to work we need to to treat "Stars" that are more like Planets
     // (e.g. Class Y Brown Dawrf Stars or Class T Tauri Stars) that orbit other
@@ -30,15 +31,14 @@ export default class SystemMap
     //
     // Let's use our own classification system (stored in ._type) to preserve the
     // base SystemCelestial's type.
-    let bodies = this.#findStarsOrbitingOtherStarsLikePlanets(_bodies || []);
+    let celestials = this.#findStarsOrbitingOtherStarsLikePlanets(_bodies || []);
     
     // Squash duplicate entries to prevent two celestials with the different names
     // and the same body id from appearing in the map.
-    bodies = this.#getUniqueObjectsByProperty(bodies, 'body_id');
+    celestials = this.#getUniqueObjectsByProperty(celestials, 'body_id');
 
-    this.stars = bodies.filter((body: MappedSystemCelestial) => body._type === 'Star');
-    this.planets = bodies.filter((body: MappedSystemCelestial) => body._type === 'Planet');
-    this.objectsInSystem = bodies.sort((a: MappedSystemCelestial, b: MappedSystemCelestial) => (a.body_id - b.body_id));
+    this.stars = celestials.filter((c: MappedSystemCelestial) => c._type === 'Star');
+    this.objectsInSystem = celestials.sort((a: MappedSystemCelestial, b: MappedSystemCelestial) => (a.body_id - b.body_id));
 
     // Object to contain celestials that are not directly orbiting a star.
     // There can be multiple "Null" objects around which planets orbit, so
@@ -53,6 +53,131 @@ export default class SystemMap
     });
 
     this.map();
+  }
+
+  map() {
+    for (const systemObject of this.objectsInSystem) {
+      if (!systemObject._type) {
+        systemObject._type = systemObject.type;
+      }
+      
+      systemObject.name = this.getNameFromSystemObject(systemObject.name);
+      systemObject.label = this.getLabelFromSystemObject(systemObject)
+    }
+
+    this.stars.forEach(star => {
+      this.mapCelestials(star);
+    });
+  }
+
+  mapCelestials(star: MappedSystemCelestial) {
+    // Get each objects directly orbiting star
+    star._children = this.getChildren(star, true).map((itemInOrbit, i) => {
+      // Get each objects directly orbiting this object
+      itemInOrbit._children = this.getChildren(itemInOrbit, false);
+
+      // Get every object that directly or indirectly orbits this object
+      itemInOrbit._children
+        .sort((a: MappedSystemCelestial, b: MappedSystemCelestial) => (a.body_id - b.body_id))
+        .map((subItemInOrbit: MappedSystemCelestial) => subItemInOrbit);
+
+      return itemInOrbit;
+    });
+
+    return star;
+  }
+
+  getChildren(target: MappedSystemCelestial, immediateChildren = true, filter = ['Planet']) {
+    const children = [];
+    if (! target._type) {
+      return [];
+    }
+
+    for (const systemObject of this.objectsInSystem) {
+      if (filter.length && !filter.includes(systemObject._type)) {
+        continue;
+      }
+
+      const inOrbitAroundStars = [];
+      const inOrbitAroundPlanets = [];
+      const inOrbitAroundNull = [];
+      let primaryOrbit = null;
+      let primaryOrbitType = null;
+
+      if (systemObject.parents) {
+        for (const parent of systemObject.parents) {
+          for (const key of Object.keys(parent)) {
+            if (primaryOrbit === null) primaryOrbit = parent[key];
+            if (primaryOrbitType === null) primaryOrbitType = key;
+
+            if (key === 'Star') inOrbitAroundStars.push(parent[key]);
+            if (key === 'Planet') inOrbitAroundPlanets.push(parent[key]);
+            if (key === 'Null') inOrbitAroundNull.push(parent[key]);
+          }
+        }
+      }
+
+      if (!systemObject.parents) {
+        continue;
+      }
+
+      const nearestNonNullParent = this.#getNearestNotNullParent(systemObject);
+      
+      // Some systems have multiple Null points around which bodies orbit.
+      // Normalize these all into one Null orbit with body ID 0.
+      // This only applies to bodies that are not also orbiting another body.
+      if ( primaryOrbitType === 'Null' && nearestNonNullParent === null) {
+        primaryOrbit = 0;
+      }
+
+      if (target._type === 'Star' && inOrbitAroundStars.includes(target.body_id)) {
+        if (immediateChildren === true && nearestNonNullParent === target.body_id) {
+          children.push(systemObject);
+        } else if (immediateChildren === false) {
+          children.push(systemObject);
+        }
+      } else if (target._type === 'Planet' && inOrbitAroundPlanets.includes(target.body_id)) {
+        if (immediateChildren === true && nearestNonNullParent === target.body_id) {
+          children.push(systemObject);
+        } else if (immediateChildren === false) {
+          children.push(systemObject);
+        }
+      } else if (target._type === 'Null' && primaryOrbitType === 'Null') {
+        if (immediateChildren === true && primaryOrbit === target.body_id) {
+          children.push(systemObject);
+        } else if (immediateChildren === false) {
+          children.push(systemObject);
+        }
+      }
+    }
+    return children;
+  }
+
+  getLabelFromSystemObject(systemObject: MappedSystemCelestial) {
+    if (systemObject._type && systemObject._type === 'Planet') {
+      return systemObject.name
+        // Next line is special case handling for renamed systems in Witch Head
+        // Sector, it needs to be ahead of the line that strips the name as
+        // some systems in Witch Head have bodies that start with name name of
+        // the star as well but some don't (messy!)
+        .replace(/Witch Head Sector ([A-z0-9\-]+) ([A-z0-9\-]+) /i, '')
+        .replace(new RegExp(`^${escapeRegExp(this.name)} `, 'i'), '')
+        .trim()
+    } else if (systemObject._type && systemObject._type === 'Star') {
+      let systemObjectLabel = systemObject.name || ''
+      // If the label contains 'Witch Head Sector' but does not start with it
+      // then it is a renamed system and the Witch Head Sector bit is stripped
+      if (systemObjectLabel.match(/Witch Head Sector/i) && !systemObjectLabel.match(/^Witch Head Sector/i)) {
+       systemObjectLabel = systemObjectLabel.replace(/ Witch Head Sector ([A-z0-9\-]+) ([A-z0-9\-]+)/i, '').trim()
+      }
+      return systemObjectLabel
+    } else {
+      return systemObject.name
+    }
+  }
+
+  getNameFromSystemObject(systemObjectName: string) {
+    return systemObjectName;
   }
 
   #getUniqueObjectsByProperty(arrayOfSystemObjects: MappedSystemCelestial[], key: string) {
@@ -96,56 +221,55 @@ export default class SystemMap
     ];
   }
 
-  #findStarsOrbitingOtherStarsLikePlanets (_bodies: SystemCelestial[]) {
-    const bodies = JSON.parse(JSON.stringify(_bodies));
+  #findStarsOrbitingOtherStarsLikePlanets (_celestials: SystemCelestial[]) {
+    const celestials = JSON.parse(JSON.stringify(_celestials));
+    const starsOrbitingStarsLikePlanets: number[] = [];
 
-    const starsOrbitingStarsLikePlanets: MappedSystemCelestial[] = [];
-
-    bodies.forEach((body: MappedSystemCelestial, i: number) => {
+    celestials.forEach((celestial: MappedSystemCelestial, i: number) => {
       // There are cases where the main star in a system has a null id64 value...
       // See https://github.com/EDSM-NET/FrontEnd/issues/506
-      if (body.type === 'Star' && body.body_id === null) body.body_id = 0;
+      if (celestial.type === 'Star' && celestial.body_id === null) celestial.body_id = 0;
 
-      body._type = body.type;
+      celestial._type = celestial.type;
 
       // Only applies to stars
-      if (body.type !== 'Star') return;
+      if (celestial.type !== 'Star') return;
 
       // Never applies to main stars
-      if (body.is_main_star === true) return;
+      if (celestial.is_main_star === true) return;
 
       // If star doesn't have any non-null parent objects (i.e. it's not
       // orbiting a planet or a star) then don't re-classify it.
-      if (this.#getNearestNotNullParent(body) === null) return;
+      if (this.#getNearestNotNullParent(celestial) === null) return;
 
       // Change each tpe from 'Star' to 'Planet'
-      body._type = 'Planet';
+      celestial._type = 'Planet';
 
       // Add a standard radius property based on its solar radius
-      body.radius = body.solar_radius * SOL_RADIUS_IN_KM;
+      celestial.radius = celestial.solar_radius * SOL_RADIUS_IN_KM;
 
       // Save the id of this body for the loop below
-      starsOrbitingStarsLikePlanets.push(body.body_id);
+      starsOrbitingStarsLikePlanets.push(celestial.body_id);
     });
 
     // Update the 'parent' reference to each object orbiting 'star'
     // from orbiting a 'Star' to a 'Planet' so it's plotted correctly
-    bodies.forEach((body: SystemCelestial, i: number) => {
-      (body.parents ?? []).forEach((parent: SystemCelestial, i: number) => {
+    celestials.forEach((celestial: SystemCelestial, i: number) => {
+      (celestial.parents ?? []).forEach((parent: SystemCelestialParent, i: number) => {
         const [k, v] = Object.entries(parent)[0];
-        if (starsOrbitingStarsLikePlanets.includes(v) && body.parents) {
-          body.parents[i] = { Planet: v };
+        if (starsOrbitingStarsLikePlanets.includes(v) && celestial.parents) {
+          celestial.parents[i] = { Planet: v };
         }
       });
     });
     
-    return bodies;
+    return celestials;
   }
 
-  #getNearestNotNullParent(body: SystemCelestial) {
+  #getNearestNotNullParent(celestial: MappedSystemCelestial) {
     let nonNullParent = null;
-    
-    (body.parents || []).every((parent: SystemCelestial) => {
+
+    (celestial.parents || []).every((parent: SystemCelestialParent) => {
       const [k, v] = Object.entries(parent)[0];
       if (k !== 'Null') {
         nonNullParent = v;
@@ -155,124 +279,5 @@ export default class SystemMap
     });
 
     return nonNullParent;
-  }
-
-  map () {
-    for (const systemObject of this.objectsInSystem) {
-      if (!systemObject._type) {
-        systemObject._type = systemObject.type;
-      }
-      
-      systemObject.name = this.getSystemObjectName(systemObject.name);
-      systemObject.label = this.getSystemObjectLabelFromSystemObject(systemObject)
-    }
-
-    this.stars.forEach(star => {
-      this.plotObjectsAroundStar(star);
-    });
-  }
-
-  plotObjectsAroundStar (star: MappedSystemCelestial) {
-    star._children = this.getChildren(star, true).map((itemInOrbit, i) => {
-      itemInOrbit._children = this.getChildren(itemInOrbit, false);
-
-      itemInOrbit._children
-        .sort((a: MappedSystemCelestial, b: MappedSystemCelestial) => (a.body_id - b.body_id))
-        .map((subItemInOrbit: MappedSystemCelestial) => subItemInOrbit);
-
-      return itemInOrbit;
-    });
-
-    return star;
-  }
-
-  getChildren (targetBody: MappedSystemCelestial, immediateChildren = true, filter = ['Planet']) {
-    const children = [];
-    if (! targetBody._type) {
-      return [];
-    }
-
-    for (const systemObject of this.objectsInSystem) {
-      if (filter.length && !filter.includes(systemObject._type)) {
-        continue;
-      }
-
-      const inOrbitAroundStars = [];
-      const inOrbitAroundPlanets = [];
-      const inOrbitAroundNull = [];
-      let primaryOrbit = null;
-      let primaryOrbitType = null;
-
-      if (systemObject.parents) {
-        for (const parent of systemObject.parents) {
-          for (const key of Object.keys(parent)) {
-            if (primaryOrbit === null) primaryOrbit = parent[key];
-            if (primaryOrbitType === null) primaryOrbitType = key;
-
-            if (key === 'Star') inOrbitAroundStars.push(parent[key]);
-            if (key === 'Planet') inOrbitAroundPlanets.push(parent[key]);
-            if (key === 'Null') inOrbitAroundNull.push(parent[key]);
-          }
-        }
-      }
-
-      if (!systemObject.parents) {
-        continue;
-      }
-
-      const nearestNonNullParent = this.#getNearestNotNullParent(systemObject);
-      
-      if ( primaryOrbitType === 'Null' && nearestNonNullParent === null) {
-        primaryOrbit = 0;
-      }
-
-      if (targetBody._type === 'Star' && inOrbitAroundStars.includes(targetBody.body_id)) {
-        if (immediateChildren === true && nearestNonNullParent === targetBody.body_id) {
-          children.push(systemObject);
-        } else if (immediateChildren === false) {
-          children.push(systemObject);
-        }
-      } else if (targetBody._type === 'Planet' && inOrbitAroundPlanets.includes(targetBody.body_id)) {
-        if (immediateChildren === true && nearestNonNullParent === targetBody.body_id) {
-          children.push(systemObject);
-        } else if (immediateChildren === false) {
-          children.push(systemObject);
-        }
-      } else if (targetBody._type === 'Null' && primaryOrbitType === 'Null') {
-        if (immediateChildren === true && primaryOrbit === targetBody.body_id) {
-          children.push(systemObject);
-        } else if (immediateChildren === false) {
-          children.push(systemObject);
-        }
-      }
-    }
-    return children;
-  }
-
-  getSystemObjectLabelFromSystemObject (systemObject: MappedSystemCelestial) {
-    if (systemObject._type && systemObject._type === 'Planet') {
-      return systemObject.name
-        // Next line is special case handling for renamed systems in Witch Head
-        // Sector, it needs to be ahead of the line that strips the name as
-        // some systems in Witch Head have bodies that start with name name of
-        // the star as well but some don't (messy!)
-        .replace(/Witch Head Sector ([A-z0-9\-]+) ([A-z0-9\-]+) /i, '')
-        .replace(new RegExp(`^${escapeRegExp(this.name)} `, 'i'), '')
-        .trim()
-    } else if (systemObject._type && systemObject._type === 'Star') {
-      let systemObjectLabel = systemObject.name || ''
-      // If the label contains 'Witch Head Sector' but does not start with it
-      // then it is a renamed system and the Witch Head Sector bit is stripped
-      if (systemObjectLabel.match(/Witch Head Sector/i) && !systemObjectLabel.match(/^Witch Head Sector/i)) {
-       systemObjectLabel = systemObjectLabel.replace(/ Witch Head Sector ([A-z0-9\-]+) ([A-z0-9\-]+)/i, '').trim()
-      }
-      return systemObjectLabel
-    } else {
-      return systemObject.name
-    }
-  }
-
-  getSystemObjectName (systemObjectName: string) {
-    return systemObjectName;
   }
 }

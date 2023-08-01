@@ -99,7 +99,7 @@ const SystemDetail: FunctionComponent = () => {
           celestials={system.bodies.length}/>
       </div>
       <SystemInformation coords={system.coords} information={system.information} />
-      <div className="py-5 w-7xl overflow system-map__planetary-system">
+      <div className="py-10 w-7xl overflow">
         <Heading icon="icarus-terminal-system-bodies" title="System Bodies" className="gap-2 pb-5" />
         {!isLoading && system.bodies && system.bodies.length > 0 ?
         <div className="flex items-center content-center gap-4">
@@ -114,12 +114,12 @@ const SystemDetail: FunctionComponent = () => {
         </div>
         : <div>No celestial bodies found in this system...</div>}
       </div>
-      {/* <div className="py-5">
+      <div className="py-5">
         <Heading icon="icarus-terminal-route" title="Scheduled Departures" className="gap-2 pb-5" />
         {!isLoading && 
-          <SystemPlotMap system={systemMap} setSystemObject={setSystemMap} />
+          <DepartureTable schedule={schedule} />
         }
-      </div> */}
+      </div>
     </>
   );
 };

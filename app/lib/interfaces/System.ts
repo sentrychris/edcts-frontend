@@ -1,39 +1,51 @@
 
 
+export interface SystemRing {
+  name: string;
+  type: string;
+  mass: number;
+  innerRadius: number;
+  outerRadius: number;
+}
+
+export interface SystemCelestialParent {
+  [key: string]: number;
+}
+
 export interface SystemCelestial {
-  id64?: any;
-  body_id?: any;
-  name?: any;
-  discovered_by?: any;
-  discovered_at?: any;
-  type?: any;
-  sub_type?: any;
-  distance_to_arrival?: any;
-  is_main_star?: any;
-  is_scoopable?: any;
-  spectral_class?: any;
-  luminosity?: any;
-  solar_masses?: any;
-  solar_radius?: any;
-  absolute_magnitude?: any;
-  surface_temp?: any;
-  radius?: any;
-  gravity?: any;
-  earth_masses?: any;
-  atmosphere_type?: any;
-  volcanism_type?: any;
-  terraforming_state?: any;
-  is_landable?: any;
-  orbital_period?: any;
-  orbital_eccentricity?: any;
-  orbital_inclination?: any;
-  arg_of_periapsis?: any;
-  rotational_period?: any;
-  is_tidally_locked?: any;
-  semi_major_axis?: any;
-  axial_tilt?: any;
-  rings?: any;
-  parents?: any;
+  id64: number;
+  body_id: number;
+  name: string;
+  discovered_by: string;
+  discovered_at: string;
+  type: string;
+  sub_type: string;
+  distance_to_arrival: number;
+  is_main_star: number;
+  is_scoopable: number;
+  spectral_class: string|null;
+  luminosity: number|null;
+  solar_masses: number|null;
+  solar_radius: number|null;
+  absolute_magnitude: number|null;
+  surface_temp: number;
+  radius: number;
+  gravity: number;
+  earth_masses: number;
+  atmosphere_type: string;
+  volcanism_type: string;
+  terraforming_state: string;
+  is_landable: number;
+  orbital_period: number;
+  orbital_eccentricity: number;
+  orbital_inclination: number;
+  arg_of_periapsis: number;
+  rotational_period: number;
+  is_tidally_locked: number;
+  semi_major_axis: number;
+  axial_tilt: number;
+  rings: Array<SystemRing>;
+  parents: Array<SystemCelestialParent>;
 }
 
 export interface MappedSystemCelestial {
@@ -50,14 +62,6 @@ export interface SystemInformation {
     name: string;
     allegiance: string;
   }
-}
-
-export interface SystemRing {
-  name: string;
-  type: string;
-  mass: number;
-  innerRadius: number;
-  outerRadius: number;
 }
 
 export interface System {

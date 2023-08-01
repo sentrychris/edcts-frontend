@@ -349,13 +349,6 @@
   filter: contrast(0.25) sepia(100%) hue-rotate(330deg) saturate(4) brightness(1.15) contrast(2) drop-shadow(0 0 5rem rgb(255, 236, 129)) drop-shadow(0 0 10rem rgb(255, 194, 81)) drop-shadow(0 0 10rem rgb(255, 187, 61));
 }
 
-@keyframes spin {
-  100% {
-      -webkit-transform: rotatey(360deg);
-      transform:rotatey(360deg);
-  }
-}
-
 .system-map__system-object[data-system-object-type="Star"][data-system-object-sub-type^="M "] .system-map__planet-surface {
   filter: contrast(0.25) sepia(100%) hue-rotate(360deg) saturate(4) brightness(.9) contrast(1.5)  drop-shadow(0 0 5rem #ff8c00) drop-shadow(0 0 10rem #ff8c00) drop-shadow(0 0 10rem #ff8c00);
 }
