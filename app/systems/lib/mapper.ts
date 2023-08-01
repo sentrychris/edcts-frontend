@@ -62,7 +62,7 @@ export default class SystemMap
       }
       
       systemObject.name = this.getNameFromSystemObject(systemObject.name);
-      systemObject.label = this.getLabelFromSystemObject(systemObject)
+      systemObject.label = this.getLabelFromSystemObject(systemObject);
     }
 
     this.stars.forEach(star => {
@@ -162,17 +162,17 @@ export default class SystemMap
         // the star as well but some don't (messy!)
         .replace(/Witch Head Sector ([A-z0-9\-]+) ([A-z0-9\-]+) /i, '')
         .replace(new RegExp(`^${escapeRegExp(this.name)} `, 'i'), '')
-        .trim()
+        .trim();
     } else if (systemObject._type && systemObject._type === 'Star') {
-      let systemObjectLabel = systemObject.name || ''
+      let systemObjectLabel = systemObject.name || '';
       // If the label contains 'Witch Head Sector' but does not start with it
       // then it is a renamed system and the Witch Head Sector bit is stripped
       if (systemObjectLabel.match(/Witch Head Sector/i) && !systemObjectLabel.match(/^Witch Head Sector/i)) {
-       systemObjectLabel = systemObjectLabel.replace(/ Witch Head Sector ([A-z0-9\-]+) ([A-z0-9\-]+)/i, '').trim()
+       systemObjectLabel = systemObjectLabel.replace(/ Witch Head Sector ([A-z0-9\-]+) ([A-z0-9\-]+)/i, '').trim();
       }
-      return systemObjectLabel
+      return systemObjectLabel;
     } else {
-      return systemObject.name
+      return systemObject.name;
     }
   }
 
