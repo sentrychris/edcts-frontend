@@ -1,7 +1,7 @@
 import { FunctionComponent, memo } from 'react';
-import Icons from '../../icons';
 import { SystemCelestial } from '../../lib/interfaces/System';
-import { Dispatcher } from '../../lib/interfaces/Dispatcher';
+import { SystemDispatch } from '../../lib/events/system';
+import Icons from '../../icons';
 
 interface Props {
   id: number;
@@ -9,7 +9,7 @@ interface Props {
   system: string;
   main?: boolean;
   orbiting?: number;
-  dispatcher: Dispatcher;
+  dispatcher: SystemDispatch;
   className?: string;
 }
 
@@ -19,6 +19,7 @@ const SystemCelestial: FunctionComponent<Props> = ({
   system,
   main,
   orbiting,
+  dispatcher,
   className
 }) => {
   // System configs
@@ -42,6 +43,10 @@ const SystemCelestial: FunctionComponent<Props> = ({
 
   const displayName = main ? celestial.name : celestial.name.split(system).pop()?.trim();
 
+  dispatcher.message({
+    message: 'hi'
+  });
+
   const shortSubType = (subType: string) => {
     let value = subType;
     if (subType === 'High metal content world') value = 'High metal';
@@ -56,7 +61,13 @@ const SystemCelestial: FunctionComponent<Props> = ({
 
   return (
     <div className="flex gap-1 items-center">
-      <svg viewBox={useLargerViewBox ? '-4000 -4000 8000 8000' : '-2500 -2500 5000 5000'} preserveAspectRatio="xMinYMid meet" className={className}>
+      <svg
+        viewBox={useLargerViewBox ? '-4000 -4000 8000 8000' : '-2500 -2500 5000 5000'}
+        preserveAspectRatio="xMinYMid meet"
+        className={className}
+        onClick={() => dispatcher.getSystemMap({
+          system: celestial
+        })}>
         <g className="system-map__system-object"
           data-system-object-name={celestial.name}
           data-system-object-type={celestial.type}

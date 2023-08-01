@@ -22,10 +22,7 @@ const SystemDetail: FunctionComponent = () => {
   const [system, setSystem] = useState<System>(systemState);
   const [schedule, setSchedule] = useState<Pagination<Schedule>>(paginatedScheduleState);
   const [isLoading, setLoading] = useState(true);
-
-  systemDispatcher.addEventListener('map', (event) => {
-    console.log(event.message);
-  });
+  const [systemMap, setSystemMap] = useState<SystemMap>();
 
   const path = usePathname();
   const slug = path.split('/').pop();
@@ -38,11 +35,10 @@ const SystemDetail: FunctionComponent = () => {
         withInformation: 1,
         withBodies: 1
       }).then((system) => {
-
         setSystem(system);
-
         const map = new SystemMap(system);
         console.log({ map });
+        setSystemMap(map);
 
         getCollection<Schedule>('fleet/schedule', {
           departure: system.name,
@@ -118,12 +114,12 @@ const SystemDetail: FunctionComponent = () => {
         </div>
         : <div>No celestial bodies found in this system...</div>}
       </div>
-      <div className="py-5">
+      {/* <div className="py-5">
         <Heading icon="icarus-terminal-route" title="Scheduled Departures" className="gap-2 pb-5" />
         {!isLoading && 
-          <DepartureTable schedule={schedule}/>
+          <SystemPlotMap system={systemMap} setSystemObject={setSystemMap} />
         }
-      </div>
+      </div> */}
     </>
   );
 };

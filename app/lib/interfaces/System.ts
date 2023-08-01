@@ -38,20 +38,7 @@ export interface SystemCelestial {
 
 export interface MappedSystemCelestial extends SystemCelestial {
   description: string;
-  orbitsStar?: boolean;
-  numberOfPlanets?: number;
-  _type: string;
   _children: MappedSystemCelestial[];
-  _maxObjectsInOrbit?: number;
-  _viewBox?: number[];
-  _xMax?: number;
-  _xOffset?: number;
-  _yMax?: number;
-  _yOffset?: number;
-  _r?: number;
-  _small?: true
-  _x?: number;
-  _y?: number;
   [key: string]: string|undefined|null|boolean|number|number[]|MappedSystemCelestial|MappedSystemCelestial[];
 }
 
