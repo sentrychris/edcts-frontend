@@ -19,10 +19,10 @@ function classNames(...classes: string[]) {
 
 export default function MainNavigation() {
   return (
-    <Disclosure as="nav" className="sticky top-0 w-full backdrop-blur flex-none supports-backdrop-blur:bg-white/100 dark:bg-transparent">
+    <Disclosure as="nav" className="main-nav__nav">
       {({ open }) => (
         <>
-          <div className="pt-3 sticky top-0 z-40 w-full backdrop-blur mx-auto px-6 md:px-12 lg:px-24 uppercase text-glow-white">
+          <div className="main-nav__menu px-6 md:px-12 lg:px-24 uppercase">
             <div className="relative flex h-16 items-center justify-between">
               <div className="absolute inset-y-0 left-0 flex items-center sm:hidden">
                 {/* Mobile menu button*/}
@@ -35,10 +35,8 @@ export default function MainNavigation() {
                   )}
                 </Disclosure.Button>
               </div>
-              <div className="flex flex-1 items-center justify-center sm:items-stretch sm:justify-start">
-                <div className="flex flex-shrink-0 items-center">
-                  <Image src="/logo-dark.svg" alt="logo" width="80" height="80"></Image>
-                </div>
+              <div className="flex flex-1 items-center justify-center sm:justify-start">
+                <i className="icarus-terminal-logo text-6xl"></i>
                 <div className="hidden sm:ml-6 sm:block">
                   <div className="flex space-x-4">
                     {navigation.map((item) => (

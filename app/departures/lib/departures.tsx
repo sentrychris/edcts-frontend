@@ -1,10 +1,10 @@
 import Link from 'next/link';
 import { EyeIcon } from '@heroicons/react/24/outline';
-import { Schedule } from '../../interfaces/Schedule';
-import { Pagination } from '../../interfaces/Pagination';
-import { formatDate } from '../../util';
-import { pagination } from '../../service/api';
-import { systemState } from '../../systems/service/systems';
+import { Schedule } from '../../lib/interfaces/Schedule';
+import { Pagination } from '../../lib/interfaces/Pagination';
+import { formatDate } from '../../lib/util';
+import { pagination } from '../../lib/api';
+import { systemState } from '../../systems/lib/systems';
 
 export const scheduleState: Schedule = {
   id: 0,

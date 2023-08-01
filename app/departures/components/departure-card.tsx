@@ -1,8 +1,8 @@
 import { FunctionComponent, memo } from 'react';
 import Link from 'next/link';
-import { Schedule } from '../../interfaces/Schedule';
-import { formatDate } from '../../util';
-import { renderStatus } from '../service/departures';
+import { Schedule } from '../../lib/interfaces/Schedule';
+import { formatDate } from '../../lib/util';
+import { renderStatus } from '../lib/departures';
 
 interface Props {
   className?: string;
@@ -13,7 +13,7 @@ const DepartureCard: FunctionComponent<Props> = ({schedule, className}) => {
   const departed = schedule.status.departed ? 'line-through' : '';
 
   return (
-    <div className={'p-6 rounded shadow-lg bg-slate-50 dark:bg-neutral-900 ' + className}>
+    <div className={'py-6 ' + className}>
       <Link href={`/departures/schedule/${schedule.slug}`} className="flex flex-col md:max-w-xl">
         <h5 className={'mb-3 text-lg font-bold tracking-tight text-neutral-800 dark:text-gray-200 ' + departed}>{schedule.title}</h5>
         <p className="mb-4 text-sm font-normal text-neutral-800 dark:text-gray-300">

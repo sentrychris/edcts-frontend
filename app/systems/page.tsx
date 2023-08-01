@@ -1,8 +1,8 @@
 
 import SystemsTable from './components/systems-table';
 import Heading from '../components/heading';
-import { getCollection } from '../service/api';
-import { System } from '../interfaces/System';
+import { getCollection } from '../lib/api';
+import { System } from '../lib/interfaces/System';
 
 export default async function Page() {
   const systems = await getCollection<System>('systems', {
@@ -12,7 +12,7 @@ export default async function Page() {
   return (
     <>
       <Heading icon="icarus-terminal-info" title="System Statistics" className="gap-2 mb-5" />
-      <div className={'p-6 rounded shadow-lg bg-slate-50 dark:bg-neutral-900'}>
+      <div className={'p-6 rounded shadow-lg'}>
         <div className="grid grid-cols-1 md:grid-cols-3 gap-6 text-center text-sm tracking-wider">
           <div>
             <p><span className="font-bold tracking-widest">79,590,991</span> systems stored.</p>

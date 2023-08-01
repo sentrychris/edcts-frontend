@@ -73,7 +73,6 @@ const SvgFilters: FunctionComponent = () =>{
             <stop offset="100%" />
           </linearGradient>
 
-
           <!-- Shadows on planets  -->
           <filter id="svg-filter__planet-shadow">
             <feOffset dx="-500" dy="-500"/>
@@ -94,6 +93,7 @@ const SvgFilters: FunctionComponent = () =>{
             <feComposite operator="over" in="shadow" in2="SourceGraphic"/>
           </filter>
           <filter id="svg-filter__star-glow">
+            <feMorphology id="morph" operator="dilate" radius="2000" />
             <feOffset dx="0" dy="0"/>
             <feGaussianBlur stdDeviation="500" result="offset-blur"/>
             <feComposite operator="out" in="SourceGraphic" in2="offset-blur" result="inverse"/>
@@ -103,6 +103,7 @@ const SvgFilters: FunctionComponent = () =>{
             <feComposite operator="over" in="shadow" in2="SourceGraphic"/>
           </filter>
           <filter id="svg-filter__star-glow--light">
+            <feMorphology id="morph" operator="dilate" radius="2000" />
             <feOffset dx="0" dy="0"/>
             <feGaussianBlur stdDeviation="500" result="offset-blur"/>
             <feComposite operator="out" in="SourceGraphic" in2="offset-blur" result="inverse"/>
@@ -111,13 +112,27 @@ const SvgFilters: FunctionComponent = () =>{
             <feComponentTransfer in="shadow" result="shadow"><feFuncA type="linear" slope="1"/></feComponentTransfer>
             <feComposite operator="over" in="shadow" in2="SourceGraphic"/>
           </filter>
+          <animate 
+            xlink:href="#morph"
+            id="anim-dialiate" 
+            attributeName="radius"
+            from="40"
+            to="0"
+            dur="3s"
+            fill="freeze"
+          />
         </defs>
       </svg>
       <script>
         document.write(\`
           <svg style="position: absolute; height: 0; margin: 0; padding: 0; top: -100px;">
             <defs>
-              <pattern id="svg-pattern__star-surface" patternUnits="userSpaceOnUse" preserveAspectRatio="none" width="4096" height="4096">
+              <pattern id="svg-pattern__star-surface" patternUnits="userSpaceOnUse" preserveAspectRatio="none" width="4096" height="4096"
+                patternTransform="rotate(40)">
+                <animateTransform attributeType="xml"
+                        attributeName="patternTransform"
+                        type="rotate" from="35" to="395" begin="0"
+                        dur="60s" repeatCount="indefinite"/>
                 <image href="/images/textures/star.jpg" x="0" y="0" width="4096" height="4096"/>
               </pattern>
               <pattern id="svg-pattern__planet-surface" patternUnits="userSpaceOnUse" preserveAspectRatio="none" width="4096" height="4096">
@@ -128,9 +143,17 @@ const SvgFilters: FunctionComponent = () =>{
                 <animate attributeName="x" values="0;4096" dur="30s" repeatCount="indefinite"/>
               </pattern>
               <pattern id="svg-pattern__planet-surface--clouds" patternUnits="userSpaceOnUse" preserveAspectRatio="none" width="4096" height="4096">
+                <animateTransform attributeType="xml"
+                  attributeName="patternTransform"
+                  type="rotate" from="35" to="395" begin="0"
+                  dur="60s" repeatCount="indefinite"/>
                 <image href="/images/textures/clouds.jpg" x="0" y="0" width="4096" height="4096"/>
               </pattern>
               <pattern id="svg-pattern__planet-surface--gas-giant" patternUnits="userSpaceOnUse" preserveAspectRatio="none" width="4096" height="4096">
+                <animateTransform attributeType="xml"
+                  attributeName="patternTransform"
+                  type="rotate" from="35" to="395" begin="0"
+                  dur="60s" repeatCount="indefinite"/>
                 <image href="/images/textures/gas-giant.jpg" x="0" y="0" width="4096" height="4096"/>
               </pattern>
               <pattern id="svg-pattern__planet-surface--brown-dwarf" patternUnits="userSpaceOnUse" preserveAspectRatio="none" width="8192" height="8192">

@@ -3,10 +3,10 @@
 
 import { useEffect, useState } from 'react';
 import { usePathname } from 'next/navigation';
-import { Galnet} from '../../interfaces/Galnet';
-import { galnetState } from '../service/galnet';
+import { Galnet} from '../../lib/interfaces/Galnet';
+import { galnetState } from '../lib/galnet';
 import Heading from '../../components/heading';
-import { getResource } from '../../service/api';
+import { getResource } from '../../lib/api';
 
 const GalnetArticle = () => {
   const [article, setArticle] = useState<Galnet>(galnetState);

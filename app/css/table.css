@@ -7,7 +7,7 @@ table {
   border-spacing: 0;
   border-collapse: collapse;
   width: 100%;
-  background-color: #222;
+  /* background: radial-gradient(var(--color-primary-dark), #000000); */
   --color-icon: var(--color-primary);
   padding-right: .25rem;
 }
@@ -43,7 +43,6 @@ table thead tr th:after {
   top: 2.6rem;
   left: 0;
   right: 0;
-  border-bottom: .2rem solid var(--color-primary);
   box-shadow: 0 .03rem .5rem var(--color-primary);
 }
 
@@ -57,7 +56,6 @@ table td {
 }
 
 table tbody tr {
-  border-top: .25rem solid transparent;
   outline: 0 !important;
   animation: fade-in-animation .25s ease;
   color: var(--color-primary);
@@ -67,18 +65,6 @@ table tbody tr {
 table tbody tr.table__row--highlighted td {
   background: rgba(var(--color-secondary-dark-r),var(--color-secondary-dark-g),var(--color-secondary-dark-b),.5) !important;
   color: var(--color-secondary) !important;
-}
-
-table:not(.table--inline).table--interactive tbody tr.table__row--highlighted:hover td {
-  background: var(--color-secondary) !important;
-  color: var(--color-secondary-dark) !important;
-  text-shadow: none;
-}
-
-table:not(.table--inline).table--interactive tbody tr.table__row--highlight-primary-hover:hover td {
-  background: var(--color-primary) !important;
-  color: var(--color-primary-dark) !important;
-  text-shadow: none;
 }
 
 table tbody tr.table__row--selected td:first-of-type {
@@ -91,8 +77,14 @@ table tbody tr.table__row--large td {
 }
 
 table:not(.table--inline).table--interactive tbody tr:hover:not(.table-row--disabled):not(:focus) td {
+  border-color: var(--color-primary-dark) !important;
   color: var(--color-primary);
   background: var(--color-primary-dark);
+  transition: all .1s ease;
+}
+
+table:not(.table--inline).table--interactive tbody tr:hover:not(.table-row--disabled):not(:focus) td a {
+  color: var(--color-primary);
   transition: all .1s ease;
 }
 
@@ -113,18 +105,11 @@ table td.wrap:last-child {
   word-wrap: break-word;
 }
 
-table.table--layout {
-  margin: .5rem 0;
-  table-layout: fixed;
-}
-
 table.table--layout tbody tr {
   background: transparent;
 }
 
 table.table--layout tbody tr td {
-  padding: 0;
-  border: .5rem solid transparent;
   vertical-align: middle;
   overflow: visible;
 }
@@ -206,6 +191,8 @@ table.table--flex-inline.table--interactive tbody tr:hover td,
 table.table--flex-inline.table--interactive tbody tr:focus td,
 table.table--flex-inline.table--interactive tbody tr.table__row--active td {
   background: var(--color-primary) !important;
+  border-color: var(--color-primary-dark) !important;
+
   color: var(--color-primary-dark) !important;
   opacity: 1;
   text-shadow: none;

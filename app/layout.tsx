@@ -28,8 +28,8 @@ export default function RootLayout({
           </div>
         </div>
         <MainNavigation />
-        <main className="flex flex-col px-6 md:px-12 lg:px-24 py-6 mx-auto text-neutral-800 dark:text-neutral-200 text-glow">
-          <h1 className="uppercase text-glow-white text-4xl mb-5 ">ED:CTS - Carrier Transport Services</h1>
+        <main className="flex flex-col px-6 md:px-12 lg:px-24 py-6 mx-auto text-neutral-800 dark:text-neutral-200 text-glow-white">
+          <h1 className="uppercase text-4xl mb-5 ">ED:CTS - Carrier Transport Services</h1>
           {children}
         </main>
       </body>

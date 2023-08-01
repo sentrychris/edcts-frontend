@@ -3,11 +3,11 @@
 
 import { FunctionComponent, useState } from 'react';
 import Link from 'next/link';
-import { Galnet} from '../../interfaces/Galnet';
-import { Pagination } from '../../interfaces/Pagination';
+import { Galnet} from '../../lib/interfaces/Galnet';
+import { Pagination } from '../../lib/interfaces/Pagination';
 import Heading from '../../components/heading';
 import PaginationLinks from '../../components/pagination-links';
-import { getCollection } from '../../service/api';
+import { getCollection } from '../../lib/api';
 
 interface Props {
   articles: Pagination<Galnet>

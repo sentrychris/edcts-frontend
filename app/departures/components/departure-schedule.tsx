@@ -3,9 +3,9 @@
 
 import { usePathname } from 'next/navigation';
 import { useEffect, useState } from 'react';
-import { Schedule } from '../../interfaces/Schedule';
-import { scheduleState } from '../service/departures';
-import { getResource } from '../../service/api';
+import { Schedule } from '../../lib/interfaces/Schedule';
+import { scheduleState } from '../lib/departures';
+import { getResource } from '../../lib/api';
 
 const DepartureSchedule = () => {
   const [schedule, setSchedule] = useState<Schedule>(scheduleState);

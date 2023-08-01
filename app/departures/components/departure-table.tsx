@@ -1,13 +1,13 @@
 'use client';
 
 import { FunctionComponent, useState } from 'react';
-import { Links, Meta, Pagination } from '../../interfaces/Pagination';
-import { Schedule } from '../../interfaces/Schedule';
-import { scheduleColumns } from '../service/departures';
-import { useDebounce } from '../../hooks/debounce';
+import { Links, Meta, Pagination } from '../../lib/interfaces/Pagination';
+import { Schedule } from '../../lib/interfaces/Schedule';
+import { scheduleColumns } from '../lib/departures';
+import { useDebounce } from '../../lib/hooks/debounce';
 import Filter from '../../components/filter';
 import Table from '../../components/table';
-import { getCollection } from '@/app/service/api';
+import { getCollection } from '../../lib/api';
 
 interface Props {
   schedule: Pagination<Schedule>;

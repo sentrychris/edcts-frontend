@@ -1,10 +1,10 @@
 import Link from 'next/link';
-import { Schedule } from './interfaces/Schedule';
-import { Galnet } from './interfaces/Galnet';
+import { Schedule } from './lib/interfaces/Schedule';
+import { Galnet } from './lib/interfaces/Galnet';
 import DepartureCard from './departures/components/departure-card';
 import DepartureTable from './departures/components/departure-table';
 import Heading from './components/heading';
-import { getCollection } from './service/api';
+import { getCollection } from './lib/api';
 
 export default async function Home() {
   const news = await getCollection<Galnet>('galnet/news');

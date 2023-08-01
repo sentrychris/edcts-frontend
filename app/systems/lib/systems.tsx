@@ -1,8 +1,8 @@
 import Link from 'next/link';
 import { EyeIcon } from '@heroicons/react/24/outline';
-import { System } from '../../interfaces/System';
-import { Pagination } from '../../interfaces/Pagination';
-import { pagination } from '../../service/api';
+import { System } from '../../lib/interfaces/System';
+import { Pagination } from '../../lib/interfaces/Pagination';
+import { pagination } from '../../lib/api';
 
 export const systemState: System = {
   id: 0,
@@ -54,7 +54,7 @@ export const renderAllegianceText = (value: string = 'None') => {
 };
 
 export const renderBadge = (text: string, options?: {className?: string, icon?: string}) => {
-  let classes = 'flex items-center gap-2 bg-neutral-900 shadow-neutral-900 px-3 py-1 rounded-lg uppercase text-glow-white shadow ';
+  let classes = 'flex items-center gap-2 py-1 uppercase text-glow-white ';
   if (options && options.className) {
     classes = classes + options.className;
   }
@@ -62,7 +62,7 @@ export const renderBadge = (text: string, options?: {className?: string, icon?: 
   return (
     <span className={classes}>
       {options && options.icon && 
-        <i className={options.icon}></i>
+        <i className={options.icon + ' text-glow-orange'}></i>
       }
       {text}
     </span>

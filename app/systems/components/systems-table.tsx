@@ -1,13 +1,13 @@
 'use client';
 
 import { FunctionComponent, useState } from 'react';
-import { Links, Meta, Pagination } from '../../interfaces/Pagination';
-import { System } from '../../interfaces/System';
-import { systemColumns } from '../service/systems';
-import { useDebounce } from '../../hooks/debounce';
+import { Links, Meta, Pagination } from '../../lib/interfaces/Pagination';
+import { System } from '../../lib/interfaces/System';
+import { systemColumns } from '../lib/systems';
+import { useDebounce } from '../../lib/hooks/debounce';
 import Filter from '../../components/filter';
 import Table from '../../components/table';
-import { getCollection } from '@/app/service/api';
+import { getCollection } from '../../lib/api';
 
 interface Props {
   systems: Pagination<System>;
