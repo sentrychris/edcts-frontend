@@ -32,7 +32,7 @@ export default async function Home() {
               <div className="relative border-b border-neutral-800 py-4">
                   <h3 className='text-2xl mb-2 lg:mb-4'>{article.title}</h3>
                   <p className="text-sm mb-4">{article.uploaded_at}</p>
-                  <Link href={`/galnet/news/${article.slug}`} className="text-glow-orange">
+                  <Link href={`/galnet/news/${article.slug}`} className="text-glow__orange">
                     Read More...
                   </Link>
               </div>

@@ -14,8 +14,12 @@ const DepartureCard: FunctionComponent<Props> = ({schedule, className}) => {
 
   return (
     <div className={'py-6 ' + className}>
-      <Link href={`/departures/schedule/${schedule.slug}`} className="flex flex-col md:max-w-xl">
-        <h5 className={'mb-3 text-lg font-bold tracking-tight text-neutral-800 dark:text-gray-200 ' + departed}>{schedule.title}</h5>
+      <div className="flex flex-col md:max-w-xl">
+        <Link href={`/departures/schedule/${schedule.slug}`}>
+          <h5 className={'mb-3 text-lg font-bold tracking-tight text-neutral-800 dark:text-gray-200 hover:text-glow__orange hover:underline' + departed}>
+            {schedule.title}
+          </h5>
+        </Link>
         <p className="mb-4 text-sm font-normal text-neutral-800 dark:text-gray-300">
           {schedule.description.slice(0,65) + '...'}
         </p>
@@ -24,11 +28,13 @@ const DepartureCard: FunctionComponent<Props> = ({schedule, className}) => {
           <div>
             <div className="flex flex-row gap-2">
               <p>From:</p>
-              <p>{schedule.departure.name}</p>
+              <Link className="hover:text-glow__orange hover:underline"
+                href={`systems/system/${schedule.departure.slug}`}>{schedule.departure.name}</Link>
             </div>
             <div className="flex flex-row gap-2">
               <p>To:</p>
-              <p>{schedule.destination.name}</p>
+              <Link className="hover:text-glow__orange hover:underline"
+                href={`systems/system/${schedule.destination.slug}`}>{schedule.destination.name}</Link>
             </div>
           </div>
           <div>
@@ -40,7 +46,7 @@ const DepartureCard: FunctionComponent<Props> = ({schedule, className}) => {
             </div>
           </div>
         </div>
-      </Link>
+      </div>
     </div>
   );
 };

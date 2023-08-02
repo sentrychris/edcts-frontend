@@ -1,5 +1,5 @@
 import { FunctionComponent, memo } from 'react';
-import { SystemCelestial } from '../../lib/interfaces/System';
+import { CelestialType, SystemCelestial } from '../../lib/interfaces/System';
 import { SystemDispatch } from '../../lib/events/system';
 import Icons from '../../icons';
 
@@ -7,7 +7,6 @@ interface Props {
   id: number;
   celestial: SystemCelestial;
   system: string;
-  main?: boolean;
   orbiting?: number;
   dispatcher: SystemDispatch;
   className?: string;
@@ -17,7 +16,6 @@ const SystemCelestial: FunctionComponent<Props> = ({
   id,
   celestial,
   system,
-  main,
   orbiting,
   dispatcher,
   className
@@ -41,7 +39,9 @@ const SystemCelestial: FunctionComponent<Props> = ({
   const imageX = 0 - CORRECT_FOR_IMAGE_OFFSET_X;
   const imageY = 0 - CORRECT_FOR_IMAGE_OFFSET_Y;
 
-  const displayName = main ? celestial.name : celestial.name.split(system).pop()?.trim();
+  const displayName = celestial.type === CelestialType.Star
+    ? celestial.name
+    : celestial.name.split(system).pop()?.trim();
 
   dispatcher.message({
     message: 'hi'
@@ -155,10 +155,13 @@ const SystemCelestial: FunctionComponent<Props> = ({
           </g>
         </g>
       </svg>
-      <div className="star_information uppercase text-xs">
-        <p className="whitespace-nowrap">{displayName}</p>
-        <p className="w-16" style={{fontSize: '0.6rem'}}>{shortSubType(celestial.sub_type)}</p>
-        {main && orbiting && <span className="text-glow-orange text-xs">{(orbiting)} orbiting bodies found</span>}
+      <div className="star_information uppercase text-sm tracking-wide">
+        <p>{displayName}</p>
+        <p style={{fontSize: '0.65rem'}}>{shortSubType(celestial.sub_type)}</p>
+        {celestial.type === CelestialType.Star &&
+          <span className="text-glow__orange">
+            {(orbiting)} orbiting bodies found
+          </span>}
       </div>
     </div>
   );

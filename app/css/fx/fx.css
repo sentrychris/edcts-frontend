@@ -167,8 +167,6 @@ html[data-fx-crt="true"] .layout__overlay {
 html[data-fx-crt-text-animated]:not([data-fx-crt-text-animated="true"]) .fx-animated-text,
 html:not([data-fx-crt-text-animated]) .fx-animated-text {
   overflow-x: clip !important; /* avoids clipping text shadow on y axis */
-  padding-left: 2rem;
-  margin-left: -2rem;
   white-space: nowrap !important;
   display: inline-block;
   width: 0;

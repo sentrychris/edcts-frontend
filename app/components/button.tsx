@@ -26,7 +26,7 @@ const Button: FunctionComponent<Props> = ({type = 'button', children, onClick, d
       spinnerClasses = 'fill-red-600 text-white';
       break;
     case 'elite':
-      themeClasses = 'bg-transparent text-glow-white';
+      themeClasses = 'bg-transparent text-glow__white';
       break;
     default:
       themeClasses = 'bg-neutral-900 dark:bg-neutral-800 hover:bg-neutral-700 dark:hover:bg-neutral-700 text-white';

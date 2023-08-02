@@ -127,7 +127,7 @@ export default class SystemMap
       // Some systems have multiple Null points around which bodies orbit.
       // Normalize these all into one Null orbit with body ID 0.
       // This only applies to bodies that are not also orbiting another body.
-      if ( primaryOrbitType === CelestialType.Null && nearestNonNullParent === null) {
+      if (primaryOrbitType === CelestialType.Null && nearestNonNullParent === null) {
         primaryOrbit = 0;
       }
 

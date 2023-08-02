@@ -37,7 +37,9 @@ function Table<T extends RequiredAttribute>({ columns, data, meta, links, page }
     if (!data || data.length === 0) {
       return <tbody>
         <tr>
-          <td colSpan={Object.keys(columns).length} scope="row" className="py-4 px-6 font-medium whitespace-nowrap dark:text-gray-200 font-italic text-center">
+          <td colSpan={Object.keys(columns).length}
+            scope="row"
+            className="py-4 px-6 font-medium whitespace-nowrap dark:text-gray-200 font-italic md:text-center">
             No data found...
           </td>
         </tr>

@@ -59,7 +59,7 @@ export default function MainNavigation() {
                 <Menu as="div" className="relative ml-3">
                   <div className="flex items-center gap-3">
                     <Menu.Button className="flex items-center gap-3 text-sm focus:outline-none align-items">
-                      <span className="hidden md:flex text-glow-orange text-xs[">CMDR Shaki Kazaro</span>
+                      <span className="hidden md:flex text-glow__orange text-xs[">CMDR Shaki Kazaro</span>
                       <Image
                         className="h-10 w-10 rounded-lg border-2 border-neutral-700"
                         width={32}
@@ -67,7 +67,7 @@ export default function MainNavigation() {
                         src="/me.jpg?v=2.0"
                         alt=""
                       />
-                      <i className="icarus-terminal-chevron-down text-glow-white"></i>
+                      <i className="icarus-terminal-chevron-down text-glow__white"></i>
                     </Menu.Button>
                   </div>
                   <Transition

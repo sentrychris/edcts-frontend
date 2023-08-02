@@ -38,7 +38,7 @@ export const renderSecurityText = (level: string = 'None') => {
       : (level === 'Low')
         ? 'text-red-500 dark:text-red-300'
         : 'text-green-500 dark:text-green-200'
-    ) + ' uppercase text-glow-white'}>
+    ) + ' uppercase text-glow__white'}>
     {level}
   </p>;
 };
@@ -48,13 +48,13 @@ export const renderAllegianceText = (value: string = 'None') => {
     (value === 'Federation' ? 'text-blue-500 dark:text-blue-200'
       : (value === 'Empire') ? 'text-yellow-500 dark:text-yellow-400'
       : (value === 'Independent') ? 'text-green-500 dark:text-green-300'
-      : 'text-stone-500 dark:text-stone-300') + ' uppercase tracking-wide text-glow-white'}>
+      : 'text-stone-500 dark:text-stone-300') + ' uppercase tracking-wide text-glow__white'}>
         {value}
   </p>;
 };
 
 export const renderBadge = (text: string, options?: {className?: string, icon?: string}) => {
-  let classes = 'flex items-center gap-2 py-1 uppercase text-glow-white ';
+  let classes = 'flex items-center gap-2 py-1 uppercase text-glow__white font-bold';
   if (options && options.className) {
     classes = classes + options.className;
   }
@@ -62,7 +62,7 @@ export const renderBadge = (text: string, options?: {className?: string, icon?: 
   return (
     <span className={classes}>
       {options && options.icon && 
-        <i className={options.icon + ' text-glow-orange'}></i>
+        <i className={options.icon + ' text-glow__orange'}></i>
       }
       {text}
     </span>

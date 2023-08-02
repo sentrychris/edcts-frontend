@@ -3,7 +3,11 @@
 
 import { usePathname } from 'next/navigation';
 import { FunctionComponent, useEffect, useState } from 'react';
-import { System, SystemCelestial as ISystemCelestial, MappedSystemCelestial } from '../../lib/interfaces/System';
+import { System,
+  SystemCelestial as ISystemCelestial,
+  MappedSystemCelestial,
+  CelestialType
+} from '../../lib/interfaces/System';
 import { Schedule } from '../../lib/interfaces/Schedule';
 import { Pagination } from '../../lib/interfaces/Pagination';
 import { systemState } from '../lib/systems';
@@ -23,6 +27,8 @@ const SystemDetail: FunctionComponent = () => {
   const [schedule, setSchedule] = useState<Pagination<Schedule>>(paginatedScheduleState);
   const [isLoading, setLoading] = useState(true);
   const [systemMap, setSystemMap] = useState<SystemMap>();
+
+  const [selectedStarIndex, setSelectedStarIndex] = useState<number>(0);
 
   const path = usePathname();
   const slug = path.split('/').pop();
@@ -44,17 +50,47 @@ const SystemDetail: FunctionComponent = () => {
           withCarrierInformation: 1,
           withSystemInformation: 1,
         }).then((schedule) => {
-
           setSchedule(schedule);
-          
-          setTimeout(() => {
-            setLoading(false);
-          }, 500);
+          setLoading(false);
         });
 
       });
     }
   }, [slug]);
+
+  function renderCelestials(map: SystemMap) {
+    const star = map.stars.find(s => !!s.is_main_star);
+
+    function handleStarIndexChange() {
+      let index = selectedStarIndex+1;
+      if (typeof map.stars[index] === 'undefined' || map.stars[index].type === CelestialType.Null) {
+        index = 0;
+      }
+  
+      setSelectedStarIndex(index);
+    }
+
+    const singleOrbitalStar = map.stars.length === 2 && map.stars[1].type === CelestialType.Null;
+
+    return (
+      <>
+        <div className="flex items-center content-center gap-4">
+          {star && <>
+            <div className="flex shrink-0 items-center md:gap-0 md:border-r md:pe-12 md:border-neutral-700 md:rounded-full">
+              {renderCelestial(map.stars[selectedStarIndex])}
+              {!singleOrbitalStar && <div className="ms-6 text-glow__orange hover:cursor-pointer hover:scale-125">
+                <i className={'icarus-terminal-chevron-down text-glow__orange hover:text-glow__blue'}
+                  onClick={handleStarIndexChange}></i>
+              </div>}
+            </div>
+            <div className="hidden md:flex w-full items-center gap-4">
+              {renderCelestialChildren(map.stars[selectedStarIndex])}
+            </div>
+          </>}
+        </div>
+      </>
+    );
+  }
 
   function renderCelestial(celestial: MappedSystemCelestial) {
     return (
@@ -62,10 +98,9 @@ const SystemDetail: FunctionComponent = () => {
         id={celestial.id64}
         system={system.name}
         celestial={celestial as ISystemCelestial}
-        main={!!celestial.is_main_star}
         orbiting={(celestial._children.length)}
         dispatcher={systemDispatcher}
-        className="w-32 text-glow-white text-sm" />
+        className="w-32 text-glow__white text-sm" />
     );
   }
 
@@ -75,46 +110,39 @@ const SystemDetail: FunctionComponent = () => {
       : false;
 
       if (! celestials) {
-        return <>Celestial telemetry data not found for {system.name}</>
+        return <span className="text-glow__orange uppercase ms-4">
+          {celestial.name} {celestial.type} has no directly orbiting celestial bodies
+        </span>;
       }
 
-      return celestials.map((celestial: MappedSystemCelestial) => renderCelestial(celestial));
-  }
-
-  function renderMappedCelestials(map: SystemMap) {
-    const star = map.stars.find(s => !!s.is_main_star);
-
-    return (
-      <>
-        <div className="flex items-center content-center gap-4">
-          {star && <>
-            <div className="border-r pe-12 border-neutral-700 rounded-full">
-              {renderCelestial(star)}
-            </div>
-            <div className="flex items-center gap-3">
-              <span className="text-xs">L1 Orbitals</span>
-              {renderCelestialChildren(star)}
-            </div>
-          </>}
-        </div>
-      </>
-    )
+      return <>
+        <span className="text-xs text-neutral-500">&lt;</span>
+        {celestials.map((celestial: MappedSystemCelestial) => renderCelestial(celestial))}
+      </>;
   }
 
   return (
     <>
       {isLoading && <Loader visible={isLoading} />}
-      <div className="pb-3 border-b border-neutral-800">
+
+      <div className="pb-5 border-b border-neutral-800">
         <SystemTitle title={system.name} celestials={system.bodies.length}/>
       </div>
+
       <SystemInformation coords={system.coords} information={system.information} />
-      <div className="py-10 w-7xl overflow">
-        <Heading icon="icarus-terminal-system-bodies" title="System Bodies" className="gap-2 pb-5" />
-        {!isLoading && systemMap ? renderMappedCelestials(systemMap)
-        : <div>No celestial bodies found in this system...</div>}
+
+      <div className="py-5 w-7xl overflow">
+        <Heading icon="icarus-terminal-system-bodies" title="System Bodies" className="gap-2 pb-10" />
+        
+        {!isLoading && systemMap && systemMap.objectsInSystem.length > 0
+          ? renderCelestials(systemMap)
+          : <div className="text-glow__orange uppercase text-center mx-auto py-6">Telemetry data not found for {system.name}</div>
+        }
       </div>
+
       <div className="py-5">
         <Heading icon="icarus-terminal-route" title="Scheduled Departures" className="gap-2 pb-5" />
+
         {!isLoading && 
           <DepartureTable schedule={schedule} />
         }
