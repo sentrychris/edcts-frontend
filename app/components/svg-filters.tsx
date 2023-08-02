@@ -133,7 +133,6 @@ const SvgFilters: FunctionComponent = () =>{
               </pattern>
               <pattern id="svg-pattern__planet-surface" patternUnits="userSpaceOnUse" preserveAspectRatio="none" width="4096" height="4096">
                 <image href="/images/textures/rock.jpg" x="0" y="0" width="4096" height="4096"/>
-                <animate attributeName="x" values="0;4096" dur="30s" repeatCount="indefinite"/>
               </pattern>
               <pattern id="svg-pattern__planet-surface-animated" x="0" patternUnits="userSpaceOnUse" preserveAspectRatio="none" width="4096" height="4096">
                 <image href="/images/textures/rock.jpg" x="0" y="0" width="4096" height="4096"/>
@@ -141,11 +140,9 @@ const SvgFilters: FunctionComponent = () =>{
               </pattern>
               <pattern id="svg-pattern__planet-surface--clouds" patternUnits="userSpaceOnUse" preserveAspectRatio="none" width="4096" height="4096">
                 <image href="/images/textures/clouds.jpg" x="0" y="0" width="4096" height="4096"/>
-                <animate attributeName="x" values="0;4096" dur="30s" repeatCount="indefinite"/>
               </pattern>
               <pattern id="svg-pattern__planet-surface--gas-giant" patternUnits="userSpaceOnUse" preserveAspectRatio="none" width="4096" height="4096">
                 <image href="/images/textures/gas-giant.jpg" x="0" y="0" width="4096" height="4096"/>
-                <animate attributeName="x" values="0;4096" dur="15s" repeatCount="indefinite"/>
               </pattern>
               <pattern id="svg-pattern__planet-surface--brown-dwarf" patternUnits="userSpaceOnUse" preserveAspectRatio="none" width="8192" height="8192">
                 <image href="/images/textures/gas-giant.jpg" x="0" y="0" width="8192" height="8192"/>

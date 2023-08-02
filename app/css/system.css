@@ -1217,3 +1217,11 @@ on slow devices (e.g. Amazon Fire) to be the default */
 #system-map-svg-gradient__planet--atmosphere stop:nth-child(3) {
   stop-color: rgb(0, 135, 177);
 }
+
+.w-main-star {
+  width: 140px !important;
+}
+
+.text-label__small {
+  font-size: 0.65rem;
+}

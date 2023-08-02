@@ -7,6 +7,7 @@ interface Props {
   id: number;
   celestial: SystemCelestial;
   system: string;
+  selected?: SystemCelestial;
   orbiting?: number;
   dispatcher: SystemDispatch;
   className?: string;
@@ -16,6 +17,7 @@ const SystemCelestial: FunctionComponent<Props> = ({
   id,
   celestial,
   system,
+  selected,
   orbiting,
   dispatcher,
   className
@@ -43,16 +45,13 @@ const SystemCelestial: FunctionComponent<Props> = ({
     ? celestial.name
     : celestial.name.split(system).pop()?.trim();
 
-  dispatcher.message({
-    message: 'hi'
-  });
-
-  const shortSubType = (subType: string) => {
-    let value = subType;
-    if (subType === 'High metal content world') value = 'High metal';
-    if (subType === 'Class I gas giant') value = 'Gas giant';
-    if (subType === 'M (Red dwarf) Star') value = 'M Red dwarf';
-    if (subType === 'White Dwarf (DA) Star') value = 'DA White dwarf';
+  const shortSubType = (celestial: SystemCelestial) => {
+    let value = celestial.sub_type;
+    if (celestial.sub_type === 'High metal content world') value = 'High metal';
+    if (celestial.sub_type === 'Class I gas giant') value = 'Gas giant';
+    if (celestial.sub_type === 'M (Red dwarf) Star') value = 'M Red dwarf';
+    if (celestial.sub_type === 'White Dwarf (DA) Star') value = 'DA White dwarf';
+    if (celestial.name === 'Earth') value = 'Home';
   
     value = value.replace('world', '');
 
@@ -64,15 +63,12 @@ const SystemCelestial: FunctionComponent<Props> = ({
       <svg
         viewBox={useLargerViewBox ? '-4000 -4000 8000 8000' : '-2500 -2500 5000 5000'}
         preserveAspectRatio="xMinYMid meet"
-        className={className}
-        onClick={() => dispatcher.getSystemMap({
-          system: celestial
-        })}>
+        className={className + ` hover:cursor-pointer`}
+        onClick={() => dispatcher.selectBody({ celestial })}>
         <g className="system-map__system-object"
           data-system-object-name={celestial.name}
           data-system-object-type={celestial.type}
           data-system-object-sub-type={celestial.sub_type}
-          // data-system-object-small={true}
           data-system-object-atmosphere={celestial.atmosphere_type}
           data-system-object-landable={celestial.is_landable === 1 ? true : false}
           tabIndex={0}>
@@ -157,10 +153,13 @@ const SystemCelestial: FunctionComponent<Props> = ({
       </svg>
       <div className="star_information uppercase text-sm tracking-wide">
         <p>{displayName}</p>
-        <p style={{fontSize: '0.65rem'}}>{shortSubType(celestial.sub_type)}</p>
-        {celestial.type === CelestialType.Star &&
-          <span className="text-glow__orange">
-            {(orbiting)} orbiting bodies found
+        <p className="text-label__small whitespace-nowrap">
+          {shortSubType(celestial)}
+        </p>
+        {
+          <span className={`flex items-center gap-2 text-glow__orange ` + ((selected?.id64 === celestial.id64) ? `text-sm` : `text-label__small`)}>
+            <i className="icarus-terminal-system-bodies text-label__small"></i>
+            {(orbiting)} {(selected?.id64 === celestial.id64) ? `orbiting bodies found` : ``}
           </span>}
       </div>
     </div>

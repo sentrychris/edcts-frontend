@@ -6,7 +6,7 @@ import { FunctionComponent, useEffect, useState } from 'react';
 import { System,
   SystemCelestial as ISystemCelestial,
   MappedSystemCelestial,
-  CelestialType
+  CelestialType,
 } from '../../lib/interfaces/System';
 import { Schedule } from '../../lib/interfaces/Schedule';
 import { Pagination } from '../../lib/interfaces/Pagination';
@@ -22,16 +22,22 @@ import Loader from '../../components/loader';
 import SystemTitle from './system-title';
 import Heading from '../../components/heading';
 
-const SystemDetail: FunctionComponent = () => {
+const SystemPage: FunctionComponent = () => {
   const [system, setSystem] = useState<System>(systemState);
   const [schedule, setSchedule] = useState<Pagination<Schedule>>(paginatedScheduleState);
   const [isLoading, setLoading] = useState(true);
   const [systemMap, setSystemMap] = useState<SystemMap>();
 
-  const [selectedStarIndex, setSelectedStarIndex] = useState<number>(0);
+  const [selectedBody, setSelectedBody] = useState<MappedSystemCelestial>();
+  const [selectedBodyIndex, setSelectedBodyIndex] = useState<number>(0);
 
   const path = usePathname();
   const slug = path.split('/').pop();
+
+  systemDispatcher.addEventListener('select-celestial', (event) => {
+    const celestial = (event.message as MappedSystemCelestial);
+    setSelectedBody(celestial);
+  })
 
   useEffect(() => {
     if (slug) {
@@ -44,6 +50,9 @@ const SystemDetail: FunctionComponent = () => {
         setSystem(system);
         const map = new SystemMap(system);
         setSystemMap(map);
+
+        const star = map.stars.find(s => s.is_main_star === 1);
+        setSelectedBody(star);
 
         getCollection<Schedule>('fleet/schedule', {
           departure: system.name,
@@ -59,15 +68,14 @@ const SystemDetail: FunctionComponent = () => {
   }, [slug]);
 
   function renderCelestials(map: SystemMap) {
-    const star = map.stars.find(s => !!s.is_main_star);
-
     function handleStarIndexChange() {
-      let index = selectedStarIndex+1;
+      let index = selectedBodyIndex + 1;
       if (typeof map.stars[index] === 'undefined' || map.stars[index].type === CelestialType.Null) {
         index = 0;
       }
   
-      setSelectedStarIndex(index);
+      setSelectedBody(map.stars[index]);
+      setSelectedBodyIndex(index);
     }
 
     const singleOrbitalStar = map.stars.length === 2 && map.stars[1].type === CelestialType.Null;
@@ -75,16 +83,16 @@ const SystemDetail: FunctionComponent = () => {
     return (
       <>
         <div className="flex items-center content-center gap-4">
-          {star && <>
-            <div className="flex shrink-0 items-center md:gap-0 md:border-r md:pe-12 md:border-neutral-700 md:rounded-full">
-              {renderCelestial(map.stars[selectedStarIndex])}
+          {selectedBody && <>
+            <div className="flex shrink-0 items-center md:border-r md:pe-12 md:border-neutral-700 md:rounded-full">
+              {renderCelestial(selectedBody)}
               {!singleOrbitalStar && <div className="ms-6 text-glow__orange hover:cursor-pointer hover:scale-125">
                 <i className={'icarus-terminal-chevron-down text-glow__orange hover:text-glow__blue'}
                   onClick={handleStarIndexChange}></i>
               </div>}
             </div>
             <div className="hidden md:flex w-full items-center gap-4">
-              {renderCelestialChildren(map.stars[selectedStarIndex])}
+              {renderCelestialChildren(selectedBody)}
             </div>
           </>}
         </div>
@@ -93,19 +101,27 @@ const SystemDetail: FunctionComponent = () => {
   }
 
   function renderCelestial(celestial: MappedSystemCelestial) {
+    let classes = `text-glow__white text-sm`;
+    if (celestial.is_main_star) {
+      classes += ` w-main-star`
+    } else {
+      classes = ` w-32`
+    }
+
     return (
       <SystemCelestial key={celestial.id64}
         id={celestial.id64}
         system={system.name}
+        selected={selectedBody as ISystemCelestial}
         celestial={celestial as ISystemCelestial}
-        orbiting={(celestial._children.length)}
+        orbiting={(celestial._children ? celestial._children.length : 0)}
         dispatcher={systemDispatcher}
-        className="w-32 text-glow__white text-sm" />
+        className={classes} />
     );
   }
 
   function renderCelestialChildren(celestial: MappedSystemCelestial) {
-    const celestials = celestial._children.length > 0
+    const celestials = (celestial._children && celestial._children.length > 0)
       ? celestial._children
       : false;
 
@@ -151,5 +167,5 @@ const SystemDetail: FunctionComponent = () => {
   );
 };
 
-export default SystemDetail;
+export default SystemPage;
   

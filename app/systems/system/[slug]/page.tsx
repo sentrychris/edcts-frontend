@@ -1,11 +1,11 @@
 import Heading from '../../../components/heading';
-import SystemDetail from '../../components/system-detail';
+import SystemPage from '../../components/system-page';
 
 export default async function Page() {
   return (
     <>
       <Heading title="System Information" className="gap-2 mb-5" />
-      <SystemDetail />
+      <SystemPage />
     </>
   );
 }
