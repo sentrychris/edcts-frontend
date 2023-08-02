@@ -15,7 +15,7 @@ export default class EventDispatcher implements Dispatcher
       listeners[type] = [];
     }
 
-    if (listeners[type].indexOf(listener) === - 1) {
+    if (! listeners[type].includes(listener)) {
       listeners[type].push(listener);
     }
   }
@@ -24,7 +24,7 @@ export default class EventDispatcher implements Dispatcher
   {
     if (this._listeners === undefined) return false;
     const listeners = this._listeners;
-    return listeners[type] !== undefined && listeners[type].indexOf(listener) !== -1;
+    return listeners[type] !== undefined && listeners[type].includes(listener);
   }
 
   removeEventListener(type: string, listener: ListenerEventCallback): void
@@ -34,9 +34,9 @@ export default class EventDispatcher implements Dispatcher
     const listenerA = listeners[type];
 
     if (listenerA !== undefined) {
-      const idx = listenerA.indexOf(listener);
-      if (idx !== -1) {
-        listenerA.splice(idx, 1);
+      const index = listenerA.indexOf(listener);
+      if (index !== -1) {
+        listenerA.splice(index, 1);
       }
     }
   }
