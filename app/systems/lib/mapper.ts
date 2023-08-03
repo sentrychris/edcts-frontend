@@ -1,7 +1,7 @@
 import {
   System,
-  SystemCelestial,
-  MappedSystemCelestial,
+  SystemCelestialBody,
+  MappedSystemCelestialBody,
   CelestialParent,
   CelestialType
 } from '../../lib/interfaces/System';
@@ -16,8 +16,8 @@ export default class SystemMap
 {
   detail: System;
   name: string;
-  stars: MappedSystemCelestial[];
-  objectsInSystem: MappedSystemCelestial[];
+  stars: MappedSystemCelestialBody[];
+  objectsInSystem: MappedSystemCelestialBody[];
 
   constructor(system: System) {
     this.detail = system;
@@ -31,17 +31,17 @@ export default class SystemMap
     // stars as if they were regular planets.
     //
     // Let's use our own classification system (stored in ._type) to preserve the
-    // base SystemCelestial's type.
-    let celestials = this.#findStarsOrbitingOtherStarsLikePlanets(_bodies || []);
+    // base SystemCelestialBody's type.
+    let bodies = this.#findStarsOrbitingOtherStarsLikePlanets(_bodies || []);
     
-    // Squash duplicate entries to prevent two celestials with the different names
+    // Squash duplicate entries to prevent two bodies with the different names
     // and the same body id from appearing in the map.
-    celestials = this.#getUniqueObjectsByProperty(celestials, 'body_id');
+    bodies = this.#getUniqueObjectsByProperty(bodies, 'body_id');
 
-    this.stars = celestials.filter((c: MappedSystemCelestial) => c._type === CelestialType.Star);
-    this.objectsInSystem = celestials.sort((a: MappedSystemCelestial, b: MappedSystemCelestial) => (a.body_id - b.body_id));
+    this.stars = bodies.filter((c: MappedSystemCelestialBody) => c._type === CelestialType.Star);
+    this.objectsInSystem = bodies.sort((a: MappedSystemCelestialBody, b: MappedSystemCelestialBody) => (a.body_id - b.body_id));
 
-    // Object to contain celestials that are not directly orbiting a star.
+    // Object to contain bodies that are not directly orbiting a star.
     // There can be multiple "Null" objects around which planets orbit, so
     // let's consolidate them into under Null objet with ID 0.
     this.stars.push({
@@ -67,11 +67,11 @@ export default class SystemMap
     }
 
     this.stars.forEach(star => {
-      this.mapCelestials(star);
+      this.mapBodies(star);
     });
   }
 
-  mapCelestials(star: MappedSystemCelestial) {
+  mapBodies(star: MappedSystemCelestialBody) {
     // Get each objects directly orbiting star
     star._children = this.getChildren(star, true).map((itemInOrbit, i) => {
       // Get each objects directly orbiting this object
@@ -79,8 +79,8 @@ export default class SystemMap
 
       // Get every object that directly or indirectly orbits this object
       itemInOrbit._children
-        .sort((a: MappedSystemCelestial, b: MappedSystemCelestial) => (a.body_id - b.body_id))
-        .map((subItemInOrbit: MappedSystemCelestial) => subItemInOrbit);
+        .sort((a: MappedSystemCelestialBody, b: MappedSystemCelestialBody) => (a.body_id - b.body_id))
+        .map((subItemInOrbit: MappedSystemCelestialBody) => subItemInOrbit);
 
       return itemInOrbit;
     });
@@ -88,7 +88,7 @@ export default class SystemMap
     return star;
   }
 
-  getChildren(target: MappedSystemCelestial, immediateChildren = true, filter = [CelestialType.Planet]) {
+  getChildren(target: MappedSystemCelestialBody, immediateChildren = true, filter = [CelestialType.Planet]) {
     const children = [];
     if (! target._type) {
       return [];
@@ -154,7 +154,7 @@ export default class SystemMap
     return children;
   }
 
-  getLabelFromSystemObject(systemObject: MappedSystemCelestial) {
+  getLabelFromSystemObject(systemObject: MappedSystemCelestialBody) {
     if (systemObject._type && systemObject._type === CelestialType.Planet) {
       return systemObject.name
         // Next line is special case handling for renamed systems in Witch Head
@@ -181,8 +181,8 @@ export default class SystemMap
     return systemObjectName;
   }
 
-  #getUniqueObjectsByProperty(arrayOfSystemObjects: MappedSystemCelestial[], key: string) {
-    const systemObjectsBy64BitId: Record<string, MappedSystemCelestial> = {};
+  #getUniqueObjectsByProperty(arrayOfSystemObjects: MappedSystemCelestialBody[], key: string) {
+    const systemObjectsBy64BitId: Record<string, MappedSystemCelestialBody> = {};
 
     // Loop through objects and assign them a timestamp based on date discovered
     //
@@ -191,7 +191,7 @@ export default class SystemMap
     //
     // The purpose of this is to de-dupe duplicate planets from the EDSM data
     // by only using the most recent data for an object.
-    arrayOfSystemObjects.forEach((systemObject: MappedSystemCelestial) => {
+    arrayOfSystemObjects.forEach((systemObject: MappedSystemCelestialBody) => {
       const systemObjectWithTimestamp = JSON.parse(JSON.stringify(systemObject));
       systemObjectWithTimestamp.timestamp = systemObject.discovered_at;
 
@@ -217,60 +217,60 @@ export default class SystemMap
 
     return [
       ...new Map(
-        prunedArrayOfSystemObjects.map((item: MappedSystemCelestial) => [item[key], item])
+        prunedArrayOfSystemObjects.map((item: MappedSystemCelestialBody) => [item[key], item])
       ).values()
     ];
   }
 
-  #findStarsOrbitingOtherStarsLikePlanets (_celestials: SystemCelestial[]) {
-    const celestials = JSON.parse(JSON.stringify(_celestials));
+  #findStarsOrbitingOtherStarsLikePlanets (_bodies: SystemCelestialBody[]) {
+    const bodies = JSON.parse(JSON.stringify(_bodies));
     const starsOrbitingStarsLikePlanets: number[] = [];
 
-    celestials.forEach((celestial: MappedSystemCelestial, i: number) => {
+    bodies.forEach((body: MappedSystemCelestialBody, i: number) => {
       // There are cases where the main star in a system has a null id64 value...
       // See https://github.com/EDSM-NET/FrontEnd/issues/506
-      if (celestial.type === CelestialType.Star && celestial.body_id === null) celestial.body_id = 0;
+      if (body.type === CelestialType.Star && body.body_id === null) body.body_id = 0;
 
-      celestial._type = celestial.type;
+      body._type = body.type;
 
       // Only applies to stars
-      if (celestial.type !== CelestialType.Star) return;
+      if (body.type !== CelestialType.Star) return;
 
       // Never applies to main stars
-      if (celestial.is_main_star === true) return;
+      if (body.is_main_star === true) return;
 
       // If star doesn't have any non-null parent objects (i.e. it's not
       // orbiting a planet or a star) then don't re-classify it.
-      if (this.#getNearestNotNullParent(celestial) === null) return;
+      if (this.#getNearestNotNullParent(body) === null) return;
 
       // Change each tpe from CelestialType.Star to CelestialType.Planet
-      celestial._type = CelestialType.Planet;
+      body._type = CelestialType.Planet;
 
       // Add a standard radius property based on its solar radius
-      celestial.radius = celestial.solar_radius * SOL_RADIUS_IN_KM;
+      body.radius = body.solar_radius * SOL_RADIUS_IN_KM;
 
       // Save the id of this body for the loop below
-      starsOrbitingStarsLikePlanets.push(celestial.body_id);
+      starsOrbitingStarsLikePlanets.push(body.body_id);
     });
 
     // Update the 'parent' reference to each object orbiting CelestialType.Star
     // from orbiting a CelestialType.Star to a CelestialType.Planet so it's plotted correctly
-    celestials.forEach((celestial: SystemCelestial, i: number) => {
-      (celestial.parents ?? []).forEach((parent: CelestialParent, i: number) => {
+    bodies.forEach((body: SystemCelestialBody, i: number) => {
+      (body.parents ?? []).forEach((parent: CelestialParent, i: number) => {
         const [k, v] = Object.entries(parent)[0];
-        if (starsOrbitingStarsLikePlanets.includes(v) && celestial.parents) {
-          celestial.parents[i] = { Planet: v };
+        if (starsOrbitingStarsLikePlanets.includes(v) && body.parents) {
+          body.parents[i] = { Planet: v };
         }
       });
     });
     
-    return celestials;
+    return bodies;
   }
 
-  #getNearestNotNullParent(celestial: MappedSystemCelestial) {
+  #getNearestNotNullParent(body: MappedSystemCelestialBody) {
     let nonNullParent = null;
 
-    (celestial.parents || []).every((parent: CelestialParent) => {
+    (body.parents || []).every((parent: CelestialParent) => {
       const [k, v] = Object.entries(parent)[0];
       if (k !== CelestialType.Null) {
         nonNullParent = v;

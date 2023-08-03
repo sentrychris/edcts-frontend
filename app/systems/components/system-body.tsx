@@ -1,21 +1,21 @@
 import { FunctionComponent, memo } from 'react';
-import { SystemCelestial } from '../../lib/interfaces/System';
+import { SystemCelestialBody } from '../../lib/interfaces/System';
 import { SystemDispatch } from '../../lib/events/system';
 import Icons from '../../icons';
 
 interface Props {
   id: number;
-  celestial: SystemCelestial;
+  body: SystemCelestialBody;
   system: string;
-  selected?: SystemCelestial;
+  selected?: SystemCelestialBody;
   orbiting?: number;
   dispatcher: SystemDispatch;
   className?: string;
 }
 
-const SystemCelestial: FunctionComponent<Props> = ({
+const SystemBody: FunctionComponent<Props> = ({
   id,
-  celestial,
+  body,
   system,
   selected,
   orbiting,
@@ -23,17 +23,17 @@ const SystemCelestial: FunctionComponent<Props> = ({
   className
 }) => {
   // System configs
-  const radius = celestial.radius;
+  const radius = body.radius;
   let r = 2000;
   if (radius && radius <= 2500) r = 800;
   if (radius && radius > 2500 && radius <= 20000) r = 1200;
   if (radius && radius > 20000) r = 2000;
 
   let useLargerViewBox = false;
-  if (celestial.rings) useLargerViewBox = true;
-  if (celestial.sub_type === 'Neutron Star') useLargerViewBox = true;
-  if (celestial.sub_type.startsWith('White Dwarf')) useLargerViewBox = true;
-  if (celestial.sub_type === 'Black Hole') useLargerViewBox = true;
+  if (body.rings) useLargerViewBox = true;
+  if (body.sub_type === 'Neutron Star') useLargerViewBox = true;
+  if (body.sub_type.startsWith('White Dwarf')) useLargerViewBox = true;
+  if (body.sub_type === 'Black Hole') useLargerViewBox = true;
 
   const CORRECT_FOR_IMAGE_OFFSET_X = 250;
   const CORRECT_FOR_IMAGE_OFFSET_Y = 200;
@@ -41,17 +41,17 @@ const SystemCelestial: FunctionComponent<Props> = ({
   const imageX = 0 - CORRECT_FOR_IMAGE_OFFSET_X;
   const imageY = 0 - CORRECT_FOR_IMAGE_OFFSET_Y;
 
-  const displayName = selected?.id64 === celestial.id64
-    ? celestial.name
-    : celestial.name.split(system).pop()?.trim();
+  const displayName = selected?.id64 === body.id64
+    ? body.name
+    : body.name.split(system).pop()?.trim();
 
-  const shortSubType = (celestial: SystemCelestial) => {
-    let value = celestial.sub_type;
-    if (celestial.sub_type === 'High metal content world') value = 'High metal';
-    if (celestial.sub_type === 'Class I gas giant') value = 'Gas giant';
-    if (celestial.sub_type === 'M (Red dwarf) Star') value = 'M Red dwarf';
-    if (celestial.sub_type === 'White Dwarf (DA) Star') value = 'DA White dwarf';
-    if (celestial.name === 'Earth') value = 'Home';
+  const shortSubType = (body: SystemCelestialBody) => {
+    let value = body.sub_type;
+    if (body.sub_type === 'High metal content world') value = 'High metal';
+    if (body.sub_type === 'Class I gas giant') value = 'Gas giant';
+    if (body.sub_type === 'M (Red dwarf) Star') value = 'M Red dwarf';
+    if (body.sub_type === 'White Dwarf (DA) Star') value = 'DA White dwarf';
+    if (body.name === 'Earth') value = 'Home';
   
     value = value.replace('world', '');
 
@@ -64,13 +64,13 @@ const SystemCelestial: FunctionComponent<Props> = ({
         viewBox={useLargerViewBox ? '-4000 -4000 8000 8000' : '-2500 -2500 5000 5000'}
         preserveAspectRatio="xMinYMid meet"
         className={className + ` hover:cursor-pointer`}
-        onClick={() => dispatcher.selectBody({ celestial })}>
+        onClick={() => dispatcher.selectBody({ body })}>
         <g className="system-map__system-object"
-          data-system-object-name={celestial.name}
-          data-system-object-type={celestial.type}
-          data-system-object-sub-type={celestial.sub_type}
-          data-system-object-atmosphere={celestial.atmosphere_type}
-          data-system-object-landable={celestial.is_landable === 1 ? true : false}
+          data-system-object-name={body.name}
+          data-system-object-type={body.type}
+          data-system-object-sub-type={body.sub_type}
+          data-system-object-atmosphere={body.atmosphere_type}
+          data-system-object-landable={body.is_landable === 1 ? true : false}
           tabIndex={0}>
           <g className="system-map__body">
             <g className="system-map__planet">
@@ -85,7 +85,7 @@ const SystemCelestial: FunctionComponent<Props> = ({
                 cy="0"
                 r={r}
               />
-              {celestial.rings && celestial.rings.length > 0 && <>
+              {body.rings && body.rings.length > 0 && <>
                 <defs>
                   <mask
                     id={`planet-ring-mask-${id}`}
@@ -134,14 +134,14 @@ const SystemCelestial: FunctionComponent<Props> = ({
                 />
               </>}
             </g>
-            {celestial.is_landable && <svg
+            {body.is_landable && <svg
               className='system-map__planetary-lander-icon'
               x={imageX+200}
               y={imageY+200}
             >
               {Icons.get('planet-landable')}
             </svg>}
-            {celestial.rings && <svg
+            {body.rings && <svg
               className='system-map__planetary-port-icon'
               x={imageX+1000}
               y={imageY+1000}
@@ -154,16 +154,16 @@ const SystemCelestial: FunctionComponent<Props> = ({
       <div className="star_information uppercase text-sm tracking-wide">
         <p>{displayName}</p>
         <p className="text-label__small whitespace-nowrap">
-          {shortSubType(celestial)}
+          {shortSubType(body)}
         </p>
         {
-          <span className={`flex items-center gap-2 text-glow__orange ` + ((selected?.id64 === celestial.id64) ? `text-sm` : `text-label__small`)}>
+          <span className={`flex items-center gap-2 text-glow__orange ` + ((selected?.id64 === body.id64) ? `text-sm` : `text-label__small`)}>
             <i className="icarus-terminal-system-bodies text-label__small"></i>
-            {(orbiting)} {(selected?.id64 === celestial.id64) ? `orbiting bodies found` : ``}
+            {(orbiting)} {(selected?.id64 === body.id64) ? `orbiting bodies found` : ``}
           </span>}
       </div>
     </div>
   );
 };
 
-export default memo(SystemCelestial);
+export default memo(SystemBody);

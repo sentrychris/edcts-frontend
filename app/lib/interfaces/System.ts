@@ -18,7 +18,7 @@ export interface CelestialParent {
   [key: string]: number;
 }
 
-export interface SystemCelestial {
+export interface SystemCelestialBody {
   id64: number;
   body_id: number;
   name: string;
@@ -54,7 +54,7 @@ export interface SystemCelestial {
   parents: Array<CelestialParent>;
 }
 
-export interface MappedSystemCelestial {
+export interface MappedSystemCelestialBody {
   [key: string]: any;
 }
 
@@ -79,7 +79,7 @@ export interface System {
     z: number;
   }
   information: SystemInformation;
-  bodies: SystemCelestial[];
+  bodies: SystemCelestialBody[];
   updated_at: string;
   slug: string;
 }

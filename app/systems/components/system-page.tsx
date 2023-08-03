@@ -4,8 +4,8 @@
 import { usePathname } from 'next/navigation';
 import { FunctionComponent, useEffect, useState } from 'react';
 import { System,
-  SystemCelestial as ISystemCelestial,
-  MappedSystemCelestial,
+  SystemCelestialBody,
+  MappedSystemCelestialBody,
   CelestialType,
 } from '../../lib/interfaces/System';
 import { Schedule } from '../../lib/interfaces/Schedule';
@@ -17,25 +17,30 @@ import { systemDispatcher } from '../../lib/events/system';
 import SystemMap from '../lib/mapper';
 import DepartureTable from '../../departures/components/departure-table';
 import SystemInformation from './system-information';
-import SystemCelestial from './system-celestial';
+import SystemBody from './system-body';
 import Loader from '../../components/loader';
 import SystemTitle from './system-title';
 import Heading from '../../components/heading';
+
+// System page.
+//
+// For reference, terminology used:
+// - celestials: all celestial objects (stars, planets, stations, outposts, beacons)
+// - bodies: subset of celestial objects (stars, planets)
 
 const SystemPage: FunctionComponent = () => {
   const [system, setSystem] = useState<System>(systemState);
   const [schedule, setSchedule] = useState<Pagination<Schedule>>(paginatedScheduleState);
   const [isLoading, setLoading] = useState(true);
   const [systemMap, setSystemMap] = useState<SystemMap>();
-
-  const [selectedBody, setSelectedBody] = useState<MappedSystemCelestial>();
+  const [selectedBody, setSelectedBody] = useState<MappedSystemCelestialBody>();
   const [selectedBodyIndex, setSelectedBodyIndex] = useState<number>(0);
 
   const path = usePathname();
   const slug = path.split('/').pop();
 
-  systemDispatcher.addEventListener('select-celestial', (event) => {
-    setSelectedBody((event.message as MappedSystemCelestial));
+  systemDispatcher.addEventListener('select-body', (event) => {
+    setSelectedBody((event.message as MappedSystemCelestialBody));
   })
 
   useEffect(() => {
@@ -47,6 +52,7 @@ const SystemPage: FunctionComponent = () => {
         withBodies: 1
       }).then((system) => {
         setSystem(system);
+        
         const map = new SystemMap(system);
         setSystemMap(map);
 
@@ -66,8 +72,8 @@ const SystemPage: FunctionComponent = () => {
     }
   }, [slug]);
 
-  function renderCelestials(map: SystemMap) {
-    function handleStarIndexChange() {
+  function renderSystemBodies(map: SystemMap) {
+    function handleSelectedBodyChange() {
       let index = selectedBodyIndex + 1;
       if (typeof map.stars[index] === 'undefined' || map.stars[index].type === CelestialType.Null) {
         index = 0;
@@ -77,21 +83,21 @@ const SystemPage: FunctionComponent = () => {
       setSelectedBodyIndex(index);
     }
 
-    const singleOrbitalStar = map.stars.length === 2 && map.stars[1].type === CelestialType.Null;
+    const singlePrimaryStar = map.stars.length === 2 && map.stars[1].type === CelestialType.Null;
 
     return (
       <>
         <div className="flex items-center content-center gap-4">
           {selectedBody && <>
             <div className="flex shrink-0 items-center md:border-r md:pe-12 md:border-neutral-700 md:rounded-full">
-              {renderCelestial(selectedBody)}
-              {!singleOrbitalStar && <div className="ms-6 text-glow__orange hover:cursor-pointer hover:scale-125">
-                <i className={'icarus-terminal-chevron-down text-glow__orange hover:text-glow__blue'}
-                  onClick={handleStarIndexChange}></i>
+              {renderSystemBody(selectedBody)}
+              {<div className={`ms-6 text-glow__orange ` + (!singlePrimaryStar ? `hover:cursor-pointer hover:scale-125` : ``)}>
+                <i className={`icarus-terminal-chevron-down ` + (singlePrimaryStar ? 'text-neutral-700' : 'text-glow__orange hover:text-glow__blue ')}
+                  onClick={handleSelectedBodyChange}></i>
               </div>}
             </div>
             <div className="hidden md:flex w-full items-center gap-4">
-              {renderCelestialChildren(selectedBody)}
+              {renderSystemBodyChildren(selectedBody)}
             </div>
           </>}
         </div>
@@ -99,40 +105,40 @@ const SystemPage: FunctionComponent = () => {
     );
   }
 
-  function renderCelestial(celestial: MappedSystemCelestial) {
+  function renderSystemBody(body: MappedSystemCelestialBody) {
     let classes = `text-glow__white text-sm`;
-    if (celestial.is_main_star) {
+    if (body.is_main_star) {
       classes += ` w-main-star`
     } else {
       classes = ` w-32`
     }
 
     return (
-      <SystemCelestial key={celestial.id64}
-        id={celestial.id64}
+      <SystemBody key={body.id64}
+        id={body.id64}
         system={system.name}
-        selected={selectedBody as ISystemCelestial}
-        celestial={celestial as ISystemCelestial}
-        orbiting={(celestial._children ? celestial._children.length : 0)}
+        selected={selectedBody as SystemCelestialBody}
+        body={body as SystemCelestialBody}
+        orbiting={(body._children ? body._children.length : 0)}
         dispatcher={systemDispatcher}
         className={classes} />
     );
   }
 
-  function renderCelestialChildren(celestial: MappedSystemCelestial) {
-    const celestials = (celestial._children && celestial._children.length > 0)
-      ? celestial._children
+  function renderSystemBodyChildren(body: MappedSystemCelestialBody) {
+    const bodies = (body._children && body._children.length > 0)
+      ? body._children
       : false;
 
-      if (! celestials) {
+      if (! bodies) {
         return <span className="text-glow__orange uppercase ms-4">
-          {celestial.name} {celestial.type} has no directly orbiting celestial bodies
+          {body.name} {body.type} has no directly orbiting celestial bodies
         </span>;
       }
 
       return <>
         <span className="text-xs text-neutral-500">&lt;</span>
-        {celestials.map((celestial: MappedSystemCelestial) => renderCelestial(celestial))}
+        {bodies.map((body: MappedSystemCelestialBody) => renderSystemBody(body))}
       </>;
   }
 
@@ -150,7 +156,7 @@ const SystemPage: FunctionComponent = () => {
         <Heading icon="icarus-terminal-system-bodies" title="System Bodies" className="gap-2 pb-10" />
         
         {!isLoading && systemMap && systemMap.objectsInSystem.length > 0
-          ? renderCelestials(systemMap)
+          ? renderSystemBodies(systemMap)
           : <div className="text-glow__orange uppercase text-center mx-auto py-6">Telemetry data not found for {system.name}</div>
         }
       </div>
