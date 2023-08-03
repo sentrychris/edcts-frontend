@@ -1,5 +1,5 @@
 import { FunctionComponent, memo } from 'react';
-import { CelestialType, SystemCelestial } from '../../lib/interfaces/System';
+import { SystemCelestial } from '../../lib/interfaces/System';
 import { SystemDispatch } from '../../lib/events/system';
 import Icons from '../../icons';
 
@@ -41,7 +41,7 @@ const SystemCelestial: FunctionComponent<Props> = ({
   const imageX = 0 - CORRECT_FOR_IMAGE_OFFSET_X;
   const imageY = 0 - CORRECT_FOR_IMAGE_OFFSET_Y;
 
-  const displayName = celestial.type === CelestialType.Star
+  const displayName = selected?.id64 === celestial.id64
     ? celestial.name
     : celestial.name.split(system).pop()?.trim();
 
@@ -134,7 +134,7 @@ const SystemCelestial: FunctionComponent<Props> = ({
                 />
               </>}
             </g>
-            {celestial.is_landable === 1 && <svg
+            {celestial.is_landable && <svg
               className='system-map__planetary-lander-icon'
               x={imageX+200}
               y={imageY+200}

@@ -35,8 +35,7 @@ const SystemPage: FunctionComponent = () => {
   const slug = path.split('/').pop();
 
   systemDispatcher.addEventListener('select-celestial', (event) => {
-    const celestial = (event.message as MappedSystemCelestial);
-    setSelectedBody(celestial);
+    setSelectedBody((event.message as MappedSystemCelestial));
   })
 
   useEffect(() => {
