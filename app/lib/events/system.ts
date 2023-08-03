@@ -22,6 +22,13 @@ export class SystemDispatch extends EventDispatcher {
       message: system
     });
   }
+
+  setIndex(index: number) {
+    this.dispatchEvent({
+      type: 'set-index',
+      message: index
+    });
+  }
 }
 
 export const systemDispatcher = new SystemDispatch;

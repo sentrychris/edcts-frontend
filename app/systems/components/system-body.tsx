@@ -8,6 +8,7 @@ interface Props {
   system: string;
   selected?: SystemCelestialBody;
   orbiting?: number;
+  singleton?: boolean;
   dispatcher: SystemDispatch;
   className?: string;
 }
@@ -17,6 +18,7 @@ const SystemBody: FunctionComponent<Props> = ({
   system,
   selected,
   orbiting,
+  singleton,
   dispatcher,
   className
 }) => {
@@ -55,6 +57,8 @@ const SystemBody: FunctionComponent<Props> = ({
 
     return value;
   };
+
+  const isSelected = (selected?.id64 === body.id64);
 
   return (
     <div className="flex gap-1 items-center">
@@ -150,15 +154,21 @@ const SystemBody: FunctionComponent<Props> = ({
         </g>
       </svg>
       <div className="star_information uppercase text-sm tracking-wide">
-        <p>{displayName}</p>
-        <p className="text-label__small whitespace-nowrap">
+        <p className="text-glow">{displayName}</p>
+        <p className="text-label__small text-glow whitespace-nowrap">
           {shortSubType(body)}
         </p>
-        {
-          <span className={`flex items-center gap-2 text-glow__orange ` + ((selected?.id64 === body.id64) ? `text-sm` : `text-label__small`)}>
-            <i className="icarus-terminal-system-bodies text-label__small"></i>
-            {(orbiting)} {(selected?.id64 === body.id64) ? `orbiting bodies found` : ``}
-          </span>}
+        <span className={`flex items-center gap-2 text-glow__orange ` + (isSelected ? `text-sm` : `text-label__small`)}>
+          <i className="icarus-terminal-system-bodies text-label__small"></i>
+          {(orbiting)} {isSelected && `orbiting bodies found`}
+        </span>
+        {isSelected && ! singleton &&
+        <span
+          className="flex items-center gap-2 text-label__small text-glow__blue hover:scale-105 hover:cursor-pointer"
+          onClick={() => dispatcher.setIndex(0)}>
+            <i className="icarus-terminal-chevron-up text-label__small"></i>
+            back to primary star
+        </span>}
       </div>
     </div>
   );

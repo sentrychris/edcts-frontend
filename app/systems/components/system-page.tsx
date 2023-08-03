@@ -39,26 +39,45 @@ const SystemPage: FunctionComponent = () => {
   const path = usePathname();
   const slug = path.split('/').pop();
 
-  systemDispatcher.addEventListener('select-body', (event) => {
-    setSelectedBody((event.message as MappedSystemCelestialBody));
-  })
-
   useEffect(() => {
     if (slug) {
       setLoading(true);
 
+      // Fetch systems along with system information (e.g. governance, economy, security etc.)
+      // and orbiting bodies
       getResource<System>(`systems/${slug}`, {
         withInformation: 1,
         withBodies: 1
       }).then((system) => {
         setSystem(system);
         
+        // Map system bodies (e.g stars, planets and moons) into their respective orbits through
+        // a parent-child relationship.
+        // 
+        // This map contains bodies of type MappedSystemCelestial, which contain the same properties
+        // as SystemCelestial with extra _children, _label, _type used for mapping.
         const map = new SystemMap(system);
         setSystemMap(map);
 
+        // Fetch the main star in the system.
         const star = map.stars.find(s => s.is_main_star === 1);
         setSelectedBody(star);
 
+        // Set the selected system body when the user selects a body.
+        systemDispatcher.addEventListener('select-body', (event) => {
+          setSelectedBody((event.message as MappedSystemCelestialBody));
+        });
+      
+        // Reset the selected body when the user selects go back to primary star.
+        systemDispatcher.addEventListener('set-index', (event) => {
+          const index = (event.message as number);
+          if (index === 0) {
+            setSelectedBody(star);
+          }
+        });
+
+        // Fetch scheduled fleet departures departing from this system along with carrier information
+        // e.g. carrier name, identifier, commander and departure/destination system information.
         getCollection<Schedule>('fleet/schedule', {
           departure: system.name,
           withCarrierInformation: 1,
@@ -73,6 +92,7 @@ const SystemPage: FunctionComponent = () => {
   }, [slug]);
 
   function renderSystemBodies(map: SystemMap) {
+    // Handle user selection to allow switching between stars and orbiting bodies.
     function handleSelectedBodyChange() {
       let index = selectedBodyIndex + 1;
       if (typeof map.stars[index] === 'undefined' || map.stars[index].type === CelestialType.Null) {
@@ -83,6 +103,9 @@ const SystemPage: FunctionComponent = () => {
       setSelectedBodyIndex(index);
     }
 
+    // If map contains two objects, a star and "additional objects not directly orbiting" then
+    // this system has only one primary star, this flag is useful for conditonally rendering certain
+    // ui elements that are only needed if we have multiple primary stars, for example, select buttons.
     const singlePrimaryStar = map.stars.length === 2 && map.stars[1].type === CelestialType.Null;
 
     return (
@@ -90,8 +113,8 @@ const SystemPage: FunctionComponent = () => {
         <div className="flex items-center content-center gap-4">
           {selectedBody && <>
             <div className="flex shrink-0 items-center md:border-r md:pe-12 md:border-neutral-700 md:rounded-full">
-              {renderSystemBody(selectedBody)}
-              {<div className={`ms-6 text-glow__orange ` + (!singlePrimaryStar ? `hover:cursor-pointer hover:scale-125` : ``)}>
+              {renderSystemBody(selectedBody, singlePrimaryStar)}
+              {<div className={`hidden md:inline ms-6 text-glow__orange ` + (!singlePrimaryStar ? `hover:cursor-pointer hover:scale-125` : ``)}>
                 <i className={`icarus-terminal-chevron-down ` + (singlePrimaryStar ? 'text-neutral-700' : 'text-glow__orange hover:text-glow__blue ')}
                   onClick={handleSelectedBodyChange}></i>
               </div>}
@@ -105,7 +128,8 @@ const SystemPage: FunctionComponent = () => {
     );
   }
 
-  function renderSystemBody(body: MappedSystemCelestialBody) {
+  // Render a system body - an interactive SVG with conditional filters depending on body type.
+  function renderSystemBody(body: MappedSystemCelestialBody, singleton = false) {
     let classes = `text-glow__white text-sm`;
     if (body.is_main_star) {
       classes += ` w-main-star`
@@ -120,11 +144,13 @@ const SystemPage: FunctionComponent = () => {
         selected={selectedBody as SystemCelestialBody}
         body={body as SystemCelestialBody}
         orbiting={(body._children ? body._children.length : 0)}
+        singleton={singleton}
         dispatcher={systemDispatcher}
         className={classes} />
     );
   }
 
+  // Render body's orbiting bodies - maps each orbiting body to be rendered using renderSystemBody.
   function renderSystemBodyChildren(body: MappedSystemCelestialBody) {
     const bodies = (body._children && body._children.length > 0)
       ? body._children
