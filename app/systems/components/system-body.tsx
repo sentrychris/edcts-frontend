@@ -4,7 +4,6 @@ import { SystemDispatch } from '../../lib/events/system';
 import Icons from '../../icons';
 
 interface Props {
-  id: number;
   body: SystemCelestialBody;
   system: string;
   selected?: SystemCelestialBody;
@@ -14,7 +13,6 @@ interface Props {
 }
 
 const SystemBody: FunctionComponent<Props> = ({
-  id,
   body,
   system,
   selected,
@@ -88,7 +86,7 @@ const SystemBody: FunctionComponent<Props> = ({
               {body.rings && body.rings.length > 0 && <>
                 <defs>
                   <mask
-                    id={`planet-ring-mask-${id}`}
+                    id={`planet-ring-mask-${body.id64}`}
                     className='system-map__planet-ring-mask'
                   >
                     <ellipse
@@ -120,7 +118,7 @@ const SystemBody: FunctionComponent<Props> = ({
                   cy={0}
                   rx={r * 2}
                   ry={r / 3}
-                  mask={`url(#planet-ring-mask-${id})`}
+                  mask={`url(#planet-ring-mask-${body.id64})`}
                   opacity='1'
                 />
                 <ellipse
@@ -129,7 +127,7 @@ const SystemBody: FunctionComponent<Props> = ({
                   cy={0 - (r / 80)}
                   rx={r * 1.85}
                   ry={r / 4.2}
-                  mask={`url(#planet-ring-mask-${id})`}
+                  mask={`url(#planet-ring-mask-${body.id64})`}
                   opacity='.25'
                 />
               </>}

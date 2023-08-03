@@ -14,7 +14,7 @@ import { systemState } from '../lib/systems';
 import { paginatedScheduleState } from '../../departures/lib/departures';
 import { getCollection, getResource } from '../../lib/api';
 import { systemDispatcher } from '../../lib/events/system';
-import SystemMap from '../lib/mapper';
+import SystemMap from '../lib/system-map';
 import SystemTitle from './system-title';
 import SystemInformation from './system-information';
 import SystemBody from './system-body';
@@ -31,7 +31,7 @@ import Heading from '../../components/heading';
 const SystemPage: FunctionComponent = () => {
   const [system, setSystem] = useState<System>(systemState);
   const [schedule, setSchedule] = useState<Pagination<Schedule>>(paginatedScheduleState);
-  const [isLoading, setLoading] = useState(true);
+  const [isLoading, setLoading] = useState<boolean>(true);
   const [systemMap, setSystemMap] = useState<SystemMap>();
   const [selectedBody, setSelectedBody] = useState<MappedSystemCelestialBody>();
   const [selectedBodyIndex, setSelectedBodyIndex] = useState<number>(0);
@@ -114,8 +114,8 @@ const SystemPage: FunctionComponent = () => {
     }
 
     return (
-      <SystemBody key={body.id64}
-        id={body.id64}
+      <SystemBody
+        key={body.id64}
         system={system.name}
         selected={selectedBody as SystemCelestialBody}
         body={body as SystemCelestialBody}
