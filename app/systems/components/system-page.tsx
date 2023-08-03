@@ -15,11 +15,11 @@ import { paginatedScheduleState } from '../../departures/lib/departures';
 import { getCollection, getResource } from '../../lib/api';
 import { systemDispatcher } from '../../lib/events/system';
 import SystemMap from '../lib/mapper';
-import DepartureTable from '../../departures/components/departure-table';
+import SystemTitle from './system-title';
 import SystemInformation from './system-information';
 import SystemBody from './system-body';
+import DepartureTable from '../../departures/components/departure-table';
 import Loader from '../../components/loader';
-import SystemTitle from './system-title';
 import Heading from '../../components/heading';
 
 // System page.
