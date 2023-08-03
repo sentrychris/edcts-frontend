@@ -110,7 +110,7 @@ const SystemPage: FunctionComponent = () => {
 
     return (
       <>
-        <div className="flex items-center content-center gap-4">
+        <div className="flex items-center content-center">
           {selectedBody && <>
             <div className="flex shrink-0 items-center md:border-r md:pe-12 md:border-neutral-700 md:rounded-full">
               {renderSystemBody(selectedBody, singlePrimaryStar)}
@@ -119,7 +119,7 @@ const SystemPage: FunctionComponent = () => {
                   onClick={handleSelectedBodyChange}></i>
               </div>}
             </div>
-            <div className="hidden md:flex w-full items-center gap-4">
+            <div className="hidden md:flex md:flex-wrap w-full items-center">
               {renderSystemBodyChildren(selectedBody)}
             </div>
           </>}
@@ -134,7 +134,7 @@ const SystemPage: FunctionComponent = () => {
     if (body.is_main_star) {
       classes += ` w-main-star`
     } else {
-      classes = ` w-32`
+      classes = ` w-40`
     }
 
     return (

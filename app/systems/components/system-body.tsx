@@ -25,8 +25,8 @@ const SystemBody: FunctionComponent<Props> = ({
   // System configs
   const radius = body.radius;
   let r = 2000;
-  if (radius && radius <= 2500) r = 800;
-  if (radius && radius > 2500 && radius <= 20000) r = 1200;
+  if (radius && radius <= 2500) r = 1000;
+  if (radius && radius > 2500 && radius <= 20000) r = 1400;
   if (radius && radius > 20000) r = 2000;
 
   let useLargerViewBox = false;
@@ -48,10 +48,11 @@ const SystemBody: FunctionComponent<Props> = ({
   const shortSubType = (body: SystemCelestialBody) => {
     let value = body.sub_type;
     if (body.sub_type === 'High metal content world') value = 'High metal';
-    if (body.sub_type === 'Class I gas giant') value = 'Gas giant';
     if (body.sub_type === 'M (Red dwarf) Star') value = 'M Red dwarf';
+    if (body.sub_type === 'Y (Brown dwarf) Star') value = 'Y Brown dwarf';
     if (body.sub_type === 'White Dwarf (DA) Star') value = 'DA White dwarf';
     if (body.name === 'Earth') value = 'Home';
+    if (body.sub_type.match(/^class [IVXLCDM]+ gas giant$/i)) value = 'Gas giant';
   
     value = value.replace('world', '');
 
@@ -138,7 +139,7 @@ const SystemBody: FunctionComponent<Props> = ({
             </g>
             {body.is_landable && <svg
               className='system-map__planetary-lander-icon'
-              x={imageX+200}
+              x={imageX+100}
               y={imageY+200}
             >
               {Icons.get('planet-landable')}
@@ -162,12 +163,12 @@ const SystemBody: FunctionComponent<Props> = ({
           <i className="icarus-terminal-system-bodies text-label__small"></i>
           {(orbiting)} {isSelected && `orbiting bodies found`}
         </span>
-        {isSelected && ! singleton &&
+        {isSelected && ! singleton && !body.is_main_star &&
         <span
           className="flex items-center gap-2 text-label__small text-glow__blue hover:scale-105 hover:cursor-pointer"
           onClick={() => dispatcher.setIndex(0)}>
             <i className="icarus-terminal-chevron-up text-label__small"></i>
-            back to primary star
+            Go back to main star
         </span>}
       </div>
     </div>
