@@ -1,9 +1,9 @@
+import { System } from '../../lib/interfaces/System';
 import {
-  System,
   CelestialBody,
   MappedCelestialBody,
   CelestialBodyParent,
-} from '../../lib/interfaces/System';
+} from '../../lib/interfaces/Celestial';
 
 import {
   SOL_RADIUS_IN_KM,

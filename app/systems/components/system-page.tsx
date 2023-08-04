@@ -3,17 +3,15 @@
 
 import { usePathname } from 'next/navigation';
 import { FunctionComponent, useEffect, useState } from 'react';
-import { System,
-  CelestialBody,
-  MappedCelestialBody,
-} from '../../lib/interfaces/System';
+import { System } from '../../lib/interfaces/System';
+import { CelestialBody, MappedCelestialBody } from '../../lib/interfaces/Celestial';
 import { CelestialBodyType } from '../../lib/constants/celestial';
 import { Schedule } from '../../lib/interfaces/Schedule';
 import { Pagination } from '../../lib/interfaces/Pagination';
+import { systemDispatcher } from '../../lib/events/system';
 import { systemState } from '../lib/systems';
 import { paginatedScheduleState } from '../../departures/lib/departures';
 import { getCollection, getResource } from '../../lib/api';
-import { systemDispatcher } from '../../lib/events/system';
 import SystemMap from '../lib/system-map';
 import SystemTitle from './system-title';
 import SystemInformation from './system-information';

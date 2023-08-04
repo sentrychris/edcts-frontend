@@ -1,5 +1,5 @@
 import { FunctionComponent, memo } from 'react';
-import { CelestialBody } from '../../lib/interfaces/System';
+import { CelestialBody } from '../../lib/interfaces/Celestial';
 import { SystemDispatch } from '../../lib/events/system';
 import Icons from '../../icons';
 
