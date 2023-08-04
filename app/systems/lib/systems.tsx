@@ -98,39 +98,57 @@ export const systemColumns = {
   name: {
     title: 'Name',
     render: (system: System) => {
-      return <Link className="hover:underline text-blue-500 dark:text-blue-200" href={`/systems/system/${system.slug}`}>
+      return <Link className="hover:underline text-blue-200" href={`/systems/system/${system.slug}`}>
         {system.name}
       </Link>;
     }
   },
   government: {
     title: 'Government',
-    render: (system: System) => system.information ? system.information.government : 'None'
+    render: (system: System) =>
+      system.information && system.information.government
+      ? system.information.government
+      : 'None'
   },
   allegiance: {
     title: 'Allegiance',
-    render: (system: System) => renderAllegianceText(system.information ? system.information.allegiance : 'None')
+    render: (system: System) => renderAllegianceText(
+      system.information && system.information.allegiance
+      ? system.information.allegiance
+      : 'None')
   },
   faction: {
     title: 'Faction',
-    render: (system: System) => system.information ? system.information.controlling_faction.name : 'None' 
+    render: (system: System) =>
+      system.information && system.information.controlling_faction
+      ? system.information.controlling_faction.name
+      : 'None' 
   },
   population: {
     title: 'Population',
-    render: (system: System) => system.information ? system.information.population.toLocaleString() : '0'
+    render: (system: System) =>
+      system.information && system.information.population
+      ? system.information.population.toLocaleString()
+      : 0
   },
   economy: {
     title: 'Economy',
-    render: (system: System) => system.information ? system.information.economy : 'None'
+    render: (system: System) =>
+      system.information && system.information.economy
+      ? system.information.economy
+      : 'None'
   },
   security: {
     title: 'Security',
-    render: (system: System) => renderSecurityText(system.information ? system.information.security : 'None')
+    render: (system: System) => renderSecurityText(
+        system.information && system.information.security
+        ? system.information.security
+        : 'None')
   },
   view: {
     title: 'View',
     render: (system: System) => {
-      return <Link className="underline text-blue-500 dark:text-blue-200" href={`/systems/system/${system.slug}`}>
+      return <Link className="underline text-blue-200" href={`/systems/system/${system.slug}`}>
         <EyeIcon className="w-6 h-6" />
       </Link>;
     }

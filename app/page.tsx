@@ -16,7 +16,7 @@ export default async function Home() {
   return (
     <>
       <Heading icon="icarus-terminal-route" title="Departure Board" className="gap-2 mb-5" />
-      <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6 font-bold">
+      <div className="border-t border-b border-neutral-800 grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6 font-bold">
         {schedule.data.slice(0, 4).map((schedule) => {
           return <DepartureCard key={schedule.id} schedule={schedule}/>;
         })}

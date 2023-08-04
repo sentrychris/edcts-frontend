@@ -72,21 +72,19 @@ export default class SystemMap
   }
 
   mapBodies(star: MappedCelestialBody) {
-    const MIN_R = 800
-    const MAX_R = 2000
-    const SUB_MIN_R = 800
-    const SUB_MAX_R = 2000
-    const R_DIVIDER = 10
-    const X_SPACING = 600
-    const Y_SPACING = 600
-    const MIN_LABEL_X_SPACING = 0
-    const RING_X_SPACING_FACTOR = 0.8
-    const Y_LABEL_OFFSET = 0;
+    const MIN_R = 800;
+    const MAX_R = 1600;
+    const SUB_MIN_R = 800;
+    const SUB_MAX_R = 1600;
+    const R_DIVIDER = 10;
+    const X_SPACING = 600;
+    const Y_SPACING = 600;
+    const RING_X_SPACING = 0.8;
 
-    star._xMax = 0
-    star._yMax = 0
-    star._xOffset = 0
-    star._yOffset = 0;
+    star._x_max = 0;
+    star._y_max = 0;
+    star._x_offset = 0
+    star._y_offset = 0;
 
     // Get each objects directly orbiting star
     star._children = this.getChildren(star, true).map((itemInOrbit, i) => {
@@ -95,29 +93,34 @@ export default class SystemMap
       // Get each objects directly orbiting this object
       itemInOrbit._children = this.getChildren(itemInOrbit, false);
 
-      itemInOrbit._r = itemInOrbit.radius ? itemInOrbit.radius / R_DIVIDER : MIN_R;
-      if (itemInOrbit._r < MAIN_PLANET_MIN_R) itemInOrbit._r = MAIN_PLANET_MIN_R
-      if (itemInOrbit._r > MAX_R) itemInOrbit._r = MAX_R
+      itemInOrbit._r = itemInOrbit.radius
+        ? itemInOrbit.radius / R_DIVIDER
+        : MIN_R;
+      
+      if (itemInOrbit._r < MAIN_PLANET_MIN_R) {
+        itemInOrbit._r = MAIN_PLANET_MIN_R
+      }
 
-      // Set attribute on smaller planets so we can select a different setting
-      // on front end that will render them better
-      if (itemInOrbit._r <= MAIN_PLANET_MIN_R) itemInOrbit._small = true
+      if (itemInOrbit._r > MAX_R) {
+        itemInOrbit._r = MAX_R
+      }
+
+      if (itemInOrbit._r <= MAIN_PLANET_MIN_R) {
+        itemInOrbit._small = true
+      }
 
       itemInOrbit._y = 0
-      itemInOrbit.orbits_star = true
+      itemInOrbit._orbits_star = true
 
-      // If this item (or the previous object) has rings, account for that
-      // by makign sure there is more horizontal space between objects so that
-      // the rings won't overlap when drawn.
       const itemXSpacing = (itemInOrbit.rings)
-        ? itemInOrbit._r / RING_X_SPACING_FACTOR
+        ? itemInOrbit._r / RING_X_SPACING
         : X_SPACING;
 
-      itemInOrbit._x = star._xMax + itemXSpacing + itemInOrbit._r;
+      itemInOrbit._x = star._x_max + itemXSpacing + itemInOrbit._r;
 
-      const newYmax = itemInOrbit._r + X_SPACING
-      if (newYmax > star._yOffset) {
-        star._yOffset = newYmax;
+      const newy_max = itemInOrbit._r + X_SPACING
+      if (newy_max > star._yOffset) {
+        star._yOffset = newy_max;
       }
 
       // If object has children,
@@ -125,16 +128,16 @@ export default class SystemMap
         ? itemInOrbit._x + itemInOrbit._r + itemXSpacing
         : itemInOrbit._x + itemInOrbit._r;
 
-      if (itemInOrbit._children.length > 0 && (newXmax - star._xMax) < MIN_LABEL_X_SPACING){
-        newXmax = star._xMax + MIN_LABEL_X_SPACING;
+      if (itemInOrbit._children.length > 0 && (newXmax - star._x_max) < 0){
+        newXmax = star._x_max;
       }
 
-      if (newXmax > star._xMax) {
-        star._xMax = newXmax;
+      if (newXmax > star._x_max) {
+        star._x_max = newXmax;
       }
 
       // Initialize Y max with planet radius
-      itemInOrbit._yMax = itemInOrbit._r + (Y_SPACING / 2)
+      itemInOrbit._y_max = itemInOrbit._r + (Y_SPACING / 2)
 
       // Get every object that directly or indirectly orbits this object
       itemInOrbit._children
@@ -158,12 +161,12 @@ export default class SystemMap
           subItemInOrbit._x = itemInOrbit._x
 
           // Use radius of current object to calclulate cumulative Y pos
-          subItemInOrbit._y = itemInOrbit._yMax + subItemInOrbit._r + Y_SPACING
+          subItemInOrbit._y = itemInOrbit._y_max + subItemInOrbit._r + Y_SPACING
 
           // New Y max is  previous Y max plus current object radius plus spacing
-          itemInOrbit._yMax = subItemInOrbit._y + subItemInOrbit._r
+          itemInOrbit._y_max = subItemInOrbit._y + subItemInOrbit._r
 
-          subItemInOrbit.orbits_star = false
+          subItemInOrbit._orbits_star = false
 
           return subItemInOrbit;
         });

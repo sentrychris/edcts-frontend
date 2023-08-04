@@ -158,13 +158,13 @@ const SystemPage: FunctionComponent<Props> = ({ initSystem, initSchedule }) => {
         <div className="flex items-center content-center">
           {selectedBody && <>
             <div className="flex shrink-0 items-center md:border-r md:pe-12 md:border-neutral-700 md:rounded-full">
-            {<div className={'hidden md:flex flex-col me-6 text-glow__orange'}>
-              <i className={'icarus-terminal-chevron-up text-glow__orange hover:text-glow__blue hover:cursor-pointer'}
-                onClick={() => handleSelectedBodyChange(selectedBodyIndex - 1)}></i>
-              <i className={'icarus-terminal-chevron-down text-glow__orange hover:text-glow__blue hover:cursor-pointer'}
-                onClick={() => handleSelectedBodyChange(selectedBodyIndex + 1)}></i>
-            </div>}
-            {renderSystemBody(selectedBody, singlePrimaryStar)}
+              {<div className={'hidden md:flex flex-col me-6 text-glow__orange'}>
+                <i className={'icarus-terminal-chevron-up text-glow__orange hover:text-glow__blue hover:cursor-pointer'}
+                  onClick={() => handleSelectedBodyChange(selectedBodyIndex - 1)}></i>
+                <i className={'icarus-terminal-chevron-down text-glow__orange hover:text-glow__blue hover:cursor-pointer'}
+                  onClick={() => handleSelectedBodyChange(selectedBodyIndex + 1)}></i>
+              </div>}
+              {renderSystemBody(selectedBody, singlePrimaryStar)}
             </div>
             <div className="system-body__children hidden md:flex w-full items-center overflow-x-auto hover:cursor-all-scroll"
               ref={scrollableBodies}>
@@ -210,10 +210,7 @@ const SystemPage: FunctionComponent<Props> = ({ initSystem, initSchedule }) => {
         </span>;
       }
 
-      return <>
-        <span className="text-xs text-neutral-500">&lt;</span>
-        {bodies.map((body: MappedCelestialBody) => renderSystemBody(body))}
-      </>;
+      return bodies.map((body: MappedCelestialBody) => renderSystemBody(body));
   }
 
   return (
