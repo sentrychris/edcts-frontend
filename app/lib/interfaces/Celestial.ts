@@ -48,6 +48,8 @@ export interface CelestialRing {
   outerRadius: number;
 }
 
-export interface MappedCelestialBody {
+export interface MappedCelestialBody extends Partial<CelestialBody> {
+  body_id: number;
+  name: string;
   [key: string]: any;
 }

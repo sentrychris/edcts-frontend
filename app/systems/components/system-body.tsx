@@ -1,10 +1,10 @@
 import { FunctionComponent, memo } from 'react';
-import { CelestialBody } from '../../lib/interfaces/Celestial';
+import { CelestialBody, MappedCelestialBody } from '../../lib/interfaces/Celestial';
 import { SystemDispatch } from '../../lib/events/system';
 import Icons from '../../icons';
 
 interface Props {
-  body: CelestialBody;
+  body: MappedCelestialBody;
   system: string;
   selected?: CelestialBody;
   orbiting?: number;
@@ -22,19 +22,16 @@ const SystemBody: FunctionComponent<Props> = ({
   dispatcher,
   className
 }) => {
+  console.log({body})
   // System configs
-  let radius = 2000;
-  if (body.radius && body.radius <= 2500) radius = 1000;
-  if (body.radius && body.radius > 2500 && body.radius <= 5000) radius = 1200;
-  if (body.radius && body.radius > 5000 && body.radius <= 7500) radius = 1400;
-  if (body.radius && body.radius > 7500 && body.radius <= 10000) radius = 1600;
-  if (body.radius && body.radius > 10000 && body.radius <= 15000) radius = 1800;
-  if (body.radius && body.radius > 20000) radius = 2000;
+  const radius = !body.is_main_star
+    ? body._r
+    : 2000;
 
   let useLargerViewBox = false;
   if (body.rings) useLargerViewBox = true;
   if (body.sub_type === 'Neutron Star') useLargerViewBox = true;
-  if (body.sub_type.startsWith('White Dwarf')) useLargerViewBox = true;
+  if (body.sub_type && body.sub_type.startsWith('White Dwarf')) useLargerViewBox = true;
   if (body.sub_type === 'Black Hole') useLargerViewBox = true;
 
   const imageX = 250;
@@ -51,11 +48,11 @@ const SystemBody: FunctionComponent<Props> = ({
       <svg
         viewBox={useLargerViewBox ? '-4000 -4000 8000 8000' : '-2500 -2500 5000 5000'}
         preserveAspectRatio="xMinYMid meet"
-        className={className + ' hover:cursor-pointer'}
-        onClick={() => dispatcher.selectBody({ body })}>
+        className={className}>
         <g className="system-map__system-object"
           data-system-object-name={body.name}
           data-system-object-type={body.type}
+          data-system-object-small={body._small}
           data-system-object-sub-type={body.sub_type}
           data-system-object-atmosphere={body.atmosphere_type}
           data-system-object-landable={body.is_landable === 1 ? true : false}
@@ -63,14 +60,14 @@ const SystemBody: FunctionComponent<Props> = ({
           <g className="system-map__body">
             <g className="system-map__planet">
               <circle
-                cx="0"
-                cy="0"
+                cx={0}
+                cy={0}
                 r={radius}
               />
               <circle
                 className="system-map__planet-surface"
-                cx="0"
-                cy="0"
+                cx={0}
+                cy={0}
                 r={radius}
               />
               {body.rings && body.rings.length > 0 && <>
@@ -123,18 +120,11 @@ const SystemBody: FunctionComponent<Props> = ({
               </>}
             </g>
             {body.is_landable && <svg
-              className='system-map__planetary-lander-icon'
-              x={imageX+100}
-              y={imageY+200}
+              className='text-xs system-map__planetary-lander-icon'
+              x={0}
+              y={0}
             >
               {Icons.get('planet-landable')}
-            </svg>}
-            {body.rings && <svg
-              className='system-map__planetary-port-icon'
-              x={imageX+1000}
-              y={imageY+1000}
-            >
-              {Icons.get('planet-ringed')}
             </svg>}
           </g>
         </g>
@@ -147,9 +137,11 @@ const SystemBody: FunctionComponent<Props> = ({
           {body.sub_type}
         </p>
         <span
-          className={'flex items-center gap-2 text-glow__orange ' + (bodyIsSelectedUserFocus ? 'text-sm' : 'text-label__small')}>
+          className={'flex items-center gap-2 text-glow__orange hover:text-glow__blue hover:cursor-grabbing  ' + (bodyIsSelectedUserFocus ? 'text-sm' : 'text-label__small')}
+          onClick={() => dispatcher.selectBody({ body: body as CelestialBody })}
+        >
           <i className="icarus-terminal-system-bodies text-label__small"></i>
-          {(orbiting)} {bodyIsSelectedUserFocus && 'orbiting bodies found'}
+          {(orbiting)} {bodyIsSelectedUserFocus ? 'orbiting bodies found' : ' orb..'}
         </span>
         {bodyIsSelectedUserFocus && ! body.is_main_star &&
         <span

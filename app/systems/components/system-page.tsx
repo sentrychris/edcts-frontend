@@ -54,7 +54,7 @@ const SystemPage: FunctionComponent<Props> = ({ initSystem, initSchedule }) => {
     let pos = {top: 0, left: 0, x: 0, y: 0};
     if (node) {
       node.scrollLeft = 0;
-      
+
       node.addEventListener('mousedown', (e: MouseEvent) => {
         pos = {
           left: node.scrollLeft,
@@ -63,8 +63,8 @@ const SystemPage: FunctionComponent<Props> = ({ initSystem, initSchedule }) => {
           y: e.clientY,
         };
 
-        document.addEventListener('mousemove', mouseMoveHandler);
-        document.addEventListener('mouseup', mouseUpHandler);
+        node.addEventListener('mousemove', mouseMoveHandler);
+        node.addEventListener('mouseup', mouseUpHandler);
       });
 
       const mouseMoveHandler = (event: MouseEvent) => {
@@ -76,8 +76,8 @@ const SystemPage: FunctionComponent<Props> = ({ initSystem, initSchedule }) => {
       };
     
       const mouseUpHandler = () => {
-        document.removeEventListener('mousemove', mouseMoveHandler);
-        document.removeEventListener('mouseup', mouseUpHandler);
+        node.removeEventListener('mousemove', mouseMoveHandler);
+        node.removeEventListener('mouseup', mouseUpHandler);
     
         node.style.cursor = 'grab';
         node.style.removeProperty('user-select');
@@ -166,7 +166,7 @@ const SystemPage: FunctionComponent<Props> = ({ initSystem, initSchedule }) => {
             </div>}
             {renderSystemBody(selectedBody, singlePrimaryStar)}
             </div>
-            <div className="system-body__children hidden md:flex w-full overflow-x-auto items-center"
+            <div className="system-body__children hidden md:flex w-full items-center overflow-x-auto hover:cursor-all-scroll"
               ref={scrollableBodies}>
               {renderSystemBodyChildren(selectedBody)}
             </div>
