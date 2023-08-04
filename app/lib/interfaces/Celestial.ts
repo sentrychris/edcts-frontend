@@ -1,5 +1,9 @@
 import { CelestialBodyType } from '../constants/celestial';
 
+export type CelestialBodyParent = {
+  [key in CelestialBodyType]?: number;
+}
+
 export interface CelestialBody {
   id64: number;
   body_id: number;
@@ -42,10 +46,6 @@ export interface CelestialRing {
   mass: number;
   innerRadius: number;
   outerRadius: number;
-}
-
-export type CelestialBodyParent = {
-  [key in CelestialBodyType]?: number;
 }
 
 export interface MappedCelestialBody {

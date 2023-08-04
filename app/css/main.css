@@ -1,8 +1,7 @@
 @import url('https://fonts.googleapis.com/css2?family=Jura:wght@300;400;500;700&display=swap');
 @import url('/fonts/icarus-terminal/icarus-terminal.css');
 @import url('./variables.css');
-@import url("./fx/fx.css");
-@import url("./fx/crt.css");
+@import url("./fx.css");
 @import url('./system.css');
 @import url('./table.css');
 @import url('./loader.css');
@@ -49,16 +48,6 @@
 body {
   color: rgb(var(--foreground-rgb));
   background: radial-gradient(circle at 240%, var(--color-primary-dark) 25%, #000000);
-}
-
-.bg-primary {
-  background: var(--color-primary);
-}
-.bg-primary-dark {
-  background: var(--color-primary-dark)
-}
-.bg-secondary {
-  background: rgb(101 234 255 / 1);
 }
 
 nav.main-nav__nav {

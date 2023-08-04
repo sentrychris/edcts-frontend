@@ -1,4 +1,3 @@
-/* Visual effects that apply to the entire window (e.g. flicker, CRT effect, vignette) */
 html[data-fx-crt-text="true"] h1,
 html[data-fx-crt-text="true"] h2,
 html[data-fx-crt-text="true"] h3,
@@ -17,55 +16,6 @@ html[data-fx-crt-text="true"] .icon {
   text-shadow: 1.1px 0 1px var(--text-shift-right-color), -1.1px 0 1px var(--text-shift-left-color), 0 0 3px;
 }
 
-*[data-fx-crt-text-animated="true"],
-*[data-fx-crt-text-animated="true"] h1,
-*[data-fx-crt-text-animated="true"] h2,
-*[data-fx-crt-text-animated="true"] h3,
-*[data-fx-crt-text-animated="true"] h4,
-*[data-fx-crt-text-animated="true"] h5,
-*[data-fx-crt-text-animated="true"] p,
-*[data-fx-crt-text-animated="true"] li,
-*[data-fx-crt-text-animated="true"] span,
-*[data-fx-crt-text-animated="true"] button,
-*[data-fx-crt-text-animated="true"] th,
-*[data-fx-crt-text-animated="true"] td,
-*[data-fx-crt-text-animated="true"] label,
-*[data-fx-crt-text-animated="true"] svg text,
-*[data-fx-crt-text-animated="true"] .icon {
-  /* Text animation is a big performance hit */
-  animation: text-refraction-animation 5s infinite;
-}
-
-/*
-.launcher-title *,
-.inspector__title:hover,
-button:hover,
-td:hover,
-tr:hover,
-tr:hover td,
-tr:hover td * {
-  animation: text-refraction-animation 5s infinite;
-}
-*/
-
-.crt-fx::after,
-html[data-fx-crt="true"] body::after {
-  /*
-  content: " ";
-  display: block;
-  position: fixed;
-  top: 0;
-  left: 0;
-  bottom: 0;
-  right: 0;
-  background: rgba(18, 16, 16, 0.1);
-  opacity: 0;
-  z-index: 1002;
-  pointer-events: none;
-  animation: text-flicker-animation 5s infinite;
-  */
-}
-
 .crt-fx::before,
 html[data-fx-crt="true"] body::before {
   content: " ";
@@ -76,7 +26,7 @@ html[data-fx-crt="true"] body::before {
   bottom: 0;
   right: 0;
   background: linear-gradient(rgba(0,0,0,0) 50%, rgba(0, 0, 0, .03) 50%), linear-gradient(90deg, rgba(255, 0, 0, 0.04), rgba(0, 255, 0, 0.04), rgba(0, 0, 255, 0.04));
-  z-index: 10010; /* 10000 and above so is on top of notifications */
+  z-index: 10010;
   background-size: 100% 3px, 3px 100%;
   pointer-events: none;
 }
@@ -88,7 +38,6 @@ html[data-fx-crt="true"] body::before {
 
 html[data-fx-crt="true"] .layout__overlay {
   box-shadow: 0 0 1rem 1rem rgba(0,0,0,.5) inset;
-  /*,  0 2rem 2rem -2rem var(--color-primary) inset;*/
   display: block;
   position: fixed;
   top: 0;
@@ -162,17 +111,6 @@ html[data-fx-crt="true"] .layout__overlay {
   100% {
     text-shadow: 0 0 15px var(--color-primary),2.6208764473832513px 0 1px var(--text-shift-right-color), -2.6208764473832513px 0 1px var(--text-shift-left-color), 0 0 3px;
   }
-}
-
-html[data-fx-crt-text-animated]:not([data-fx-crt-text-animated="true"]) .fx-animated-text,
-html:not([data-fx-crt-text-animated]) .fx-animated-text {
-  overflow-x: clip !important; /* avoids clipping text shadow on y axis */
-  white-space: nowrap !important;
-  display: inline-block;
-  width: 0;
-  text-shadow: none; /* Added to text when animation starts (avoids clipping) */
-  animation: fx-text-typing-animation .5s steps(15, end);
-  animation-fill-mode: forwards;
 }
 
 .fx-animated-text[data-fx-order="1"] { animation-delay: .1s !important; }
