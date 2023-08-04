@@ -114,8 +114,8 @@ const SystemPage: FunctionComponent = () => {
           {selectedBody && <>
             <div className="flex shrink-0 items-center md:border-r md:pe-12 md:border-neutral-700 md:rounded-full">
               {renderSystemBody(selectedBody, singlePrimaryStar)}
-              {<div className={`hidden md:inline ms-6 text-glow__orange ` + (!singlePrimaryStar ? `hover:cursor-pointer hover:scale-125` : ``)}>
-                <i className={`icarus-terminal-chevron-down ` + (singlePrimaryStar ? 'text-neutral-700' : 'text-glow__orange hover:text-glow__blue ')}
+              {<div className={'hidden md:inline ms-6 text-glow__orange ' + (!singlePrimaryStar ? 'hover:cursor-pointer hover:scale-125' : '')}>
+                <i className={'icarus-terminal-chevron-down ' + (singlePrimaryStar ? 'text-neutral-700' : 'text-glow__orange hover:text-glow__blue ')}
                   onClick={handleSelectedBodyChange}></i>
               </div>}
             </div>
@@ -130,11 +130,11 @@ const SystemPage: FunctionComponent = () => {
 
   // Render a system body - an interactive SVG with conditional filters depending on body type.
   function renderSystemBody(body: MappedSystemCelestialBody, singleton = false) {
-    let classes = `text-glow__white text-sm`;
+    let classes = 'text-glow__white text-sm';
     if (body.is_main_star) {
-      classes += ` w-main-star`
+      classes += ' w-main-star';
     } else {
-      classes = ` w-40`
+      classes = ' w-40';
     }
 
     return (

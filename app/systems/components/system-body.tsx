@@ -66,7 +66,7 @@ const SystemBody: FunctionComponent<Props> = ({
       <svg
         viewBox={useLargerViewBox ? '-4000 -4000 8000 8000' : '-2500 -2500 5000 5000'}
         preserveAspectRatio="xMinYMid meet"
-        className={className + ` hover:cursor-pointer`}
+        className={className + ' hover:cursor-pointer'}
         onClick={() => dispatcher.selectBody({ body })}>
         <g className="system-map__system-object"
           data-system-object-name={body.name}
@@ -159,9 +159,9 @@ const SystemBody: FunctionComponent<Props> = ({
         <p className="text-label__small text-glow whitespace-nowrap">
           {shortSubType(body)}
         </p>
-        <span className={`flex items-center gap-2 text-glow__orange ` + (isSelected ? `text-sm` : `text-label__small`)}>
+        <span className={'flex items-center gap-2 text-glow__orange ' + (isSelected ? 'text-sm' : 'text-label__small')}>
           <i className="icarus-terminal-system-bodies text-label__small"></i>
-          {(orbiting)} {isSelected && `orbiting bodies found`}
+          {(orbiting)} {isSelected && 'orbiting bodies found'}
         </span>
         {isSelected && ! singleton && !body.is_main_star &&
         <span
