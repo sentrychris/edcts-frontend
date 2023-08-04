@@ -1,4 +1,5 @@
-import { System, SystemCelestialBody } from '../interfaces/System';
+import { System } from '../interfaces/System';
+import { CelestialBody } from '../interfaces/Celestial';
 import EventDispatcher from './dispatcher';
 
 export class SystemDispatch extends EventDispatcher {
@@ -9,7 +10,7 @@ export class SystemDispatch extends EventDispatcher {
     });
   }
 
-  selectBody({ body }: { body: SystemCelestialBody }) {
+  selectBody({ body }: { body: CelestialBody }) {
     this.dispatchEvent({
       type: 'select-body', 
       message: body

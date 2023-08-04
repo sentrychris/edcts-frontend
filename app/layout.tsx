@@ -18,7 +18,7 @@ export default function RootLayout({
   children: React.ReactNode
 }) {
   return (
-    <html lang="en" className="scroll-smooth">
+    <html lang="en" data-fx-crt-text="true" className="scroll-smooth">
       <body className={jura.className + ' antialiased'}>
         <SvgFilters />
         <div className="hidden overlay absolute top-0 inset-x-0 dark:flex justify-center overflow-hidden pointer-events-none">

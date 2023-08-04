@@ -29,6 +29,31 @@ export const systemState: System = {
   slug: ''
 };
 
+
+export const statisticsState = {
+  data: {
+    cartographical: {
+        systems: 0,
+        bodies: 0,
+        stars: 0,
+        orbiting: 0
+    },
+    carriers: 0,
+    commanders: 0,
+    journeys: {
+        total: 0,
+        boarding: 0,
+        cancelled: 0,
+        leaving_in: {
+            two_days: 0,
+            one_week: 0,
+            one_month: 0,
+            six_months: 0
+        }
+    }
+  }
+};
+
 export const paginatedSystemState: Pagination<System> = pagination;
 
 export const renderSecurityText = (level: string = 'None') => {
@@ -53,7 +78,7 @@ export const renderAllegianceText = (value: string = 'None') => {
   </p>;
 };
 
-export const renderBadge = (text: string, options?: {className?: string, icon?: string}) => {
+export const renderBadge = (text: string | number, options?: {className?: string, icon?: string}) => {
   let classes = 'flex items-center gap-2 py-1 uppercase text-glow__white font-bold';
   if (options && options.className) {
     classes = classes + options.className;
@@ -80,27 +105,27 @@ export const systemColumns = {
   },
   government: {
     title: 'Government',
-    render: (system: System) => system.information.government ?? 'None'
+    render: (system: System) => system.information ? system.information.government : 'None'
   },
   allegiance: {
     title: 'Allegiance',
-    render: (system: System) => renderAllegianceText(system.information.allegiance ?? 'None')
+    render: (system: System) => renderAllegianceText(system.information ? system.information.allegiance : 'None')
   },
   faction: {
     title: 'Faction',
-    render: (system: System) => system.information.controlling_faction.name ?? 'None' 
+    render: (system: System) => system.information ? system.information.controlling_faction.name : 'None' 
   },
   population: {
     title: 'Population',
-    render: (system: System) => system.information.population.toLocaleString()
+    render: (system: System) => system.information ? system.information.population.toLocaleString() : '0'
   },
   economy: {
     title: 'Economy',
-    render: (system: System) => system.information.economy ?? 'None'
+    render: (system: System) => system.information ? system.information.economy : 'None'
   },
   security: {
     title: 'Security',
-    render: (system: System) => renderSecurityText(system.information.security)
+    render: (system: System) => renderSecurityText(system.information ? system.information.security : 'None')
   },
   view: {
     title: 'View',

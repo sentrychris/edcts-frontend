@@ -7,6 +7,9 @@
   --filter-system-map-planet-landable: contrast(1.15) brightness(1.2);
   
   --base-font-size: 1.25rem;
+
+  --color-orange: 251 146 60 / 1;
+  --color-blue: 101 234 255 / 1;
   
   /* Default values to allow for theme reset */
   --color-default-primary-r: 250;

@@ -2,7 +2,7 @@
 'use client';
 
 import { usePathname } from 'next/navigation';
-import { FunctionComponent, useEffect, useState } from 'react';
+import { FunctionComponent, useEffect, useState, useCallback } from 'react';
 import { System } from '../../lib/interfaces/System';
 import { CelestialBody, MappedCelestialBody } from '../../lib/interfaces/Celestial';
 import { CelestialBodyType } from '../../lib/constants/celestial';
@@ -26,9 +26,22 @@ import Heading from '../../components/heading';
 // - celestials: all celestial objects (stars, planets, stations, outposts, beacons)
 // - bodies: subset of celestial objects (stars, planets)
 
-const SystemPage: FunctionComponent = () => {
-  const [system, setSystem] = useState<System>(systemState);
-  const [schedule, setSchedule] = useState<Pagination<Schedule>>(paginatedScheduleState);
+interface Props {
+  initSystem?: System;
+  initSchedule?: Pagination<Schedule>;
+}
+
+const SystemPage: FunctionComponent<Props> = ({ initSystem, initSchedule }) => {
+  const [system, setSystem] = useState<System>(initSystem !== undefined
+    ? initSystem
+    : systemState
+  );
+  
+  const [schedule, setSchedule] = useState<Pagination<Schedule>>(initSchedule !== undefined
+    ? initSchedule
+    : paginatedScheduleState
+  );
+  
   const [isLoading, setLoading] = useState<boolean>(true);
   const [systemMap, setSystemMap] = useState<SystemMap>();
   const [selectedBody, setSelectedBody] = useState<MappedCelestialBody>();
@@ -36,6 +49,41 @@ const SystemPage: FunctionComponent = () => {
 
   const path = usePathname();
   const slug = path.split('/').pop();
+
+  const scrollableBodies = useCallback((node: HTMLDivElement) => {
+    let pos = {top: 0, left: 0, x: 0, y: 0};
+    if (node) {
+      node.scrollLeft = 0;
+      
+      node.addEventListener('mousedown', (e: MouseEvent) => {
+        pos = {
+          left: node.scrollLeft,
+          top: node.scrollTop,
+          x: e.clientX,
+          y: e.clientY,
+        };
+
+        document.addEventListener('mousemove', mouseMoveHandler);
+        document.addEventListener('mouseup', mouseUpHandler);
+      });
+
+      const mouseMoveHandler = (event: MouseEvent) => {
+        const dx = event.clientX - pos.x;
+        const dy = event.clientY - pos.y;
+
+        node.scrollTop = pos.top - dy;
+        node.scrollLeft = pos.left - dx;
+      };
+    
+      const mouseUpHandler = () => {
+        document.removeEventListener('mousemove', mouseMoveHandler);
+        document.removeEventListener('mouseup', mouseUpHandler);
+    
+        node.style.cursor = 'grab';
+        node.style.removeProperty('user-select');
+      };
+    }
+  }, []);
 
   useEffect(() => {
     if (slug) {
@@ -110,15 +158,16 @@ const SystemPage: FunctionComponent = () => {
         <div className="flex items-center content-center">
           {selectedBody && <>
             <div className="flex shrink-0 items-center md:border-r md:pe-12 md:border-neutral-700 md:rounded-full">
-              {renderSystemBody(selectedBody, singlePrimaryStar)}
-              {<div className={'hidden md:flex flex-col ms-6 text-glow__orange'}>
-                <i className={'icarus-terminal-chevron-up text-glow__orange hover:text-glow__blue hover:cursor-pointer'}
-                  onClick={() => handleSelectedBodyChange(selectedBodyIndex - 1)}></i>
-                <i className={'icarus-terminal-chevron-down text-glow__orange hover:text-glow__blue hover:cursor-pointer'}
-                  onClick={() => handleSelectedBodyChange(selectedBodyIndex + 1)}></i>
-              </div>}
+            {<div className={'hidden md:flex flex-col me-6 text-glow__orange'}>
+              <i className={'icarus-terminal-chevron-up text-glow__orange hover:text-glow__blue hover:cursor-pointer'}
+                onClick={() => handleSelectedBodyChange(selectedBodyIndex - 1)}></i>
+              <i className={'icarus-terminal-chevron-down text-glow__orange hover:text-glow__blue hover:cursor-pointer'}
+                onClick={() => handleSelectedBodyChange(selectedBodyIndex + 1)}></i>
+            </div>}
+            {renderSystemBody(selectedBody, singlePrimaryStar)}
             </div>
-            <div className="hidden md:flex md:flex-wrap w-full items-center">
+            <div className="system-body__children hidden md:flex w-full overflow-x-auto items-center"
+              ref={scrollableBodies}>
               {renderSystemBodyChildren(selectedBody)}
             </div>
           </>}
