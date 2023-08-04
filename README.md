@@ -4,10 +4,10 @@ _Trainline, but for Elite Dangerous._
 
 This is an arrival/departure information hub for fleet carrier journeys in Elite Dangerous.
 
-<div class+2
-
-<img alt="Departures" src="./public/images/departures.png" height="auto" width="49%"/>
-<img alt="Home" src="./public/images/home.png" height="auto" width="49%"/>
+<div>
+  <img alt="Departures" src="./public/images/departures.png" height="auto" width="48.5%"/>
+  <img alt="Home" src="./public/images/home.png" height="auto" width="49%"/>
+</div>
 
 ## Development
 
