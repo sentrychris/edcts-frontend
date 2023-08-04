@@ -1,5 +1,5 @@
 import json from '../public/fonts/icarus-terminal/icarus-terminal.json';
-import { SURFACE_PORTS, PLANETARY_BASES } from './lib/consts';
+import { SURFACE_PORTS, PLANETARY_BASES } from './lib/constants/celestial';
 
 type IconTypes = Record<string, Array<string>>
 

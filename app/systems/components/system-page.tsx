@@ -4,10 +4,10 @@
 import { usePathname } from 'next/navigation';
 import { FunctionComponent, useEffect, useState } from 'react';
 import { System,
-  SystemCelestialBody,
-  MappedSystemCelestialBody,
-  CelestialType,
+  CelestialBody,
+  MappedCelestialBody,
 } from '../../lib/interfaces/System';
+import { CelestialBodyType } from '../../lib/constants/celestial';
 import { Schedule } from '../../lib/interfaces/Schedule';
 import { Pagination } from '../../lib/interfaces/Pagination';
 import { systemState } from '../lib/systems';
@@ -33,7 +33,7 @@ const SystemPage: FunctionComponent = () => {
   const [schedule, setSchedule] = useState<Pagination<Schedule>>(paginatedScheduleState);
   const [isLoading, setLoading] = useState<boolean>(true);
   const [systemMap, setSystemMap] = useState<SystemMap>();
-  const [selectedBody, setSelectedBody] = useState<MappedSystemCelestialBody>();
+  const [selectedBody, setSelectedBody] = useState<MappedCelestialBody>();
   const [selectedBodyIndex, setSelectedBodyIndex] = useState<number>(0);
 
   const path = usePathname();
@@ -65,7 +65,7 @@ const SystemPage: FunctionComponent = () => {
 
         // Set the selected system body when the user selects a body.
         systemDispatcher.addEventListener('select-body', (event) => {
-          setSelectedBody((event.message as MappedSystemCelestialBody));
+          setSelectedBody((event.message as MappedCelestialBody));
         });
       
         // Reset the selected body when the user selects go back to primary star.
@@ -93,9 +93,8 @@ const SystemPage: FunctionComponent = () => {
 
   function renderSystemBodies(map: SystemMap) {
     // Handle user selection to allow switching between stars and orbiting bodies.
-    function handleSelectedBodyChange() {
-      let index = selectedBodyIndex + 1;
-      if (typeof map.stars[index] === 'undefined' || map.stars[index].type === CelestialType.Null) {
+    function handleSelectedBodyChange(index: number) {
+      if (index < 0 || typeof map.stars[index] === 'undefined' || map.stars[index].type === CelestialBodyType.Null) {
         index = 0;
       }
   
@@ -106,7 +105,7 @@ const SystemPage: FunctionComponent = () => {
     // If map contains two objects, a star and "additional objects not directly orbiting" then
     // this system has only one primary star, this flag is useful for conditonally rendering certain
     // ui elements that are only needed if we have multiple primary stars, for example, select buttons.
-    const singlePrimaryStar = map.stars.length === 2 && map.stars[1].type === CelestialType.Null;
+    const singlePrimaryStar = map.stars.length === 2 && map.stars[1].type === CelestialBodyType.Null;
 
     return (
       <>
@@ -114,9 +113,11 @@ const SystemPage: FunctionComponent = () => {
           {selectedBody && <>
             <div className="flex shrink-0 items-center md:border-r md:pe-12 md:border-neutral-700 md:rounded-full">
               {renderSystemBody(selectedBody, singlePrimaryStar)}
-              {<div className={'hidden md:inline ms-6 text-glow__orange ' + (!singlePrimaryStar ? 'hover:cursor-pointer hover:scale-125' : '')}>
-                <i className={'icarus-terminal-chevron-down ' + (singlePrimaryStar ? 'text-neutral-700' : 'text-glow__orange hover:text-glow__blue ')}
-                  onClick={handleSelectedBodyChange}></i>
+              {<div className={'hidden md:flex flex-col ms-6 text-glow__orange'}>
+                <i className={'icarus-terminal-chevron-up text-glow__orange hover:text-glow__blue hover:cursor-pointer'}
+                  onClick={() => handleSelectedBodyChange(selectedBodyIndex - 1)}></i>
+                <i className={'icarus-terminal-chevron-down text-glow__orange hover:text-glow__blue hover:cursor-pointer'}
+                  onClick={() => handleSelectedBodyChange(selectedBodyIndex + 1)}></i>
               </div>}
             </div>
             <div className="hidden md:flex md:flex-wrap w-full items-center">
@@ -129,7 +130,7 @@ const SystemPage: FunctionComponent = () => {
   }
 
   // Render a system body - an interactive SVG with conditional filters depending on body type.
-  function renderSystemBody(body: MappedSystemCelestialBody, singleton = false) {
+  function renderSystemBody(body: MappedCelestialBody, singleton = false) {
     let classes = 'text-glow__white text-sm';
     if (body.is_main_star) {
       classes += ' w-main-star';
@@ -141,8 +142,8 @@ const SystemPage: FunctionComponent = () => {
       <SystemBody
         key={body.id64}
         system={system.name}
-        selected={selectedBody as SystemCelestialBody}
-        body={body as SystemCelestialBody}
+        selected={selectedBody as CelestialBody}
+        body={body as CelestialBody}
         orbiting={(body._children ? body._children.length : 0)}
         singleton={singleton}
         dispatcher={systemDispatcher}
@@ -151,7 +152,7 @@ const SystemPage: FunctionComponent = () => {
   }
 
   // Render body's orbiting bodies - maps each orbiting body to be rendered using renderSystemBody.
-  function renderSystemBodyChildren(body: MappedSystemCelestialBody) {
+  function renderSystemBodyChildren(body: MappedCelestialBody) {
     const bodies = (body._children && body._children.length > 0)
       ? body._children
       : false;
@@ -164,7 +165,7 @@ const SystemPage: FunctionComponent = () => {
 
       return <>
         <span className="text-xs text-neutral-500">&lt;</span>
-        {bodies.map((body: MappedSystemCelestialBody) => renderSystemBody(body))}
+        {bodies.map((body: MappedCelestialBody) => renderSystemBody(body))}
       </>;
   }
 

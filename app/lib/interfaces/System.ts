@@ -8,17 +8,11 @@ export interface CelestialRing {
   outerRadius: number;
 }
 
-export enum CelestialType {
-  Star = 'Star',
-  Planet = 'Planet',
-  Null = 'Null'
-}
-
-export interface CelestialParent {
+export interface CelestialBodyParent {
   [key: string]: number;
 }
 
-export interface SystemCelestialBody {
+export interface CelestialBody {
   id64: number;
   body_id: number;
   name: string;
@@ -51,10 +45,10 @@ export interface SystemCelestialBody {
   semi_major_axis: number;
   axial_tilt: number;
   rings: Array<CelestialRing>;
-  parents: Array<CelestialParent>;
+  parents: Array<CelestialBodyParent>;
 }
 
-export interface MappedSystemCelestialBody {
+export interface MappedCelestialBody {
   [key: string]: any;
 }
 
@@ -79,7 +73,7 @@ export interface System {
     z: number;
   }
   information: SystemInformation;
-  bodies: SystemCelestialBody[];
+  bodies: CelestialBody[];
   updated_at: string;
   slug: string;
 }

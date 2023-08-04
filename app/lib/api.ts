@@ -1,9 +1,5 @@
 import { Pagination } from './interfaces/Pagination';
 
-export function isAbsoluteUrl(url: string) {
-  return url.indexOf('http://') === 0 || url.indexOf('https://') === 0;
-}
-
 export const pagination = {
   data: [],
   links: {
@@ -24,10 +20,13 @@ export const pagination = {
   }
 };
 
+export function isAbsoluteUrl(url: string) {
+  return url.indexOf('http://') === 0 || url.indexOf('https://') === 0;
+}
+
 export async function request(uri: string, params?: Record<string, string | number | boolean>) {
   const url = !isAbsoluteUrl(uri) ? `http://localhost/api/${uri}` : uri;
-  //@ts-ignore
-  const query: string = params ? '?' + new URLSearchParams(params) : '';
+  const query: string = params ? '?' + new URLSearchParams(params as Record<string, string>) : '';
   const response = await fetch(`${url}${query}`);
 
   if (!response.ok) {
