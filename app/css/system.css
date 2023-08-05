@@ -382,16 +382,24 @@
   /* clip-path: polygon(0 0, 0 100%, 100% 100%, 100% 15%, 85% 0); */
 }
 
-.system-body-information__container .corner-angle {
-  background: linear-gradient(45deg, transparent 5%, yellowgreen 5%, yellowgreen 90%, transparent 90.5%);
+.system-body-information__container--header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  background-color: rgb(249 115 22 / 0.6);
+  border-bottom: 1px solid transparent;
 }
 
-.system-body-information__container .corner-angle--single {
-  background: linear-gradient(45deg, white 5%, transparent 5%, transparent 90%, white 90.5%), url(http://lorempixel.com/100/100);
-}
-
-.system-body-information__container .corner-angle--double {
-  background: linear-gradient(45deg, transparent 0%, transparent 90%, white 90%), linear-gradient(60deg, white 10%, transparent 5%, transparent 100%), url(http://lorempixel.com/100/100);
+.system-body-information__container:after {
+  position: absolute;
+  top: 0%;
+  left: -23px;
+  content: '';
+  width: 0;
+  height: 0;
+  border-right: solid 23px rgb(249 115 22 / 0.6);
+  border-bottom: solid 23px transparent;
+  border-top: solid 23px transparent;
 }
 
 /* .system-body-information__container:before {

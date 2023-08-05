@@ -72,6 +72,28 @@ nav.main-nav__nav .main-nav__menu {
   z-index: 40;
 }
 
+.galaxy-background {
+  /* background-image: url(/images/textures/galaxy.jpg);
+  background-size: cover;
+  background-repeat: no-repeat; */
+  background-color: black;
+}
+
+.galaxy-background:before {
+  content: " ";
+  display: block;
+  position: absolute;
+  top: 0;
+  left: 0;
+  bottom: 0;
+  right: 0;
+  opacity: 0.2;
+  content: ' ';
+  /* background-size: 2rem 2rem; */
+  /* background-image: url(/images/grid.svg); */
+  /* background-color: black; */
+}
+
 .overlay {
   opacity: 0.4;
   height: 100%;

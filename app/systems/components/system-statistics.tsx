@@ -25,7 +25,7 @@ const SystemStatistics: FunctionComponent<Props> = ({ data, className = '', inte
         setStatistics(statistics);
       });
     }, interval);
-  }, []);
+  }, [cached, statistics, interval]);
 
   const latestSystem = statistics.data.cartographical.latest_system;
 

@@ -1,5 +1,5 @@
 import { System } from '../interfaces/System';
-import { CelestialBody, MappedCelestialBody } from '../interfaces/Celestial';
+import { MappedCelestialBody } from '../interfaces/Celestial';
 import EventDispatcher from './dispatcher';
 
 export class SystemDispatch extends EventDispatcher {
@@ -10,7 +10,7 @@ export class SystemDispatch extends EventDispatcher {
     });
   }
 
-  selectBody({ body }: { body: CelestialBody }) {
+  selectBody({ body }: { body: MappedCelestialBody }) {
     this.dispatchEvent({
       type: 'select-body', 
       message: body
@@ -27,7 +27,14 @@ export class SystemDispatch extends EventDispatcher {
   displayBodyInfo({ body, closer, position }: {
     body: MappedCelestialBody,
     closer: boolean,
-    position: {top: number, left: number, right: number, bottom: number}
+    position: {
+      top: number,
+      left: number,
+      right: number,
+      bottom: number,
+      width: number,
+      height: number
+    }
   }) {
     this.dispatchEvent({
       type: 'display-body-info',

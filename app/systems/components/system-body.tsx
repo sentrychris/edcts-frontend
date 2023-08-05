@@ -39,7 +39,9 @@ const SystemBody: FunctionComponent<Props> = ({
     if (body.sub_type === 'Black Hole') return true;
 
     return false;
-  }
+  };
+
+  const largeViewbox = useLargerViewBox();
 
   const shortSubType = (text?: string) => {
     if (! text) text = body.sub_type ?? body.type;
@@ -55,17 +57,15 @@ const SystemBody: FunctionComponent<Props> = ({
   const selectedBodyGCircleElement = useCallback((node: SVGGElement) => {
     if (node) {
       node.addEventListener('click', () => {
-        const { top, left, right, bottom } = node.getBoundingClientRect();
+        const { top, left, right, bottom, width, height } = node.getBoundingClientRect();
         dispatcher.displayBodyInfo({
           body,
           closer: largeViewbox,
-          position: { top, left, right, bottom }
-        })
-      })
+          position: { top, left, right, bottom, width, height }
+        });
+      });
     }
-  }, []);
-  
-  const largeViewbox = useLargerViewBox();
+  }, [body, dispatcher, largeViewbox]);
 
   return (
     <div className={'flex items-center ' + (body.rings && ' gap-3')}>

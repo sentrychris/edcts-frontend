@@ -51,8 +51,15 @@ const SystemPage: FunctionComponent<Props> = ({ initSystem, initSchedule }) => {
   const [selectedBodyDisplayInfo, setSelectedBodyDisplayInfo] = useState<{
     body: MappedCelestialBody|null,
     closer: boolean;
-    position: {top: number, left: number, right: number, bottom: number}
-  }|null>(null);
+    position: {
+      top: number,
+      left: number,
+      right: number,
+      bottom: number,
+      width: number,
+      height: number
+    }
+  } | null>(null);
 
   const path = usePathname();
   const slug = path.split('/').pop();
@@ -295,7 +302,8 @@ const SystemPage: FunctionComponent<Props> = ({ initSystem, initSchedule }) => {
           body={selectedBodyDisplayInfo.body}
           closer={selectedBodyDisplayInfo.closer}
           position={selectedBodyDisplayInfo.position}
-          callback={() => setSelectedBodyDisplayInfo(null)}
+          dispatcher={systemDispatcher}
+          close={() => setSelectedBodyDisplayInfo(null)}
         />
       }
     </>
