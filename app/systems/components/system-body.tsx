@@ -56,14 +56,17 @@ const SystemBody: FunctionComponent<Props> = ({
       <svg
         viewBox={useLargerViewBox ? '-4000 -4000 8000 8000' : '-2500 -2500 5000 5000'}
         preserveAspectRatio="xMinYMid meet"
-        className={className}>
-        <g className="system-map__system-object"
+        className={className}
+      >
+        <g
+          className="system-map__system-object"
           data-system-object-name={body.name}
           data-system-object-type={body.type}
           data-system-object-small={body._small}
           data-system-object-sub-type={body.sub_type}
           data-system-object-atmosphere={body.atmosphere_type}
           data-system-object-landable={body.is_landable === 1 ? true : false}
+          onClick={() => dispatcher.displayBodyInfo({ body })} 
           tabIndex={0}>
           <g className="system-map__body">
             <g className="system-map__planet">

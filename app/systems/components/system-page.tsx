@@ -16,11 +16,11 @@ import SystemMap from '../lib/system-map';
 import SystemTitle from './system-title';
 import SystemInformation from './system-information';
 import SystemBody from './system-body';
-import DepartureTable from '../../departures/components/departure-table';
-import Loader from '../../components/loader';
-import Heading from '../../components/heading';
+import SystemBodyInformation from './system-body-information';
 import SystemStarsTable from './system-stars-table';
 import SystemBodiesTable from './system-bodies-table';
+import Loader from '../../components/loader';
+import Heading from '../../components/heading';
 
 // System page.
 //
@@ -48,6 +48,7 @@ const SystemPage: FunctionComponent<Props> = ({ initSystem, initSchedule }) => {
   const [systemMap, setSystemMap] = useState<SystemMap>();
   const [selectedBody, setSelectedBody] = useState<MappedCelestialBody>();
   const [selectedBodyIndex, setSelectedBodyIndex] = useState<number>(0);
+  const [selectedDisplayBodyInfo, setSelectedDisplayBodyInfo] = useState<MappedCelestialBody|null>(null);
 
   const path = usePathname();
   const slug = path.split('/').pop();
@@ -124,6 +125,11 @@ const SystemPage: FunctionComponent<Props> = ({ initSystem, initSchedule }) => {
           if (index === 0) {
             setSelectedBody(star);
           }
+        });
+
+        // Set the selected body when the user clicks to display body information pop-out.
+        systemDispatcher.addEventListener('display-body-info', (event) => {
+            setSelectedDisplayBodyInfo((event.message as MappedCelestialBody));
         });
 
         // Fetch scheduled fleet departures departing from this system along with carrier information
@@ -230,33 +236,37 @@ const SystemPage: FunctionComponent<Props> = ({ initSystem, initSchedule }) => {
       <div className="py-5 w-7xl overflow border-b border-neutral-800 backdrop-filter backdrop-blur bg-transparent">
         <Heading icon="icarus-terminal-system-bodies" title="System Overview" className="gap-2 pb-5" />
         
-        {!isLoading && systemMap && systemMap.objectsInSystem.length > 0
-          ? renderSystemBodies(systemMap)
-          : <div className="text-glow__orange text-lg font-bold uppercase text-center mx-auto py-6">Telemetry data not found for {system.name}</div>
-        }
+        {!isLoading && <div className="grid grid-cols-12">
+          <div className="col-span-12">
+            {systemMap && systemMap.objectsInSystem.length > 0
+              ? renderSystemBodies(systemMap)
+              : <div className="text-glow__orange text-lg font-bold uppercase text-center mx-auto py-6">Telemetry data not found for {system.name}</div>
+            }
+          </div>
+          <div className="col-span-0">
+            <SystemBodyInformation
+              body={selectedDisplayBodyInfo}
+              callback={() => setSelectedDisplayBodyInfo(null)}
+            />
+          </div>
+        </div>}
       </div>
 
       <div className="grid grid-cols-1 md:grid-cols-1 gap-5 py-5">
-        {/* <div> */}
-          <div>
-            <Heading icon="icarus-terminal-star" title="Main Sequence Stars" className="gap-2 pb-5" />
+        <div>
+          <Heading icon="icarus-terminal-star" title="Main Sequence Stars" className="gap-2 pb-5" />
 
-            {!isLoading && systemMap &&
-              <SystemStarsTable stars={systemMap.stars as CelestialBody[]} system={system.name} />
-            }
-          </div>
-          <div>
-            <Heading icon="icarus-terminal-system-orbits" title="Orbital Bodies" className="gap-2 pb-5" />
+          {!isLoading && systemMap &&
+            <SystemStarsTable stars={systemMap.stars as CelestialBody[]} system={system.name} />
+          }
+        </div>
+        <div>
+          <Heading icon="icarus-terminal-system-orbits" title="Orbital Bodies" className="gap-2 pb-5" />
 
-            {!isLoading && systemMap &&
-              <SystemBodiesTable bodies={systemMap.objectsInSystem as CelestialBody[]} system={system.name} />
-            }
-          </div>
-        {/* </div> */}
-        {/* <div>
-          <Heading icon="icarus-terminal-route" title="Scheduled Departures" className="gap-2 pb-5" />
-          <DepartureTable schedule={schedule} filter={false} />
-        </div> */}
+          {!isLoading && systemMap &&
+            <SystemBodiesTable bodies={systemMap.objectsInSystem as CelestialBody[]} system={system.name} />
+          }
+        </div>
       </div>
     </>
   );
