@@ -48,7 +48,6 @@ const SystemPage: FunctionComponent<Props> = ({ initSystem, initSchedule }) => {
   const [systemMap, setSystemMap] = useState<SystemMap>();
   const [selectedBody, setSelectedBody] = useState<MappedCelestialBody>();
   const [selectedBodyIndex, setSelectedBodyIndex] = useState<number>(0);
-  const [selectedDisplayBodyInfo, setSelectedDisplayBodyInfo] = useState<MappedCelestialBody|null>(null);
 
   const path = usePathname();
   const slug = path.split('/').pop();
@@ -125,11 +124,6 @@ const SystemPage: FunctionComponent<Props> = ({ initSystem, initSchedule }) => {
           if (index === 0) {
             setSelectedBody(star);
           }
-        });
-
-        // Set the selected body when the user clicks to display body information pop-out.
-        systemDispatcher.addEventListener('display-body-info', (event) => {
-            setSelectedDisplayBodyInfo((event.message as MappedCelestialBody));
         });
 
         // Fetch scheduled fleet departures departing from this system along with carrier information
@@ -242,12 +236,6 @@ const SystemPage: FunctionComponent<Props> = ({ initSystem, initSchedule }) => {
               ? renderSystemBodies(systemMap)
               : <div className="text-glow__orange text-lg font-bold uppercase text-center mx-auto py-6">Telemetry data not found for {system.name}</div>
             }
-          </div>
-          <div className="col-span-0">
-            <SystemBodyInformation
-              body={selectedDisplayBodyInfo}
-              callback={() => setSelectedDisplayBodyInfo(null)}
-            />
           </div>
         </div>}
       </div>

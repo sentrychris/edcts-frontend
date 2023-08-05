@@ -1,9 +1,10 @@
 'use client';
 
-import { FunctionComponent, memo } from 'react';
+import { FunctionComponent, memo, useEffect, useState } from 'react';
 import { CelestialBody, MappedCelestialBody } from '../../lib/interfaces/Celestial';
 import { SystemDispatch } from '../../lib/events/system';
 import Icons from '../../icons';
+import SystemBodyInformation from './system-body-information';
 
 interface Props {
   body: MappedCelestialBody;
@@ -24,6 +25,8 @@ const SystemBody: FunctionComponent<Props> = ({
   dispatcher,
   className
 }) => {
+  const [selectedDisplayBodyInfo, setSelectedDisplayBodyInfo] = useState<MappedCelestialBody|null>(null);
+
   let useLargerViewBox = false;
   if (body.rings) useLargerViewBox = true;
   if (body.sub_type === 'Neutron Star') useLargerViewBox = true;
@@ -66,7 +69,7 @@ const SystemBody: FunctionComponent<Props> = ({
           data-system-object-sub-type={body.sub_type}
           data-system-object-atmosphere={body.atmosphere_type}
           data-system-object-landable={body.is_landable === 1 ? true : false}
-          onClick={() => dispatcher.displayBodyInfo({ body })} 
+          onClick={() => setSelectedDisplayBodyInfo(body)} 
           tabIndex={0}>
           <g className="system-map__body">
             <g className="system-map__planet">
@@ -161,6 +164,12 @@ const SystemBody: FunctionComponent<Props> = ({
             <i className="icarus-terminal-chevron-up text-label__small"></i>
             Go back to top
         </span>}
+      </div>
+      <div className="relative">
+        <SystemBodyInformation
+          body={selectedDisplayBodyInfo}
+          callback={() => setSelectedDisplayBodyInfo(null)}
+        />
       </div>
     </div>
   );

@@ -10,7 +10,7 @@ interface Props {
 
 export default function SystemBodyInformation({ body, callback }: Props) {
   return (
-    <div className="absolute w-2/5 top-0 right-5">
+    <div className="absolute w-2/5 top-0" style={{width: '500px'}}>
       {body && <div className="fx-fade-in p-3 rounded-lg backdrop-filter backdrop-blur bg-black/80 border border-orange-400/40 shadow shadow-orange-400/40 slideout-panel">
         <div className="flex items-center justify-between border-b border-neutral-800 pb-2.5">
           <h2 className="text">Cartographic Information</h2>
