@@ -20,8 +20,8 @@ interface Props<T extends RequiredAttribute> {
     [key: string]: Column<T>
   };
   data: T[];
-  meta: Meta;
-  links: Links;
+  meta?: Meta;
+  links?: Links;
   page?: (link: string) => void;
 }
 
@@ -83,7 +83,7 @@ function Table<T extends RequiredAttribute>({ columns, data, meta, links, page }
 
   return (
     <>
-      <div className="overflow-x-auto relative sm:rounded-lg shadow-lg">
+      <div className="border-t border-b border-neutral-800 pt-2 pb-5 overflow-x-auto relative backdrop-filter backdrop-blur bg-transparent">
         <table className="w-full text-sm text-left text-gray-500 table--layout table--animated table--interactive">
           <thead className="text-gray-400 uppercase">
             <tr>
@@ -97,7 +97,9 @@ function Table<T extends RequiredAttribute>({ columns, data, meta, links, page }
           {renderBody(data)}
         </table>
       </div>
-      <PaginationLinks metadata={meta} links={links} paginate={paginate} />
+      {links && meta && 
+        <PaginationLinks metadata={meta} links={links} paginate={paginate} />
+      }
     </>
   );
 }

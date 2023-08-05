@@ -39,7 +39,7 @@ const SystemBody: FunctionComponent<Props> = ({
     : 2000;
 
   return (
-    <div className={`flex items-center ` + (body.rings && ` gap-3`)}>
+    <div className={'flex items-center ' + (body.rings && ' gap-3')}>
       <svg
         viewBox={useLargerViewBox ? '-4000 -4000 8000 8000' : '-2500 -2500 5000 5000'}
         preserveAspectRatio="xMinYMid meet"
@@ -132,7 +132,7 @@ const SystemBody: FunctionComponent<Props> = ({
           {body.sub_type}
         </p>
         <span
-          className={'flex items-center gap-2 text-glow__orange hover:text-glow__blue hover:scale-110 hover:cursor-grabbing  ' + (bodyIsSelectedUserFocus ? 'text-sm' : 'text-label__small')}
+          className={'flex items-center gap-2 text-glow__orange  ' + (bodyIsSelectedUserFocus ? 'text-sm' : 'text-label__small hover:text-glow__blue hover:scale-110 hover:cursor-grabbing')}
           onClick={() => dispatcher.selectBody({ body: body as CelestialBody })}
         >
           <i className="icarus-terminal-system-bodies text-label__small"></i>

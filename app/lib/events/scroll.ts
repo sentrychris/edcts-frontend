@@ -8,7 +8,7 @@ export class Scroller {
     left: 0,
     x: 0,
     y: 0
-  }
+  };
 
   constructor(element: HTMLDivElement, fallback: string) {
     this.element = element;

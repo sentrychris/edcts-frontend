@@ -83,7 +83,7 @@ export default class SystemMap
 
     star._x_max = 0;
     star._y_max = 0;
-    star._x_offset = 0
+    star._x_offset = 0;
     star._y_offset = 0;
 
     // Get each objects directly orbiting star
@@ -98,19 +98,19 @@ export default class SystemMap
         : MIN_R;
       
       if (itemInOrbit._r < MAIN_PLANET_MIN_R) {
-        itemInOrbit._r = MAIN_PLANET_MIN_R
+        itemInOrbit._r = MAIN_PLANET_MIN_R;
       }
 
       if (itemInOrbit._r > MAX_R) {
-        itemInOrbit._r = MAX_R
+        itemInOrbit._r = MAX_R;
       }
 
       if (itemInOrbit._r <= MAIN_PLANET_MIN_R) {
-        itemInOrbit._small = true
+        itemInOrbit._small = true;
       }
 
-      itemInOrbit._y = 0
-      itemInOrbit._orbits_star = true
+      itemInOrbit._y = 0;
+      itemInOrbit._orbits_star = true;
 
       const itemXSpacing = (itemInOrbit.rings)
         ? itemInOrbit._r / RING_X_SPACING
@@ -118,7 +118,7 @@ export default class SystemMap
 
       itemInOrbit._x = star._x_max + itemXSpacing + itemInOrbit._r;
 
-      const newy_max = itemInOrbit._r + X_SPACING
+      const newy_max = itemInOrbit._r + X_SPACING;
       if (newy_max > star._yOffset) {
         star._yOffset = newy_max;
       }
@@ -137,7 +137,7 @@ export default class SystemMap
       }
 
       // Initialize Y max with planet radius
-      itemInOrbit._y_max = itemInOrbit._r + (Y_SPACING / 2)
+      itemInOrbit._y_max = itemInOrbit._r + (Y_SPACING / 2);
 
       // Get every object that directly or indirectly orbits this object
       itemInOrbit._children
@@ -155,18 +155,18 @@ export default class SystemMap
 
           // Set attribute on smaller planets so we can select a different setting
           // on front end that will render them better
-          if (subItemInOrbit._r <= SUB_MIN_R) subItemInOrbit._small = true
+          if (subItemInOrbit._r <= SUB_MIN_R) subItemInOrbit._small = true;
 
           // Use parent X co-ords to plot on same vertical plane as parent
-          subItemInOrbit._x = itemInOrbit._x
+          subItemInOrbit._x = itemInOrbit._x;
 
           // Use radius of current object to calclulate cumulative Y pos
-          subItemInOrbit._y = itemInOrbit._y_max + subItemInOrbit._r + Y_SPACING
+          subItemInOrbit._y = itemInOrbit._y_max + subItemInOrbit._r + Y_SPACING;
 
           // New Y max is  previous Y max plus current object radius plus spacing
-          itemInOrbit._y_max = subItemInOrbit._y + subItemInOrbit._r
+          itemInOrbit._y_max = subItemInOrbit._y + subItemInOrbit._r;
 
-          subItemInOrbit._orbits_star = false
+          subItemInOrbit._orbits_star = false;
 
           return subItemInOrbit;
         });

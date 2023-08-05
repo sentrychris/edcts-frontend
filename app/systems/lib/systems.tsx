@@ -129,7 +129,7 @@ export const systemColumns = {
     render: (system: System) =>
       system.information && system.information.population
       ? system.information.population.toLocaleString()
-      : 0
+      : '0'
   },
   economy: {
     title: 'Economy',

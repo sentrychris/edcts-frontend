@@ -5,6 +5,7 @@ export type CelestialBodyParent = {
 }
 
 export interface CelestialBody {
+  id: number;
   id64: number;
   body_id: number;
   name: string;

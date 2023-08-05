@@ -25,7 +25,7 @@ const SystemStatistics: FunctionComponent<Props> = ({ data, className = '' }) =>
   }, []);
 
   return (
-    <div className={`border-t border-b border-neutral-800 py-5 tracking-wide text-2xl ` + className}>
+    <div className={'border-t border-b border-neutral-800 backdrop-filter backdrop-blur bg-transparent py-5 tracking-wide text-2xl ' + className}>
       <div className="flex flex-row align-center justify-between uppercase">
         <div className="flex flex-wrap items-center gap-10 lg:gap-20">
           <div className="whitespace-nowrap">
