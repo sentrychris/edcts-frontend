@@ -18,7 +18,7 @@ export default async function Page() {
   return (
     <>
       <Heading icon="icarus-terminal-info" title="System Statistics" className="gap-2 mb-5" />
-      <SystemStatistics className="fx-fade-in" data={statistics} />
+      <SystemStatistics className="fx-fade-in" data={statistics} interval={1000} cached={false} />
       <Heading icon="icarus-terminal-system-orbits"
         largeIcon={true}
         title="Systems Information"

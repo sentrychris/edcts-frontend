@@ -17,6 +17,7 @@ export default class SystemMap
   detail: System;
   name: string;
   stars: MappedCelestialBody[];
+  planets: MappedCelestialBody[];
   objectsInSystem: MappedCelestialBody[];
 
   constructor(system: System) {
@@ -39,6 +40,7 @@ export default class SystemMap
     bodies = this.#getUniqueObjectsByProperty(bodies, 'body_id');
 
     this.stars = bodies.filter((c: MappedCelestialBody) => c._type === CelestialBodyType.Star);
+    this.planets = bodies.filter((c: MappedCelestialBody) => c._type === CelestialBodyType.Planet);
     this.objectsInSystem = bodies.sort((a: MappedCelestialBody, b: MappedCelestialBody) => (a.body_id - b.body_id));
 
     // Object to contain bodies that are not directly orbiting a star.

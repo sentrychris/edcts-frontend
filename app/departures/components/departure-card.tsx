@@ -14,7 +14,7 @@ const DepartureCard: FunctionComponent<Props> = ({schedule, className}) => {
 
   return (
     <div className={'py-6 backdrop-filter backdrop-blur bg-transparent ' + className}>
-      <div className="flex flex-col md:max-w-xl">
+      <div className="flex flex-col md:max-w-xl px-6">
         <Link href={`/departures/schedule/${schedule.slug}`}>
           <h5 className={'mb-3 text-lg font-bold tracking-tight text-neutral-800 dark:text-gray-200 hover:text-glow__orange hover:underline' + departed}>
             {schedule.title}

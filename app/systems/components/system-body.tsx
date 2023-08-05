@@ -1,3 +1,5 @@
+'use client';
+
 import { FunctionComponent, memo } from 'react';
 import { CelestialBody, MappedCelestialBody } from '../../lib/interfaces/Celestial';
 import { SystemDispatch } from '../../lib/events/system';
@@ -33,6 +35,17 @@ const SystemBody: FunctionComponent<Props> = ({
   const displayName = bodyIsSelectedUserFocus
     ? body.name
     : body.name.split(system).pop()?.trim();
+
+  const shortSubType = (text?: string) => {
+    if (! text) text = body.sub_type ?? body.type;
+    if (body.name === 'Earth') return 'Home';
+    if (text.match(/{{[^}]+}}|(metal)/i)) return 'Metal';
+    if (text.match(/{{[^}]+}}|(gas giant)/i)) return 'Gas Giant';
+    if (text.match(/{{[^}]+}}|(rocky ice)/i)) return 'Rocky Ice';
+    if (text.match(/{{[^}]+}}|(earth-like)/i)) return 'Earth-Like';
+
+    return text;
+  };
 
   const radius = !bodyIsSelectedUserFocus
     ? body._r
@@ -128,11 +141,11 @@ const SystemBody: FunctionComponent<Props> = ({
         <p className="text-glow">
           {displayName}
         </p>
-        <p className="text-label__small text-glow whitespace-nowrap">
-          {body.sub_type}
+        <p className="text-xs text-glow whitespace-nowrap">
+          {shortSubType(body.sub_type)}
         </p>
         <span
-          className={'flex items-center gap-2 text-glow__orange  ' + (bodyIsSelectedUserFocus ? 'text-sm' : 'text-label__small hover:text-glow__blue hover:scale-110 hover:cursor-grabbing')}
+          className={'flex whitespace-nowrap items-center gap-2 text-glow__orange  ' + (bodyIsSelectedUserFocus ? 'text-sm' : 'hover:text-glow__blue hover:scale-110 hover:cursor-grabbing')}
           onClick={() => dispatcher.selectBody({ body: body as CelestialBody })}
         >
           <i className="icarus-terminal-system-bodies text-label__small"></i>

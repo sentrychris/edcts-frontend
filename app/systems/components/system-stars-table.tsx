@@ -1,7 +1,7 @@
 'use client';
 
 import Link from 'next/link';
-import { FunctionComponent, useState } from 'react';
+import { FunctionComponent, useState, memo } from 'react';
 import { CelestialBody } from '../../lib/interfaces/Celestial';
 import Table from '../../components/table';
 import { formatDate, formatNumber } from '../../lib/util';
@@ -85,4 +85,4 @@ const SystemStarsTable: FunctionComponent<Props> = ({ stars, system }) => {
   );
 };
 
-export default SystemStarsTable;
+export default memo(SystemStarsTable);

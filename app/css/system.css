@@ -73,7 +73,7 @@
 .system-map__system-object[data-system-object-type="Planet"][data-system-object-sub-type*="Ammonia world"] .system-map__planet-surface,
 .system-map__system-object[data-system-object-type="Planet"][data-system-object-sub-type*="Earth-like world"] .system-map__planet-surface {
   fill: url(#svg-pattern__planet-surface--clouds);
-  filter: contrast(2) brightness(2) !important;
+  filter: contrast(1) brightness(2) !important;
 }
 
 .system-map__system-object[data-system-object-type="Star"] .system-map__planet {
@@ -229,6 +229,9 @@
   filter: drop-shadow(0 0 5rem var(--color-primary)) !important;
 }
 
+/*
+ * Apply gradients to SVG planets 
+ */
 #system-map-svg-gradient__planet stop:nth-child(1) {
   stop-color: var(--color-primary);
   stop-color: #005c81;
