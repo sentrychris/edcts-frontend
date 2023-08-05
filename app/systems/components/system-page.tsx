@@ -51,7 +51,7 @@ const SystemPage: FunctionComponent<Props> = ({ initSystem, initSchedule }) => {
   const [selectedBodyDisplayInfo, setSelectedBodyDisplayInfo] = useState<{
     body: MappedCelestialBody|null,
     closer: boolean;
-    position: {top: number, left: number}
+    position: {top: number, left: number, right: number, bottom: number}
   }|null>(null);
 
   const path = usePathname();
@@ -229,19 +229,33 @@ const SystemPage: FunctionComponent<Props> = ({ initSystem, initSchedule }) => {
       {isLoading && <Loader visible={isLoading} />}
 
       <div className="pb-5 border-b border-neutral-800">
-        <SystemTitle title={system.name} celestials={system.bodies.length}/>
+        <SystemTitle
+          title={system.name}
+          celestials={system.bodies.length}
+        />
       </div>
 
-      <SystemInformation coords={system.coords} information={system.information} />
+      <SystemInformation
+        coords={system.coords}
+        information={system.information}
+      />
 
       <div className="py-5 w-7xl overflow border-b border-neutral-800 backdrop-filter backdrop-blur bg-transparent">
-        <Heading icon="icarus-terminal-system-bodies" title="System Overview" className="gap-2 pb-5" />
-        
-        {!isLoading && <div className="grid grid-cols-12">
+        <Heading
+          icon="icarus-terminal-system-bodies"
+          title="System Overview"
+          className="gap-2 pb-5"
+        />    
+        {!isLoading &&
+        <div className="grid grid-cols-12">
           <div className="col-span-12">
             {systemMap && systemMap.objectsInSystem.length > 0
+              
               ? renderSystemBodies(systemMap)
-              : <div className="text-glow__orange text-lg font-bold uppercase text-center mx-auto py-6">Telemetry data not found for {system.name}</div>
+
+              : <div className="text-glow__orange text-lg font-bold uppercase text-center mx-auto py-6">
+                  Telemetry data not found for {system.name}
+                </div>
             }
           </div>
         </div>}
@@ -249,17 +263,29 @@ const SystemPage: FunctionComponent<Props> = ({ initSystem, initSchedule }) => {
 
       <div className="grid grid-cols-1 md:grid-cols-1 gap-5 py-5">
         <div>
-          <Heading icon="icarus-terminal-star" title="Main Sequence Stars" className="gap-2 pb-5" />
-
+          <Heading
+            icon="icarus-terminal-star"
+            title="Main Sequence Stars"
+            className="gap-2 pb-5"
+          />
           {!isLoading && systemMap &&
-            <SystemStarsTable stars={systemMap.stars as CelestialBody[]} system={system.name} />
+            <SystemStarsTable
+              stars={systemMap.stars as CelestialBody[]}
+              system={system.name}
+            />
           }
         </div>
         <div>
-          <Heading icon="icarus-terminal-system-orbits" title="Orbital Bodies" className="gap-2 pb-5" />
-
+          <Heading
+            icon="icarus-terminal-system-orbits"
+            title="Orbital Bodies"
+            className="gap-2 pb-5"
+          />
           {!isLoading && systemMap &&
-            <SystemBodiesTable bodies={systemMap.objectsInSystem as CelestialBody[]} system={system.name} />
+            <SystemBodiesTable
+              bodies={systemMap.objectsInSystem as CelestialBody[]}
+              system={system.name}
+            />
           }
         </div>
       </div>

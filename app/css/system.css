@@ -376,6 +376,40 @@
   stop-color: rgb(7, 82, 72);
 }
 
+.system-body-information__container {
+  position: absolute;
+  /* -webkit-clip-path: polygon(0 0, 0 100%, 100% 100%, 100% 25%, 75% 0); */
+  /* clip-path: polygon(0 0, 0 100%, 100% 100%, 100% 15%, 85% 0); */
+}
+
+.system-body-information__container .corner-angle {
+  background: linear-gradient(45deg, transparent 5%, yellowgreen 5%, yellowgreen 90%, transparent 90.5%);
+}
+
+.system-body-information__container .corner-angle--single {
+  background: linear-gradient(45deg, white 5%, transparent 5%, transparent 90%, white 90.5%), url(http://lorempixel.com/100/100);
+}
+
+.system-body-information__container .corner-angle--double {
+  background: linear-gradient(45deg, transparent 0%, transparent 90%, white 90%), linear-gradient(60deg, white 10%, transparent 5%, transparent 100%), url(http://lorempixel.com/100/100);
+}
+
+/* .system-body-information__container:before {
+  position: absolute;
+  background: linear-gradient(45deg,red,blue);
+  --g1:#000 var(--b),#0000 0 calc(100% - var(--b)),#000 0;
+  --g2:#0000   calc(0.707*var(--s)), 
+       #000  0 calc(0.707*var(--s) + var(--b)),
+       #0000 0 calc(100% - 0.707*var(--s) - var(--b)),
+       #000  0 calc(100% - 0.707*var(--s)),
+       #0000 0;
+  -webkit-mask:
+    linear-gradient(45deg ,var(--g2)),
+    linear-gradient(-45deg,var(--g2)),
+    linear-gradient(90deg ,var(--g1)) 50%/100% calc(100% - 2*var(--s)) no-repeat,
+    linear-gradient(180deg,var(--g1)) 50%/calc(100% - 2*var(--s)) 100% no-repeat;
+} */
+
 .w-main-star {
   width: 140px !important;
 }
