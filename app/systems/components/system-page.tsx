@@ -48,6 +48,10 @@ const SystemPage: FunctionComponent<Props> = ({ initSystem, initSchedule }) => {
   const [systemMap, setSystemMap] = useState<SystemMap>();
   const [selectedBody, setSelectedBody] = useState<MappedCelestialBody>();
   const [selectedBodyIndex, setSelectedBodyIndex] = useState<number>(0);
+  const [selectedBodyDisplayInfo, setSelectedBodyDisplayInfo] = useState<{
+    body: MappedCelestialBody|null,
+    position: {top: number, left: number}
+  }|null>(null);
 
   const path = usePathname();
   const slug = path.split('/').pop();
@@ -124,6 +128,11 @@ const SystemPage: FunctionComponent<Props> = ({ initSystem, initSchedule }) => {
           if (index === 0) {
             setSelectedBody(star);
           }
+        });
+
+        // Set the selected system body and position for the display info widet when the user selects a body.
+        systemDispatcher.addEventListener('display-body-info', (event) => {
+          setSelectedBodyDisplayInfo(event.message);
         });
 
         // Fetch scheduled fleet departures departing from this system along with carrier information
@@ -256,6 +265,14 @@ const SystemPage: FunctionComponent<Props> = ({ initSystem, initSchedule }) => {
           }
         </div>
       </div>
+
+      {selectedBodyDisplayInfo &&
+        <SystemBodyInformation
+          body={selectedBodyDisplayInfo.body}
+          position={selectedBodyDisplayInfo.position}
+          callback={() => setSelectedBodyDisplayInfo(null)}
+        />
+      }
     </>
   );
 };
