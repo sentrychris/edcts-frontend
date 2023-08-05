@@ -24,10 +24,14 @@ export class SystemDispatch extends EventDispatcher {
     });
   }
 
-  displayBodyInfo({ body, position }: { body: MappedCelestialBody, position: {top: number, left: number} }) {
+  displayBodyInfo({ body, closer, position }: {
+    body: MappedCelestialBody,
+    closer: boolean,
+    position: {top: number, left: number, right: number, bottom: number}
+  }) {
     this.dispatchEvent({
       type: 'display-body-info',
-      message: { body, position }
+      message: { body, closer, position }
     });
   }
 

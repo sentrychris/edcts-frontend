@@ -4,14 +4,12 @@ import { FunctionComponent, memo, useCallback, useEffect, useState } from 'react
 import { CelestialBody, MappedCelestialBody } from '../../lib/interfaces/Celestial';
 import { SystemDispatch } from '../../lib/events/system';
 import Icons from '../../icons';
-import SystemBodyInformation from './system-body-information';
 
 interface Props {
   body: MappedCelestialBody;
   system: string;
   selected?: CelestialBody;
   orbiting?: number;
-  singleton?: boolean;
   dispatcher: SystemDispatch;
   className?: string;
 }
@@ -21,32 +19,27 @@ const SystemBody: FunctionComponent<Props> = ({
   system,
   selected,
   orbiting,
-  singleton,
   dispatcher,
   className
 }) => {
-  const selectedBody = useCallback((node: SVGGElement) => {
-    if (node) {
-      node.addEventListener('click', (e: MouseEvent) => {
-        const { top, left } = node.getBoundingClientRect();
-        dispatcher.displayBodyInfo({ body, position: {
-          top, left
-        }})
-      })
-    }
-  }, []);
-
-  let useLargerViewBox = false;
-  if (body.rings) useLargerViewBox = true;
-  if (body.sub_type === 'Neutron Star') useLargerViewBox = true;
-  if (body.sub_type && body.sub_type.startsWith('White Dwarf')) useLargerViewBox = true;
-  if (body.sub_type === 'Black Hole') useLargerViewBox = true;
-
   const bodyIsSelectedUserFocus = (selected?.id64 === body.id64);
 
   const displayName = bodyIsSelectedUserFocus
     ? body.name
     : body.name.split(system).pop()?.trim();
+
+  const radius = !bodyIsSelectedUserFocus
+    ? body._r
+    : 2000;
+
+  const useLargerViewBox = () => {
+    if (body.rings) return true;
+    if (body.sub_type === 'Neutron Star') return true;
+    if (body.sub_type && body.sub_type.startsWith('White Dwarf')) return true;
+    if (body.sub_type === 'Black Hole') return true;
+
+    return false;
+  }
 
   const shortSubType = (text?: string) => {
     if (! text) text = body.sub_type ?? body.type;
@@ -59,20 +52,31 @@ const SystemBody: FunctionComponent<Props> = ({
     return text;
   };
 
-  const radius = !bodyIsSelectedUserFocus
-    ? body._r
-    : 2000;
+  const selectedBodyGCircleElement = useCallback((node: SVGGElement) => {
+    if (node) {
+      node.addEventListener('click', () => {
+        const { top, left, right, bottom } = node.getBoundingClientRect();
+        dispatcher.displayBodyInfo({
+          body,
+          closer: largeViewbox,
+          position: { top, left, right, bottom }
+        })
+      })
+    }
+  }, []);
+  
+  const largeViewbox = useLargerViewBox();
 
   return (
     <div className={'flex items-center ' + (body.rings && ' gap-3')}>
       <svg
-        viewBox={useLargerViewBox ? '-4000 -4000 8000 8000' : '-2500 -2500 5000 5000'}
+        viewBox={largeViewbox ? '-4000 -4000 8000 8000' : '-2500 -2500 5000 5000'}
         preserveAspectRatio="xMinYMid meet"
         className={className}
       >
         <g
-          className="system-map__system-object"
-          ref={selectedBody}
+          className="system-map__system-object hover:cursor-help"
+          ref={selectedBodyGCircleElement}
           data-system-object-name={body.name}
           data-system-object-type={body.type}
           data-system-object-small={body._small}

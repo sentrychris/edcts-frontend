@@ -19,8 +19,8 @@ const _IconsProxy = {
     if (data[key]) {
       return data[key].map((path, i) => <path key={`icon-${key}-${i}`} d={path} />);
     } else {
-      console.log('Unsupported icon:', name);
-      console.log('Supported icons: ', data);
+      console.error('Unsupported icon:', name);
+      console.info('Supported icons: ', data);
       return null;
     }
   }

@@ -50,6 +50,7 @@ const SystemPage: FunctionComponent<Props> = ({ initSystem, initSchedule }) => {
   const [selectedBodyIndex, setSelectedBodyIndex] = useState<number>(0);
   const [selectedBodyDisplayInfo, setSelectedBodyDisplayInfo] = useState<{
     body: MappedCelestialBody|null,
+    closer: boolean;
     position: {top: number, left: number}
   }|null>(null);
 
@@ -111,8 +112,6 @@ const SystemPage: FunctionComponent<Props> = ({ initSystem, initSchedule }) => {
         const map = new SystemMap(system);
         setSystemMap(map);
 
-        console.log({ map });
-
         // Fetch the main star in the system.
         const star = map.stars.find(s => s.is_main_star === 1);
         setSelectedBody(star);
@@ -164,7 +163,7 @@ const SystemPage: FunctionComponent<Props> = ({ initSystem, initSchedule }) => {
     // If map contains two objects, a star and "additional objects not directly orbiting" then
     // this system has only one primary star, this flag is useful for conditonally rendering certain
     // ui elements that are only needed if we have multiple primary stars, for example, select buttons.
-    const singlePrimaryStar = map.stars.length === 2 && map.stars[1].type === CelestialBodyType.Null;
+    // const singlePrimaryStar = map.stars.length === 2 && map.stars[1].type === CelestialBodyType.Null;
 
     return (
       <>
@@ -177,7 +176,7 @@ const SystemPage: FunctionComponent<Props> = ({ initSystem, initSchedule }) => {
                 <i className={'icarus-terminal-chevron-down text-glow__orange hover:text-glow__blue hover:cursor-pointer'}
                   onClick={() => handleSelectedBodyChange(selectedBodyIndex + 1)}></i>
               </div>}
-              {renderSystemBody(selectedBody, singlePrimaryStar)}
+              {renderSystemBody(selectedBody)}
             </div>
             <div className="system-body__children hidden md:flex w-full items-center overflow-x-auto hover:cursor-all-scroll"
               ref={scrollableBodies}>
@@ -190,7 +189,7 @@ const SystemPage: FunctionComponent<Props> = ({ initSystem, initSchedule }) => {
   }
 
   // Render a system body - an interactive SVG with conditional filters depending on body type.
-  function renderSystemBody(body: MappedCelestialBody, singleton = false) {
+  function renderSystemBody(body: MappedCelestialBody) {
     let classes = 'text-glow__white text-sm';
     if (body.is_main_star) {
       classes += ' w-main-star';
@@ -205,7 +204,6 @@ const SystemPage: FunctionComponent<Props> = ({ initSystem, initSchedule }) => {
         selected={selectedBody as CelestialBody}
         body={body as CelestialBody}
         orbiting={(body._children ? body._children.length : 0)}
-        singleton={singleton}
         dispatcher={systemDispatcher}
         className={classes} />
     );
@@ -269,6 +267,7 @@ const SystemPage: FunctionComponent<Props> = ({ initSystem, initSchedule }) => {
       {selectedBodyDisplayInfo &&
         <SystemBodyInformation
           body={selectedBodyDisplayInfo.body}
+          closer={selectedBodyDisplayInfo.closer}
           position={selectedBodyDisplayInfo.position}
           callback={() => setSelectedBodyDisplayInfo(null)}
         />

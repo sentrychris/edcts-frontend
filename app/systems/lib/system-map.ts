@@ -289,7 +289,7 @@ export default class SystemMap
       // This should never happen
       // TODO: It happened... see https://github.com/EDSM-NET/FrontEnd/issues/506
       if (!systemObjectWithTimestamp.hasOwnProperty('id64')) {
-        return console.log('#getUniqueObjectsByProperty error - systemObject does not have id64 property', systemObject);
+        return console.error('#getUniqueObjectsByProperty error - systemObject does not have id64 property', systemObject);
       }
 
       if (systemObjectsBy64BitId[systemObjectWithTimestamp.id64]) {
