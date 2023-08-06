@@ -2,7 +2,7 @@
 'use client';
 
 import { usePathname } from 'next/navigation';
-import { FunctionComponent, useEffect, useState } from 'react';
+import { FunctionComponent, useEffect, useState, useCallback } from 'react';
 import { System } from '../../lib/interfaces/System';
 import { CelestialBody, MappedCelestialBody } from '../../lib/interfaces/Celestial';
 import { CelestialBodyType } from '../../lib/constants/celestial';
@@ -16,7 +16,9 @@ import SystemMap from '../lib/system-map';
 import SystemTitle from './system-title';
 import SystemInformation from './system-information';
 import SystemBody from './system-body';
-import DepartureTable from '../../departures/components/departure-table';
+import SystemBodyInformation from './system-body-information';
+import SystemStarsTable from './system-stars-table';
+import SystemBodiesTable from './system-bodies-table';
 import Loader from '../../components/loader';
 import Heading from '../../components/heading';
 
@@ -26,16 +28,76 @@ import Heading from '../../components/heading';
 // - celestials: all celestial objects (stars, planets, stations, outposts, beacons)
 // - bodies: subset of celestial objects (stars, planets)
 
-const SystemPage: FunctionComponent = () => {
-  const [system, setSystem] = useState<System>(systemState);
-  const [schedule, setSchedule] = useState<Pagination<Schedule>>(paginatedScheduleState);
+interface Props {
+  initSystem?: System;
+  initSchedule?: Pagination<Schedule>;
+}
+
+const SystemPage: FunctionComponent<Props> = ({ initSystem, initSchedule }) => {
+  const [system, setSystem] = useState<System>(initSystem !== undefined
+    ? initSystem
+    : systemState
+  );
+  
+  const [schedule, setSchedule] = useState<Pagination<Schedule>>(initSchedule !== undefined
+    ? initSchedule
+    : paginatedScheduleState
+  );
+  
   const [isLoading, setLoading] = useState<boolean>(true);
   const [systemMap, setSystemMap] = useState<SystemMap>();
   const [selectedBody, setSelectedBody] = useState<MappedCelestialBody>();
   const [selectedBodyIndex, setSelectedBodyIndex] = useState<number>(0);
+  const [selectedBodyDisplayInfo, setSelectedBodyDisplayInfo] = useState<{
+    body: MappedCelestialBody|null,
+    closer: boolean;
+    position: {
+      top: number,
+      left: number,
+      right: number,
+      bottom: number,
+      width: number,
+      height: number
+    }
+  } | null>(null);
 
   const path = usePathname();
   const slug = path.split('/').pop();
+
+  const scrollableBodies = useCallback((node: HTMLDivElement) => {
+    let pos = {top: 0, left: 0, x: 0, y: 0};
+    if (node) {
+      node.scrollLeft = 0;
+
+      node.addEventListener('mousedown', (e: MouseEvent) => {
+        pos = {
+          left: node.scrollLeft,
+          top: node.scrollTop,
+          x: e.clientX,
+          y: e.clientY,
+        };
+
+        node.addEventListener('mousemove', mouseMoveHandler);
+        node.addEventListener('mouseup', mouseUpHandler);
+      });
+
+      const mouseMoveHandler = (event: MouseEvent) => {
+        const dx = event.clientX - pos.x;
+        const dy = event.clientY - pos.y;
+
+        node.scrollTop = pos.top - dy;
+        node.scrollLeft = pos.left - dx;
+      };
+    
+      const mouseUpHandler = () => {
+        node.removeEventListener('mousemove', mouseMoveHandler);
+        node.removeEventListener('mouseup', mouseUpHandler);
+    
+        node.style.cursor = 'grab';
+        node.style.removeProperty('user-select');
+      };
+    }
+  }, []);
 
   useEffect(() => {
     if (slug) {
@@ -57,6 +119,8 @@ const SystemPage: FunctionComponent = () => {
         const map = new SystemMap(system);
         setSystemMap(map);
 
+        console.log({ map })
+
         // Fetch the main star in the system.
         const star = map.stars.find(s => s.is_main_star === 1);
         setSelectedBody(star);
@@ -72,6 +136,11 @@ const SystemPage: FunctionComponent = () => {
           if (index === 0) {
             setSelectedBody(star);
           }
+        });
+
+        // Set the selected system body and position for the display info widet when the user selects a body.
+        systemDispatcher.addEventListener('display-body-info', (event) => {
+          setSelectedBodyDisplayInfo(event.message);
         });
 
         // Fetch scheduled fleet departures departing from this system along with carrier information
@@ -103,22 +172,23 @@ const SystemPage: FunctionComponent = () => {
     // If map contains two objects, a star and "additional objects not directly orbiting" then
     // this system has only one primary star, this flag is useful for conditonally rendering certain
     // ui elements that are only needed if we have multiple primary stars, for example, select buttons.
-    const singlePrimaryStar = map.stars.length === 2 && map.stars[1].type === CelestialBodyType.Null;
+    // const singlePrimaryStar = map.stars.length === 2 && map.stars[1].type === CelestialBodyType.Null;
 
     return (
       <>
         <div className="flex items-center content-center">
           {selectedBody && <>
             <div className="flex shrink-0 items-center md:border-r md:pe-12 md:border-neutral-700 md:rounded-full">
-              {renderSystemBody(selectedBody, singlePrimaryStar)}
-              {<div className={'hidden md:flex flex-col ms-6 text-glow__orange'}>
+              {<div className={'hidden md:flex flex-col me-6 text-glow__orange'}>
                 <i className={'icarus-terminal-chevron-up text-glow__orange hover:text-glow__blue hover:cursor-pointer'}
                   onClick={() => handleSelectedBodyChange(selectedBodyIndex - 1)}></i>
                 <i className={'icarus-terminal-chevron-down text-glow__orange hover:text-glow__blue hover:cursor-pointer'}
                   onClick={() => handleSelectedBodyChange(selectedBodyIndex + 1)}></i>
               </div>}
+              {renderSystemBody(selectedBody)}
             </div>
-            <div className="hidden md:flex md:flex-wrap w-full items-center">
+            <div className="system-body__children hidden md:flex w-full items-center overflow-x-auto hover:cursor-move"
+              ref={scrollableBodies}>
               {renderSystemBodyChildren(selectedBody)}
             </div>
           </>}
@@ -128,7 +198,7 @@ const SystemPage: FunctionComponent = () => {
   }
 
   // Render a system body - an interactive SVG with conditional filters depending on body type.
-  function renderSystemBody(body: MappedCelestialBody, singleton = false) {
+  function renderSystemBody(body: MappedCelestialBody) {
     let classes = 'text-glow__white text-sm';
     if (body.is_main_star) {
       classes += ' w-main-star';
@@ -140,10 +210,9 @@ const SystemPage: FunctionComponent = () => {
       <SystemBody
         key={body.id64}
         system={system.name}
-        selected={selectedBody as CelestialBody}
-        body={body as CelestialBody}
+        selected={selectedBody}
+        body={body}
         orbiting={(body._children ? body._children.length : 0)}
-        singleton={singleton}
         dispatcher={systemDispatcher}
         className={classes} />
     );
@@ -161,10 +230,7 @@ const SystemPage: FunctionComponent = () => {
         </span>;
       }
 
-      return <>
-        <span className="text-xs text-neutral-500">&lt;</span>
-        {bodies.map((body: MappedCelestialBody) => renderSystemBody(body))}
-      </>;
+      return bodies.map((body: MappedCelestialBody) => renderSystemBody(body));
   }
 
   return (
@@ -172,27 +238,76 @@ const SystemPage: FunctionComponent = () => {
       {isLoading && <Loader visible={isLoading} />}
 
       <div className="pb-5 border-b border-neutral-800">
-        <SystemTitle title={system.name} celestials={system.bodies.length}/>
+        <SystemTitle
+          title={system.name}
+          celestials={system.bodies.length}
+        />
       </div>
 
-      <SystemInformation coords={system.coords} information={system.information} />
+      <SystemInformation
+        coords={system.coords}
+        information={system.information}
+      />
 
-      <div className="py-5 w-7xl overflow">
-        <Heading icon="icarus-terminal-system-bodies" title="System Bodies" className="gap-2 pb-10" />
-        
-        {!isLoading && systemMap && systemMap.objectsInSystem.length > 0
-          ? renderSystemBodies(systemMap)
-          : <div className="text-glow__orange uppercase text-center mx-auto py-6">Telemetry data not found for {system.name}</div>
-        }
+      <div className="py-5 w-7xl overflow border-b border-neutral-800 backdrop-filter backdrop-blur bg-transparent">
+        <Heading
+          icon="icarus-terminal-system-bodies"
+          title="System Overview"
+          className="gap-2 pb-5"
+        />    
+        {!isLoading &&
+        <div className="grid grid-cols-12">
+          <div className="col-span-12">
+            {systemMap && systemMap.objectsInSystem.length > 0
+              
+              ? renderSystemBodies(systemMap)
+
+              : <div className="text-glow__orange text-lg font-bold uppercase text-center mx-auto py-6">
+                  Telemetry data not found for {system.name}
+                </div>
+            }
+          </div>
+        </div>}
       </div>
 
-      <div className="py-5">
-        <Heading icon="icarus-terminal-route" title="Scheduled Departures" className="gap-2 pb-5" />
-
-        {!isLoading && 
-          <DepartureTable schedule={schedule} />
-        }
+      <div className="grid grid-cols-1 md:grid-cols-1 gap-5 py-5">
+        <div>
+          <Heading
+            icon="icarus-terminal-star"
+            title="Main Sequence Stars"
+            className="gap-2 pb-5"
+          />
+          {!isLoading && systemMap &&
+            <SystemStarsTable
+              stars={systemMap.stars as CelestialBody[]}
+              system={system.name}
+            />
+          }
+        </div>
+        <div>
+          <Heading
+            icon="icarus-terminal-system-orbits"
+            title="Orbital Bodies"
+            className="gap-2 pb-5"
+          />
+          {!isLoading && systemMap &&
+            <SystemBodiesTable
+              bodies={systemMap.objectsInSystem as CelestialBody[]}
+              system={system.name}
+            />
+          }
+        </div>
       </div>
+
+      {selectedBodyDisplayInfo &&
+        <SystemBodyInformation
+          body={selectedBodyDisplayInfo.body}
+          closer={selectedBodyDisplayInfo.closer}
+          position={selectedBodyDisplayInfo.position}
+          dispatcher={systemDispatcher}
+          close={() => setSelectedBodyDisplayInfo(null)}
+        />
+      }
     </>
   );
 };

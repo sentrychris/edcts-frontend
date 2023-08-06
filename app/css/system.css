@@ -73,7 +73,7 @@
 .system-map__system-object[data-system-object-type="Planet"][data-system-object-sub-type*="Ammonia world"] .system-map__planet-surface,
 .system-map__system-object[data-system-object-type="Planet"][data-system-object-sub-type*="Earth-like world"] .system-map__planet-surface {
   fill: url(#svg-pattern__planet-surface--clouds);
-  filter: contrast(2) brightness(2) !important;
+  filter: contrast(1) brightness(2) !important;
 }
 
 .system-map__system-object[data-system-object-type="Star"] .system-map__planet {
@@ -229,6 +229,9 @@
   filter: drop-shadow(0 0 5rem var(--color-primary)) !important;
 }
 
+/*
+ * Apply gradients to SVG planets 
+ */
 #system-map-svg-gradient__planet stop:nth-child(1) {
   stop-color: var(--color-primary);
   stop-color: #005c81;
@@ -372,6 +375,48 @@
 #system-map-svg-gradient__planet--earth-like stop:nth-child(2) {
   stop-color: rgb(7, 82, 72);
 }
+
+.system-body-information__container {
+  position: absolute;
+  /* -webkit-clip-path: polygon(0 0, 0 100%, 100% 100%, 100% 25%, 75% 0); */
+  /* clip-path: polygon(0 0, 0 100%, 100% 100%, 100% 15%, 85% 0); */
+}
+
+.system-body-information__container--header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  background-color: rgb(249 115 22 / 0.6);
+  border-bottom: 1px solid transparent;
+}
+
+.system-body-information__container:after {
+  position: absolute;
+  top: 0%;
+  left: -23px;
+  content: '';
+  width: 0;
+  height: 0;
+  border-right: solid 23px rgb(249 115 22 / 0.6);
+  border-bottom: solid 23px transparent;
+  border-top: solid 23px transparent;
+}
+
+/* .system-body-information__container:before {
+  position: absolute;
+  background: linear-gradient(45deg,red,blue);
+  --g1:#000 var(--b),#0000 0 calc(100% - var(--b)),#000 0;
+  --g2:#0000   calc(0.707*var(--s)), 
+       #000  0 calc(0.707*var(--s) + var(--b)),
+       #0000 0 calc(100% - 0.707*var(--s) - var(--b)),
+       #000  0 calc(100% - 0.707*var(--s)),
+       #0000 0;
+  -webkit-mask:
+    linear-gradient(45deg ,var(--g2)),
+    linear-gradient(-45deg,var(--g2)),
+    linear-gradient(90deg ,var(--g1)) 50%/100% calc(100% - 2*var(--s)) no-repeat,
+    linear-gradient(180deg,var(--g1)) 50%/calc(100% - 2*var(--s)) 100% no-repeat;
+} */
 
 .w-main-star {
   width: 140px !important;

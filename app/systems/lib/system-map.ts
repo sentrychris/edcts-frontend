@@ -12,11 +12,14 @@ import {
 
 import { escapeRegExp } from '../../lib/util';
 
+type MapKeyType = keyof MappedCelestialBody;
+
 export default class SystemMap
 {
   detail: System;
   name: string;
   stars: MappedCelestialBody[];
+  planets: MappedCelestialBody[];
   objectsInSystem: MappedCelestialBody[];
 
   constructor(system: System) {
@@ -39,6 +42,7 @@ export default class SystemMap
     bodies = this.#getUniqueObjectsByProperty(bodies, 'body_id');
 
     this.stars = bodies.filter((c: MappedCelestialBody) => c._type === CelestialBodyType.Star);
+    this.planets = bodies.filter((c: MappedCelestialBody) => c._type === CelestialBodyType.Planet);
     this.objectsInSystem = bodies.sort((a: MappedCelestialBody, b: MappedCelestialBody) => (a.body_id - b.body_id));
 
     // Object to contain bodies that are not directly orbiting a star.
@@ -47,10 +51,20 @@ export default class SystemMap
     this.stars.push({
       body_id: 0,
       name: 'Additional Objects',
-      description: 'Objects not directly orbiting a star',
       type: CelestialBodyType.Null,
       _type: CelestialBodyType.Null,
-      _children: []
+      _label: 'Additional Objects',
+      _description: 'Objects not directly orbiting a star',
+      _children: [],
+      _y: 0,
+      _x: 0,
+      _r: 0,
+      _x_offset: 0,
+      _y_offset: 0,
+      _x_max: 0,
+      _y_max: 0,
+      _orbits_star: false,
+      _small: false
     });
 
     this.map();
@@ -63,7 +77,7 @@ export default class SystemMap
       }
       
       systemObject.name = this.getNameFromSystemObject(systemObject.name);
-      systemObject.label = this.getLabelFromSystemObject(systemObject);
+      systemObject._label = this.getLabelFromSystemObject(systemObject);
     }
 
     this.stars.forEach(star => {
@@ -72,15 +86,104 @@ export default class SystemMap
   }
 
   mapBodies(star: MappedCelestialBody) {
+    const MIN_R = 800;
+    const MAX_R = 1600;
+    const SUB_MIN_R = 800;
+    const SUB_MAX_R = 1600;
+    const R_DIVIDER = 10;
+    const X_SPACING = 600;
+    const Y_SPACING = 600;
+    const RING_X_SPACING = 0.8;
+
+    star._x_max = 0;
+    star._y_max = 0;
+    star._x_offset = 0;
+    star._y_offset = 0;
+
     // Get each objects directly orbiting star
     star._children = this.getChildren(star, true).map((itemInOrbit, i) => {
+      const MAIN_PLANET_MIN_R = MIN_R;
+
       // Get each objects directly orbiting this object
       itemInOrbit._children = this.getChildren(itemInOrbit, false);
+
+      itemInOrbit._r = itemInOrbit.radius
+        ? itemInOrbit.radius / R_DIVIDER
+        : MIN_R;
+      
+      if (itemInOrbit._r < MAIN_PLANET_MIN_R) {
+        itemInOrbit._r = MAIN_PLANET_MIN_R;
+      }
+
+      if (itemInOrbit._r > MAX_R) {
+        itemInOrbit._r = MAX_R;
+      }
+
+      if (itemInOrbit._r <= MAIN_PLANET_MIN_R) {
+        itemInOrbit._small = true;
+      }
+
+      itemInOrbit._y = 0;
+      itemInOrbit._orbits_star = true;
+
+      const itemXSpacing = (itemInOrbit.rings)
+        ? itemInOrbit._r / RING_X_SPACING
+        : X_SPACING;
+
+      itemInOrbit._x = star._x_max + itemXSpacing + itemInOrbit._r;
+
+      const newy_max = itemInOrbit._r + X_SPACING;
+      if (newy_max > star._y_offset) {
+        star._y_offset = newy_max;
+      }
+
+      // If object has children,
+      let newx_max = (itemInOrbit.rings)
+        ? itemInOrbit._x + itemInOrbit._r + itemXSpacing
+        : itemInOrbit._x + itemInOrbit._r;
+
+      if (itemInOrbit._children.length > 0 && (newx_max - star._x_max) < 0){
+        newx_max = star._x_max;
+      }
+
+      if (newx_max > star._x_max) {
+        star._x_max = newx_max;
+      }
+
+      // Initialize Y max with planet radius
+      itemInOrbit._y_max = itemInOrbit._r + (Y_SPACING / 2);
 
       // Get every object that directly or indirectly orbits this object
       itemInOrbit._children
         .sort((a: MappedCelestialBody, b: MappedCelestialBody) => (a.body_id - b.body_id))
-        .map((subItemInOrbit: MappedCelestialBody) => subItemInOrbit);
+        .map((subItemInOrbit: MappedCelestialBody) => {
+          subItemInOrbit._r = subItemInOrbit.radius ? subItemInOrbit.radius / R_DIVIDER : MIN_R;
+
+          if (subItemInOrbit._r < SUB_MIN_R) {
+            subItemInOrbit._r = SUB_MIN_R;
+          }
+
+          if (subItemInOrbit._r > SUB_MAX_R) {
+            subItemInOrbit._r = SUB_MAX_R;
+          }
+
+          // Set attribute on smaller planets so we can select a different setting
+          // on front end that will render them better
+          if (subItemInOrbit._r <= SUB_MIN_R) subItemInOrbit._small = true;
+
+          // Use parent X co-ords to plot on same vertical plane as parent
+          subItemInOrbit._x = itemInOrbit._x;
+
+          // Use radius of current object to calclulate cumulative Y pos
+          subItemInOrbit._y = itemInOrbit._y_max + subItemInOrbit._r + Y_SPACING;
+
+          // New Y max is  previous Y max plus current object radius plus spacing
+          itemInOrbit._y_max = subItemInOrbit._y + subItemInOrbit._r;
+
+          subItemInOrbit._orbits_star = false;
+
+          return subItemInOrbit;
+        });
 
       return itemInOrbit;
     });
@@ -95,7 +198,8 @@ export default class SystemMap
     }
 
     for (const systemObject of this.objectsInSystem) {
-      if (filter.length && !filter.includes(systemObject._type)) {
+      const type = <CelestialBodyType>systemObject._type;
+      if (filter.length && !filter.includes(type)) {
         continue;
       }
 
@@ -108,7 +212,7 @@ export default class SystemMap
       if (systemObject.parents) {
         for (const parent of systemObject.parents) {
           for (const key of Object.keys(parent)) {
-            if (primaryOrbit === null) primaryOrbit = parent[key];
+            if (primaryOrbit === null) primaryOrbit = parent[<CelestialBodyType>key];
             if (primaryOrbitType === null) primaryOrbitType = key;
 
             if (key === CelestialBodyType.Star) inOrbitAroundStars.push(parent[key]);
@@ -181,7 +285,7 @@ export default class SystemMap
     return systemObjectName;
   }
 
-  #getUniqueObjectsByProperty(arrayOfSystemObjects: MappedCelestialBody[], key: string) {
+  #getUniqueObjectsByProperty(arrayOfSystemObjects: MappedCelestialBody[], key: MapKeyType) {
     const systemObjectsBy64BitId: Record<string, MappedCelestialBody> = {};
 
     // Loop through objects and assign them a timestamp based on date discovered
@@ -198,12 +302,13 @@ export default class SystemMap
       // This should never happen
       // TODO: It happened... see https://github.com/EDSM-NET/FrontEnd/issues/506
       if (!systemObjectWithTimestamp.hasOwnProperty('id64')) {
-        return console.log('#getUniqueObjectsByProperty error - systemObject does not have id64 property', systemObject);
+        return console.error('#getUniqueObjectsByProperty error - systemObject does not have id64 property', systemObject);
       }
 
       if (systemObjectsBy64BitId[systemObjectWithTimestamp.id64]) {
         // If this item is newer, replace it with the one we already have
-        if (Date.parse(systemObjectWithTimestamp.timestamp) > Date.parse(systemObjectsBy64BitId[systemObjectWithTimestamp.id64].discovered_at)) {
+        const systemObjectDiscoveredAt = systemObjectsBy64BitId[systemObjectWithTimestamp.id64].discovered_at;
+        if (systemObjectDiscoveredAt && Date.parse(systemObjectWithTimestamp.timestamp) > Date.parse(systemObjectDiscoveredAt)) {
           systemObjectsBy64BitId[systemObjectWithTimestamp.id64] = systemObjectWithTimestamp;
         }
       } else {
@@ -234,20 +339,26 @@ export default class SystemMap
       body._type = body.type;
 
       // Only applies to stars
-      if (body.type !== CelestialBodyType.Star) return;
+      if (body.type !== CelestialBodyType.Star) {
+        return;
+      }
 
       // Never applies to main stars
-      if (body.is_main_star === true) return;
+      if (body.is_main_star && body.is_main_star === 1) {
+        return;
+      }
 
       // If star doesn't have any non-null parent objects (i.e. it's not
       // orbiting a planet or a star) then don't re-classify it.
-      if (this.#getNearestNotNullParent(body) === null) return;
+      if (this.#getNearestNotNullParent(body) === null) {
+        return;
+      }
 
       // Change each tpe from CelestialBodyType.Star to CelestialBodyType.Planet
       body._type = CelestialBodyType.Planet;
 
       // Add a standard radius property based on its solar radius
-      body.radius = body.solar_radius * SOL_RADIUS_IN_KM;
+      body.radius = body.solar_radius ? body.solar_radius * SOL_RADIUS_IN_KM : SOL_RADIUS_IN_KM ;
 
       // Save the id of this body for the loop below
       starsOrbitingStarsLikePlanets.push(body.body_id);

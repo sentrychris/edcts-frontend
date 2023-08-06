@@ -1,14 +1,15 @@
-import { FunctionComponent, memo } from 'react';
-import { CelestialBody } from '../../lib/interfaces/Celestial';
+'use client';
+
+import { FunctionComponent, memo, useCallback } from 'react';
+import { MappedCelestialBody } from '../../lib/interfaces/Celestial';
 import { SystemDispatch } from '../../lib/events/system';
 import Icons from '../../icons';
 
 interface Props {
-  body: CelestialBody;
+  body: MappedCelestialBody;
   system: string;
-  selected?: CelestialBody;
+  selected?: MappedCelestialBody;
   orbiting?: number;
-  singleton?: boolean;
   dispatcher: SystemDispatch;
   className?: string;
 }
@@ -18,44 +19,67 @@ const SystemBody: FunctionComponent<Props> = ({
   system,
   selected,
   orbiting,
-  singleton,
   dispatcher,
   className
 }) => {
-  // System configs
-  let radius = 2000;
-  if (body.radius && body.radius <= 2500) radius = 1000;
-  if (body.radius && body.radius > 2500 && body.radius <= 5000) radius = 1200;
-  if (body.radius && body.radius > 5000 && body.radius <= 7500) radius = 1400;
-  if (body.radius && body.radius > 7500 && body.radius <= 10000) radius = 1600;
-  if (body.radius && body.radius > 10000 && body.radius <= 15000) radius = 1800;
-  if (body.radius && body.radius > 20000) radius = 2000;
-
-  let useLargerViewBox = false;
-  if (body.rings) useLargerViewBox = true;
-  if (body.sub_type === 'Neutron Star') useLargerViewBox = true;
-  if (body.sub_type.startsWith('White Dwarf')) useLargerViewBox = true;
-  if (body.sub_type === 'Black Hole') useLargerViewBox = true;
-
-  const imageX = 250;
-  const imageY = 200;
-
   const bodyIsSelectedUserFocus = (selected?.id64 === body.id64);
 
   const displayName = bodyIsSelectedUserFocus
     ? body.name
     : body.name.split(system).pop()?.trim();
 
+  const radius = !bodyIsSelectedUserFocus
+    ? (body._r ? body._r : 2000)
+    : 2000;
+
+  const useLargerViewBox = () => {
+    if (body.rings) return true;
+    if (body.sub_type === 'Neutron Star') return true;
+    if (body.sub_type && body.sub_type.startsWith('White Dwarf')) return true;
+    if (body.sub_type === 'Black Hole') return true;
+
+    return false;
+  };
+
+  const largeViewbox = useLargerViewBox();
+
+  const shortSubType = (text?: string) => {
+    if (! text) text = body.sub_type ?? body.type;
+    if (body.name === 'Earth') return 'Home';
+    if (text.match(/{{[^}]+}}|(metal)/i)) return 'Metal';
+    if (text.match(/{{[^}]+}}|(gas giant)/i)) return 'Gas Giant';
+    if (text.match(/{{[^}]+}}|(rocky ice)/i)) return 'Rocky Ice';
+    if (text.match(/{{[^}]+}}|(earth-like)/i)) return 'Earth-Like';
+
+    return text;
+  };
+
+  const selectedBodyGCircleElement = useCallback((node: SVGGElement) => {
+    if (node) {
+      node.addEventListener('click', () => {
+        const { top, left, right, bottom, width, height } = node.getBoundingClientRect();
+        dispatcher.displayBodyInfo({
+          body,
+          closer: largeViewbox,
+          position: { top, left, right, bottom, width, height }
+        });
+      });
+    }
+  }, [body, dispatcher, largeViewbox]);
+
   return (
-    <div className="flex gap-1 items-center">
+    <div className={'flex items-center ' + (body.rings && ' gap-3')}>
       <svg
-        viewBox={useLargerViewBox ? '-4000 -4000 8000 8000' : '-2500 -2500 5000 5000'}
+        viewBox={largeViewbox ? '-4000 -4000 8000 8000' : '-2500 -2500 5000 5000'}
         preserveAspectRatio="xMinYMid meet"
-        className={className + ' hover:cursor-pointer'}
-        onClick={() => dispatcher.selectBody({ body })}>
-        <g className="system-map__system-object"
+        className={className}
+      >
+        <g
+          className="system-map__system-object hover:cursor-help"
+          ref={selectedBodyGCircleElement}
           data-system-object-name={body.name}
-          data-system-object-type={body.type}
+          data-system-object-type={body._type}
+          data-system-object-small={body._small}
           data-system-object-sub-type={body.sub_type}
           data-system-object-atmosphere={body.atmosphere_type}
           data-system-object-landable={body.is_landable === 1 ? true : false}
@@ -63,14 +87,14 @@ const SystemBody: FunctionComponent<Props> = ({
           <g className="system-map__body">
             <g className="system-map__planet">
               <circle
-                cx="0"
-                cy="0"
+                cx={0}
+                cy={0}
                 r={radius}
               />
               <circle
                 className="system-map__planet-surface"
-                cx="0"
-                cy="0"
+                cx={0}
+                cy={0}
                 r={radius}
               />
               {body.rings && body.rings.length > 0 && <>
@@ -123,18 +147,11 @@ const SystemBody: FunctionComponent<Props> = ({
               </>}
             </g>
             {body.is_landable && <svg
-              className='system-map__planetary-lander-icon'
-              x={imageX+100}
-              y={imageY+200}
+              className='text-xs system-map__planetary-lander-icon'
+              x={0}
+              y={0}
             >
               {Icons.get('planet-landable')}
-            </svg>}
-            {body.rings && <svg
-              className='system-map__planetary-port-icon'
-              x={imageX+1000}
-              y={imageY+1000}
-            >
-              {Icons.get('planet-ringed')}
             </svg>}
           </g>
         </g>
@@ -143,13 +160,15 @@ const SystemBody: FunctionComponent<Props> = ({
         <p className="text-glow">
           {displayName}
         </p>
-        <p className="text-label__small text-glow whitespace-nowrap">
-          {body.sub_type}
+        <p className="text-xs text-glow whitespace-nowrap">
+          {shortSubType(body.sub_type)}
         </p>
         <span
-          className={'flex items-center gap-2 text-glow__orange ' + (bodyIsSelectedUserFocus ? 'text-sm' : 'text-label__small')}>
+          className={'flex whitespace-nowrap items-center gap-2 text-glow__orange  ' + (bodyIsSelectedUserFocus ? 'text-sm' : 'hover:text-glow__blue hover:scale-110 hover:cursor-grabbing')}
+          onClick={() => dispatcher.selectBody({ body })}
+        >
           <i className="icarus-terminal-system-bodies text-label__small"></i>
-          {(orbiting)} {bodyIsSelectedUserFocus && 'orbiting bodies found'}
+          {(orbiting)} {bodyIsSelectedUserFocus ? 'orbiting bodies found' : '...'}
         </span>
         {bodyIsSelectedUserFocus && ! body.is_main_star &&
         <span

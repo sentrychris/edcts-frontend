@@ -1,6 +1,6 @@
 'use client';
 
-import { FunctionComponent, useState } from 'react';
+import { FunctionComponent, useEffect, useState } from 'react';
 import { Links, Meta, Pagination } from '../../lib/interfaces/Pagination';
 import { Schedule } from '../../lib/interfaces/Schedule';
 import { scheduleColumns } from '../lib/departures';
@@ -11,10 +11,12 @@ import { getCollection } from '../../lib/api';
 
 interface Props {
   schedule: Pagination<Schedule>;
+  filter?: boolean;
 }
 
-const DepartureTable: FunctionComponent<Props> = ({ schedule }) => {
+const DepartureTable: FunctionComponent<Props> = ({ schedule, filter = true }) => {
   const { data, meta, links } = schedule;
+  
   const [rows, setRows] = useState(data);
   const [metadata, setMetadata] = useState(meta);
   const [navigation, setNavigation] = useState(links);
@@ -27,6 +29,10 @@ const DepartureTable: FunctionComponent<Props> = ({ schedule }) => {
     setMetadata(meta);
     setNavigation(links);
   };
+
+  useEffect(() => {
+    setState(data, meta, links);
+  }, [data, meta, links]);
 
   const searchData = async (text: string) => {
     setQuery(text);
@@ -61,7 +67,7 @@ const DepartureTable: FunctionComponent<Props> = ({ schedule }) => {
 
   return (
     <div>
-      <Filter handleInput={searchData} className="mb-5" />
+      {filter && <Filter handleInput={searchData} className="mb-5" />}
       <Table columns={scheduleColumns}
         data={rows}
         meta={metadata}
