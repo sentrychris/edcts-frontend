@@ -8,7 +8,7 @@ import Icons from '../../icons';
 interface Props {
   body: MappedCelestialBody;
   system: string;
-  selected?: CelestialBody;
+  selected?: MappedCelestialBody;
   orbiting?: number;
   dispatcher: SystemDispatch;
   className?: string;
@@ -165,7 +165,7 @@ const SystemBody: FunctionComponent<Props> = ({
         </p>
         <span
           className={'flex whitespace-nowrap items-center gap-2 text-glow__orange  ' + (bodyIsSelectedUserFocus ? 'text-sm' : 'hover:text-glow__blue hover:scale-110 hover:cursor-grabbing')}
-          onClick={() => dispatcher.selectBody({ body: body as CelestialBody })}
+          onClick={() => dispatcher.selectBody({ body })}
         >
           <i className="icarus-terminal-system-bodies text-label__small"></i>
           {(orbiting)} {bodyIsSelectedUserFocus ? 'orbiting bodies found' : '...'}

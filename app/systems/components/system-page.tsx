@@ -119,6 +119,8 @@ const SystemPage: FunctionComponent<Props> = ({ initSystem, initSchedule }) => {
         const map = new SystemMap(system);
         setSystemMap(map);
 
+        console.log({ map })
+
         // Fetch the main star in the system.
         const star = map.stars.find(s => s.is_main_star === 1);
         setSelectedBody(star);
@@ -208,8 +210,8 @@ const SystemPage: FunctionComponent<Props> = ({ initSystem, initSchedule }) => {
       <SystemBody
         key={body.id64}
         system={system.name}
-        selected={selectedBody as CelestialBody}
-        body={body as CelestialBody}
+        selected={selectedBody}
+        body={body}
         orbiting={(body._children ? body._children.length : 0)}
         dispatcher={systemDispatcher}
         className={classes} />

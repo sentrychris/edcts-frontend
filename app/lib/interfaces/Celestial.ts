@@ -53,5 +53,17 @@ export interface MappedCelestialBody extends Partial<CelestialBody> {
   body_id: number;
   name: string;
   type: string;
-  [key: string]: any;
+  label: string;
+  description: string;
+  _type: string;
+  _children: MappedCelestialBody[];
+  _orbits_star: boolean;
+  _small: boolean;
+  _r: number;
+  _x: number;
+  _y: number;
+  _x_offset: number;
+  _y_offset: number;
+  _x_max: number;
+  _y_max: number;
 }

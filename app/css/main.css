@@ -118,10 +118,6 @@ nav.main-nav__nav .main-nav__menu {
   background-image: url(/images/grid.svg);
 }
 
-.slideout-panel {
-  z-index: 20000;
-}
-
 @layer utilities {
   .text-glow {
     text-shadow: var(--text-shadow);

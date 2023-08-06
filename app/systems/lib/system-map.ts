@@ -12,6 +12,8 @@ import {
 
 import { escapeRegExp } from '../../lib/util';
 
+type MapKeyType = keyof MappedCelestialBody;
+
 export default class SystemMap
 {
   detail: System;
@@ -49,10 +51,20 @@ export default class SystemMap
     this.stars.push({
       body_id: 0,
       name: 'Additional Objects',
+      label: 'Additional Objects',
       description: 'Objects not directly orbiting a star',
       type: CelestialBodyType.Null,
       _type: CelestialBodyType.Null,
-      _children: []
+      _children: [],
+      _y: 0,
+      _x: 0,
+      _r: 0,
+      _x_offset: 0,
+      _y_offset: 0,
+      _x_max: 0,
+      _y_max: 0,
+      _orbits_star: false,
+      _small: false
     });
 
     this.map();
@@ -121,21 +133,21 @@ export default class SystemMap
       itemInOrbit._x = star._x_max + itemXSpacing + itemInOrbit._r;
 
       const newy_max = itemInOrbit._r + X_SPACING;
-      if (newy_max > star._yOffset) {
-        star._yOffset = newy_max;
+      if (newy_max > star._y_offset) {
+        star._y_offset = newy_max;
       }
 
       // If object has children,
-      let newXmax = (itemInOrbit.rings)
+      let newx_max = (itemInOrbit.rings)
         ? itemInOrbit._x + itemInOrbit._r + itemXSpacing
         : itemInOrbit._x + itemInOrbit._r;
 
-      if (itemInOrbit._children.length > 0 && (newXmax - star._x_max) < 0){
-        newXmax = star._x_max;
+      if (itemInOrbit._children.length > 0 && (newx_max - star._x_max) < 0){
+        newx_max = star._x_max;
       }
 
-      if (newXmax > star._x_max) {
-        star._x_max = newXmax;
+      if (newx_max > star._x_max) {
+        star._x_max = newx_max;
       }
 
       // Initialize Y max with planet radius
@@ -186,7 +198,9 @@ export default class SystemMap
     }
 
     for (const systemObject of this.objectsInSystem) {
-      if (filter.length && !filter.includes(systemObject._type)) {
+      const type = (systemObject._type as CelestialBodyType);
+      console.log({ type })
+      if (filter.length && !filter.includes(type)) {
         continue;
       }
 
@@ -272,7 +286,7 @@ export default class SystemMap
     return systemObjectName;
   }
 
-  #getUniqueObjectsByProperty(arrayOfSystemObjects: MappedCelestialBody[], key: string) {
+  #getUniqueObjectsByProperty(arrayOfSystemObjects: MappedCelestialBody[], key: MapKeyType) {
     const systemObjectsBy64BitId: Record<string, MappedCelestialBody> = {};
 
     // Loop through objects and assign them a timestamp based on date discovered
