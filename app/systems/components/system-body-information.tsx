@@ -178,13 +178,13 @@ export default function SystemBodyInformation({ body, closer, position, dispatch
                   </p>
                   <div className="mt-2">
                     {body.rings.map((ring: CelestialRing) => {
-                      return (<>
-                        <div className="mb-2">
+                      return (
+                        <div key={ring.mass} className="mb-2">
                           <p className="text-glow__orange">{ring.name}</p>
                           <p>Type: {ring.type}</p>
                           <p>Mass: {formatNumber(ring.mass)} KG</p>
                         </div>
-                      </>);
+                      );
                     })}
                   </div>
                 </div>

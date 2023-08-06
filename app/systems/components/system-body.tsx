@@ -1,7 +1,7 @@
 'use client';
 
-import { FunctionComponent, memo, useCallback, useEffect, useState } from 'react';
-import { CelestialBody, MappedCelestialBody } from '../../lib/interfaces/Celestial';
+import { FunctionComponent, memo, useCallback } from 'react';
+import { MappedCelestialBody } from '../../lib/interfaces/Celestial';
 import { SystemDispatch } from '../../lib/events/system';
 import Icons from '../../icons';
 
@@ -29,7 +29,7 @@ const SystemBody: FunctionComponent<Props> = ({
     : body.name.split(system).pop()?.trim();
 
   const radius = !bodyIsSelectedUserFocus
-    ? body._r
+    ? (body._r ? body._r : 2000)
     : 2000;
 
   const useLargerViewBox = () => {
@@ -78,7 +78,7 @@ const SystemBody: FunctionComponent<Props> = ({
           className="system-map__system-object hover:cursor-help"
           ref={selectedBodyGCircleElement}
           data-system-object-name={body.name}
-          data-system-object-type={body.type}
+          data-system-object-type={body._type}
           data-system-object-small={body._small}
           data-system-object-sub-type={body.sub_type}
           data-system-object-atmosphere={body.atmosphere_type}

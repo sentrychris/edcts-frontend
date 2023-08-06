@@ -187,7 +187,7 @@ const SystemPage: FunctionComponent<Props> = ({ initSystem, initSchedule }) => {
               </div>}
               {renderSystemBody(selectedBody)}
             </div>
-            <div className="system-body__children hidden md:flex w-full items-center overflow-x-auto hover:cursor-all-scroll"
+            <div className="system-body__children hidden md:flex w-full items-center overflow-x-auto hover:cursor-move"
               ref={scrollableBodies}>
               {renderSystemBodyChildren(selectedBody)}
             </div>

@@ -51,10 +51,10 @@ export default class SystemMap
     this.stars.push({
       body_id: 0,
       name: 'Additional Objects',
-      label: 'Additional Objects',
-      description: 'Objects not directly orbiting a star',
       type: CelestialBodyType.Null,
       _type: CelestialBodyType.Null,
+      _label: 'Additional Objects',
+      _description: 'Objects not directly orbiting a star',
       _children: [],
       _y: 0,
       _x: 0,
@@ -77,7 +77,7 @@ export default class SystemMap
       }
       
       systemObject.name = this.getNameFromSystemObject(systemObject.name);
-      systemObject.label = this.getLabelFromSystemObject(systemObject);
+      systemObject._label = this.getLabelFromSystemObject(systemObject);
     }
 
     this.stars.forEach(star => {
@@ -198,8 +198,7 @@ export default class SystemMap
     }
 
     for (const systemObject of this.objectsInSystem) {
-      const type = (systemObject._type as CelestialBodyType);
-      console.log({ type })
+      const type = <CelestialBodyType>systemObject._type;
       if (filter.length && !filter.includes(type)) {
         continue;
       }
@@ -213,7 +212,7 @@ export default class SystemMap
       if (systemObject.parents) {
         for (const parent of systemObject.parents) {
           for (const key of Object.keys(parent)) {
-            if (primaryOrbit === null) primaryOrbit = parent[key as CelestialBodyType];
+            if (primaryOrbit === null) primaryOrbit = parent[<CelestialBodyType>key];
             if (primaryOrbitType === null) primaryOrbitType = key;
 
             if (key === CelestialBodyType.Star) inOrbitAroundStars.push(parent[key]);
