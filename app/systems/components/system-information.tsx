@@ -1,7 +1,6 @@
 import { FunctionComponent, memo } from 'react';
 import { SystemInformation } from '../../lib/interfaces/System';
-import { renderBadge } from '../lib/store';
-import { formatNumber } from '../../lib/util';
+import { formatNumber, renderBadge } from '../../lib/util';
 
 interface Props {
   coords: {

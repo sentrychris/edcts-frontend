@@ -1,10 +1,9 @@
 'use client';
 
 import { FunctionComponent, useEffect, useState, memo  } from 'react';
-import { renderBadge } from '../lib/store';
 import { Statistics } from '../../lib/interfaces/Statistics';
 import { getResource } from '../../lib/api';
-import { formatNumber } from '../../lib/util';
+import { formatNumber, renderBadge } from '../../lib/util';
 import Link from 'next/link';
 
 interface Props {

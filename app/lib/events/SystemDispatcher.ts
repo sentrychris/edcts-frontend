@@ -24,7 +24,7 @@ export class SystemDispatcher extends EventDispatcher {
     });
   }
 
-  displayBodyInfo({ body, closer, position }: {
+  displayBodyInformationWidget({ body, closer, position }: {
     body: MappedCelestialBody,
     closer: boolean,
     position: {

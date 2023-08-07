@@ -76,7 +76,7 @@ const SystemBody: FunctionComponent<Props> = ({
     if (node) {
       node.addEventListener('click', () => {
         const { top, left, right, bottom, width, height } = node.getBoundingClientRect();
-        dispatcher.displayBodyInfo({
+        dispatcher.displayBodyInformationWidget({
           body,
           closer: largeViewbox,
           position: { top, left, right, bottom, width, height }
