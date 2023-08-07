@@ -39,11 +39,11 @@ export default function SystemBodyInformation({ body, closer, position, dispatch
   let style = {
     width: CONTAINER_WIDTH,
     top: OFFSET_Y
-  }
+  };
 
   style = OFFSET_POSITION_LEFT >= MAX_WIDTH
     ? {...style, ...{right: (position.top-100)}}
-    : {...style, ...{left: POSITION_LEFT}}
+    : {...style, ...{left: POSITION_LEFT}};
 
   return (
     <div className="fx-fade-in system-body-information__container galaxy-background fx-animated-text w-2/5 uppercase tracking-wider text-xs" style={style}>
@@ -66,7 +66,7 @@ export default function SystemBodyInformation({ body, closer, position, dispatch
               {body._children &&
                 <p className="text-sm text-glow__blue hover:underline hover:cursor-pointer"
                   onClick={() => {
-                    dispatcher.selectBody({ body })
+                    dispatcher.selectBody({ body });
                     if (close) close();
                   }}
                 >
@@ -81,10 +81,10 @@ export default function SystemBodyInformation({ body, closer, position, dispatch
             </p>
 
             <p className="flex items-center gap-x-2 mt-2.5 mb-2 text-sm">
-              <i className={`text-glow__orange icarus-terminal-` + (body.type === CelestialBodyType.Star ? `star` : `planet`)}></i>
+              <i className={'text-glow__orange icarus-terminal-' + (body.type === CelestialBodyType.Star ? 'star' : 'planet')}></i>
               <span>Body Information</span>
             </p>
-            <p className={`flex items-center gap-x-2`}>
+            <p className={'flex items-center gap-x-2'}>
               <span>{body.type}</span> - <span>{body.sub_type}</span>
             </p>
 
@@ -112,23 +112,23 @@ export default function SystemBodyInformation({ body, closer, position, dispatch
                 <p className="pb-2.5">Distance to Main Star: <span className="ms-1">
                   {formatNumber(body.distance_to_arrival as number)}
                 </span></p>
-                <p className={`flex items-center gap-x-2 text-xs`}>
+                <p className={'flex items-center gap-x-2 text-xs'}>
                   <span>Is Landable:</span> <span>{body.is_landable
                     ? <span className="text-green-300">Yes</span>
                     : <span className="text-red-300">No</span>
                   }</span>
                 </p>
-                <p className={`flex items-center gap-x-2 text-xs`}>
+                <p className={'flex items-center gap-x-2 text-xs'}>
                   <span>Gravity:</span> <span>{body.gravity?.toFixed(2)}</span>
                 </p>
-                <p className={`flex items-center gap-x-2 text-xs mb-2.5`}>
+                <p className={'flex items-center gap-x-2 text-xs mb-2.5'}>
                   <span>Surface temp:</span> <span>{formatNumber(body.surface_temp as number)} K</span>
                 </p>
 
-                <p className={`flex items-center gap-x-2 text-xs`}>
+                <p className={'flex items-center gap-x-2 text-xs'}>
                   <span>Atmosphere:</span> <span>{body.atmosphere_type}</span>
                 </p>
-                <p className={`flex items-center gap-x-2 text-xs mb-2.5`}>
+                <p className={'flex items-center gap-x-2 text-xs mb-2.5'}>
                   <span>Volcanism:</span> <span>{body.volcanism_type}</span>
                 </p>
 
