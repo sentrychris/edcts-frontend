@@ -4,8 +4,7 @@ import { XMarkIcon } from '@heroicons/react/24/outline';
 import { CelestialRing, MappedCelestialBody } from '../../lib/interfaces/Celestial';
 import { CelestialBodyType } from '../../lib/constants/celestial';
 import { formatDate, formatNumber } from '../../lib/util';
-import { useEffect, useRef, useState } from 'react';
-import { SystemDispatch } from '../../lib/events/system';
+import { SystemDispatcher } from '../../lib/events/SystemDispatcher';
 
 interface Props {
   body: MappedCelestialBody|null;
@@ -18,7 +17,7 @@ interface Props {
     width: number,
     height: number,
   };
-  dispatcher: SystemDispatch;
+  dispatcher: SystemDispatcher;
   close?: () => void;
 }
 

@@ -8,7 +8,7 @@ import { CelestialBody, MappedCelestialBody } from '../../lib/interfaces/Celesti
 import { CelestialBodyType } from '../../lib/constants/celestial';
 import { Schedule } from '../../lib/interfaces/Schedule';
 import { Pagination } from '../../lib/interfaces/Pagination';
-import { systemDispatcher } from '../../lib/events/system';
+import { systemDispatcher } from '../../lib/events/SystemDispatcher';
 import { systemState } from '../lib/store';
 import { paginatedScheduleState } from '../../departures/lib/store';
 import { getCollection, getResource } from '../../lib/api';

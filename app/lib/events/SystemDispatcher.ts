@@ -1,8 +1,8 @@
 import { System } from '../interfaces/System';
 import { MappedCelestialBody } from '../interfaces/Celestial';
-import EventDispatcher from './dispatcher';
+import EventDispatcher from './EventDispatcher';
 
-export class SystemDispatch extends EventDispatcher {
+export class SystemDispatcher extends EventDispatcher {
   message({ message }: { message: string }) {
     this.dispatchEvent({
       type: 'message',
@@ -50,4 +50,4 @@ export class SystemDispatch extends EventDispatcher {
   }
 }
 
-export const systemDispatcher = new SystemDispatch;
+export const systemDispatcher = new SystemDispatcher;

@@ -1,4 +1,4 @@
-import { Dispatcher, ListenerEvent, ListenerEventCallback } from '../../lib/interfaces/Dispatcher';
+import { Dispatcher, ListenerEvent, ListenerEventCallback } from '../interfaces/Dispatcher';
 
 export default class EventDispatcher implements Dispatcher
 {

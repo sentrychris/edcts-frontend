@@ -1,16 +1,16 @@
 'use client';
 
-import Link from 'next/link';
 import { FunctionComponent, useState, memo } from 'react';
+import Link from 'next/link';
 import { CelestialBody, MappedCelestialBody } from '../../lib/interfaces/Celestial';
-import Table from '../../components/table';
 import { formatDate, formatNumber } from '../../lib/util';
-import { SystemDispatch } from '../../lib/events/system';
+import { SystemDispatcher } from '../../lib/events/SystemDispatcher';
+import Table from '../../components/table';
 
 interface Props {
   stars: CelestialBody[];
   system: string;
-  dispatcher: SystemDispatch;
+  dispatcher: SystemDispatcher;
 }
 
 const SystemStarsTable: FunctionComponent<Props> = ({ stars, system, dispatcher }) => {

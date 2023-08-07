@@ -2,16 +2,16 @@
 
 import { FunctionComponent, memo, useCallback, useState } from 'react';
 import { MappedCelestialBody } from '../../lib/interfaces/Celestial';
-import { SystemDispatch } from '../../lib/events/system';
-import Icons from '../../icons';
+import { SystemDispatcher } from '../../lib/events/SystemDispatcher';
 import { CIRCLE_DEG } from '../../lib/constants/math';
+import Icons from '../../icons';
 
 interface Props {
   body: MappedCelestialBody;
   system: string;
   selected?: MappedCelestialBody;
   orbiting?: number;
-  dispatcher: SystemDispatch;
+  dispatcher: SystemDispatcher;
   className?: string;
 }
 
