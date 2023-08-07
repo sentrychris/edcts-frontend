@@ -25,7 +25,7 @@ const DepartureTable: FunctionComponent<Props> = ({ schedule, filter = true }) =
   const [navigation, setNavigation] = useState(links);
 
   const [query, setQuery] = useState('');
-  const debouncedQuery = useDebounce(query, 500);
+  const debouncedQuery = useDebounce(query, 200);
 
   const setState = async (data: Schedule[], meta: Meta, links: Links) => {
     setRows(data);
@@ -80,7 +80,10 @@ const DepartureTable: FunctionComponent<Props> = ({ schedule, filter = true }) =
     departure: {
       title: 'From',
       render: (schedule: Schedule) => {
-        return <Link className="hover:underline text-blue-500 dark:text-blue-200" href={encodeURI(`/systems/system/${schedule.departure.slug}`)}>
+        return <Link
+          className="hover:underline text-blue-500 dark:text-blue-200"
+          href={encodeURI(`/systems/system/${schedule.departure.slug}`)}
+        >
           {schedule.departure.name}
         </Link>;
       }
@@ -88,7 +91,10 @@ const DepartureTable: FunctionComponent<Props> = ({ schedule, filter = true }) =
     destination: {
       title: 'To',
       render: (schedule: Schedule) => {
-        return <Link className="hover:underline text-blue-500 dark:text-blue-200" href={encodeURI(`/systems/system/${schedule.destination.slug}`)}>
+        return <Link
+          className="hover:underline text-blue-500 dark:text-blue-200"
+          href={encodeURI(`/systems/system/${schedule.destination.slug}`)}
+        >
           {schedule.destination.name}
         </Link>;
       }
@@ -104,7 +110,10 @@ const DepartureTable: FunctionComponent<Props> = ({ schedule, filter = true }) =
     view: {
       title: 'View',
       render: (schedule: Schedule) => {
-        return <Link className="underline text-blue-500 dark:text-blue-200" href={`/departures/schedule/${schedule.slug}`}>
+        return <Link
+          className="underline text-blue-500 dark:text-blue-200"
+          href={`/departures/schedule/${schedule.slug}`}
+        >
           <EyeIcon className="w-6 h-6" />
         </Link>;
       }

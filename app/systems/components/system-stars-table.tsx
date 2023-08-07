@@ -98,7 +98,10 @@ const SystemStarsTable: FunctionComponent<Props> = ({ stars, system, dispatcher 
   };
   
   return (
-    <Table columns={columns} data={rows.filter((s: CelestialBody) => s.name !== 'Additional Objects')} />
+    <Table
+      columns={columns}
+      data={rows.filter((s: CelestialBody) => s.name !== 'Additional Objects')}
+    />
   );
 };
 

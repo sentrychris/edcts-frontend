@@ -46,7 +46,11 @@ const GalnetList: FunctionComponent<Props> = ({ articles }) => {
         })}
       </div>
       <div>
-        <PaginationLinks metadata={metadata} links={navigation} paginate={paginate} />
+        <PaginationLinks
+          metadata={metadata}
+          links={navigation}
+          paginate={paginate}
+        />
       </div>
     </>
   );

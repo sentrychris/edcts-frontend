@@ -21,7 +21,7 @@ const SystemsTable: FunctionComponent<Props> = ({ systems }) => {
   const [navigation, setNavigation] = useState(links);
 
   const [query, setQuery] = useState('');
-  const debouncedQuery = useDebounce(query, 500);
+  const debouncedQuery = useDebounce(query, 200);
 
   const setState = async (data: System[], meta: Meta, links: Links) => {
     setRows(data);
@@ -38,11 +38,13 @@ const SystemsTable: FunctionComponent<Props> = ({ systems }) => {
         withInformation: 1
       });
     } else {
-      response = await getCollection<System>('systems', {
-        name: text,
-        exactSearch: 0,
-        withInformation: 1
-      });
+      if (debouncedQuery?.length > 1) {
+        response = await getCollection<System>('systems', {
+          name: text,
+          exactSearch: 0,
+          withInformation: 1
+        });
+      }
     }
 
     if (response) {
@@ -70,11 +72,16 @@ const SystemsTable: FunctionComponent<Props> = ({ systems }) => {
   
   const renderAllegianceText = (value: string = 'None') => {
     return <p className={
-      (value === 'Federation' ? 'text-blue-500 dark:text-blue-200'
-        : (value === 'Empire') ? 'text-yellow-500 dark:text-yellow-400'
-        : (value === 'Independent') ? 'text-green-500 dark:text-green-300'
-        : 'text-stone-500 dark:text-stone-300') + ' uppercase tracking-wide text-glow__white'}>
-          {value}
+      (value === 'Federation'
+        ? 'text-blue-500 dark:text-blue-200'
+        : (value === 'Empire')
+          ? 'text-yellow-500 dark:text-yellow-400'
+          : (value === 'Independent')
+            ? 'text-green-500 dark:text-green-300'
+            : 'text-stone-500 dark:text-stone-300'
+      ) + ' uppercase tracking-wide text-glow__white'}
+    >
+      {value}
     </p>;
   };
 
@@ -82,7 +89,10 @@ const SystemsTable: FunctionComponent<Props> = ({ systems }) => {
     name: {
       title: 'Name',
       render: (system: System) => {
-        return <Link className="hover:underline text-blue-200" href={`/systems/system/${system.slug}`}>
+        return <Link
+          className="hover:underline text-blue-200"
+          href={`/systems/system/${system.slug}`}
+        >
           {system.name}
         </Link>;
       }
@@ -132,7 +142,10 @@ const SystemsTable: FunctionComponent<Props> = ({ systems }) => {
     view: {
       title: 'View',
       render: (system: System) => {
-        return <Link className="underline text-blue-200" href={`/systems/system/${system.slug}`}>
+        return <Link
+          className="underline text-blue-200"
+          href={`/systems/system/${system.slug}`}
+        >
           <EyeIcon className="w-6 h-6" />
         </Link>;
       }
