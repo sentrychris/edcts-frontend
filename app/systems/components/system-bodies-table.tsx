@@ -2,25 +2,30 @@
 
 import Link from 'next/link';
 import { FunctionComponent, useState, memo } from 'react';
-import { CelestialBody } from '../../lib/interfaces/Celestial';
+import { CelestialBody, MappedCelestialBody } from '../../lib/interfaces/Celestial';
 import Table from '../../components/table';
 import { formatDate } from '../../lib/util';
+import { SystemDispatch } from '../../lib/events/system';
 
 interface Props {
   bodies: CelestialBody[];
   system: string;
+  dispatcher: SystemDispatch;
 }
 
-const SystemBodiesTable: FunctionComponent<Props> = ({ bodies, system }) => {
+const SystemBodiesTable: FunctionComponent<Props> = ({ bodies, system, dispatcher }) => {
   const [rows] = useState(bodies);
 
   const columns = {
     name: {
       title: 'Name - Type',
       render: (body: CelestialBody) => {
-        return <Link className="hover:underline text-blue-200" href={'#'}>
+        return <span
+          className="text-blue-200 hover:text-glow__orange hover:underline hover:cursor-pointer"
+          onClick={() => dispatcher.selectBody({ body: (body as MappedCelestialBody)})}
+        >
           {body.name.split(system).pop()?.trim()}
-        </Link>;
+        </span>;
       }
     },
     sub_type: {

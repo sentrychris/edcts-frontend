@@ -2,16 +2,18 @@
 
 import Link from 'next/link';
 import { FunctionComponent, useState, memo } from 'react';
-import { CelestialBody } from '../../lib/interfaces/Celestial';
+import { CelestialBody, MappedCelestialBody } from '../../lib/interfaces/Celestial';
 import Table from '../../components/table';
 import { formatDate, formatNumber } from '../../lib/util';
+import { SystemDispatch } from '../../lib/events/system';
 
 interface Props {
   stars: CelestialBody[];
   system: string;
+  dispatcher: SystemDispatch;
 }
 
-const SystemStarsTable: FunctionComponent<Props> = ({ stars, system }) => {
+const SystemStarsTable: FunctionComponent<Props> = ({ stars, system, dispatcher }) => {
   const [rows] = useState(stars);
 
   const columns = {
@@ -21,9 +23,12 @@ const SystemStarsTable: FunctionComponent<Props> = ({ stars, system }) => {
         let displayName = star.name.split(system).pop()?.trim();
         if (displayName === '') displayName = star.name;
 
-        return <Link className="hover:underline text-blue-200" href={'#'}>
+        return <span
+          className="text-blue-200 hover:text-glow__orange hover:underline hover:cursor-pointer"
+          onClick={() => dispatcher.selectBody({ body: (star as MappedCelestialBody) })}
+        >
           {displayName} - {star.sub_type.replace('Star', '')}
-        </Link>;
+        </span>;
       }
     },
     spectral_class: {

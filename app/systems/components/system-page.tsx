@@ -119,16 +119,17 @@ const SystemPage: FunctionComponent<Props> = ({ initSystem, initSchedule }) => {
         const map = new SystemMap(system);
         setSystemMap(map);
 
-        // Fetch the main star in the system.
+        // Fetch the main star and initialise it as the selected body for the system overview.
         const star = map.stars.find(s => s.is_main_star === 1);
         setSelectedBody(star);
 
-        // Set the selected system body when the user selects a body.
+        // Listener to set the selected system body when the user selects a body either from the
+        // system overview or one of the tables.
         systemDispatcher.addEventListener('select-body', (event) => {
           setSelectedBody((event.message as MappedCelestialBody));
         });
       
-        // Reset the selected body when the user selects go back to primary star.
+        // Listener to reset the selected body when the user clicks on "go back to primary star".
         systemDispatcher.addEventListener('set-index', (event) => {
           const index = (event.message as number);
           if (index === 0) {
@@ -136,7 +137,8 @@ const SystemPage: FunctionComponent<Props> = ({ initSystem, initSchedule }) => {
           }
         });
 
-        // Set the selected system body and position for the display info widet when the user selects a body.
+        // Listener to set the selected system body + positioning for the cartographical data widget
+        // when the user clicks on a body (attached to the SVG G "circle" element).
         systemDispatcher.addEventListener('display-body-info', (event) => {
           setSelectedBodyDisplayInfo(event.message);
         });
@@ -279,6 +281,7 @@ const SystemPage: FunctionComponent<Props> = ({ initSystem, initSchedule }) => {
             <SystemStarsTable
               stars={systemMap.stars as CelestialBody[]}
               system={system.name}
+              dispatcher={systemDispatcher}
             />
           }
         </div>
@@ -292,6 +295,7 @@ const SystemPage: FunctionComponent<Props> = ({ initSystem, initSchedule }) => {
             <SystemBodiesTable
               bodies={systemMap.objectsInSystem as CelestialBody[]}
               system={system.name}
+              dispatcher={systemDispatcher}
             />
           }
         </div>
