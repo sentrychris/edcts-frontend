@@ -71,7 +71,7 @@ const SystemStatistics: FunctionComponent<Props> = ({ data, className = '', inte
               </Link>
               <p>{latestSystem.coords.x}, {latestSystem.coords.y}, {latestSystem.coords.z}</p>
               <p>{latestSystem.bodies.length} orbital bodies</p>
-              <p>population: {latestSystem.information.population}</p>
+              <p>population: {formatNumber(latestSystem.information.population)}</p>
             </div>
           </div>
         </div>

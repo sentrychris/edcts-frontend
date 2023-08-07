@@ -62,7 +62,11 @@ const SystemBodiesTable: FunctionComponent<Props> = ({ bodies, system, dispatche
     },
     terraforming: {
       title: 'Terraforming',
-      accessor: 'terraforming_state'
+      render: (body: CelestialBody) => {
+        return body.terraforming_state && body.terraforming_state !== ''
+          ? body.terraforming_state
+          : 'No Data';
+      }
     },
     commander: {
       title: 'Discovered By',

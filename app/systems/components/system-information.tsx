@@ -16,7 +16,7 @@ const SystemInformation: FunctionComponent<Props> = ({ coords, information }) =>
   return (
     <div className="border-b border-neutral-800 backdrop-filter backdrop-blur bg-transparent py-5 tracking-wide text-sm">
       <div className="flex flex-row align-center justify-between uppercase">
-        <div className="flex flex-wrap items-center gap-10 lg:gap-20">
+        <div className="flex flex-wrap items-center gap-10 lg:gap-x-20">
           <div className="flex flex-col">
             <p className="mb-2 whitespace-nowrap">Governance:</p>
             <span className="flex items-center gap-2 py-1 uppercase text-glow__white font-bold">
