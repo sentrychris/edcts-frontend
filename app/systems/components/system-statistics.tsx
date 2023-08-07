@@ -1,7 +1,7 @@
 'use client';
 
 import { FunctionComponent, useEffect, useState, memo  } from 'react';
-import { renderBadge } from '../lib/systems';
+import { renderBadge } from '../lib/store';
 import { Statistics } from '../../lib/interfaces/Statistics';
 import { getResource } from '../../lib/api';
 import { formatNumber } from '../../lib/util';

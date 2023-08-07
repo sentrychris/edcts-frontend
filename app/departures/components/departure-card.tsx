@@ -2,7 +2,7 @@ import { FunctionComponent, memo } from 'react';
 import Link from 'next/link';
 import { Schedule } from '../../lib/interfaces/Schedule';
 import { formatDate } from '../../lib/util';
-import { renderStatus } from '../lib/departures';
+import { renderStatusText } from '../lib/store';
 
 interface Props {
   className?: string;
@@ -42,7 +42,7 @@ const DepartureCard: FunctionComponent<Props> = ({schedule, className}) => {
               <p>{formatDate(schedule.departs_at)}</p>
             </div>
             <div className="flex flex-col gap-2">
-              {renderStatus(schedule)}
+              {renderStatusText(schedule)}
             </div>
           </div>
         </div>

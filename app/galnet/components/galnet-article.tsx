@@ -4,7 +4,7 @@
 import { useEffect, useState } from 'react';
 import { usePathname } from 'next/navigation';
 import { Galnet} from '../../lib/interfaces/Galnet';
-import { galnetState } from '../lib/galnet';
+import { galnetState } from '../lib/store';
 import Heading from '../../components/heading';
 import { getResource } from '../../lib/api';
 

@@ -4,7 +4,7 @@
 import { usePathname } from 'next/navigation';
 import { useEffect, useState } from 'react';
 import { Schedule } from '../../lib/interfaces/Schedule';
-import { scheduleState } from '../lib/departures';
+import { scheduleState } from '../lib/store';
 import { getResource } from '../../lib/api';
 
 const DepartureSchedule = () => {
