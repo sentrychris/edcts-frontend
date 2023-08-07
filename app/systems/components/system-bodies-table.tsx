@@ -32,6 +32,18 @@ const SystemBodiesTable: FunctionComponent<Props> = ({ bodies, system, dispatche
       title: 'Type',
       accessor: 'sub_type'
     },
+    bodies: {
+      title: 'Bodies',
+      render: (body: CelestialBody) => {
+        const orbital = (body as MappedCelestialBody);
+        return <span
+          className="text-blue-200 hover:text-glow__orange hover:underline hover:cursor-pointer"
+          onClick={() => dispatcher.selectBody({ body: orbital})}
+        >
+          {orbital._children?.length ?? 0}
+        </span>;
+      }
+    },
     landable: {
       title: 'Landable',
       render: (body: CelestialBody) => {
