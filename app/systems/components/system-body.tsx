@@ -67,8 +67,8 @@ const SystemBody: FunctionComponent<Props> = ({
       pos.y = (pos.y / 2) + (ICON_OFFSET * 2);
     }
     
-    return pos
-  } 
+    return pos;
+  }; 
   
   const [iconCoords, setIconCoords] = useState(calculateIconCoords());
 
