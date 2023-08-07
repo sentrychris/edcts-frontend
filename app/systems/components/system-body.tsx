@@ -56,19 +56,18 @@ const SystemBody: FunctionComponent<Props> = ({
   };
 
   const calculateIconCoords = () => {
-    let pos = {x: 0, y: 0};
-
-    const ICON_OFFSET = (CIRCLE_DEG * 2);
-    pos.x = radius * Math.sin(Math.PI * 2 * (CIRCLE_DEG / 2) / CIRCLE_DEG);
-    pos.y = radius * Math.cos(Math.PI * 2 * (CIRCLE_DEG / 2) / CIRCLE_DEG) + ICON_OFFSET;
+    const pos = {
+      x: radius * Math.sin(Math.PI),
+      y: ((radius * Math.cos(Math.PI) + CIRCLE_DEG * 2) / 2),
+    };
 
     if (bodyIsSelectedUserFocus) {
-      pos.x = (pos.x * 2) + ICON_OFFSET;
-      pos.y = (pos.y / 2) + (ICON_OFFSET * 2);
+      pos.x += CIRCLE_DEG * 2;
+      pos.y += CIRCLE_DEG * 4;
     }
-    
+
     return pos;
-  }; 
+  } 
   
   const [iconCoords, setIconCoords] = useState(calculateIconCoords());
 
