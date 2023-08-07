@@ -131,7 +131,7 @@ nav.main-nav__nav .main-nav__menu {
   .text-glow__orange {
     /* font-weight: bold; */
     color: rgb(251 146 60 / 1);
-    /* text-shadow: 0px 0 20px rgb(251 146 60 / 1); */
+    text-shadow: 0px 0 20px rgb(251 146 60 / 1);
   }
 
   .text-glow__blue {

@@ -4,11 +4,17 @@ import {
   MappedCelestialBody,
   CelestialBodyParent,
 } from '../../lib/interfaces/Celestial';
-
 import {
   SOL_RADIUS_IN_KM,
   CelestialBodyType,
 } from '../../lib/constants/celestial';
+import {
+  MIN_RADIUS,
+  MAX_RADIUS,
+  SUB_MIN_RADIUS,
+  SUB_MAX_RADIUS,
+  RADIUS_DIVIDER,
+} from '../../lib/constants/math';
 
 import { escapeRegExp } from '../../lib/util';
 
@@ -86,11 +92,6 @@ export default class SystemMap
   }
 
   mapBodies(star: MappedCelestialBody) {
-    const MIN_R = 800;
-    const MAX_R = 1600;
-    const SUB_MIN_R = 800;
-    const SUB_MAX_R = 1600;
-    const R_DIVIDER = 10;
     const X_SPACING = 600;
     const Y_SPACING = 600;
     const RING_X_SPACING = 0.8;
@@ -102,21 +103,21 @@ export default class SystemMap
 
     // Get each objects directly orbiting star
     star._children = this.getChildren(star, true).map((itemInOrbit, i) => {
-      const MAIN_PLANET_MIN_R = MIN_R;
+      const MAIN_PLANET_MIN_R = MIN_RADIUS;
 
       // Get each objects directly orbiting this object
       itemInOrbit._children = this.getChildren(itemInOrbit, false);
 
       itemInOrbit._r = itemInOrbit.radius
-        ? itemInOrbit.radius / R_DIVIDER
-        : MIN_R;
+        ? itemInOrbit.radius / RADIUS_DIVIDER
+        : MIN_RADIUS;
       
       if (itemInOrbit._r < MAIN_PLANET_MIN_R) {
         itemInOrbit._r = MAIN_PLANET_MIN_R;
       }
 
-      if (itemInOrbit._r > MAX_R) {
-        itemInOrbit._r = MAX_R;
+      if (itemInOrbit._r > MAX_RADIUS) {
+        itemInOrbit._r = MAX_RADIUS;
       }
 
       if (itemInOrbit._r <= MAIN_PLANET_MIN_R) {
@@ -157,19 +158,21 @@ export default class SystemMap
       itemInOrbit._children
         .sort((a: MappedCelestialBody, b: MappedCelestialBody) => (a.body_id - b.body_id))
         .map((subItemInOrbit: MappedCelestialBody) => {
-          subItemInOrbit._r = subItemInOrbit.radius ? subItemInOrbit.radius / R_DIVIDER : MIN_R;
+          subItemInOrbit._r = subItemInOrbit.radius
+            ? subItemInOrbit.radius / RADIUS_DIVIDER
+            : MIN_RADIUS;
 
-          if (subItemInOrbit._r < SUB_MIN_R) {
-            subItemInOrbit._r = SUB_MIN_R;
+          if (subItemInOrbit._r < SUB_MIN_RADIUS) {
+            subItemInOrbit._r = SUB_MIN_RADIUS;
           }
 
-          if (subItemInOrbit._r > SUB_MAX_R) {
-            subItemInOrbit._r = SUB_MAX_R;
+          if (subItemInOrbit._r > SUB_MAX_RADIUS) {
+            subItemInOrbit._r = SUB_MAX_RADIUS;
           }
 
           // Set attribute on smaller planets so we can select a different setting
           // on front end that will render them better
-          if (subItemInOrbit._r <= SUB_MIN_R) subItemInOrbit._small = true;
+          if (subItemInOrbit._r <= SUB_MIN_RADIUS) subItemInOrbit._small = true;
 
           // Use parent X co-ords to plot on same vertical plane as parent
           subItemInOrbit._x = itemInOrbit._x;

@@ -1,9 +1,10 @@
 'use client';
 
-import { FunctionComponent, memo, useCallback } from 'react';
+import { FunctionComponent, memo, useCallback, useState } from 'react';
 import { MappedCelestialBody } from '../../lib/interfaces/Celestial';
 import { SystemDispatch } from '../../lib/events/system';
 import Icons from '../../icons';
+import { CIRCLE_DEG } from '../../lib/constants/math';
 
 interface Props {
   body: MappedCelestialBody;
@@ -54,6 +55,23 @@ const SystemBody: FunctionComponent<Props> = ({
     return text;
   };
 
+  const calculateIconCoords = () => {
+    let pos = {x: 0, y: 0};
+
+    const ICON_OFFSET = (CIRCLE_DEG * 2);
+    pos.x = radius * Math.sin(Math.PI * 2 * (CIRCLE_DEG / 2) / CIRCLE_DEG);
+    pos.y = radius * Math.cos(Math.PI * 2 * (CIRCLE_DEG / 2) / CIRCLE_DEG) + ICON_OFFSET;
+
+    if (bodyIsSelectedUserFocus) {
+      pos.x = (pos.x * 2) + ICON_OFFSET;
+      pos.y = (pos.y / 2) + (ICON_OFFSET * 2);
+    }
+    
+    return pos
+  } 
+  
+  const [iconCoords, setIconCoords] = useState(calculateIconCoords());
+
   const selectedBodyGCircleElement = useCallback((node: SVGGElement) => {
     if (node) {
       node.addEventListener('click', () => {
@@ -63,6 +81,8 @@ const SystemBody: FunctionComponent<Props> = ({
           closer: largeViewbox,
           position: { top, left, right, bottom, width, height }
         });
+
+        setIconCoords(calculateIconCoords());
       });
     }
   }, [body, dispatcher, largeViewbox]);
@@ -148,8 +168,8 @@ const SystemBody: FunctionComponent<Props> = ({
             </g>
             {body.is_landable && <svg
               className='text-xs system-map__planetary-lander-icon'
-              x={0}
-              y={0}
+              x={iconCoords.x}
+              y={iconCoords.y}
             >
               {Icons.get('planet-landable')}
             </svg>}

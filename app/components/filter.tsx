@@ -24,7 +24,7 @@ const Filter: FunctionComponent<Props> = ({ className, handleInput }) => {
   }
 
   return (
-    <div className={'w-full relative ' + className}>
+    <div className={'w-full relative backdrop-filter backdrop-blur bg-transparent border border-neutral-800 ' + className}>
       <form className="flex flex-row items-center gap-4">
         <Input
           placeholder="Filter..."
