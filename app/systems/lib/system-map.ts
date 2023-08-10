@@ -361,7 +361,7 @@ export default class SystemMap
       body._type = CelestialBodyType.Planet;
 
       // Add a standard radius property based on its solar radius
-      body.radius = body.solar_radius ? body.solar_radius * SOL_RADIUS_IN_KM : SOL_RADIUS_IN_KM ;
+      body.radius = body.solar_radius ? body.solar_radius * SOL_RADIUS_IN_KM : SOL_RADIUS_IN_KM;
 
       // Save the id of this body for the loop below
       starsOrbitingStarsLikePlanets.push(body.body_id);

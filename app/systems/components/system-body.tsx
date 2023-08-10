@@ -34,23 +34,25 @@ const SystemBody: FunctionComponent<Props> = ({
     : 2000;
 
   const useLargerViewBox = () => {
-    if (body.rings) return true;
-    if (body.sub_type === 'Neutron Star') return true;
+    if (body.rings || body.sub_type === 'Neutron Star'
+      || body.sub_type === 'Black Hole') return true;
+      
     if (body.sub_type && body.sub_type.startsWith('White Dwarf')) return true;
-    if (body.sub_type === 'Black Hole') return true;
-
+  
     return false;
   };
 
   const largeViewbox = useLargerViewBox();
 
   const shortSubType = (text?: string) => {
-    if (! text) text = body.sub_type ?? body.type;
+    if (!text) text = body.sub_type ?? body.type;
     if (body.name === 'Earth') return 'Home';
-    if (text.match(/{{[^}]+}}|(metal)/i)) return 'Metal';
-    if (text.match(/{{[^}]+}}|(gas giant)/i)) return 'Gas Giant';
-    if (text.match(/{{[^}]+}}|(rocky ice)/i)) return 'Rocky Ice';
-    if (text.match(/{{[^}]+}}|(earth-like)/i)) return 'Earth-Like';
+
+    const lowerText = text.toLowerCase();
+    if (lowerText.includes('{{') || lowerText.includes('metal')) return 'Metal';
+    if (lowerText.includes('{{') || lowerText.includes('gas giant')) return 'Gas Giant';
+    if (lowerText.includes('{{') || lowerText.includes('rocky ice')) return 'Rocky Ice';
+    if (lowerText.includes('{{') || lowerText.includes('earth-like')) return 'Earth-Like';
 
     return text;
   };
@@ -183,7 +185,11 @@ const SystemBody: FunctionComponent<Props> = ({
           {shortSubType(body.sub_type)}
         </p>
         <span
-          className={'flex whitespace-nowrap items-center gap-2 text-glow__orange  ' + (bodyIsSelectedUserFocus ? 'text-sm' : 'hover:text-glow__blue hover:scale-110 hover:cursor-grabbing')}
+          className={'flex whitespace-nowrap items-center gap-2 text-glow__orange  ' +
+            (bodyIsSelectedUserFocus
+              ? 'text-sm'
+              : 'hover:text-glow__blue hover:scale-110 hover:cursor-grabbing')
+          }
           onClick={() => dispatcher.selectBody({ body })}
         >
           <i className="icarus-terminal-system-bodies text-label__small"></i>
