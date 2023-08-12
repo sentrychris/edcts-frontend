@@ -80,22 +80,16 @@ export default class SystemMap
     // let's consolidate them into under Null objet with ID 0.
     this.stars.push({
       body_id: 0,
-      distance_to_arrival: 0,
+      distance_to_arrival: -1,
       name: 'Additional Objects',
       type: CelestialBodyType.Null,
       _type: CelestialBodyType.Null,
       _label: 'Additional Objects',
       _description: 'Objects not directly orbiting a star',
-      _children: [],
-      _y: 0,
-      _x: 0,
       _r: 0,
-      _x_offset: 0,
-      _y_offset: 0,
-      _x_max: 0,
-      _y_max: 0,
+      _small: false,
       _orbits_star: false,
-      _small: false
+      _children: [],
     });
 
     this.map();
@@ -136,14 +130,10 @@ export default class SystemMap
         
         // If the object doesn't have a nearby planet, then assume it's orbiting a star,
         // For example, Asterope, which has 3 stars, 0 planets, 1 Megaship and a Coriolis.
-        stationObject.parents = parentBodyId === null
-        ? nearestStar ? [{
-          [CelestialBodyType.Star]: nearestStar.body_id
-        }] : [{
-          [CelestialBodyType.Null]: 0
-        }] : [{
-          [CelestialBodyType.Planet]: parentBodyId
-        }];
+        stationObject.parents = parentBodyId === null ? nearestStar
+          ? [{ [CelestialBodyType.Star]: nearestStar.body_id }]
+          : [{ [CelestialBodyType.Null]: 0 }]
+          : [{ [CelestialBodyType.Planet]: parentBodyId }];
 
         const shipServices = [];
         const otherServices = [];
@@ -189,15 +179,6 @@ export default class SystemMap
   }
 
   mapBodies(star: MappedCelestialBody) {
-    const X_SPACING = 600;
-    const Y_SPACING = 600;
-    const RING_X_SPACING = 0.8;
-
-    star._x_max = 0;
-    star._y_max = 0;
-    star._x_offset = 0;
-    star._y_offset = 0;
-
     // Get each objects directly orbiting star
     star._children = this.getOrbitingBodies(star, true).map((itemInOrbit, i) => {
       const MAIN_PLANET_MIN_R = MIN_RADIUS;
@@ -221,35 +202,7 @@ export default class SystemMap
         itemInOrbit._small = true;
       }
 
-      itemInOrbit._y = 0;
       itemInOrbit._orbits_star = true;
-
-      const itemXSpacing = (itemInOrbit.rings)
-        ? itemInOrbit._r / RING_X_SPACING
-        : X_SPACING;
-
-      itemInOrbit._x = star._x_max + itemXSpacing + itemInOrbit._r;
-
-      const newy_max = itemInOrbit._r + X_SPACING;
-      if (newy_max > star._y_offset) {
-        star._y_offset = newy_max;
-      }
-
-      // If object has children,
-      let newx_max = (itemInOrbit.rings)
-        ? itemInOrbit._x + itemInOrbit._r + itemXSpacing
-        : itemInOrbit._x + itemInOrbit._r;
-
-      if (itemInOrbit._children.length > 0 && (newx_max - star._x_max) < 0){
-        newx_max = star._x_max;
-      }
-
-      if (newx_max > star._x_max) {
-        star._x_max = newx_max;
-      }
-
-      // Initialize Y max with planet radius
-      itemInOrbit._y_max = itemInOrbit._r + (Y_SPACING / 2);
 
       // Get every object that directly or indirectly orbits this object
       itemInOrbit._children
@@ -270,15 +223,6 @@ export default class SystemMap
           // Set attribute on smaller planets so we can select a different setting
           // on front end that will render them better
           if (subItemInOrbit._r <= SUB_MIN_RADIUS) subItemInOrbit._small = true;
-
-          // Use parent X co-ords to plot on same vertical plane as parent
-          subItemInOrbit._x = itemInOrbit._x;
-
-          // Use radius of current object to calclulate cumulative Y pos
-          subItemInOrbit._y = itemInOrbit._y_max + subItemInOrbit._r + Y_SPACING;
-
-          // New Y max is  previous Y max plus current object radius plus spacing
-          itemInOrbit._y_max = subItemInOrbit._y + subItemInOrbit._r;
 
           subItemInOrbit._orbits_star = false;
 
@@ -430,7 +374,7 @@ export default class SystemMap
     // by only using the most recent data for an object.
     arrayOfSystemObjects.forEach((systemObject: MappedCelestialBody) => {
       const systemObjectWithTimestamp = JSON.parse(JSON.stringify(systemObject));
-      systemObjectWithTimestamp.timestamp = systemObject.discovered_at;
+      systemObjectWithTimestamp._timestamp = systemObject.discovered_at;
 
       // This should never happen
       // TODO: It happened... see https://github.com/EDSM-NET/FrontEnd/issues/506
@@ -441,7 +385,7 @@ export default class SystemMap
       if (systemObjectsBy64BitId[systemObjectWithTimestamp.id64]) {
         // If this item is newer, replace it with the one we already have
         const systemObjectDiscoveredAt = systemObjectsBy64BitId[systemObjectWithTimestamp.id64].discovered_at;
-        if (systemObjectDiscoveredAt && Date.parse(systemObjectWithTimestamp.timestamp) > Date.parse(systemObjectDiscoveredAt)) {
+        if (systemObjectDiscoveredAt && Date.parse(systemObjectWithTimestamp._timestamp) > Date.parse(systemObjectDiscoveredAt)) {
           systemObjectsBy64BitId[systemObjectWithTimestamp.id64] = systemObjectWithTimestamp;
         }
       } else {
