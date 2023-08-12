@@ -1,4 +1,5 @@
 import { CelestialBody } from './Celestial';
+import { Station } from './Station';
 
 export interface System {
   id: number;
@@ -11,6 +12,7 @@ export interface System {
   }
   information: SystemInformation;
   bodies: CelestialBody[];
+  stations: Station[];
   updated_at: string;
   slug: string;
 }
