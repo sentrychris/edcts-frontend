@@ -87,7 +87,7 @@ const SystemBodiesTable: FunctionComponent<Props> = ({ bodies, system, dispatche
   return (
     <Table
       columns={columns}
-      data={rows.filter((s: CelestialBody) => s.type !== 'Star')}
+      data={rows}
     />
   );
 };

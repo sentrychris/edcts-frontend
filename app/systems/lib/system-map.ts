@@ -73,7 +73,7 @@ export default class SystemMap
     this.settlements = stations.filter((s: Station) => SETTLEMENTS.includes(s.type));
     this.megaships = stations.filter((s: Station) => MEGASHIPS.includes(s.type));
     
-    this.objectsInSystem = bodies.sort((a: MappedCelestialBody, b: MappedCelestialBody) => (a.body_id - b.body_id));
+    this.objectsInSystem = bodies.concat(stations).sort((a: MappedCelestialBody, b: MappedCelestialBody) => (a.body_id - b.body_id));
 
     // Object to contain bodies that are not directly orbiting a star.
     // There can be multiple "Null" objects around which planets orbit, so
@@ -111,16 +111,65 @@ export default class SystemMap
       systemObject._label = this.getLabelFromSystemObject(systemObject);
 
 
-      const stationOrbitals = SPACE_STATIONS.concat(PLANETARY_BASES)
+      const isStation = SPACE_STATIONS.concat(PLANETARY_BASES)
         .concat(MEGASHIPS)
         .includes(systemObject.type);
 
       // Begin mapping stations
-      if (systemObject.parents && systemObject.type && stationOrbitals) {
+      if (!systemObject.parents && systemObject.type && isStation) {
+        const nearestStar = this.getNearestStar(systemObject);
+        const nearestPlanet = this.getNearestPlanet(systemObject);
+        const nearestPlanetParentType = nearestPlanet?.parents?.[0]
+          ? Object.keys(nearestPlanet.parents[0])[0]
+          : CelestialBodyType.Null;
 
+        console.log({
+          systemObject, nearestPlanet
+        })
 
+        const parentBodyId = (nearestPlanetParentType === CelestialBodyType.Star
+          || nearestPlanetParentType === CelestialBodyType.Null
+        )
+          ? nearestPlanet?.body_id
+          //@ts-ignore
+          : nearestPlanet?.parents?.[0]?.[nearestPlanetParentType] ?? null
+        
+        systemObject.parents = parentBodyId === null
+          ? nearestStar ? [{
+            Star: nearestStar.body_id
+          }] : [{
+            Null: 0
+          }] : [{
+            Planet: parentBodyId
+          }];
 
+        systemObject.radius = 1000;
 
+        // const services = [];
+        // const other_services = [];
+
+        // if (systemObject.other_services.includes('Repair')) services.push('Repair');
+        // if (systemObject.other_services.includes('Refuel')) services.push('Refuel');
+        // if (systemObject.other_services.includes('Restock')) services.push('Restock');
+        // if (systemObject.other_services.includes('Tuning')) services.push('Tuning');
+        // if (systemObject.has_shipyard) other_services.push('Shipyard');
+        // if (systemObject.has_outfitting) other_services.push('Outfitting');
+        // if (systemObject.has_market) other_services.push('Market');
+
+        // TODO Station overlap for the MappedCelestialBody interface
+        //@ts-ignore
+        if (PLANETARY_BASES.includes(systemObject.type) && systemObject.body?.id) {
+          for (const parent of this.objectsInSystem) {
+            //@ts-ignore
+            if(parent.id === systemObject.body.id) {
+              if (!parent._planetary_bases) {
+                parent._planetary_bases = [];
+              }
+
+              parent._planetary_bases.push(systemObject)
+            }
+          }
+        }
       }
     }
 

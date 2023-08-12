@@ -111,6 +111,8 @@ const SystemPage: FunctionComponent<Props> = ({ initSystem }) => {
         const map = new SystemMap(system);
         setSystemMap(map);
 
+        console.log({ map })
+
         // Fetch the main star and initialise it as the selected body for the system overview.
         const star = map.stars.find(s => s.is_main_star === 1);
         setSelectedBody(star);
@@ -275,7 +277,7 @@ const SystemPage: FunctionComponent<Props> = ({ initSystem }) => {
           />
           {!isLoading && systemMap &&
             <SystemBodiesTable
-              bodies={systemMap.objectsInSystem as CelestialBody[]}
+              bodies={systemMap.planets as CelestialBody[]}
               system={system.name}
               dispatcher={systemDispatcher}
             />
