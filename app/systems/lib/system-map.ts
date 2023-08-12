@@ -113,8 +113,8 @@ export default class SystemMap
         // TODO Station overlap for the MappedCelestialBody interface
         const stationObject = (<unknown>systemObject as MappedStation);
 
-        const nearestStar = this.getNearestStar(stationObject);
-        const nearestPlanet = this.getNearestPlanet(stationObject);
+        const nearestStar = this.#getNearestStar(stationObject);
+        const nearestPlanet = this.#getNearestPlanet(stationObject);
         const nearestPlanetParentType = nearestPlanet?.parents?.[0]
           ? Object.keys(nearestPlanet.parents[0])[0]
           : CelestialBodyType.Null;
@@ -174,17 +174,44 @@ export default class SystemMap
     }
 
     this.stars.forEach(star => {
-      this.mapBodies(star);
+      this.#mapBodies(star);
     });
   }
 
-  mapBodies(star: MappedCelestialBody) {
+  getNameFromSystemObject(systemObjectName: string) {
+    return systemObjectName;
+  }
+  
+  getLabelFromSystemObject(systemObject: MappedCelestialBody | MappedStation) {
+    if (systemObject._type && systemObject._type === CelestialBodyType.Planet) {
+      return systemObject.name
+        // Next line is special case handling for renamed systems in Witch Head
+        // Sector, it needs to be ahead of the line that strips the name as
+        // some systems in Witch Head have bodies that start with name name of
+        // the star as well but some don't (messy!)
+        .replace(/Witch Head Sector ([A-z0-9\-]+) ([A-z0-9\-]+) /i, '')
+        .replace(new RegExp(`^${escapeRegExp(this.name)} `, 'i'), '')
+        .trim();
+    } else if (systemObject._type && systemObject._type === CelestialBodyType.Star) {
+      let systemObjectLabel = systemObject.name || '';
+      // If the label contains 'Witch Head Sector' but does not start with it
+      // then it is a renamed system and the Witch Head Sector bit is stripped
+      if (systemObjectLabel.match(/Witch Head Sector/i) && !systemObjectLabel.match(/^Witch Head Sector/i)) {
+       systemObjectLabel = systemObjectLabel.replace(/ Witch Head Sector ([A-z0-9\-]+) ([A-z0-9\-]+)/i, '').trim();
+      }
+      return systemObjectLabel;
+    } else {
+      return systemObject.name;
+    }
+  }
+
+  #mapBodies(star: MappedCelestialBody) {
     // Get each objects directly orbiting star
-    star._children = this.getOrbitingBodies(star, true).map((itemInOrbit, i) => {
+    star._children = this.#getOrbitingBodies(star, true).map((itemInOrbit, i) => {
       const MAIN_PLANET_MIN_R = MIN_RADIUS;
 
       // Get each objects directly orbiting this object
-      itemInOrbit._children = this.getOrbitingBodies(itemInOrbit, false);
+      itemInOrbit._children = this.#getOrbitingBodies(itemInOrbit, false);
 
       itemInOrbit._r = itemInOrbit.radius
         ? itemInOrbit.radius / RADIUS_DIVIDER
@@ -235,7 +262,7 @@ export default class SystemMap
     return star;
   }
 
-  getNearestStar(stationObject: MappedStation) {
+  #getNearestStar(stationObject: MappedStation) {
     const doa = stationObject.distance_to_arrival;
     const stars = this.objectsInSystem.filter(body => body._type === 'Star');
     if (!doa || stars.length === 0) {
@@ -253,7 +280,7 @@ export default class SystemMap
     });
   }
 
-  getNearestPlanet(stationObject: MappedStation) {
+  #getNearestPlanet(stationObject: MappedStation) {
     const doa = stationObject.distance_to_arrival;
     const planets = this.objectsInSystem.filter(body => body._type === 'Planet');
 
@@ -268,7 +295,22 @@ export default class SystemMap
     });
   }
 
-  getOrbitingBodies(target: MappedCelestialBody, immediateChildren = true, filter = [CelestialBodyType.Planet]) {
+  #getNearestNotNullParent(body: MappedCelestialBody) {
+    let nonNullParent = null;
+
+    (body.parents || []).every((parent: CelestialBodyParent) => {
+      const [k, v] = Object.entries(parent)[0];
+      if (k !== CelestialBodyType.Null) {
+        nonNullParent = v;
+        return false;
+      }
+      return true;
+    });
+
+    return nonNullParent;
+  }
+
+  #getOrbitingBodies(target: MappedCelestialBody, immediateChildren = true, filter = [CelestialBodyType.Planet]) {
     const children = [];
     if (! target._type) {
       return [];
@@ -335,75 +377,6 @@ export default class SystemMap
     return children;
   }
 
-  getLabelFromSystemObject(systemObject: MappedCelestialBody) {
-    if (systemObject._type && systemObject._type === CelestialBodyType.Planet) {
-      return systemObject.name
-        // Next line is special case handling for renamed systems in Witch Head
-        // Sector, it needs to be ahead of the line that strips the name as
-        // some systems in Witch Head have bodies that start with name name of
-        // the star as well but some don't (messy!)
-        .replace(/Witch Head Sector ([A-z0-9\-]+) ([A-z0-9\-]+) /i, '')
-        .replace(new RegExp(`^${escapeRegExp(this.name)} `, 'i'), '')
-        .trim();
-    } else if (systemObject._type && systemObject._type === CelestialBodyType.Star) {
-      let systemObjectLabel = systemObject.name || '';
-      // If the label contains 'Witch Head Sector' but does not start with it
-      // then it is a renamed system and the Witch Head Sector bit is stripped
-      if (systemObjectLabel.match(/Witch Head Sector/i) && !systemObjectLabel.match(/^Witch Head Sector/i)) {
-       systemObjectLabel = systemObjectLabel.replace(/ Witch Head Sector ([A-z0-9\-]+) ([A-z0-9\-]+)/i, '').trim();
-      }
-      return systemObjectLabel;
-    } else {
-      return systemObject.name;
-    }
-  }
-
-  getNameFromSystemObject(systemObjectName: string) {
-    return systemObjectName;
-  }
-
-  #getUniqueObjectsByProperty(arrayOfSystemObjects: MappedCelestialBody[], key: MapKeyType) {
-    const systemObjectsBy64BitId: Record<string, MappedCelestialBody> = {};
-
-    // Loop through objects and assign them a timestamp based on date discovered
-    //
-    // The EDSM API sometimes returns data for multiple planets in a system
-    // with the same body id.
-    //
-    // The purpose of this is to de-dupe duplicate planets from the EDSM data
-    // by only using the most recent data for an object.
-    arrayOfSystemObjects.forEach((systemObject: MappedCelestialBody) => {
-      const systemObjectWithTimestamp = JSON.parse(JSON.stringify(systemObject));
-      systemObjectWithTimestamp._timestamp = systemObject.discovered_at;
-
-      // This should never happen
-      // TODO: It happened... see https://github.com/EDSM-NET/FrontEnd/issues/506
-      if (!systemObjectWithTimestamp.hasOwnProperty('id64')) {
-        return console.error('#getUniqueObjectsByProperty error - systemObject does not have id64 property', systemObject);
-      }
-
-      if (systemObjectsBy64BitId[systemObjectWithTimestamp.id64]) {
-        // If this item is newer, replace it with the one we already have
-        const systemObjectDiscoveredAt = systemObjectsBy64BitId[systemObjectWithTimestamp.id64].discovered_at;
-        if (systemObjectDiscoveredAt && Date.parse(systemObjectWithTimestamp._timestamp) > Date.parse(systemObjectDiscoveredAt)) {
-          systemObjectsBy64BitId[systemObjectWithTimestamp.id64] = systemObjectWithTimestamp;
-        }
-      } else {
-        systemObjectsBy64BitId[systemObjectWithTimestamp.id64] = systemObjectWithTimestamp;
-      }
-    });
-
-    const prunedArrayOfSystemObjects = [
-      ...Object.keys(systemObjectsBy64BitId).map((id64: string) => systemObjectsBy64BitId[id64])
-    ];
-
-    return [
-      ...new Map(
-        prunedArrayOfSystemObjects.map((item: MappedCelestialBody) => [item[key], item])
-      ).values()
-    ];
-  }
-
   #findStarsOrbitingOtherStarsLikePlanets (_bodies: CelestialBody[]) {
     const bodies = JSON.parse(JSON.stringify(_bodies));
     const starsOrbitingStarsLikePlanets: number[] = [];
@@ -455,18 +428,45 @@ export default class SystemMap
     return bodies;
   }
 
-  #getNearestNotNullParent(body: MappedCelestialBody) {
-    let nonNullParent = null;
+  #getUniqueObjectsByProperty(arrayOfSystemObjects: MappedCelestialBody[], key: MapKeyType) {
+    const systemObjectsBy64BitId: Record<string, MappedCelestialBody> = {};
 
-    (body.parents || []).every((parent: CelestialBodyParent) => {
-      const [k, v] = Object.entries(parent)[0];
-      if (k !== CelestialBodyType.Null) {
-        nonNullParent = v;
-        return false;
+    // Loop through objects and assign them a timestamp based on date discovered
+    //
+    // The EDSM API sometimes returns data for multiple planets in a system
+    // with the same body id.
+    //
+    // The purpose of this is to de-dupe duplicate planets from the EDSM data
+    // by only using the most recent data for an object.
+    arrayOfSystemObjects.forEach((systemObject: MappedCelestialBody) => {
+      const systemObjectWithTimestamp = JSON.parse(JSON.stringify(systemObject));
+      systemObjectWithTimestamp._timestamp = systemObject.discovered_at;
+
+      // This should never happen
+      // TODO: It happened... see https://github.com/EDSM-NET/FrontEnd/issues/506
+      if (!systemObjectWithTimestamp.hasOwnProperty('id64')) {
+        return console.error('#getUniqueObjectsByProperty error - systemObject does not have id64 property', systemObject);
       }
-      return true;
+
+      if (systemObjectsBy64BitId[systemObjectWithTimestamp.id64]) {
+        // If this item is newer, replace it with the one we already have
+        const systemObjectDiscoveredAt = systemObjectsBy64BitId[systemObjectWithTimestamp.id64].discovered_at;
+        if (systemObjectDiscoveredAt && Date.parse(systemObjectWithTimestamp._timestamp) > Date.parse(systemObjectDiscoveredAt)) {
+          systemObjectsBy64BitId[systemObjectWithTimestamp.id64] = systemObjectWithTimestamp;
+        }
+      } else {
+        systemObjectsBy64BitId[systemObjectWithTimestamp.id64] = systemObjectWithTimestamp;
+      }
     });
 
-    return nonNullParent;
+    const prunedArrayOfSystemObjects = [
+      ...Object.keys(systemObjectsBy64BitId).map((id64: string) => systemObjectsBy64BitId[id64])
+    ];
+
+    return [
+      ...new Map(
+        prunedArrayOfSystemObjects.map((item: MappedCelestialBody) => [item[key], item])
+      ).values()
+    ];
   }
 }

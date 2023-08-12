@@ -39,6 +39,7 @@ export interface MappedStation extends Partial<Station>
   name: string;
   type: string;
   parents: Array<CelestialBodyParent>;
+  _type: string;
   _other_services: Array<string>;
   _ship_services: Array<string>;
 }
