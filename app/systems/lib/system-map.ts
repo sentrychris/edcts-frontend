@@ -123,16 +123,11 @@ export default class SystemMap
           ? Object.keys(nearestPlanet.parents[0])[0]
           : CelestialBodyType.Null;
 
-        console.log({
-          systemObject, nearestPlanet
-        })
-
         const parentBodyId = (nearestPlanetParentType === CelestialBodyType.Star
           || nearestPlanetParentType === CelestialBodyType.Null
         )
-          ? nearestPlanet?.body_id
-          //@ts-ignore
-          : nearestPlanet?.parents?.[0]?.[nearestPlanetParentType] ?? null
+          ? (nearestPlanet as CelestialBody).body_id
+          : nearestPlanet?.parents?.[0]?.['Planet'] ?? null
         
         systemObject.parents = parentBodyId === null
           ? nearestStar ? [{
@@ -142,6 +137,11 @@ export default class SystemMap
           }] : [{
             Planet: parentBodyId
           }];
+
+        
+        console.log({
+          systemObject, nearestPlanet, parentBodyId
+        })
 
         systemObject.radius = 1000;
 
@@ -157,11 +157,11 @@ export default class SystemMap
         // if (systemObject.has_market) other_services.push('Market');
 
         // TODO Station overlap for the MappedCelestialBody interface
-        //@ts-ignore
-        if (PLANETARY_BASES.includes(systemObject.type) && systemObject.body?.id) {
+        const station = (<unknown>systemObject as Station);
+
+        if (PLANETARY_BASES.includes(station.type) && station.body?.id) {
           for (const parent of this.objectsInSystem) {
-            //@ts-ignore
-            if(parent.id === systemObject.body.id) {
+            if (parent.name === station.body.name) {
               if (!parent._planetary_bases) {
                 parent._planetary_bases = [];
               }
