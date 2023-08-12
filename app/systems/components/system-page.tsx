@@ -6,12 +6,9 @@ import { FunctionComponent, useEffect, useState, useCallback } from 'react';
 import { System } from '../../lib/interfaces/System';
 import { CelestialBody, MappedCelestialBody } from '../../lib/interfaces/Celestial';
 import { CelestialBodyType } from '../../lib/constants/celestial';
-import { Schedule } from '../../lib/interfaces/Schedule';
-import { Pagination } from '../../lib/interfaces/Pagination';
-import { systemDispatcher } from '../../lib/events/SystemDispatcher';
+import { getResource } from '../../lib/api';
 import { systemState } from '../lib/store';
-import { paginatedScheduleState } from '../../departures/lib/store';
-import { getCollection, getResource } from '../../lib/api';
+import { systemDispatcher } from '../../lib/events/SystemDispatcher';
 import SystemMap from '../lib/system-map';
 import SystemTitle from './system-title';
 import SystemInformation from './system-information';
@@ -30,18 +27,12 @@ import Heading from '../../components/heading';
 
 interface Props {
   initSystem?: System;
-  initSchedule?: Pagination<Schedule>;
 }
 
-const SystemPage: FunctionComponent<Props> = ({ initSystem, initSchedule }) => {
+const SystemPage: FunctionComponent<Props> = ({ initSystem }) => {
   const [system, setSystem] = useState<System>(initSystem !== undefined
     ? initSystem
     : systemState
-  );
-  
-  const [schedule, setSchedule] = useState<Pagination<Schedule>>(initSchedule !== undefined
-    ? initSchedule
-    : paginatedScheduleState
   );
   
   const [isLoading, setLoading] = useState<boolean>(true);
@@ -107,7 +98,8 @@ const SystemPage: FunctionComponent<Props> = ({ initSystem, initSchedule }) => {
       // and orbiting bodies
       getResource<System>(`systems/${slug}`, {
         withInformation: 1,
-        withBodies: 1
+        withBodies: 1,
+        withStations: 1
       }).then((system) => {
         setSystem(system);
         
@@ -142,18 +134,8 @@ const SystemPage: FunctionComponent<Props> = ({ initSystem, initSchedule }) => {
         systemDispatcher.addEventListener('display-body-info', (event) => {
           setSelectedBodyDisplayInfo(event.message);
         });
-
-        // Fetch scheduled fleet departures departing from this system along with carrier information
-        // e.g. carrier name, identifier, commander and departure/destination system information.
-        getCollection<Schedule>('fleet/schedule', {
-          departure: system.name,
-          withCarrierInformation: 1,
-          withSystemInformation: 1,
-        }).then((schedule) => {
-          setSchedule(schedule);
-          setLoading(false);
-        });
-
+      }).finally(() => {
+        setLoading(false);
       });
     }
   }, [slug]);

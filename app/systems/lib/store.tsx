@@ -23,6 +23,7 @@ export const systemState: System = {
     }
   },
   bodies: [],
+  stations: [],
   updated_at: '',
   slug: ''
 };
