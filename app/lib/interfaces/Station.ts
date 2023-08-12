@@ -1,3 +1,4 @@
+import { CelestialBodyParent } from "./Celestial";
 import { System } from "./System";
 
 interface StationBody {
@@ -22,7 +23,7 @@ export interface Station {
   has_market: boolean;
   has_shipyard: boolean;
   has_outfitting: boolean;
-  other_services: string[];
+  other_services: Array<string>;
   last_updated: {
     information: string|null;
     market: string|null;
@@ -30,4 +31,14 @@ export interface Station {
     outfitting: string|null;
   };
   slug: string;
+}
+
+export interface MappedStation extends Partial<Station>
+{
+  id: number;
+  name: string;
+  type: string;
+  parents: Array<CelestialBodyParent>;
+  _other_services: Array<string>;
+  _ship_services: Array<string>;
 }
