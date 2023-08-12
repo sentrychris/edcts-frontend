@@ -51,6 +51,7 @@ export interface CelestialRing {
 
 export interface MappedCelestialBody extends Partial<CelestialBody> {
   body_id: number;
+  distance_to_arrival: number;
   name: string;
   type: string;
   _type: string;

@@ -80,6 +80,7 @@ export default class SystemMap
     // let's consolidate them into under Null objet with ID 0.
     this.stars.push({
       body_id: 0,
+      distance_to_arrival: 0,
       name: 'Additional Objects',
       type: CelestialBodyType.Null,
       _type: CelestialBodyType.Null,
@@ -108,6 +109,19 @@ export default class SystemMap
       
       systemObject.name = this.getNameFromSystemObject(systemObject.name);
       systemObject._label = this.getLabelFromSystemObject(systemObject);
+
+
+      const stationOrbitals = SPACE_STATIONS.concat(PLANETARY_BASES)
+        .concat(MEGASHIPS)
+        .includes(systemObject.type);
+
+      // Begin mapping stations
+      if (systemObject.parents && systemObject.type && stationOrbitals) {
+
+
+
+
+      }
     }
 
     this.stars.forEach(star => {
@@ -216,6 +230,54 @@ export default class SystemMap
     });
 
     return star;
+  }
+
+  getNearestPlanet(systemObject: MappedCelestialBody) {
+    const doa = systemObject.distance_to_arrival;
+    const planets = this.objectsInSystem.filter(body => body._type === 'Planet');
+
+    if (!doa || planets.length === 0) {
+      return null;
+    }
+
+    return planets.reduce((a, b) => {
+      return Math.abs(doa - b.distance_to_arrival) < Math.abs(doa - a.distance_to_arrival)
+        ? b
+        : a;
+    });
+  }
+
+  getNearestLandablePlanet(systemObject: MappedCelestialBody) {
+    const doa = systemObject.distance_to_arrival;
+    const planets = this.objectsInSystem.filter(body => body._type === 'Planet' && body.is_landable);
+
+    if (!doa || planets.length === 0) {
+      return null;
+    }
+
+    return planets.reduce((a, b) => {
+      return Math.abs(doa - b.distance_to_arrival) < Math.abs(doa - a.distance_to_arrival)
+        ? b
+        : a;
+    });
+  }
+
+  getNearestStar(systemObject: MappedCelestialBody) {
+    const doa = systemObject.distance_to_arrival;
+    const stars = this.objectsInSystem.filter(body => body._type === 'Star');
+    if (!doa || stars.length === 0) {
+      return null;
+    }
+
+    if (stars.length === 1) {
+      return stars[0];
+    }
+
+    return stars.reduce((a, b) => {
+      return Math.abs(doa - b?.distance_to_arrival ?? 0) < Math.abs(doa - a?.distance_to_arrival ?? 0)
+        ? b
+        : a;
+    });
   }
 
   getChildren(target: MappedCelestialBody, immediateChildren = true, filter = [CelestialBodyType.Planet]) {
