@@ -176,7 +176,7 @@ export default class SystemMap
                 parent._planetary_bases = [];
               }
 
-              parent._planetary_bases.push(systemObject)
+              parent._planetary_bases.push(stationObject);
             }
           }
         }
@@ -199,11 +199,11 @@ export default class SystemMap
     star._y_offset = 0;
 
     // Get each objects directly orbiting star
-    star._children = this.getChildren(star, true).map((itemInOrbit, i) => {
+    star._children = this.getOrbitingBodies(star, true).map((itemInOrbit, i) => {
       const MAIN_PLANET_MIN_R = MIN_RADIUS;
 
       // Get each objects directly orbiting this object
-      itemInOrbit._children = this.getChildren(itemInOrbit, false);
+      itemInOrbit._children = this.getOrbitingBodies(itemInOrbit, false);
 
       itemInOrbit._r = itemInOrbit.radius
         ? itemInOrbit.radius / RADIUS_DIVIDER
@@ -291,36 +291,6 @@ export default class SystemMap
     return star;
   }
 
-  getNearestPlanet(stationObject: MappedStation) {
-    const doa = stationObject.distance_to_arrival;
-    const planets = this.objectsInSystem.filter(body => body._type === 'Planet');
-
-    if (!doa || planets.length === 0) {
-      return null;
-    }
-
-    return planets.reduce((a, b) => {
-      return Math.abs(doa - b.distance_to_arrival) < Math.abs(doa - a.distance_to_arrival)
-        ? b
-        : a;
-    });
-  }
-
-  getNearestLandablePlanet(systemObject: MappedCelestialBody) {
-    const doa = systemObject.distance_to_arrival;
-    const planets = this.objectsInSystem.filter(body => body._type === 'Planet' && body.is_landable);
-
-    if (!doa || planets.length === 0) {
-      return null;
-    }
-
-    return planets.reduce((a, b) => {
-      return Math.abs(doa - b.distance_to_arrival) < Math.abs(doa - a.distance_to_arrival)
-        ? b
-        : a;
-    });
-  }
-
   getNearestStar(stationObject: MappedStation) {
     const doa = stationObject.distance_to_arrival;
     const stars = this.objectsInSystem.filter(body => body._type === 'Star');
@@ -339,7 +309,22 @@ export default class SystemMap
     });
   }
 
-  getChildren(target: MappedCelestialBody, immediateChildren = true, filter = [CelestialBodyType.Planet]) {
+  getNearestPlanet(stationObject: MappedStation) {
+    const doa = stationObject.distance_to_arrival;
+    const planets = this.objectsInSystem.filter(body => body._type === 'Planet');
+
+    if (!doa || planets.length === 0) {
+      return null;
+    }
+
+    return planets.reduce((a, b) => {
+      return Math.abs(doa - b.distance_to_arrival) < Math.abs(doa - a.distance_to_arrival)
+        ? b
+        : a;
+    });
+  }
+
+  getOrbitingBodies(target: MappedCelestialBody, immediateChildren = true, filter = [CelestialBodyType.Planet]) {
     const children = [];
     if (! target._type) {
       return [];

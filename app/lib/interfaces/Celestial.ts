@@ -1,4 +1,5 @@
 import { CelestialBodyType } from '../constants/celestial';
+import { MappedStation } from './Station';
 
 export type CelestialBodyParent = {
   [key in CelestialBodyType]?: number;
@@ -58,7 +59,7 @@ export interface MappedCelestialBody extends Partial<CelestialBody> {
   _label?: string;
   _description?: string;
   _children?: MappedCelestialBody[];
-  _planetary_bases?: any[];
+  _planetary_bases?: MappedStation[];
   _orbits_star?: boolean;
   _small?: boolean;
   _r?: number;
