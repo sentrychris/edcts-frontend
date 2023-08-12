@@ -5,6 +5,14 @@ export type CelestialBodyParent = {
   [key in CelestialBodyType]?: number;
 }
 
+export interface CelestialRing {
+  name: string;
+  type: string;
+  mass: number;
+  innerRadius: number;
+  outerRadius: number;
+}
+
 export interface CelestialBody {
   id: number;
   id64: number;
@@ -42,14 +50,6 @@ export interface CelestialBody {
   parents: Array<CelestialBodyParent>;
 }
 
-export interface CelestialRing {
-  name: string;
-  type: string;
-  mass: number;
-  innerRadius: number;
-  outerRadius: number;
-}
-
 export interface MappedCelestialBody extends Partial<CelestialBody> {
   body_id: number;
   distance_to_arrival: number;
@@ -61,7 +61,7 @@ export interface MappedCelestialBody extends Partial<CelestialBody> {
   _r?: number;
   _small?: boolean;
   _orbits_star?: boolean;
-  _children?: MappedCelestialBody[];
-  _planetary_bases?: MappedStation[];
+  _children?: Array<MappedCelestialBody>;
+  _planetary_bases?: Array<MappedStation>;
   _timestamp?: string;
 }

@@ -11,8 +11,8 @@ export interface System {
     z: number;
   }
   information: SystemInformation;
-  bodies: CelestialBody[];
-  stations: Station[];
+  bodies: Array<CelestialBody>;
+  stations: Array<Station>;
   updated_at: string;
   slug: string;
 }
