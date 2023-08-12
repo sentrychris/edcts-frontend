@@ -9,6 +9,7 @@ interface StationBody {
 
 export interface Station {
   id: number;
+  name: string;
   type: string;
   body: StationBody|null;
   system?: System;

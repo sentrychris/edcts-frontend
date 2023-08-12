@@ -5,6 +5,12 @@ import {
   CelestialBodyParent,
 } from '../../lib/interfaces/Celestial';
 import {
+  MEGASHIPS,
+  SPACE_STATIONS,
+  SURFACE_PORTS,
+  PLANETARY_OUTPOSTS,
+  PLANETARY_BASES,
+  SETTLEMENTS,
   SOL_RADIUS_IN_KM,
   CelestialBodyType,
 } from '../../lib/constants/celestial';
@@ -17,6 +23,7 @@ import {
 } from '../../lib/constants/math';
 
 import { escapeRegExp } from '../../lib/util';
+import { Station } from '../../lib/interfaces/Station';
 
 type MapKeyType = keyof MappedCelestialBody;
 
@@ -24,14 +31,22 @@ export default class SystemMap
 {
   detail: System;
   name: string;
+
   stars: MappedCelestialBody[];
   planets: MappedCelestialBody[];
+
+  spaceStations: Station[];
+  planetaryOutposts: Station[];
+  planetaryPorts: Station[];
+  settlements: Station[];
+  megaships: Station[];
+
   objectsInSystem: MappedCelestialBody[];
 
   constructor(system: System) {
     this.detail = system;
     
-    let { name = '', bodies: _bodies } = this.detail;
+    let { name = '', bodies: _bodies, stations = [] } = this.detail;
 
     this.name = this.getNameFromSystemObject(name);
 
@@ -47,8 +62,17 @@ export default class SystemMap
     // and the same body id from appearing in the map.
     bodies = this.#getUniqueObjectsByProperty(bodies, 'body_id');
 
+    stations = stations.filter((c: Station) => !c.name.toLowerCase().startsWith('rescue ship - '));
+
     this.stars = bodies.filter((c: MappedCelestialBody) => c._type === CelestialBodyType.Star);
     this.planets = bodies.filter((c: MappedCelestialBody) => c._type === CelestialBodyType.Planet);
+
+    this.spaceStations = stations.filter((s: Station) => SPACE_STATIONS.includes(s.type));
+    this.planetaryOutposts = stations.filter((s: Station) => PLANETARY_OUTPOSTS.includes(s.type));
+    this.planetaryPorts = stations.filter((s: Station) => SURFACE_PORTS.includes(s.type));
+    this.settlements = stations.filter((s: Station) => SETTLEMENTS.includes(s.type));
+    this.megaships = stations.filter((s: Station) => MEGASHIPS.includes(s.type));
+    
     this.objectsInSystem = bodies.sort((a: MappedCelestialBody, b: MappedCelestialBody) => (a.body_id - b.body_id));
 
     // Object to contain bodies that are not directly orbiting a star.
