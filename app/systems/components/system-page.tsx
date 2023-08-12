@@ -111,7 +111,7 @@ const SystemPage: FunctionComponent<Props> = ({ initSystem }) => {
         const map = new SystemMap(system);
         setSystemMap(map);
 
-        console.log({ map })
+        console.log({ map });
 
         // Fetch the main star and initialise it as the selected body for the system overview.
         const star = map.stars.find(s => s.is_main_star === 1);

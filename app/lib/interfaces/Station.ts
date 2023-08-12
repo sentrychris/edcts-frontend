@@ -1,5 +1,5 @@
-import { CelestialBodyParent } from "./Celestial";
-import { System } from "./System";
+import { CelestialBodyParent } from './Celestial';
+import { System } from './System';
 
 interface StationBody {
   id: number;
