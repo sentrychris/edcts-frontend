@@ -224,7 +224,7 @@ const SystemPage: FunctionComponent<Props> = ({ initSystem }) => {
       <div className="pb-5 border-b border-neutral-800">
         <SystemTitle
           title={system.name}
-          celestials={system.bodies.length}
+          bodies={system.bodies.length}
         />
       </div>
 

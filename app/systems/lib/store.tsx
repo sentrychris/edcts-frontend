@@ -34,7 +34,15 @@ export const systemBodyState = {
   name: '',
   type: '',
   sub_type: '',
-  disovery: {
+  distance_to_arrival: 0,
+  is_main_star: 0,
+  is_scoopable: 0,
+  spectral_class: null,
+  luminosity: null,
+  solar_masses: null,
+  solar_radius: null,
+  absolute_magnitude: null,
+  discovery: {
     commander: '',
     date: '',
   },
@@ -51,6 +59,7 @@ export const systemBodyState = {
     axial_tilt: 0,
     semi_major_axis: 0,
     rotational_period: 0,
+    is_tidally_locked: 0,
   },
   orbital: {
     orbital_period: 0,
@@ -58,8 +67,7 @@ export const systemBodyState = {
     orbital_inclination: 0,
     arg_of_periapsis: 0,
   },
-  is_tidally_locked: 0,
-  rings: {},
+  rings: null,
   parents: [],
   slug: '',
 };

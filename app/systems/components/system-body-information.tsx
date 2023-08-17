@@ -64,7 +64,9 @@ export default function SystemBodyInformation({ body, system, closer, position, 
               
               <p className="flex items-center gap-x-2">
                 <i className="icarus-terminal-system-bodies text-glow__orange"></i>
-                <Link className="text-glow__orange" href={`/systems/system/${system.detail.slug}/body/${body.id}`}>{body.name}</Link>
+                <Link className="text-glow__orange" href={`/systems/system/${system.detail.slug}/body/${body.slug}`}>
+                  {body.name}
+                </Link>
               </p>
 
               {body._children &&
