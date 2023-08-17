@@ -2,13 +2,13 @@
 
 import { FunctionComponent, useState, memo } from 'react';
 import Link from 'next/link';
-import { CelestialBody, MappedCelestialBody } from '../../lib/interfaces/Celestial';
+import { RawSystemBody, MappedSystemBody } from '../../lib/interfaces/SystemBody';
 import { formatDate, formatNumber } from '../../lib/util';
 import { SystemDispatcher } from '../../lib/events/SystemDispatcher';
 import Table from '../../components/table';
 
 interface Props {
-  stars: CelestialBody[];
+  stars: RawSystemBody[];
   system: string;
   dispatcher: SystemDispatcher;
 }
@@ -19,13 +19,13 @@ const SystemStarsTable: FunctionComponent<Props> = ({ stars, system, dispatcher 
   const columns = {
     name: {
       title: 'Name - Type',
-      render: (star: CelestialBody) => {
+      render: (star: RawSystemBody) => {
         let displayName = star.name.split(system).pop()?.trim();
         if (displayName === '') displayName = star.name;
 
         return <span
           className="text-blue-200 hover:text-glow__orange hover:underline hover:cursor-pointer"
-          onClick={() => dispatcher.selectBody({ body: (star as MappedCelestialBody) })}
+          onClick={() => dispatcher.selectBody({ body: (star as MappedSystemBody) })}
         >
           {displayName} - {star.sub_type.replace('Star', '')}
         </span>;
@@ -37,7 +37,7 @@ const SystemStarsTable: FunctionComponent<Props> = ({ stars, system, dispatcher 
     },
     main_star: {
       title: 'Is Main',
-      render: (body: CelestialBody) => {
+      render: (body: RawSystemBody) => {
         return body.is_main_star
           ? <span className="text-green-300">Yes</span>
           : <span className="text-red-300">No</span>;
@@ -45,8 +45,8 @@ const SystemStarsTable: FunctionComponent<Props> = ({ stars, system, dispatcher 
     },
     bodies: {
       title: 'Bodies',
-      render: (body: CelestialBody) => {
-        const orbital = (body as MappedCelestialBody);
+      render: (body: RawSystemBody) => {
+        const orbital = (body as MappedSystemBody);
         return <span
           className="text-blue-200 hover:text-glow__orange hover:underline hover:cursor-pointer"
           onClick={() => dispatcher.selectBody({ body: orbital})}
@@ -57,7 +57,7 @@ const SystemStarsTable: FunctionComponent<Props> = ({ stars, system, dispatcher 
     },
     scoopable: {
       title: 'Fuel',
-      render: (body: CelestialBody) => {
+      render: (body: RawSystemBody) => {
         return body.is_scoopable
           ? <span className="text-green-300">Yes</span>
           : <span className="text-red-300">No</span>;
@@ -65,7 +65,7 @@ const SystemStarsTable: FunctionComponent<Props> = ({ stars, system, dispatcher 
     },
     surface_temp: {
       title: 'Surface Temp',
-      render: (body: CelestialBody) => {
+      render: (body: RawSystemBody) => {
         return formatNumber(body.surface_temp) + ' K';
       }
     },
@@ -83,7 +83,7 @@ const SystemStarsTable: FunctionComponent<Props> = ({ stars, system, dispatcher 
     },
     commander: {
       title: 'Discovered By',
-      render: (body: CelestialBody) => {
+      render: (body: RawSystemBody) => {
         return <Link className="hover:underline text-blue-200" href={'#'}>
           {body.discovered_by.startsWith('CMDR') ? body.discovered_by : `CMDR ${body.discovered_by}`}
         </Link>;
@@ -91,7 +91,7 @@ const SystemStarsTable: FunctionComponent<Props> = ({ stars, system, dispatcher 
     },
     discovered: {
       title: 'Discovered On',
-      render: (body: CelestialBody) => {
+      render: (body: RawSystemBody) => {
         return formatDate(body.discovered_at);
       }
     },
@@ -100,7 +100,7 @@ const SystemStarsTable: FunctionComponent<Props> = ({ stars, system, dispatcher 
   return (
     <Table
       columns={columns}
-      data={rows.filter((s: CelestialBody) => s.name !== 'Additional Objects')}
+      data={rows.filter((s: RawSystemBody) => s.name !== 'Additional Objects')}
     />
   );
 };

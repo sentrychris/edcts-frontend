@@ -1,13 +1,16 @@
 'use client';
 
 import { XMarkIcon, CheckIcon } from '@heroicons/react/24/outline';
-import { CelestialRing, MappedCelestialBody } from '../../lib/interfaces/Celestial';
-import { CelestialBodyType } from '../../lib/constants/celestial';
+import { SystemBodyRing, MappedSystemBody } from '../../lib/interfaces/SystemBody';
+import { SystemBodyType } from '../../lib/constants/system';
 import { formatDate, formatNumber } from '../../lib/util';
 import { SystemDispatcher } from '../../lib/events/SystemDispatcher';
+import Link from 'next/link';
+import SystemMap from '../lib/system-map';
 
 interface Props {
-  body: MappedCelestialBody|null;
+  body: MappedSystemBody|null;
+  system: SystemMap;
   closer: boolean;
   position: {
     top: number,
@@ -21,7 +24,7 @@ interface Props {
   close?: () => void;
 }
 
-export default function SystemBodyInformation({ body, closer, position, dispatcher, close }: Props) {
+export default function SystemBodyInformation({ body, system, closer, position, dispatcher, close }: Props) {
   const MIN_N = 100;
   const MAX_N = 160;
   const CONTAINER_WIDTH = 500;
@@ -58,10 +61,12 @@ export default function SystemBodyInformation({ body, closer, position, dispatch
           
           <div className="px-3 border rounded-b-lg border-orange-500/60">
             <div className="grid grid-cols-1 md:grid-cols-1 mt-2.5 mb-1 text-lg">
+              
               <p className="flex items-center gap-x-2">
                 <i className="icarus-terminal-system-bodies text-glow__orange"></i>
-                <span className="text-glow__orange">{body.name}</span>
+                <Link className="text-glow__orange" href={`/systems/system/${system.detail.slug}/body/${body.id}`}>{body.name}</Link>
               </p>
+
               {body._children &&
                 <p className="text-sm text-glow__blue hover:underline hover:cursor-pointer"
                   onClick={() => {
@@ -80,14 +85,14 @@ export default function SystemBodyInformation({ body, closer, position, dispatch
             </p>
 
             <p className="flex items-center gap-x-2 mt-2.5 mb-2.5 text-sm">
-              <i className={'text-glow__orange icarus-terminal-' + (body.type === CelestialBodyType.Star ? 'star' : 'planet')}></i>
+              <i className={'text-glow__orange icarus-terminal-' + (body.type === SystemBodyType.Star ? 'star' : 'planet')}></i>
               <span>Body Information</span>
             </p>
             <p className={'flex items-center gap-x-2'}>
               <span>{body.type}</span> - <span>{body.sub_type}</span>
             </p>
 
-            {body.type === CelestialBodyType.Star &&
+            {body.type === SystemBodyType.Star &&
               <div className="text-xs border-b border-neutral-800 pb-2.5">
                 <div className="flex items-center gap-2 pb-2.5">
                   <p>Class: <span className="ms-1">{body.spectral_class}</span></p>
@@ -106,7 +111,7 @@ export default function SystemBodyInformation({ body, closer, position, dispatch
               </div>
             }
 
-            {body.type === CelestialBodyType.Planet &&
+            {body.type === SystemBodyType.Planet &&
               <>
                 <p className="pb-2.5">Distance to Main Star: <span className="ms-1">
                   {formatNumber(body.distance_to_arrival as number)}
@@ -169,7 +174,7 @@ export default function SystemBodyInformation({ body, closer, position, dispatch
                             <label className="text-label__small">Shipyard</label>
                           </div>}
                         </div>
-                      </div>
+                      </div>;
                     })}
                   </div>
                 </>}
@@ -197,7 +202,7 @@ export default function SystemBodyInformation({ body, closer, position, dispatch
                   <p>Axial tilt: <span className="ms-1">{body.axial_tilt?.toFixed(6) ?? 0}</span></p>
                   <p>Semi-major axis: <span className="ms-1">{body.semi_major_axis?.toFixed(6) ?? 0}</span></p>
                   <p>Arg of periapsis: <span className="ms-1">{body.arg_of_periapsis?.toFixed(6) ?? 0}</span></p>
-                  {body.type === CelestialBodyType.Planet && <p className="mt-1">Tidally locked: <span>
+                  {body.type === SystemBodyType.Planet && <p className="mt-1">Tidally locked: <span>
                     {body.is_tidally_locked
                       ? <span className="ms-1 text-green-300">Yes</span>
                       : <span className="ms-1 text-red-300">No</span>
@@ -215,7 +220,7 @@ export default function SystemBodyInformation({ body, closer, position, dispatch
                     <span>Ring Information</span>
                   </p>
                   <div className="mt-2">
-                    {body.rings.map((ring: CelestialRing) => {
+                    {body.rings.map((ring: SystemBodyRing) => {
                       return (
                         <div key={ring.mass} className="mb-2">
                           <p className="text-glow__orange">{ring.name}</p>

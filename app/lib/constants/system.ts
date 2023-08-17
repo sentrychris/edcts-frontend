@@ -40,7 +40,7 @@ export const UNKNOWN_VALUE = 'Unknown';
 
 export const SOL_RADIUS_IN_KM = 696340;
 
-export enum CelestialBodyType {
+export enum SystemBodyType {
   Star = 'Star',
   Planet = 'Planet',
   Null = 'Null',

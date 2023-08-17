@@ -4,8 +4,8 @@
 import { usePathname } from 'next/navigation';
 import { FunctionComponent, useEffect, useState, useCallback } from 'react';
 import { System } from '../../lib/interfaces/System';
-import { CelestialBody, MappedCelestialBody } from '../../lib/interfaces/Celestial';
-import { CelestialBodyType } from '../../lib/constants/celestial';
+import { RawSystemBody, MappedSystemBody } from '../../lib/interfaces/SystemBody';
+import { SystemBodyType } from '../../lib/constants/system';
 import { getResource } from '../../lib/api';
 import { systemState } from '../lib/store';
 import { systemDispatcher } from '../../lib/events/SystemDispatcher';
@@ -37,10 +37,10 @@ const SystemPage: FunctionComponent<Props> = ({ initSystem }) => {
   
   const [isLoading, setLoading] = useState<boolean>(true);
   const [systemMap, setSystemMap] = useState<SystemMap>();
-  const [selectedBody, setSelectedBody] = useState<MappedCelestialBody>();
+  const [selectedBody, setSelectedBody] = useState<MappedSystemBody>();
   const [selectedBodyIndex, setSelectedBodyIndex] = useState<number>(0);
   const [selectedBodyDisplayInfo, setSelectedBodyDisplayInfo] = useState<{
-    body: MappedCelestialBody|null,
+    body: MappedSystemBody|null,
     closer: boolean;
     position: {
       top: number,
@@ -106,8 +106,8 @@ const SystemPage: FunctionComponent<Props> = ({ initSystem }) => {
         // Map system bodies (e.g stars, planets and moons) into their respective orbits through
         // a parent-child relationship.
         // 
-        // This map contains bodies of type MappedSystemCelestial, which contain the same properties
-        // as SystemCelestial with extra _children, _label, _type used for mapping.
+        // This map contains bodies of type MappedSystemBody, which contain the same properties
+        // as RawSystemBody with extra _children, _label, _type used for mapping.
         const map = new SystemMap(system);
         setSystemMap(map);
 
@@ -120,7 +120,7 @@ const SystemPage: FunctionComponent<Props> = ({ initSystem }) => {
         // Listener to set the selected system body when the user selects a body either from the
         // system overview or one of the tables.
         systemDispatcher.addEventListener('select-body', (event) => {
-          setSelectedBody((event.message as MappedCelestialBody));
+          setSelectedBody((event.message as MappedSystemBody));
         });
       
         // Listener to reset the selected body when the user clicks on "go back to primary star".
@@ -145,7 +145,7 @@ const SystemPage: FunctionComponent<Props> = ({ initSystem }) => {
   function renderSystemBodies(map: SystemMap) {
     // Handle user selection to allow switching between stars and orbiting bodies.
     function handleSelectedBodyChange(index: number) {
-      if (index < 0 || typeof map.stars[index] === 'undefined' || map.stars[index].type === CelestialBodyType.Null) {
+      if (index < 0 || typeof map.stars[index] === 'undefined' || map.stars[index].type === SystemBodyType.Null) {
         index = 0;
       }
   
@@ -156,7 +156,7 @@ const SystemPage: FunctionComponent<Props> = ({ initSystem }) => {
     // If map contains two objects, a star and "additional objects not directly orbiting" then
     // this system has only one primary star, this flag is useful for conditonally rendering certain
     // ui elements that are only needed if we have multiple primary stars, for example, select buttons.
-    // const singlePrimaryStar = map.stars.length === 2 && map.stars[1].type === CelestialBodyType.Null;
+    // const singlePrimaryStar = map.stars.length === 2 && map.stars[1].type === SystemBodyType.Null;
 
     return (
       <>
@@ -182,7 +182,7 @@ const SystemPage: FunctionComponent<Props> = ({ initSystem }) => {
   }
 
   // Render a system body - an interactive SVG with conditional filters depending on body type.
-  function renderSystemBody(body: MappedCelestialBody) {
+  function renderSystemBody(body: MappedSystemBody) {
     let classes = 'text-glow__white text-sm';
     if (body.is_main_star) {
       classes += ' w-main-star';
@@ -203,7 +203,7 @@ const SystemPage: FunctionComponent<Props> = ({ initSystem }) => {
   }
 
   // Render body's orbiting bodies - maps each orbiting body to be rendered using renderSystemBody.
-  function renderSystemBodyChildren(body: MappedCelestialBody) {
+  function renderSystemBodyChildren(body: MappedSystemBody) {
     const bodies = (body._children && body._children.length > 0)
       ? body._children
       : false;
@@ -214,7 +214,7 @@ const SystemPage: FunctionComponent<Props> = ({ initSystem }) => {
         </span>;
       }
 
-      return bodies.map((body: MappedCelestialBody) => renderSystemBody(body));
+      return bodies.map((body: MappedSystemBody) => renderSystemBody(body));
   }
 
   return (
@@ -263,7 +263,7 @@ const SystemPage: FunctionComponent<Props> = ({ initSystem }) => {
           />
           {!isLoading && systemMap &&
             <SystemStarsTable
-              stars={systemMap.stars as CelestialBody[]}
+              stars={systemMap.stars as RawSystemBody[]}
               system={system.name}
               dispatcher={systemDispatcher}
             />
@@ -277,7 +277,7 @@ const SystemPage: FunctionComponent<Props> = ({ initSystem }) => {
           />
           {!isLoading && systemMap &&
             <SystemBodiesTable
-              bodies={systemMap.planets as CelestialBody[]}
+              bodies={systemMap.planets as RawSystemBody[]}
               system={system.name}
               dispatcher={systemDispatcher}
             />
@@ -285,9 +285,10 @@ const SystemPage: FunctionComponent<Props> = ({ initSystem }) => {
         </div>
       </div>
 
-      {selectedBodyDisplayInfo &&
+      {selectedBodyDisplayInfo && systemMap &&
         <SystemBodyInformation
           body={selectedBodyDisplayInfo.body}
+          system={systemMap}
           closer={selectedBodyDisplayInfo.closer}
           position={selectedBodyDisplayInfo.position}
           dispatcher={systemDispatcher}

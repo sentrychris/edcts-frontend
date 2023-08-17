@@ -1,11 +1,12 @@
-import { CelestialBodyType } from '../constants/celestial';
+import { SystemBodyType } from '../constants/system';
 import { MappedStation } from './Station';
+import { System } from './System';
 
-export type CelestialBodyParent = {
-  [key in CelestialBodyType]?: number;
+export type SystemBodyParent = {
+  [key in SystemBodyType]?: number;
 }
 
-export interface CelestialRing {
+export interface SystemBodyRing {
   name: string;
   type: string;
   mass: number;
@@ -13,11 +14,12 @@ export interface CelestialRing {
   outerRadius: number;
 }
 
-export interface CelestialBody {
+export interface RawSystemBody {
   id: number;
   id64: number;
   body_id: number;
   name: string;
+  system?: System;
   discovered_by: string;
   discovered_at: string;
   type: string;
@@ -46,11 +48,12 @@ export interface CelestialBody {
   is_tidally_locked: number;
   semi_major_axis: number;
   axial_tilt: number;
-  rings: Array<CelestialRing>;
-  parents: Array<CelestialBodyParent>;
+  rings: Array<SystemBodyRing>;
+  parents: Array<SystemBodyParent>;
+  slug: string;
 }
 
-export interface MappedCelestialBody extends Partial<CelestialBody> {
+export interface MappedSystemBody extends Partial<RawSystemBody> {
   body_id: number;
   distance_to_arrival: number;
   name: string;
@@ -61,7 +64,8 @@ export interface MappedCelestialBody extends Partial<CelestialBody> {
   _r?: number;
   _small?: boolean;
   _orbits_star?: boolean;
-  _children?: Array<MappedCelestialBody>;
+  _children?: Array<MappedSystemBody>;
   _planetary_bases?: Array<MappedStation>;
   _timestamp?: string;
+  slug: string;
 }

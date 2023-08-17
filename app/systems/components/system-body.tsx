@@ -1,15 +1,15 @@
 'use client';
 
 import { FunctionComponent, memo, useCallback, useState } from 'react';
-import { MappedCelestialBody } from '../../lib/interfaces/Celestial';
+import { MappedSystemBody } from '../../lib/interfaces/SystemBody';
 import { SystemDispatcher } from '../../lib/events/SystemDispatcher';
 import { CIRCLE_DEG } from '../../lib/constants/math';
 import Icons from '../../icons';
 
 interface Props {
-  body: MappedCelestialBody;
+  body: MappedSystemBody;
   system: string;
-  selected?: MappedCelestialBody;
+  selected?: MappedSystemBody;
   orbiting?: number;
   dispatcher: SystemDispatcher;
   className?: string;

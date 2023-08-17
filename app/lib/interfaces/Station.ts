@@ -1,4 +1,4 @@
-import { CelestialBodyParent } from './Celestial';
+import { SystemBodyParent } from './SystemBody';
 import { System } from './System';
 
 interface StationBody {
@@ -38,7 +38,7 @@ export interface MappedStation extends Partial<Station>
   id: number;
   name: string;
   type: string;
-  parents: Array<CelestialBodyParent>;
+  parents: Array<SystemBodyParent>;
   _type: string;
   _other_services: Array<string>;
   _ship_services: Array<string>;
