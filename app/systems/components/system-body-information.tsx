@@ -1,6 +1,6 @@
 'use client';
 
-import { XMarkIcon } from '@heroicons/react/24/outline';
+import { XMarkIcon, CheckIcon } from '@heroicons/react/24/outline';
 import { CelestialRing, MappedCelestialBody } from '../../lib/interfaces/Celestial';
 import { CelestialBodyType } from '../../lib/constants/celestial';
 import { formatDate, formatNumber } from '../../lib/util';
@@ -79,7 +79,7 @@ export default function SystemBodyInformation({ body, closer, position, dispatch
               <span>at {formatDate(body.discovered_at)}</span>
             </p>
 
-            <p className="flex items-center gap-x-2 mt-2.5 mb-2 text-sm">
+            <p className="flex items-center gap-x-2 mt-2.5 mb-2.5 text-sm">
               <i className={'text-glow__orange icarus-terminal-' + (body.type === CelestialBodyType.Star ? 'star' : 'planet')}></i>
               <span>Body Information</span>
             </p>
@@ -131,13 +131,52 @@ export default function SystemBodyInformation({ body, closer, position, dispatch
                   <span>Volcanism:</span> <span>{body.volcanism_type}</span>
                 </p>
 
-                <p className="border-b border-neutral-800 pb-2.5 ">
+                <p className="border-b border-neutral-800 pb-5">
                   <span>{body.terraforming_state}</span>
                 </p>
+
+                {body._planetary_bases && body._planetary_bases.length > 0 &&
+                <>
+                  <p className="flex items-center gap-x-2 mt-2.5 text-sm">
+                    <i className={'text-glow__orange icarus-terminal-settlement'}></i>
+                    <span>Planetary Settlements</span>
+                  </p>
+                  <div className="border-b border-neutral-800 pb-5 grid grid-cols-2">
+                    {body._planetary_bases.map((s, i) => {
+                      return <div key={s.id} className={i > 1 ? 'mt-5' : 'mt-2.5'}>
+                        <p className="text-glow__blue">{ s.name }</p>
+                        <div className="mt-1 text-label__small">
+                          <p>{s.economy} economy</p>
+                        </div>
+                        <div className="flex flex-row gap-x-2 mt-1">
+                          {s.has_market &&
+                          <div className="flex items-center gap-x-1">
+                            <CheckIcon className="w-3 text-glow__orange" />
+                            <label className="text-label__small">Market</label>
+                          </div>}
+
+
+                          {s.has_outfitting &&
+                          <div className="flex items-center gap-x-1">
+                            <CheckIcon className="w-3 text-glow__orange" />
+                            <label className="text-label__small">Outfitting</label>
+                          </div>}
+
+
+                          {s.has_shipyard &&
+                          <div className="flex items-center gap-x-1">
+                            <CheckIcon className="w-3 text-glow__orange" />
+                            <label className="text-label__small">Shipyard</label>
+                          </div>}
+                        </div>
+                      </div>
+                    })}
+                  </div>
+                </>}
               </>
             }
 
-            <div className="flex items-start gap-x-20 border-b border-neutral-800 mt-2.5 pb-2.5">
+            <div className="grid grid-cols-2 border-b border-neutral-800 mt-2.5 pb-2.5">
               <div>
                 <p className="flex items-center gap-x-2 text-sm">
                   <i className="icarus-terminal-planet text-glow__orange"></i>

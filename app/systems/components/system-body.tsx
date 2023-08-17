@@ -167,6 +167,7 @@ const SystemBody: FunctionComponent<Props> = ({
                 />
               </>}
             </g>
+
             {body.is_landable && <svg
               className='text-xs system-map__planetary-lander-icon'
               x={iconCoords.x}
@@ -174,6 +175,7 @@ const SystemBody: FunctionComponent<Props> = ({
             >
               {Icons.get('planet-landable')}
             </svg>}
+
           </g>
         </g>
       </svg>
@@ -181,20 +183,40 @@ const SystemBody: FunctionComponent<Props> = ({
         <p className="text-glow">
           {displayName}
         </p>
+        
         <p className="text-xs text-glow whitespace-nowrap">
           {shortSubType(body.sub_type)}
         </p>
-        <span
-          className={'flex whitespace-nowrap items-center gap-2 text-glow__orange  ' +
-            (bodyIsSelectedUserFocus
-              ? 'text-sm'
-              : 'hover:text-glow__blue hover:scale-110 hover:cursor-grabbing')
+        
+        <div className="flex flex-row items-center gap-2">
+          <span
+            className={'flex whitespace-nowrap items-center gap-2 text-glow__orange  ' +
+              (bodyIsSelectedUserFocus
+                ? 'text-sm'
+                : 'hover:text-glow__blue hover:scale-110 hover:cursor-grabbing')
+            }
+            onClick={() => dispatcher.selectBody({ body })}
+          >
+            <i className="icarus-terminal-system-bodies text-label__small"></i>
+            {(orbiting)} {bodyIsSelectedUserFocus ? 'orbiting bodies found' : ''}
+          </span>
+
+
+          {! bodyIsSelectedUserFocus && body._planetary_bases && body._planetary_bases.length > 0 && 
+          <span
+            className={'flex whitespace-nowrap items-center gap-2 text-glow__blue  ' +
+              (bodyIsSelectedUserFocus
+                ? 'text-sm'
+                : 'hover:text-glow__orange hover:scale-110 hover:cursor-grabbing')
+            }
+            onClick={() => dispatcher.selectBody({ body })}
+          >
+            <i className="icarus-terminal-settlement text-label__small"></i>
+            {(body._planetary_bases.length)} {bodyIsSelectedUserFocus ? 'planetary settlements found' : ''}
+          </span>
           }
-          onClick={() => dispatcher.selectBody({ body })}
-        >
-          <i className="icarus-terminal-system-bodies text-label__small"></i>
-          {(orbiting)} {bodyIsSelectedUserFocus ? 'orbiting bodies found' : '...'}
-        </span>
+        </div>
+        
         {bodyIsSelectedUserFocus && ! body.is_main_star &&
         <span
           className="flex items-center gap-2 text-label__small text-glow__blue hover:scale-105 hover:cursor-pointer"
