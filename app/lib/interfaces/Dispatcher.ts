@@ -1,6 +1,6 @@
 export interface Dispatcher {
   _listeners?: {
-    [index: string]: ListenerEventCallback[];
+    [index: string]: Array<ListenerEventCallback>;
   };
 
   addEventListener(type: string, listener: ListenerEventCallback) : void;

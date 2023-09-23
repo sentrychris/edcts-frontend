@@ -8,5 +8,5 @@ export interface CommanderApi {
 export interface Commander {
   name: string;
   api?: CommanderApi;
-  carriers?: Carrier[];
+  carriers?: Array<Carrier>;
 }

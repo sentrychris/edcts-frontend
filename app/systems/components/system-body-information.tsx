@@ -1,13 +1,16 @@
 'use client';
 
-import { XMarkIcon } from '@heroicons/react/24/outline';
-import { CelestialRing, MappedCelestialBody } from '../../lib/interfaces/Celestial';
-import { CelestialBodyType } from '../../lib/constants/celestial';
+import { XMarkIcon, CheckIcon } from '@heroicons/react/24/outline';
+import { SystemBodyRing, MappedSystemBody } from '../../lib/interfaces/SystemBody';
+import { SystemBodyType } from '../../lib/constants/system';
 import { formatDate, formatNumber } from '../../lib/util';
 import { SystemDispatcher } from '../../lib/events/SystemDispatcher';
+import Link from 'next/link';
+import SystemMap from '../lib/system-map';
 
 interface Props {
-  body: MappedCelestialBody|null;
+  body: MappedSystemBody|null;
+  system: SystemMap;
   closer: boolean;
   position: {
     top: number,
@@ -21,7 +24,7 @@ interface Props {
   close?: () => void;
 }
 
-export default function SystemBodyInformation({ body, closer, position, dispatcher, close }: Props) {
+export default function SystemBodyInformation({ body, system, closer, position, dispatcher, close }: Props) {
   const MIN_N = 100;
   const MAX_N = 160;
   const CONTAINER_WIDTH = 500;
@@ -58,10 +61,14 @@ export default function SystemBodyInformation({ body, closer, position, dispatch
           
           <div className="px-3 border rounded-b-lg border-orange-500/60">
             <div className="grid grid-cols-1 md:grid-cols-1 mt-2.5 mb-1 text-lg">
+              
               <p className="flex items-center gap-x-2">
                 <i className="icarus-terminal-system-bodies text-glow__orange"></i>
-                <span className="text-glow__orange">{body.name}</span>
+                <Link className="text-glow__orange" href={`/systems/system/${system.detail.slug}/body/${body.slug}`}>
+                  {body.name}
+                </Link>
               </p>
+
               {body._children &&
                 <p className="text-sm text-glow__blue hover:underline hover:cursor-pointer"
                   onClick={() => {
@@ -79,15 +86,15 @@ export default function SystemBodyInformation({ body, closer, position, dispatch
               <span>at {formatDate(body.discovered_at)}</span>
             </p>
 
-            <p className="flex items-center gap-x-2 mt-2.5 mb-2 text-sm">
-              <i className={'text-glow__orange icarus-terminal-' + (body.type === CelestialBodyType.Star ? 'star' : 'planet')}></i>
+            <p className="flex items-center gap-x-2 mt-2.5 mb-2.5 text-sm">
+              <i className={'text-glow__orange icarus-terminal-' + (body.type === SystemBodyType.Star ? 'star' : 'planet')}></i>
               <span>Body Information</span>
             </p>
             <p className={'flex items-center gap-x-2'}>
               <span>{body.type}</span> - <span>{body.sub_type}</span>
             </p>
 
-            {body.type === CelestialBodyType.Star &&
+            {body.type === SystemBodyType.Star &&
               <div className="text-xs border-b border-neutral-800 pb-2.5">
                 <div className="flex items-center gap-2 pb-2.5">
                   <p>Class: <span className="ms-1">{body.spectral_class}</span></p>
@@ -106,7 +113,7 @@ export default function SystemBodyInformation({ body, closer, position, dispatch
               </div>
             }
 
-            {body.type === CelestialBodyType.Planet &&
+            {body.type === SystemBodyType.Planet &&
               <>
                 <p className="pb-2.5">Distance to Main Star: <span className="ms-1">
                   {formatNumber(body.distance_to_arrival as number)}
@@ -131,13 +138,52 @@ export default function SystemBodyInformation({ body, closer, position, dispatch
                   <span>Volcanism:</span> <span>{body.volcanism_type}</span>
                 </p>
 
-                <p className="border-b border-neutral-800 pb-2.5 ">
+                <p className="border-b border-neutral-800 pb-5">
                   <span>{body.terraforming_state}</span>
                 </p>
+
+                {body._planetary_bases && body._planetary_bases.length > 0 &&
+                <>
+                  <p className="flex items-center gap-x-2 mt-2.5 text-sm">
+                    <i className={'text-glow__orange icarus-terminal-settlement'}></i>
+                    <span>Planetary Settlements</span>
+                  </p>
+                  <div className="border-b border-neutral-800 pb-5 grid grid-cols-2">
+                    {body._planetary_bases.map((s, i) => {
+                      return <div key={s.id} className={i > 1 ? 'mt-5' : 'mt-2.5'}>
+                        <p className="text-glow__blue">{ s.name }</p>
+                        <div className="mt-1 text-label__small">
+                          <p>{s.economy} economy</p>
+                        </div>
+                        <div className="flex flex-row gap-x-2 mt-1">
+                          {s.has_market &&
+                          <div className="flex items-center gap-x-1">
+                            <CheckIcon className="w-3 text-glow__orange" />
+                            <label className="text-label__small">Market</label>
+                          </div>}
+
+
+                          {s.has_outfitting &&
+                          <div className="flex items-center gap-x-1">
+                            <CheckIcon className="w-3 text-glow__orange" />
+                            <label className="text-label__small">Outfitting</label>
+                          </div>}
+
+
+                          {s.has_shipyard &&
+                          <div className="flex items-center gap-x-1">
+                            <CheckIcon className="w-3 text-glow__orange" />
+                            <label className="text-label__small">Shipyard</label>
+                          </div>}
+                        </div>
+                      </div>;
+                    })}
+                  </div>
+                </>}
               </>
             }
 
-            <div className="flex items-start gap-x-20 border-b border-neutral-800 mt-2.5 pb-2.5">
+            <div className="grid grid-cols-2 border-b border-neutral-800 mt-2.5 pb-2.5">
               <div>
                 <p className="flex items-center gap-x-2 text-sm">
                   <i className="icarus-terminal-planet text-glow__orange"></i>
@@ -158,7 +204,7 @@ export default function SystemBodyInformation({ body, closer, position, dispatch
                   <p>Axial tilt: <span className="ms-1">{body.axial_tilt?.toFixed(6) ?? 0}</span></p>
                   <p>Semi-major axis: <span className="ms-1">{body.semi_major_axis?.toFixed(6) ?? 0}</span></p>
                   <p>Arg of periapsis: <span className="ms-1">{body.arg_of_periapsis?.toFixed(6) ?? 0}</span></p>
-                  {body.type === CelestialBodyType.Planet && <p className="mt-1">Tidally locked: <span>
+                  {body.type === SystemBodyType.Planet && <p className="mt-1">Tidally locked: <span>
                     {body.is_tidally_locked
                       ? <span className="ms-1 text-green-300">Yes</span>
                       : <span className="ms-1 text-red-300">No</span>
@@ -176,7 +222,7 @@ export default function SystemBodyInformation({ body, closer, position, dispatch
                     <span>Ring Information</span>
                   </p>
                   <div className="mt-2">
-                    {body.rings.map((ring: CelestialRing) => {
+                    {body.rings.map((ring: SystemBodyRing) => {
                       return (
                         <div key={ring.mass} className="mb-2">
                           <p className="text-glow__orange">{ring.name}</p>
