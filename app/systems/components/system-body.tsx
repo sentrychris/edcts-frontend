@@ -10,6 +10,7 @@ interface Props {
   body: MappedSystemBody;
   system: string;
   selected?: MappedSystemBody;
+  view?: 'body'|'system';
   orbiting?: number;
   dispatcher: SystemDispatcher;
   className?: string;
@@ -19,11 +20,12 @@ const SystemBody: FunctionComponent<Props> = ({
   body,
   system,
   selected,
+  view,
   orbiting,
   dispatcher,
   className
 }) => {
-  const bodyIsSelectedUserFocus = (selected?.id64 === body.id64);
+  const bodyIsSelectedUserFocus = (selected && selected.id64 === body.id64);
 
   const displayName = bodyIsSelectedUserFocus
     ? body.name
@@ -48,11 +50,11 @@ const SystemBody: FunctionComponent<Props> = ({
     if (!text) text = body.sub_type ?? body.type;
     if (body.name === 'Earth') return 'Home';
 
-    const lowerText = text.toLowerCase();
-    if (lowerText.includes('{{') || lowerText.includes('metal')) return 'Metal';
-    if (lowerText.includes('{{') || lowerText.includes('gas giant')) return 'Gas Giant';
-    if (lowerText.includes('{{') || lowerText.includes('rocky ice')) return 'Rocky Ice';
-    if (lowerText.includes('{{') || lowerText.includes('earth-like')) return 'Earth-Like';
+    text = text.toLowerCase();
+    if (text.includes('metal')) return 'Metal';
+    if (text.includes('gas giant')) return 'Gas Giant';
+    if (text.includes('rocky ice')) return 'Rocky Ice';
+    if (text.includes('earth-like')) return 'Earth-Like';
 
     return text;
   };
@@ -63,7 +65,7 @@ const SystemBody: FunctionComponent<Props> = ({
       y: ((radius * Math.cos(Math.PI) + CIRCLE_DEG * 2) / 2),
     };
 
-    if (bodyIsSelectedUserFocus) {
+    if (bodyIsSelectedUserFocus || (view && view === 'body')) {
       pos.x += CIRCLE_DEG * 2;
       pos.y += CIRCLE_DEG * 4;
     }
@@ -99,7 +101,7 @@ const SystemBody: FunctionComponent<Props> = ({
           className="system-map__system-object hover:cursor-help"
           ref={selectedBodyGCircleElement}
           data-system-object-name={body.name}
-          data-system-object-type={body._type}
+          data-system-object-type={body._type ?? body.type}
           data-system-object-small={body._small}
           data-system-object-sub-type={body.sub_type}
           data-system-object-atmosphere={body.atmosphere_type}

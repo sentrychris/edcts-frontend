@@ -19,12 +19,6 @@ import SystemBodiesTable from './system-bodies-table';
 import Loader from '../../components/loader';
 import Heading from '../../components/heading';
 
-// System page.
-//
-// For reference, terminology used:
-// - celestials: all celestial objects (stars, planets, stations, outposts, beacons)
-// - bodies: subset of celestial objects (stars, planets)
-
 interface Props {
   initSystem?: System;
 }

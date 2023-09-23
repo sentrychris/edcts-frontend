@@ -53,7 +53,7 @@ export interface RawSystemBody {
   is_tidally_locked: number;
   semi_major_axis: number;
   axial_tilt: number;
-  rings: Array<SystemBodyRing>;
+  rings: Array<SystemBodyRing> | null;
   parents: Array<SystemBodyParent>;
   slug: string;
 }
@@ -84,7 +84,7 @@ export interface MappedSystemBody extends Partial<RawSystemBody> {
 // This format is used when system bodies are returned directly through the bodies api endpoint.
 // If bodies are requested as part of the system response from the API, then the RawSystemBody response
 // format is used instead.
-export interface SystemBodyResource {
+export interface SystemBodyResource extends Partial<MappedSystemBody> {
   id: number;
   body_id: number;
   name: string;
