@@ -46,6 +46,10 @@
   background: var(--color-primary);
 }
 
+html, body {
+  height: 100%;
+}
+
 body {
   color: rgb(var(--foreground-rgb));
   background: radial-gradient(circle at 240%, var(--color-primary-dark) 25%, #000000);

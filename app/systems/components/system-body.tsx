@@ -1,15 +1,16 @@
 'use client';
 
 import { FunctionComponent, memo, useCallback, useState } from 'react';
-import { MappedCelestialBody } from '../../lib/interfaces/Celestial';
+import { MappedSystemBody } from '../../lib/interfaces/SystemBody';
 import { SystemDispatcher } from '../../lib/events/SystemDispatcher';
 import { CIRCLE_DEG } from '../../lib/constants/math';
 import Icons from '../../icons';
 
 interface Props {
-  body: MappedCelestialBody;
+  body: MappedSystemBody;
   system: string;
-  selected?: MappedCelestialBody;
+  selected?: MappedSystemBody;
+  view?: 'body'|'system';
   orbiting?: number;
   dispatcher: SystemDispatcher;
   className?: string;
@@ -19,11 +20,12 @@ const SystemBody: FunctionComponent<Props> = ({
   body,
   system,
   selected,
+  view,
   orbiting,
   dispatcher,
   className
 }) => {
-  const bodyIsSelectedUserFocus = (selected?.id64 === body.id64);
+  const bodyIsSelectedUserFocus = (selected && selected.id64 === body.id64);
 
   const displayName = bodyIsSelectedUserFocus
     ? body.name
@@ -48,11 +50,11 @@ const SystemBody: FunctionComponent<Props> = ({
     if (!text) text = body.sub_type ?? body.type;
     if (body.name === 'Earth') return 'Home';
 
-    const lowerText = text.toLowerCase();
-    if (lowerText.includes('{{') || lowerText.includes('metal')) return 'Metal';
-    if (lowerText.includes('{{') || lowerText.includes('gas giant')) return 'Gas Giant';
-    if (lowerText.includes('{{') || lowerText.includes('rocky ice')) return 'Rocky Ice';
-    if (lowerText.includes('{{') || lowerText.includes('earth-like')) return 'Earth-Like';
+    text = text.toLowerCase();
+    if (text.includes('metal')) return 'Metal';
+    if (text.includes('gas giant')) return 'Gas Giant';
+    if (text.includes('rocky ice')) return 'Rocky Ice';
+    if (text.includes('earth-like')) return 'Earth-Like';
 
     return text;
   };
@@ -63,13 +65,13 @@ const SystemBody: FunctionComponent<Props> = ({
       y: ((radius * Math.cos(Math.PI) + CIRCLE_DEG * 2) / 2),
     };
 
-    if (bodyIsSelectedUserFocus) {
+    if (bodyIsSelectedUserFocus || (view && view === 'body')) {
       pos.x += CIRCLE_DEG * 2;
       pos.y += CIRCLE_DEG * 4;
     }
 
     return pos;
-  } 
+  }; 
   
   const [iconCoords, setIconCoords] = useState(calculateIconCoords());
 
@@ -99,7 +101,7 @@ const SystemBody: FunctionComponent<Props> = ({
           className="system-map__system-object hover:cursor-help"
           ref={selectedBodyGCircleElement}
           data-system-object-name={body.name}
-          data-system-object-type={body._type}
+          data-system-object-type={body._type ?? body.type}
           data-system-object-small={body._small}
           data-system-object-sub-type={body.sub_type}
           data-system-object-atmosphere={body.atmosphere_type}
@@ -167,6 +169,7 @@ const SystemBody: FunctionComponent<Props> = ({
                 />
               </>}
             </g>
+
             {body.is_landable && <svg
               className='text-xs system-map__planetary-lander-icon'
               x={iconCoords.x}
@@ -174,6 +177,7 @@ const SystemBody: FunctionComponent<Props> = ({
             >
               {Icons.get('planet-landable')}
             </svg>}
+
           </g>
         </g>
       </svg>
@@ -181,20 +185,40 @@ const SystemBody: FunctionComponent<Props> = ({
         <p className="text-glow">
           {displayName}
         </p>
+        
         <p className="text-xs text-glow whitespace-nowrap">
           {shortSubType(body.sub_type)}
         </p>
-        <span
-          className={'flex whitespace-nowrap items-center gap-2 text-glow__orange  ' +
-            (bodyIsSelectedUserFocus
-              ? 'text-sm'
-              : 'hover:text-glow__blue hover:scale-110 hover:cursor-grabbing')
+        
+        <div className="flex flex-row items-center gap-2">
+          <span
+            className={'flex whitespace-nowrap items-center gap-2 text-glow__orange  ' +
+              (bodyIsSelectedUserFocus
+                ? 'text-sm'
+                : 'hover:text-glow__blue hover:scale-110 hover:cursor-grabbing')
+            }
+            onClick={() => dispatcher.selectBody({ body })}
+          >
+            <i className="icarus-terminal-system-bodies text-label__small"></i>
+            {(orbiting)} {bodyIsSelectedUserFocus ? 'orbiting bodies found' : ''}
+          </span>
+
+
+          {! bodyIsSelectedUserFocus && body._planetary_bases && body._planetary_bases.length > 0 && 
+          <span
+            className={'flex whitespace-nowrap items-center gap-2 text-glow__blue  ' +
+              (bodyIsSelectedUserFocus
+                ? 'text-sm'
+                : 'hover:text-glow__orange hover:scale-110 hover:cursor-grabbing')
+            }
+            onClick={() => dispatcher.selectBody({ body })}
+          >
+            <i className="icarus-terminal-settlement text-label__small"></i>
+            {(body._planetary_bases.length)} {bodyIsSelectedUserFocus ? 'planetary settlements found' : ''}
+          </span>
           }
-          onClick={() => dispatcher.selectBody({ body })}
-        >
-          <i className="icarus-terminal-system-bodies text-label__small"></i>
-          {(orbiting)} {bodyIsSelectedUserFocus ? 'orbiting bodies found' : '...'}
-        </span>
+        </div>
+        
         {bodyIsSelectedUserFocus && ! body.is_main_star &&
         <span
           className="flex items-center gap-2 text-label__small text-glow__blue hover:scale-105 hover:cursor-pointer"

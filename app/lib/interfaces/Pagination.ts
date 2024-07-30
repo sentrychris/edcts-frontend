@@ -15,7 +15,7 @@ export interface Meta {
   current_page: number;
   from: number;
   last_page: number;
-  links: Link[];
+  links: Array<Link>;
   path: string;
   per_page: number;
   to: number;
@@ -25,5 +25,5 @@ export interface Meta {
 export interface Pagination<T> {
   links: Links;
   meta: Meta;
-  data: T[];
+  data: Array<T>;
 }

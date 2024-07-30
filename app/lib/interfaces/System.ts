@@ -1,4 +1,5 @@
-import { CelestialBody } from './Celestial';
+import { RawSystemBody } from './SystemBody';
+import { Station } from './Station';
 
 export interface System {
   id: number;
@@ -10,7 +11,8 @@ export interface System {
     z: number;
   }
   information: SystemInformation;
-  bodies: CelestialBody[];
+  bodies: Array<RawSystemBody>;
+  stations: Array<Station>;
   updated_at: string;
   slug: string;
 }

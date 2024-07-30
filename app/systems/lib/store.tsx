@@ -23,8 +23,53 @@ export const systemState: System = {
     }
   },
   bodies: [],
+  stations: [],
   updated_at: '',
   slug: ''
+};
+
+export const systemBodyState = {
+  id: 0,
+  body_id: 0,
+  name: '',
+  type: '',
+  sub_type: '',
+  distance_to_arrival: 0,
+  is_main_star: 0,
+  is_scoopable: 0,
+  spectral_class: null,
+  luminosity: null,
+  solar_masses: null,
+  solar_radius: null,
+  absolute_magnitude: null,
+  discovery: {
+    commander: '',
+    date: '',
+  },
+  system: systemState,
+  radius: 0,
+  gravity: 0,
+  earth_masses: 0,
+  surface_temp: 0,
+  is_landable: 0,
+  atmosphere_type: '',
+  volcanism_type: '',
+  terraforming_state: '',
+  axial: {
+    axial_tilt: 0,
+    semi_major_axis: 0,
+    rotational_period: 0,
+    is_tidally_locked: 0,
+  },
+  orbital: {
+    orbital_period: 0,
+    orbital_eccentricity: 0,
+    orbital_inclination: 0,
+    arg_of_periapsis: 0,
+  },
+  rings: null,
+  parents: [],
+  slug: '',
 };
 
 
