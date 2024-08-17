@@ -2,9 +2,9 @@
 
 import type { FunctionComponent } from "react";
 import { memo, useCallback, useState } from "react";
-import type { MappedSystemBody } from "../../lib/interfaces/SystemBody";
-import type { SystemDispatcher } from "../../lib/events/SystemDispatcher";
-import { CIRCLE_DEG } from "../../lib/constants/math";
+import type { MappedSystemBody } from "../../core/interfaces/SystemBody";
+import type { SystemDispatcher } from "../../core/events/SystemDispatcher";
+import { CIRCLE_DEG } from "../../core/constants/math";
 import Icons from "../../icons";
 
 interface Props {

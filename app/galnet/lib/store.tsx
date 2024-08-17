@@ -1,6 +1,6 @@
-import type { Galnet } from "../../lib/interfaces/Galnet";
-import type { Pagination } from "../../lib/interfaces/Pagination";
-import { pagination } from "../../lib/api";
+import type { Galnet } from "../../core/interfaces/Galnet";
+import type { Pagination } from "../../core/interfaces/Pagination";
+import { pagination } from "../../core/api";
 
 export const galnetState: Galnet = {
   id: 0,

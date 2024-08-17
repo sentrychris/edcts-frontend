@@ -1,10 +1,10 @@
 "use client";
 
 import { XMarkIcon, CheckIcon } from "@heroicons/react/24/outline";
-import type { SystemBodyRing, MappedSystemBody } from "../../lib/interfaces/SystemBody";
-import { SystemBodyType } from "../../lib/constants/system";
-import { formatDate, formatNumber } from "../../lib/util";
-import type { SystemDispatcher } from "../../lib/events/SystemDispatcher";
+import type { SystemBodyRing, MappedSystemBody } from "../../core/interfaces/SystemBody";
+import { SystemBodyType } from "../../core/constants/system";
+import { formatDate, formatNumber } from "../../core/util";
+import type { SystemDispatcher } from "../../core/events/SystemDispatcher";
 import Link from "next/link";
 import type SystemMap from "../lib/system-map";
 

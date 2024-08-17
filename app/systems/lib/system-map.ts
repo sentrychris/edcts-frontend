@@ -1,9 +1,9 @@
-import type { System } from "../../lib/interfaces/System";
+import type { System } from "../../core/interfaces/System";
 import type {
   RawSystemBody,
   MappedSystemBody,
   SystemBodyParent,
-} from "../../lib/interfaces/SystemBody";
+} from "../../core/interfaces/SystemBody";
 import {
   MEGASHIPS,
   SPACE_STATIONS,
@@ -13,17 +13,17 @@ import {
   SETTLEMENTS,
   SOL_RADIUS_IN_KM,
   SystemBodyType,
-} from "../../lib/constants/system";
+} from "../../core/constants/system";
 import {
   MIN_RADIUS,
   MAX_RADIUS,
   SUB_MIN_RADIUS,
   SUB_MAX_RADIUS,
   RADIUS_DIVIDER,
-} from "../../lib/constants/math";
+} from "../../core/constants/math";
 
-import { escapeRegExp } from "../../lib/util";
-import type { Station, MappedStation } from "../../lib/interfaces/Station";
+import { escapeRegExp } from "../../core/util";
+import type { Station, MappedStation } from "../../core/interfaces/Station";
 
 type MapKeyType = keyof MappedSystemBody;
 

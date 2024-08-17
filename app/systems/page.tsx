@@ -1,8 +1,8 @@
 import SystemsTable from "./components/systems-table";
 import Heading from "../components/heading";
-import { getCollection, getResource } from "../lib/api";
-import type { System } from "../lib/interfaces/System";
-import type { Statistics } from "../lib/interfaces/Statistics";
+import { getCollection, getResource } from "../core/api";
+import type { System } from "../core/interfaces/System";
+import type { Statistics } from "../core/interfaces/Statistics";
 import SystemStatistics from "./components/system-statistics";
 
 export default async function Page() {

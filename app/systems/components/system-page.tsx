@@ -1,14 +1,13 @@
 "use client";
 
-import { usePathname } from "next/navigation";
 import type { FunctionComponent } from "react";
 import { useEffect, useState, useCallback } from "react";
-import type { System } from "../../lib/interfaces/System";
-import type { RawSystemBody, MappedSystemBody } from "../../lib/interfaces/SystemBody";
-import { SystemBodyType } from "../../lib/constants/system";
-import { getResource } from "../../lib/api";
+import type { System } from "../../core/interfaces/System";
+import type { RawSystemBody, MappedSystemBody } from "../../core/interfaces/SystemBody";
+import { SystemBodyType } from "../../core/constants/system";
+import { getResource } from "../../core/api";
 import { systemState } from "../lib/store";
-import { systemDispatcher } from "../../lib/events/SystemDispatcher";
+import { systemDispatcher } from "../../core/events/SystemDispatcher";
 import SystemMap from "../lib/system-map";
 import SystemTitle from "./system-title";
 import SystemInformation from "./system-information";
@@ -21,9 +20,10 @@ import Heading from "../../components/heading";
 
 interface Props {
   initSystem?: System;
+  params: { slug: string };
 }
 
-const SystemPage: FunctionComponent<Props> = ({ initSystem }) => {
+const SystemPage: FunctionComponent<Props> = ({ initSystem, params }) => {
   const [system, setSystem] = useState<System>(initSystem !== undefined ? initSystem : systemState);
 
   const [isLoading, setLoading] = useState<boolean>(true);
@@ -43,8 +43,7 @@ const SystemPage: FunctionComponent<Props> = ({ initSystem }) => {
     };
   } | null>(null);
 
-  const path = usePathname();
-  const slug = path.split("/").pop();
+  const { slug } = params;
 
   const scrollableBodies = useCallback((node: HTMLDivElement) => {
     let pos = { top: 0, left: 0, x: 0, y: 0 };

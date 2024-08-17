@@ -1,36 +1,35 @@
 "use client";
 
-import { usePathname } from "next/navigation";
 import type { FunctionComponent } from "react";
 import { useEffect, useState } from "react";
 import type {
   MappedSystemBody,
   SystemBodyResource,
   SystemBodyRing,
-} from "../../lib/interfaces/SystemBody";
-import { SystemBodyType } from "../../lib/constants/system";
-import { getResource } from "../../lib/api";
+} from "../../core/interfaces/SystemBody";
+import { SystemBodyType } from "../../core/constants/system";
+import { getResource } from "../../core/api";
 import { systemBodyState } from "../lib/store";
-import { systemDispatcher } from "../../lib/events/SystemDispatcher";
+import { systemDispatcher } from "../../core/events/SystemDispatcher";
 import SystemBody from "./system-body";
 import Loader from "../../components/loader";
 import SystemBodyTitle from "./system-body-title";
-import { formatDate, formatNumber } from "../../lib/util";
+import { formatDate, formatNumber } from "../../core/util";
 import Heading from "../../components/heading";
 
 interface Props {
   initBody?: SystemBodyResource;
+  params: { slug: string };
 }
 
-const SystemBodyPage: FunctionComponent<Props> = ({ initBody }) => {
+const SystemBodyPage: FunctionComponent<Props> = ({ initBody, params }) => {
   const [systemBody, setSystemBody] = useState<SystemBodyResource>(
     initBody !== undefined ? initBody : systemBodyState,
   );
 
   const [isLoading, setLoading] = useState<boolean>(true);
 
-  const path = usePathname();
-  const slug = path.split("/").pop();
+  const { slug } = params;
 
   useEffect(() => {
     if (slug) {

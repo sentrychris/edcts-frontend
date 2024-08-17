@@ -3,11 +3,10 @@
 import type { FunctionComponent } from "react";
 import { useState } from "react";
 import Link from "next/link";
-import type { Galnet } from "../../lib/interfaces/Galnet";
-import type { Pagination } from "../../lib/interfaces/Pagination";
-import Heading from "../../components/heading";
+import type { Galnet } from "../../core/interfaces/Galnet";
+import type { Pagination } from "../../core/interfaces/Pagination";
 import PaginationLinks from "../../components/pagination-links";
-import { getCollection } from "../../lib/api";
+import { getCollection } from "../../core/api";
 
 interface Props {
   articles: Pagination<Galnet>;
@@ -29,12 +28,6 @@ const GalnetList: FunctionComponent<Props> = ({ articles }) => {
   return (
     <>
       <div>
-        <Heading
-          icon="icarus-terminal-notifications"
-          largeIcon={true}
-          title="Galnet News"
-          className="gap-3 border-b border-neutral-800 pb-3 text-2xl"
-        />
         {rows.map((article: Galnet) => {
           return (
             <div

@@ -4,14 +4,14 @@ import type { FunctionComponent } from "react";
 import { useEffect, useState } from "react";
 import Link from "next/link";
 import { EyeIcon } from "@heroicons/react/24/outline";
-import type { Links, Meta, Pagination } from "../../lib/interfaces/Pagination";
-import type { Schedule } from "../../lib/interfaces/Schedule";
-import { useDebounce } from "../../lib/hooks/debounce";
+import type { Links, Meta, Pagination } from "../../core/interfaces/Pagination";
+import type { Schedule } from "../../core/interfaces/Schedule";
+import { useDebounce } from "../../core/hooks/debounce";
 import Filter from "../../components/filter";
 import Table from "../../components/table";
-import { getCollection } from "../../lib/api";
+import { getCollection } from "../../core/api";
 import { renderStatusText } from "../lib/store";
-import { formatDate } from "../../lib/util";
+import { formatDate } from "../../core/util";
 
 interface Props {
   schedule: Pagination<Schedule>;

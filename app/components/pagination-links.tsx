@@ -1,6 +1,6 @@
 import type { FunctionComponent } from "react";
 import { memo } from "react";
-import type { Links, Meta } from "../lib/interfaces/Pagination";
+import type { Links, Meta } from "../core/interfaces/Pagination";
 import PaginationLink from "./pagination-link";
 
 interface Props {

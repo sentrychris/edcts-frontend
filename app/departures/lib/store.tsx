@@ -1,6 +1,6 @@
-import type { Schedule } from "../../lib/interfaces/Schedule";
-import type { Pagination } from "../../lib/interfaces/Pagination";
-import { pagination } from "../../lib/api";
+import type { Schedule } from "../../core/interfaces/Schedule";
+import type { Pagination } from "../../core/interfaces/Pagination";
+import { pagination } from "../../core/api";
 import { systemState } from "../../systems/lib/store";
 
 export const scheduleState: Schedule = {

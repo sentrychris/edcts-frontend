@@ -2,9 +2,9 @@
 
 import type { FunctionComponent } from "react";
 import { useEffect, useState, memo } from "react";
-import type { Statistics } from "../../lib/interfaces/Statistics";
-import { getResource } from "../../lib/api";
-import { formatNumber, renderBadge } from "../../lib/util";
+import type { Statistics } from "../../core/interfaces/Statistics";
+import { getResource } from "../../core/api";
+import { formatNumber, renderBadge } from "../../core/util";
 import Link from "next/link";
 
 interface Props {

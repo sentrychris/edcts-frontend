@@ -4,10 +4,10 @@ import type { FunctionComponent } from "react";
 import { useState } from "react";
 import Link from "next/link";
 import { EyeIcon } from "@heroicons/react/24/outline";
-import type { Links, Meta, Pagination } from "../../lib/interfaces/Pagination";
-import type { System } from "../../lib/interfaces/System";
-import { getCollection } from "../../lib/api";
-import { useDebounce } from "../../lib/hooks/debounce";
+import type { Links, Meta, Pagination } from "../../core/interfaces/Pagination";
+import type { System } from "../../core/interfaces/System";
+import { getCollection } from "../../core/api";
+import { useDebounce } from "../../core/hooks/debounce";
 import Filter from "../../components/filter";
 import Table from "../../components/table";
 

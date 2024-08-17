@@ -1,17 +1,18 @@
 "use client";
 
-import { useEffect, useState } from "react";
-import { usePathname } from "next/navigation";
-import type { Galnet } from "../../lib/interfaces/Galnet";
+import { type FunctionComponent, useEffect, useState } from "react";
+import type { Galnet } from "../../core/interfaces/Galnet";
 import { galnetState } from "../lib/store";
-import Heading from "../../components/heading";
-import { getResource } from "../../lib/api";
+import { getResource } from "../../core/api";
 
-const GalnetArticle = () => {
+interface Props {
+  params: { slug: string };
+}
+
+const GalnetArticle: FunctionComponent<Props> = ({ params }) => {
   const [article, setArticle] = useState<Galnet>(galnetState);
 
-  const path = usePathname();
-  const slug = path.split("/").pop();
+  const { slug } = params;
 
   useEffect(() => {
     (async () => {
@@ -22,12 +23,6 @@ const GalnetArticle = () => {
 
   return (
     <>
-      <Heading
-        icon="icarus-terminal-notifications"
-        largeIcon={true}
-        title="Galnet News"
-        className="gap-3 border-b border-neutral-800 pb-3 text-2xl"
-      />
       <div className="relative border-b border-neutral-800 py-10">
         <h1 className="text-4xl">{article.title}</h1>
         <small>{article.uploaded_at}</small>

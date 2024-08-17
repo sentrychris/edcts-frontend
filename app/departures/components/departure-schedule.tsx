@@ -1,16 +1,18 @@
 "use client";
 
-import { usePathname } from "next/navigation";
-import { useEffect, useState } from "react";
-import type { Schedule } from "../../lib/interfaces/Schedule";
+import { type FunctionComponent, useEffect, useState } from "react";
+import type { Schedule } from "../../core/interfaces/Schedule";
 import { scheduleState } from "../lib/store";
-import { getResource } from "../../lib/api";
+import { getResource } from "../../core/api";
 
-const DepartureSchedule = () => {
+interface Props {
+  params: { slug: string };
+}
+
+const DepartureSchedule: FunctionComponent<Props> = ({ params }) => {
   const [schedule, setSchedule] = useState<Schedule>(scheduleState);
 
-  const path = usePathname();
-  const slug = path.split("/").pop();
+  const { slug } = params;
 
   useEffect(() => {
     (async () => {

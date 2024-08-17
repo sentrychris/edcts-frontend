@@ -1,8 +1,8 @@
-import type { Schedule } from "../lib/interfaces/Schedule";
+import type { Schedule } from "../core/interfaces/Schedule";
 import DepartureCard from "./components/departure-card";
 import DepartureTable from "./components/departure-table";
 import Heading from "../components/heading";
-import { getCollection } from "../lib/api";
+import { getCollection } from "../core/api";
 
 export default async function Page() {
   const schedule = await getCollection<Schedule>("fleet/schedule", {

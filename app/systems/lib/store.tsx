@@ -1,6 +1,6 @@
-import type { System } from "../../lib/interfaces/System";
-import type { Pagination } from "../../lib/interfaces/Pagination";
-import { pagination } from "../../lib/api";
+import type { System } from "../../core/interfaces/System";
+import type { Pagination } from "../../core/interfaces/Pagination";
+import { pagination } from "../../core/api";
 
 export const systemState: System = {
   id: 0,
