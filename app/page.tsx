@@ -33,9 +33,9 @@ export default async function Home() {
           return <DepartureCard key={schedule.id} schedule={schedule} />;
         })}
       </div>
-      <div className="mt-5 grid grid-cols-1 gap-x-10 md:grid-cols-2 lg:grid-cols-3">
+      <div className="mt-12 grid grid-cols-1 gap-x-10 md:grid-cols-2 lg:grid-cols-3">
         <div className="col-span-1">
-          <div className="border-b border-neutral-800 pb-5">
+          <div className="border-b border-neutral-800 pb-12">
             <Heading
               icon="icarus-terminal-location-filled text-glow__blue"
               largeIcon={true}
@@ -62,7 +62,7 @@ export default async function Home() {
               </div>
             </div>
             <p className="mt-2.5">
-              <span className="text-glow__orange">{2} fleet carriers</span> are currently in this
+              <span className="text-glow__blue">{2}</span> fleet carriers are currently in this
               system
             </p>
           </div>

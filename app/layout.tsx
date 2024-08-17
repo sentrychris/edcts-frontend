@@ -22,14 +22,6 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
             <Image
               width="100"
               height="100"
-              src="/avifb.png"
-              className="w-[100rem] max-w-none flex-none dark:hidden"
-              decoding="async"
-              alt="glow"
-            ></Image>
-            <Image
-              width="100"
-              height="100"
               src="/tinyb.png"
               className="hidden w-[150rem] max-w-none flex-none dark:block"
               decoding="async"

@@ -14,7 +14,7 @@ const DepartureCard: FunctionComponent<Props> = ({ schedule, className }) => {
   const departed = schedule.status.departed ? "line-through" : "";
 
   return (
-    <div className={"bg-transparent py-6 backdrop-blur backdrop-filter " + className}>
+    <div className={"bg-transparent px-4 py-8 backdrop-blur backdrop-filter " + className}>
       <div className="flex flex-col md:max-w-xl">
         <Link href={`/departures/schedule/${schedule.slug}`}>
           <h5
@@ -26,9 +26,6 @@ const DepartureCard: FunctionComponent<Props> = ({ schedule, className }) => {
             {schedule.title}
           </h5>
         </Link>
-        <p className="mb-4 text-sm font-normal text-neutral-800 dark:text-gray-300">
-          {schedule.description.slice(0, 65) + "..."}
-        </p>
         <hr className="w-full" />
         <div className="mt-3 flex flex-row items-center justify-between text-sm text-neutral-800 dark:text-gray-100">
           <div>
