@@ -56,11 +56,11 @@ export default class SystemMap {
     //
     // Let's use our own classification system (stored in ._type) to preserve the
     // RawSystemBody's type.
-    let bodies = this.#findStarsOrbitingOtherStarsLikePlanets(_bodies || []);
+    let bodies = this.findStarsOrbitingOtherStarsLikePlanets(_bodies || []);
 
     // Squash duplicate entries to prevent two bodies with the different names
     // and the same body id from appearing in the map.
-    bodies = this.#getUniqueObjectsByProperty(bodies, "body_id");
+    bodies = this.getUniqueObjectsByProperty(bodies, "body_id");
 
     stations = stations.filter((c: Station) => !c.name.toLowerCase().startsWith("rescue ship - "));
 
@@ -116,8 +116,8 @@ export default class SystemMap {
         // TODO Station overlap for the MappedSystemBody interface
         const stationObject = (<unknown>systemObject) as MappedStation;
 
-        const nearestStar = this.#getNearestStar(stationObject);
-        const nearestPlanet = this.#getNearestPlanet(stationObject);
+        const nearestStar = this.getNearestStar(stationObject);
+        const nearestPlanet = this.getNearestPlanet(stationObject);
         const nearestPlanetParentType = nearestPlanet?.parents?.[0]
           ? Object.keys(nearestPlanet.parents[0])[0]
           : SystemBodyType.Null;
@@ -179,7 +179,7 @@ export default class SystemMap {
     }
 
     this.stars.forEach((star) => {
-      this.#mapBodies(star);
+      this.mapBodies(star);
     });
   }
 
@@ -217,13 +217,13 @@ export default class SystemMap {
     }
   }
 
-  #mapBodies(star: MappedSystemBody) {
+  mapBodies(star: MappedSystemBody) {
     // Get each objects directly orbiting star
-    star._children = this.#getOrbitingBodies(star, true).map((itemInOrbit, i) => {
+    star._children = this.getOrbitingBodies(star, true).map((itemInOrbit, i) => {
       const MAIN_PLANET_MIN_R = MIN_RADIUS;
 
       // Get each objects directly orbiting this object
-      itemInOrbit._children = this.#getOrbitingBodies(itemInOrbit, false);
+      itemInOrbit._children = this.getOrbitingBodies(itemInOrbit, false);
 
       itemInOrbit._r = itemInOrbit.radius ? itemInOrbit.radius / RADIUS_DIVIDER : MIN_RADIUS;
 
@@ -272,7 +272,7 @@ export default class SystemMap {
     return star;
   }
 
-  #getNearestStar(stationObject: MappedStation) {
+  getNearestStar(stationObject: MappedStation) {
     const doa = stationObject.distance_to_arrival;
     const stars = this.objectsInSystem.filter((body) => body._type === "Star");
     if (!doa || stars.length === 0) {
@@ -291,7 +291,7 @@ export default class SystemMap {
     });
   }
 
-  #getNearestPlanet(stationObject: MappedStation) {
+  getNearestPlanet(stationObject: MappedStation) {
     const doa = stationObject.distance_to_arrival;
     const planets = this.objectsInSystem.filter((body) => body._type === "Planet");
 
@@ -304,7 +304,7 @@ export default class SystemMap {
     });
   }
 
-  #getNearestNotNullParent(body: MappedSystemBody) {
+  getNearestNotNullParent(body: MappedSystemBody) {
     let nonNullParent = null;
 
     (body.parents || []).every((parent: SystemBodyParent) => {
@@ -319,7 +319,7 @@ export default class SystemMap {
     return nonNullParent;
   }
 
-  #getOrbitingBodies(
+  getOrbitingBodies(
     target: MappedSystemBody,
     immediateChildren = true,
     filter = [SystemBodyType.Planet],
@@ -358,7 +358,7 @@ export default class SystemMap {
         continue;
       }
 
-      const nearestNonNullParent = this.#getNearestNotNullParent(systemObject);
+      const nearestNonNullParent = this.getNearestNotNullParent(systemObject);
 
       // Some systems have multiple Null points around which bodies orbit.
       // Normalize these all into one Null orbit with body ID 0.
@@ -393,7 +393,7 @@ export default class SystemMap {
     return children;
   }
 
-  #findStarsOrbitingOtherStarsLikePlanets(_bodies: RawSystemBody[]) {
+  findStarsOrbitingOtherStarsLikePlanets(_bodies: RawSystemBody[]) {
     const bodies = JSON.parse(JSON.stringify(_bodies));
     const starsOrbitingStarsLikePlanets: number[] = [];
 
@@ -416,7 +416,7 @@ export default class SystemMap {
 
       // If star doesn't have any non-null parent objects (i.e. it's not
       // orbiting a planet or a star) then don't re-classify it.
-      if (this.#getNearestNotNullParent(body) === null) {
+      if (this.getNearestNotNullParent(body) === null) {
         return;
       }
 
@@ -444,7 +444,7 @@ export default class SystemMap {
     return bodies;
   }
 
-  #getUniqueObjectsByProperty(arrayOfSystemObjects: MappedSystemBody[], key: MapKeyType) {
+  getUniqueObjectsByProperty(arrayOfSystemObjects: MappedSystemBody[], key: MapKeyType) {
     const systemObjectsBy64BitId: Record<string, MappedSystemBody> = {};
 
     // Loop through objects and assign them a timestamp based on date discovered
@@ -462,7 +462,7 @@ export default class SystemMap {
       // TODO: It happened... see https://github.com/EDSM-NET/FrontEnd/issues/506
       if (!Object.prototype.hasOwnProperty.call(systemObjectWithTimestamp, "id64")) {
         return console.error(
-          "#getUniqueObjectsByProperty error - systemObject does not have id64 property",
+          "getUniqueObjectsByProperty error - systemObject does not have id64 property",
           systemObject,
         );
       }
