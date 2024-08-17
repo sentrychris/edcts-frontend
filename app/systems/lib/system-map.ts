@@ -114,10 +114,10 @@ export default class SystemMap {
       // Begin mapping stations
       if (!system.parents && system.type && isStation) {
         // TODO Station overlap for the MappedSystemBody interface
-        const stationObject = (<unknown>system) as MappedStation;
+        const station = (<unknown>system) as MappedStation;
 
-        const nearestStar = this.getNearestStar(stationObject);
-        const nearestPlanet = this.getNearestPlanet(stationObject);
+        const nearestStar = this.getNearestStar(station);
+        const nearestPlanet = this.getNearestPlanet(station);
         const nearestPlanetParentType = nearestPlanet?.parents?.[0]
           ? Object.keys(nearestPlanet.parents[0])[0]
           : SystemBodyType.Null;
@@ -133,7 +133,7 @@ export default class SystemMap {
 
         // If the object doesn't have a nearby planet, then assume it's orbiting a star,
         // For example, Asterope, which has 3 stars, 0 planets, 1 Megaship and a Coriolis.
-        stationObject.parents =
+        station.parents =
           parentBodyId === null
             ? nearestStar
               ? [{ [SystemBodyType.Star]: nearestStar.body_id }]
@@ -143,35 +143,35 @@ export default class SystemMap {
         const shipServices = [];
         const otherServices = [];
 
-        if (stationObject.has_shipyard) otherServices.push("Shipyard");
-        if (stationObject.has_outfitting) otherServices.push("Outfitting");
-        if (stationObject.has_market) otherServices.push("Market");
+        if (station.has_shipyard) otherServices.push("Shipyard");
+        if (station.has_outfitting) otherServices.push("Outfitting");
+        if (station.has_market) otherServices.push("Market");
 
-        if (stationObject.other_services) {
-          if (stationObject.other_services.includes("Repair")) shipServices.push("Repair");
-          if (stationObject.other_services.includes("Refuel")) shipServices.push("Refuel");
-          if (stationObject.other_services.includes("Restock")) shipServices.push("Restock");
-          if (stationObject.other_services.includes("Tuning")) shipServices.push("Tuning");
+        if (station.other_services) {
+          if (station.other_services.includes("Repair")) shipServices.push("Repair");
+          if (station.other_services.includes("Refuel")) shipServices.push("Refuel");
+          if (station.other_services.includes("Restock")) shipServices.push("Restock");
+          if (station.other_services.includes("Tuning")) shipServices.push("Tuning");
 
-          for (const service of stationObject.other_services) {
+          for (const service of station.other_services) {
             if (!shipServices.includes(service)) {
               otherServices.push(service);
             }
           }
         }
 
-        stationObject._ship_services = shipServices.sort();
-        stationObject._other_services = otherServices.sort();
+        station._ship_services = shipServices.sort();
+        station._other_services = otherServices.sort();
 
         // If the object is a planetary port, outpost or settlement then add it to its parent
-        if (PLANETARY_BASES.includes(stationObject.type) && stationObject.body?.id) {
+        if (PLANETARY_BASES.includes(station.type) && station.body?.id) {
           for (const parent of this.items) {
-            if (parent.name === stationObject.body.name) {
+            if (parent.name === station.body.name) {
               if (!parent._planetary_bases) {
                 parent._planetary_bases = [];
               }
 
-              parent._planetary_bases.push(stationObject);
+              parent._planetary_bases.push(station);
             }
           }
         }
@@ -183,14 +183,14 @@ export default class SystemMap {
     });
   }
 
-  getSystemName(systemObjectName: string) {
-    return systemObjectName;
+  getSystemName(item: string) {
+    return item;
   }
 
-  getSystemLabel(systemObject: MappedSystemBody | MappedStation) {
-    if (systemObject._type && systemObject._type === SystemBodyType.Planet) {
+  getSystemLabel(item: MappedSystemBody | MappedStation) {
+    if (item._type && item._type === SystemBodyType.Planet) {
       return (
-        systemObject.name
+        item.name
           // Next line is special case handling for renamed systems in Witch Head
           // Sector, it needs to be ahead of the line that strips the name as
           // some systems in Witch Head have bodies that start with name name of
@@ -199,21 +199,21 @@ export default class SystemMap {
           .replace(new RegExp(`^${escapeRegExp(this.name)} `, "i"), "")
           .trim()
       );
-    } else if (systemObject._type && systemObject._type === SystemBodyType.Star) {
-      let systemObjectLabel = systemObject.name || "";
+    } else if (item._type && item._type === SystemBodyType.Star) {
+      let label = item.name || "";
       // If the label contains 'Witch Head Sector' but does not start with it
       // then it is a renamed system and the Witch Head Sector bit is stripped
       if (
-        systemObjectLabel.match(/Witch Head Sector/i) &&
-        !systemObjectLabel.match(/^Witch Head Sector/i)
+        label.match(/Witch Head Sector/i) &&
+        !label.match(/^Witch Head Sector/i)
       ) {
-        systemObjectLabel = systemObjectLabel
+        label = label
           .replace(/ Witch Head Sector ([A-z0-9\-]+) ([A-z0-9\-]+)/i, "")
           .trim();
       }
-      return systemObjectLabel;
+      return label;
     } else {
-      return systemObject.name;
+      return item.name;
     }
   }
 
@@ -272,8 +272,8 @@ export default class SystemMap {
     return star;
   }
 
-  getNearestStar(stationObject: MappedStation) {
-    const doa = stationObject.distance_to_arrival;
+  getNearestStar(station: MappedStation) {
+    const doa = station.distance_to_arrival;
     const stars = this.items.filter((body) => body._type === "Star");
     if (!doa || stars.length === 0) {
       return null;
@@ -291,8 +291,8 @@ export default class SystemMap {
     });
   }
 
-  getNearestPlanet(stationObject: MappedStation) {
-    const doa = stationObject.distance_to_arrival;
+  getNearestPlanet(station: MappedStation) {
+    const doa = station.distance_to_arrival;
     const planets = this.items.filter((body) => body._type === "Planet");
 
     if (!doa || planets.length === 0) {
@@ -329,8 +329,8 @@ export default class SystemMap {
       return [];
     }
 
-    for (const systemObject of this.items) {
-      const type = <SystemBodyType>systemObject._type;
+    for (const item of this.items) {
+      const type = <SystemBodyType>item._type;
       if (filter.length && !filter.includes(type)) {
         continue;
       }
@@ -341,8 +341,8 @@ export default class SystemMap {
       let primaryOrbit = null;
       let primaryOrbitType = null;
 
-      if (systemObject.parents) {
-        for (const parent of systemObject.parents) {
+      if (item.parents) {
+        for (const parent of item.parents) {
           for (const key of Object.keys(parent)) {
             if (primaryOrbit === null) primaryOrbit = parent[<SystemBodyType>key];
             if (primaryOrbitType === null) primaryOrbitType = key;
@@ -354,11 +354,11 @@ export default class SystemMap {
         }
       }
 
-      if (!systemObject.parents) {
+      if (!item.parents) {
         continue;
       }
 
-      const nearestNonNullParent = this.getNearestNotNullParent(systemObject);
+      const nearestNonNullParent = this.getNearestNotNullParent(item);
 
       // Some systems have multiple Null points around which bodies orbit.
       // Normalize these all into one Null orbit with body ID 0.
@@ -369,24 +369,24 @@ export default class SystemMap {
 
       if (target._type === SystemBodyType.Star && inOrbitAroundStars.includes(target.body_id)) {
         if (immediateChildren === true && nearestNonNullParent === target.body_id) {
-          children.push(systemObject);
+          children.push(item);
         } else if (immediateChildren === false) {
-          children.push(systemObject);
+          children.push(item);
         }
       } else if (
         target._type === SystemBodyType.Planet &&
         inOrbitAroundPlanets.includes(target.body_id)
       ) {
         if (immediateChildren === true && nearestNonNullParent === target.body_id) {
-          children.push(systemObject);
+          children.push(item);
         } else if (immediateChildren === false) {
-          children.push(systemObject);
+          children.push(item);
         }
       } else if (target._type === SystemBodyType.Null && primaryOrbitType === SystemBodyType.Null) {
         if (immediateChildren === true && primaryOrbit === target.body_id) {
-          children.push(systemObject);
+          children.push(item);
         } else if (immediateChildren === false) {
-          children.push(systemObject);
+          children.push(item);
         }
       }
     }
@@ -462,18 +462,17 @@ export default class SystemMap {
       // TODO: It happened... see https://github.com/EDSM-NET/FrontEnd/issues/506
       if (!Object.prototype.hasOwnProperty.call(itemWithTimestamp, "id64")) {
         return console.error(
-          "getUniqueByProperty error - systemObject does not have id64 property",
+          "Error - item does not have an id64 property",
           item,
         );
       }
 
       if (itemsById64[itemWithTimestamp.id64]) {
         // If this item is newer, replace it with the one we already have
-        const systemObjectDiscoveredAt =
-        itemsById64[itemWithTimestamp.id64].discovered_at;
+        const itemDiscoveredAt = itemsById64[itemWithTimestamp.id64].discovered_at;
         if (
-          systemObjectDiscoveredAt &&
-          Date.parse(itemWithTimestamp._timestamp) > Date.parse(systemObjectDiscoveredAt)
+          itemDiscoveredAt &&
+          Date.parse(itemWithTimestamp._timestamp) > Date.parse(itemDiscoveredAt)
         ) {
           itemsById64[itemWithTimestamp.id64] = itemWithTimestamp;
         }
