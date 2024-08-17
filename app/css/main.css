@@ -48,7 +48,7 @@ body {
 
 body {
   color: rgb(var(--foreground-rgb));
-  background: black
+  background: black;
 }
 
 nav.main-nav__nav {

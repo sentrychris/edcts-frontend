@@ -17,7 +17,7 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
     <html lang="en" data-fx-crt-text="true" className="scroll-smooth">
       <body className={jura.className + " relative antialiased"}>
         <SvgFilters />
-        <div className="overlay pointer-events-none absolute inset-x-0 top-0 justify-center overflow-hidden flex">
+        <div className="overlay pointer-events-none absolute inset-x-0 top-0 flex justify-center overflow-hidden">
           <div className="flex w-[108rem] flex-none justify-end">
             <Image
               width="100"
@@ -30,7 +30,7 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
           </div>
         </div>
         <MainNavigation />
-        <main className="text-glow__white text-neutral-200 mx-auto flex flex-col px-6 py-6 md:px-12 lg:px-24">
+        <main className="text-glow__white mx-auto flex flex-col px-6 py-6 text-neutral-200 md:px-12 lg:px-24">
           <h1 className="mb-5 text-4xl uppercase">
             ED:CTS <span className="hidden md:inline">- Carrier Transport Services</span>
           </h1>

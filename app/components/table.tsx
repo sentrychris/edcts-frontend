@@ -41,7 +41,7 @@ function Table<T extends RequiredAttribute>({ columns, data, meta, links, page }
             <td
               colSpan={Object.keys(columns).length}
               scope="row"
-              className="font-italic whitespace-nowrap px-6 py-4 font-medium md:text-center text-gray-200"
+              className="font-italic whitespace-nowrap px-6 py-4 font-medium text-gray-200 md:text-center"
             >
               No data found...
             </td>

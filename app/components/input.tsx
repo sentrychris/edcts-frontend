@@ -35,10 +35,7 @@ const Input: FunctionComponent<Props> = ({
   return (
     <div className="grow">
       {label && (
-        <label
-          htmlFor={id}
-          className="mb-1 block text-sm font-semibold text-gray-200"
-        >
+        <label htmlFor={id} className="mb-1 block text-sm font-semibold text-gray-200">
           {label}
         </label>
       )}

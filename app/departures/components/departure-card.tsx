@@ -19,7 +19,7 @@ const DepartureCard: FunctionComponent<Props> = ({ schedule, className }) => {
         <Link href={`/departures/schedule/${schedule.slug}`}>
           <h5
             className={
-              "hover:text-glow mb-3 text-lg font-bold tracking-tight hover:underline text-glow__orange" +
+              "hover:text-glow text-glow__orange mb-3 text-lg font-bold tracking-tight hover:underline" +
               departed
             }
           >

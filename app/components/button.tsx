@@ -37,8 +37,7 @@ const Button: FunctionComponent<Props> = ({
       themeClasses = "bg-transparent text-glow__white";
       break;
     default:
-      themeClasses =
-        "bg-neutral-800 hover:bg-neutral-700 text-white";
+      themeClasses = "bg-neutral-800 hover:bg-neutral-700 text-white";
       spinnerClasses = "fill-gray-900 text-blue-400";
   }
 

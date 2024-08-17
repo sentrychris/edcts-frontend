@@ -45,9 +45,7 @@ export default function MainNavigation() {
                         key={item.name}
                         href={item.href}
                         className={classNames(
-                          item.current
-                            ? "font-bold text-white"
-                            : "text-gray-300 hover:text-white",
+                          item.current ? "font-bold text-white" : "text-gray-300 hover:text-white",
                           "rounded-md px-3 py-2 text-sm",
                         )}
                         aria-current={item.current ? "page" : undefined}

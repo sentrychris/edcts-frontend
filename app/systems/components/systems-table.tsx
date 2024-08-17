@@ -85,8 +85,7 @@ const SystemsTable: FunctionComponent<Props> = ({ systems }) => {
               ? "text-yellow-400"
               : value === "Independent"
                 ? "text-green-300"
-                : "text-stone-300") +
-          " text-glow__white uppercase tracking-wide"
+                : "text-stone-300") + " text-glow__white uppercase tracking-wide"
         }
       >
         {value}
