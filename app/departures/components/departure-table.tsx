@@ -113,19 +113,6 @@ const DepartureTable: FunctionComponent<Props> = ({ schedule, filter = true }) =
       render: (schedule: Schedule) =>
         schedule.arrives_at ? formatDate(schedule.arrives_at) : "---",
     },
-    view: {
-      title: "View",
-      render: (schedule: Schedule) => {
-        return (
-          <Link
-            className="text-blue-500 underline dark:text-blue-200"
-            href={`/departures/schedule/${schedule.slug}`}
-          >
-            <EyeIcon className="h-6 w-6" />
-          </Link>
-        );
-      },
-    },
   };
 
   return (

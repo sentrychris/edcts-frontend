@@ -22,7 +22,7 @@ export default function MainNavigation() {
       {({ open }) => (
         <>
           <div className="main-nav__menu px-6 uppercase md:px-12 lg:px-24">
-            <div className="relative flex h-16 items-center justify-between">
+            <div className="relative flex h-10 items-center justify-between">
               <div className="absolute inset-y-0 left-0 flex items-center sm:hidden">
                 {/* Mobile menu button*/}
                 <Disclosure.Button className="inline-flex items-center justify-center rounded-md p-2 text-gray-400 hover:bg-zinc-700 hover:text-white focus:outline-none">
@@ -35,7 +35,9 @@ export default function MainNavigation() {
                 </Disclosure.Button>
               </div>
               <div className="flex flex-1 items-center justify-center sm:justify-start">
-                <i className="icarus-terminal-logo text-6xl"></i>
+                <div className="flex items-center gap-3">
+                  <i className="icarus-terminal-logo text-5xl"></i>
+                </div>
                 <div className="hidden sm:ml-6 sm:block">
                   <div className="flex space-x-4">
                     {navigation.map((item) => (
