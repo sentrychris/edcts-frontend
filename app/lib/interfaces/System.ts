@@ -1,5 +1,5 @@
-import { RawSystemBody } from './SystemBody';
-import { Station } from './Station';
+import { RawSystemBody } from "./SystemBody";
+import { Station } from "./Station";
 
 export interface System {
   id: number;
@@ -9,7 +9,7 @@ export interface System {
     x: number;
     y: number;
     z: number;
-  }
+  };
   information: SystemInformation;
   bodies: Array<RawSystemBody>;
   stations: Array<Station>;
@@ -26,5 +26,5 @@ export interface SystemInformation {
   controlling_faction: {
     name: string;
     allegiance: string;
-  }
+  };
 }

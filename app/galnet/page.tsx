@@ -1,9 +1,9 @@
-import { Galnet } from '../lib/interfaces/Galnet';
-import GalnetList from './components/galnet-list';
-import { getCollection } from '../lib/api';
+import { Galnet } from "../lib/interfaces/Galnet";
+import GalnetList from "./components/galnet-list";
+import { getCollection } from "../lib/api";
 
 export default async function Page() {
-  const articles = await getCollection<Galnet>('galnet/news');
+  const articles = await getCollection<Galnet>("galnet/news");
 
   return (
     <>
@@ -13,4 +13,3 @@ export default async function Page() {
     </>
   );
 }
-  

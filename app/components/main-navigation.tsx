@@ -1,20 +1,20 @@
-'use client';
+"use client";
 
-import { Disclosure, Menu, Transition } from '@headlessui/react';
-import { Bars3Icon, XMarkIcon } from '@heroicons/react/24/outline';
-import { Fragment } from 'react';
-import Link from 'next/link';
-import Image from 'next/image';
+import { Disclosure, Menu, Transition } from "@headlessui/react";
+import { Bars3Icon, XMarkIcon } from "@heroicons/react/24/outline";
+import { Fragment } from "react";
+import Link from "next/link";
+import Image from "next/image";
 
 const navigation = [
-  { name: 'Home', href: '/', current: true },
-  { name: 'Departures', href: '/departures', current: false },
-  { name: 'Systems', href: '/systems', current: false },
-  { name: 'News', href: '/galnet', current: false },
+  { name: "Home", href: "/", current: true },
+  { name: "Departures", href: "/departures", current: false },
+  { name: "Systems", href: "/systems", current: false },
+  { name: "News", href: "/galnet", current: false },
 ];
 
 function classNames(...classes: string[]) {
-  return classes.filter(Boolean).join(' ');
+  return classes.filter(Boolean).join(" ");
 }
 
 export default function MainNavigation() {
@@ -44,10 +44,12 @@ export default function MainNavigation() {
                         key={item.name}
                         href={item.href}
                         className={classNames(
-                          item.current ? 'font-bold text-black dark:text-white' : 'text-gray-900 dark:text-gray-300 hover:text-black dark:hover:text-white',
-                          'rounded-md px-3 py-2 text-sm'
+                          item.current
+                            ? "font-bold text-black dark:text-white"
+                            : "text-gray-900 dark:text-gray-300 hover:text-black dark:hover:text-white",
+                          "rounded-md px-3 py-2 text-sm",
                         )}
-                        aria-current={item.current ? 'page' : undefined}
+                        aria-current={item.current ? "page" : undefined}
                       >
                         {item.name}
                       </Link>
@@ -59,7 +61,9 @@ export default function MainNavigation() {
                 <Menu as="div" className="relative ml-3">
                   <div className="flex items-center gap-3">
                     <Menu.Button className="flex items-center gap-3 text-sm focus:outline-none align-items">
-                      <span className="hidden md:flex text-glow__orange text-xs[">CMDR Shaki Kazaro</span>
+                      <span className="hidden md:flex text-glow__orange text-xs[">
+                        CMDR Shaki Kazaro
+                      </span>
                       <Image
                         className="h-10 w-10 rounded-lg border-2 border-neutral-700"
                         width={32}
@@ -84,7 +88,10 @@ export default function MainNavigation() {
                         {({ active }) => (
                           <Link
                             href="#"
-                            className={classNames(active ? 'bg-zinc-100' : '', 'block px-4 py-2 text-sm text-gray-700')}
+                            className={classNames(
+                              active ? "bg-zinc-100" : "",
+                              "block px-4 py-2 text-sm text-gray-700",
+                            )}
                           >
                             Your Profile
                           </Link>
@@ -94,7 +101,10 @@ export default function MainNavigation() {
                         {({ active }) => (
                           <Link
                             href="#"
-                            className={classNames(active ? 'bg-zinc-100' : '', 'block px-4 py-2 text-sm text-gray-700')}
+                            className={classNames(
+                              active ? "bg-zinc-100" : "",
+                              "block px-4 py-2 text-sm text-gray-700",
+                            )}
                           >
                             Settings
                           </Link>
@@ -104,7 +114,10 @@ export default function MainNavigation() {
                         {({ active }) => (
                           <Link
                             href="#"
-                            className={classNames(active ? 'bg-zinc-100' : '', 'block px-4 py-2 text-sm text-gray-700')}
+                            className={classNames(
+                              active ? "bg-zinc-100" : "",
+                              "block px-4 py-2 text-sm text-gray-700",
+                            )}
                           >
                             Sign out
                           </Link>
@@ -125,10 +138,12 @@ export default function MainNavigation() {
                   as="a"
                   href={item.href}
                   className={classNames(
-                    item.current ? 'bg-zinc-900 text-white' : 'text-gray-300 hover:bg-zinc-700 hover:text-white',
-                    'block rounded-md px-3 py-2 text-base font-medium'
+                    item.current
+                      ? "bg-zinc-900 text-white"
+                      : "text-gray-300 hover:bg-zinc-700 hover:text-white",
+                    "block rounded-md px-3 py-2 text-base font-medium",
                   )}
-                  aria-current={item.current ? 'page' : undefined}
+                  aria-current={item.current ? "page" : undefined}
                 >
                   {item.name}
                 </Disclosure.Button>

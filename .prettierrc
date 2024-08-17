@@ -1,0 +1,19 @@
+{
+  "bracketSpacing": true,
+  "semi": true,
+  "singleQuote": false,
+  "tabWidth": 2,
+  "overrides": [
+    {
+      "files": ["*.ts", "*.tsx"],
+      "options": {
+        "parser": "typescript",
+        "semi": true,
+        "singleQuote": false,
+        "useTabs": false,
+        "tabWidth": 2,
+        "printWidth": 100
+      }
+    }
+  ]
+}

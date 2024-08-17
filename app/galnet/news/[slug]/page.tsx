@@ -1,4 +1,4 @@
-import GalnetArticle from '../../components/galnet-article';
+import GalnetArticle from "../../components/galnet-article";
 
 export default async function Page() {
   return (
@@ -8,5 +8,4 @@ export default async function Page() {
       </div>
     </>
   );
-};
-  
+}

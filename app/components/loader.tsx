@@ -1,15 +1,20 @@
-import { FunctionComponent, memo } from 'react';
+import { FunctionComponent, memo } from "react";
 
 interface Props {
   visible: boolean;
   message?: string;
 }
 
-const Loader: FunctionComponent<Props> = ({ visible = true, message = 'Loading, please wait...' }) => {
+const Loader: FunctionComponent<Props> = ({
+  visible = true,
+  message = "Loading, please wait...",
+}) => {
   return (
-    <div className="elite-loader-container" style={{opacity: visible ? '0.75' : '0'}}>
+    <div className="elite-loader-container" style={{ opacity: visible ? "0.75" : "0" }}>
       <div className="elite-loader">
-        <h2 className="uppercase text-glow__orange mb-3 text-xs">{visible ? message : 'Loading completed!'}</h2>
+        <h2 className="uppercase text-glow__orange mb-3 text-xs">
+          {visible ? message : "Loading completed!"}
+        </h2>
         <div className="row">
           <div className="arrow up outer outer-18"></div>
           <div className="arrow down outer outer-17"></div>
@@ -46,6 +51,5 @@ const Loader: FunctionComponent<Props> = ({ visible = true, message = 'Loading, 
     </div>
   );
 };
-
 
 export default memo(Loader);

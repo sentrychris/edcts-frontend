@@ -1,5 +1,5 @@
-import { SystemBodyParent } from './SystemBody';
-import { System } from './System';
+import { SystemBodyParent } from "./SystemBody";
+import { System } from "./System";
 
 interface StationBody {
   id: number;
@@ -12,29 +12,28 @@ export interface Station {
   id: number;
   name: string;
   type: string;
-  body: StationBody|null;
+  body: StationBody | null;
   system?: System;
   distance_to_arrival: number;
   controlling_faction: string;
   allegiance: string;
   government: string;
   economy: string;
-  second_economy: string|null;
+  second_economy: string | null;
   has_market: boolean;
   has_shipyard: boolean;
   has_outfitting: boolean;
   other_services: Array<string>;
   last_updated: {
-    information: string|null;
-    market: string|null;
-    shipyard: string|null;
-    outfitting: string|null;
+    information: string | null;
+    market: string | null;
+    shipyard: string | null;
+    outfitting: string | null;
   };
   slug: string;
 }
 
-export interface MappedStation extends Partial<Station>
-{
+export interface MappedStation extends Partial<Station> {
   id: number;
   name: string;
   type: string;

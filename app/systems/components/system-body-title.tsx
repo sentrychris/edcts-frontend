@@ -1,6 +1,6 @@
-import Link from 'next/link';
-import { FunctionComponent, memo } from 'react';
-import { System } from '../../lib/interfaces/System';
+import Link from "next/link";
+import { FunctionComponent, memo } from "react";
+import { System } from "../../lib/interfaces/System";
 
 interface Props {
   title: string;
@@ -11,7 +11,10 @@ interface Props {
 const SystemBodyTitle: FunctionComponent<Props> = ({ title, ringed, system }) => {
   return (
     <div className="flex gap-2 items-center text-glow__white">
-      <i className={'text-glow icarus-terminal-' + (ringed ? 'planet-ringed' : 'planet')} style={{fontSize: '3rem'}}></i>
+      <i
+        className={"text-glow icarus-terminal-" + (ringed ? "planet-ringed" : "planet")}
+        style={{ fontSize: "3rem" }}
+      ></i>
       <div>
         <h2 className="uppercase text-3xl">{title}</h2>
         <Link href={`/systems/system/${system.slug}`}>

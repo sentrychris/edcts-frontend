@@ -1,8 +1,10 @@
-import { FunctionComponent, memo } from 'react';
+import { FunctionComponent, memo } from "react";
 
-const SvgFilters: FunctionComponent = () =>{
+const SvgFilters: FunctionComponent = () => {
   return (
-    <div dangerouslySetInnerHTML={{__html: `
+    <div
+      dangerouslySetInnerHTML={{
+        __html: `
       <svg style="position: absolute; height: 0; margin: 0; padding: 0; top: -100px;">
         <defs>
           <!-- For planet icons in system map -->
@@ -163,7 +165,8 @@ const SvgFilters: FunctionComponent = () =>{
             }
           </style>
         \`)
-      </script>`}}
+      </script>`,
+      }}
     />
   );
 };

@@ -1,5 +1,5 @@
-import { Carrier } from './Carrier';
-import { System } from './System';
+import { Carrier } from "./Carrier";
+import { System } from "./System";
 
 export interface Schedule {
   id: number;
@@ -11,12 +11,12 @@ export interface Schedule {
   departs_at: string;
   arrives_at?: string;
   status: {
-    cancelled: boolean,
-    boarding: boolean,
-    departed: boolean,
-    departed_at: boolean | string,
-    arrived: boolean,
-    arrived_at: boolean | string
-  }
+    cancelled: boolean;
+    boarding: boolean;
+    departed: boolean;
+    departed_at: boolean | string;
+    arrived: boolean;
+    arrived_at: boolean | string;
+  };
   slug: string;
 }

@@ -1,39 +1,39 @@
-import { System } from '../../lib/interfaces/System';
-import { Pagination } from '../../lib/interfaces/Pagination';
-import { pagination } from '../../lib/api';
+import { System } from "../../lib/interfaces/System";
+import { Pagination } from "../../lib/interfaces/Pagination";
+import { pagination } from "../../lib/api";
 
 export const systemState: System = {
   id: 0,
   id64: 0,
-  name: '',
+  name: "",
   coords: {
     x: 0,
     y: 0,
-    z: 0
+    z: 0,
   },
   information: {
-    allegiance: '',
-    government: '',
+    allegiance: "",
+    government: "",
     population: 0,
-    security: '',
-    economy: '',
+    security: "",
+    economy: "",
     controlling_faction: {
-        name: '',
-        allegiance: ''
-    }
+      name: "",
+      allegiance: "",
+    },
   },
   bodies: [],
   stations: [],
-  updated_at: '',
-  slug: ''
+  updated_at: "",
+  slug: "",
 };
 
 export const systemBodyState = {
   id: 0,
   body_id: 0,
-  name: '',
-  type: '',
-  sub_type: '',
+  name: "",
+  type: "",
+  sub_type: "",
   distance_to_arrival: 0,
   is_main_star: 0,
   is_scoopable: 0,
@@ -43,8 +43,8 @@ export const systemBodyState = {
   solar_radius: null,
   absolute_magnitude: null,
   discovery: {
-    commander: '',
-    date: '',
+    commander: "",
+    date: "",
   },
   system: systemState,
   radius: 0,
@@ -52,9 +52,9 @@ export const systemBodyState = {
   earth_masses: 0,
   surface_temp: 0,
   is_landable: 0,
-  atmosphere_type: '',
-  volcanism_type: '',
-  terraforming_state: '',
+  atmosphere_type: "",
+  volcanism_type: "",
+  terraforming_state: "",
   axial: {
     axial_tilt: 0,
     semi_major_axis: 0,
@@ -69,32 +69,31 @@ export const systemBodyState = {
   },
   rings: null,
   parents: [],
-  slug: '',
+  slug: "",
 };
-
 
 export const statisticsState = {
   data: {
     cartographical: {
-        systems: 0,
-        bodies: 0,
-        stars: 0,
-        orbiting: 0
+      systems: 0,
+      bodies: 0,
+      stars: 0,
+      orbiting: 0,
     },
     carriers: 0,
     commanders: 0,
     journeys: {
-        total: 0,
-        boarding: 0,
-        cancelled: 0,
-        leaving_in: {
-            two_days: 0,
-            one_week: 0,
-            one_month: 0,
-            six_months: 0
-        }
-    }
-  }
+      total: 0,
+      boarding: 0,
+      cancelled: 0,
+      leaving_in: {
+        two_days: 0,
+        one_week: 0,
+        one_month: 0,
+        six_months: 0,
+      },
+    },
+  },
 };
 
 export const paginatedSystemState: Pagination<System> = pagination;

@@ -1,4 +1,4 @@
-import DepartureSchedule from '../../components/departure-schedule';
+import DepartureSchedule from "../../components/departure-schedule";
 
 export default async function Page() {
   return (
@@ -8,5 +8,4 @@ export default async function Page() {
       </div>
     </>
   );
-};
-  
+}

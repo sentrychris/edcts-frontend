@@ -1,5 +1,5 @@
-import Heading from '../../../components/heading';
-import SystemPage from '../../components/system-page';
+import Heading from "../../../components/heading";
+import SystemPage from "../../components/system-page";
 
 export default async function Page() {
   return (
@@ -9,4 +9,3 @@ export default async function Page() {
     </>
   );
 }
-  

@@ -1,4 +1,4 @@
-import { System } from './System';
+import { System } from "./System";
 
 export interface CartographicalStatistics {
   systems: number;
@@ -17,7 +17,7 @@ export interface JourneyStatistics {
     one_week: number;
     one_month: number;
     six_months: number;
-  }
+  };
 }
 
 export interface SystemStatistiscs {
