@@ -99,22 +99,22 @@ export default class SystemMap {
   }
 
   map() {
-    for (const systemObject of this.items) {
-      if (!systemObject._type) {
-        systemObject._type = systemObject.type;
+    for (const system of this.items) {
+      if (!system._type) {
+        system._type = system.type;
       }
 
-      systemObject.name = this.getNameFromSystemObject(systemObject.name);
-      systemObject._label = this.getLabelFromSystemObject(systemObject);
+      system.name = this.getNameFromSystemObject(system.name);
+      system._label = this.getLabelFromSystemObject(system);
 
       const isStation = SPACE_STATIONS.concat(PLANETARY_BASES)
         .concat(MEGASHIPS)
-        .includes(systemObject.type);
+        .includes(system.type);
 
       // Begin mapping stations
-      if (!systemObject.parents && systemObject.type && isStation) {
+      if (!system.parents && system.type && isStation) {
         // TODO Station overlap for the MappedSystemBody interface
-        const stationObject = (<unknown>systemObject) as MappedStation;
+        const stationObject = (<unknown>system) as MappedStation;
 
         const nearestStar = this.getNearestStar(stationObject);
         const nearestPlanet = this.getNearestPlanet(stationObject);
