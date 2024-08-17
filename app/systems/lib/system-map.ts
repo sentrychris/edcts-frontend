@@ -130,22 +130,22 @@ export default class SystemMap {
    * Map the system bodies into a useable format.
    */
   map() {
-    for (const system of this.items) {
-      if (!system._type) {
-        system._type = system.type;
+    for (const item of this.items) {
+      if (!item._type) {
+        item._type = item.type;
       }
 
-      system.name = this.getSystemName(system.name);
-      system._label = this.getSystemLabel(system);
+      item.name = this.getSystemName(item.name);
+      item._label = this.getSystemLabel(item);
 
       const isStation = SPACE_STATIONS.concat(PLANETARY_BASES)
         .concat(MEGASHIPS)
-        .includes(system.type);
+        .includes(item.type);
 
       // Begin mapping stations
-      if (!system.parents && system.type && isStation) {
+      if (!item.parents && item.type && isStation) {
         // TODO Station overlap for the MappedSystemBody interface
-        const station = (<unknown>system) as MappedStation;
+        const station = (<unknown>item) as MappedStation;
 
         const nearestStar = this.getNearestStarToStation(station);
         const nearestPlanet = this.getNearestPlanetToStation(station);
