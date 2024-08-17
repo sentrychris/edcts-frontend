@@ -247,7 +247,7 @@ const SystemPage: FunctionComponent<Props> = ({ initSystem, params }) => {
         {!isLoading && (
           <div className="grid grid-cols-12">
             <div className="col-span-12">
-              {systemMap && systemMap.objectsInSystem.length > 0 ? (
+              {systemMap && systemMap.items.length > 0 ? (
                 renderSystemBodies(systemMap)
               ) : (
                 <div className="text-glow__orange mx-auto py-6 text-center text-lg font-bold uppercase">

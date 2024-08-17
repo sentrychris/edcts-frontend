@@ -34,13 +34,13 @@ export default class SystemMap {
   stars: MappedSystemBody[];
   planets: MappedSystemBody[];
 
-  spaceStations: Station[];
-  planetaryOutposts: Station[];
-  planetaryPorts: Station[];
+  stations: Station[];
+  outposts: Station[];
+  ports: Station[];
   settlements: Station[];
   megaships: Station[];
 
-  objectsInSystem: MappedSystemBody[];
+  items: MappedSystemBody[];
 
   constructor(system: System) {
     this.detail = system;
@@ -67,13 +67,13 @@ export default class SystemMap {
     this.stars = bodies.filter((c: MappedSystemBody) => c._type === SystemBodyType.Star);
     this.planets = bodies.filter((c: MappedSystemBody) => c._type === SystemBodyType.Planet);
 
-    this.spaceStations = stations.filter((s: Station) => SPACE_STATIONS.includes(s.type));
-    this.planetaryOutposts = stations.filter((s: Station) => PLANETARY_OUTPOSTS.includes(s.type));
-    this.planetaryPorts = stations.filter((s: Station) => SURFACE_PORTS.includes(s.type));
+    this.stations = stations.filter((s: Station) => SPACE_STATIONS.includes(s.type));
+    this.outposts = stations.filter((s: Station) => PLANETARY_OUTPOSTS.includes(s.type));
+    this.ports = stations.filter((s: Station) => SURFACE_PORTS.includes(s.type));
     this.settlements = stations.filter((s: Station) => SETTLEMENTS.includes(s.type));
     this.megaships = stations.filter((s: Station) => MEGASHIPS.includes(s.type));
 
-    this.objectsInSystem = bodies
+    this.items = bodies
       .concat(stations)
       .sort((a: MappedSystemBody, b: MappedSystemBody) => a.body_id - b.body_id);
 
@@ -99,7 +99,7 @@ export default class SystemMap {
   }
 
   map() {
-    for (const systemObject of this.objectsInSystem) {
+    for (const systemObject of this.items) {
       if (!systemObject._type) {
         systemObject._type = systemObject.type;
       }
@@ -165,7 +165,7 @@ export default class SystemMap {
 
         // If the object is a planetary port, outpost or settlement then add it to its parent
         if (PLANETARY_BASES.includes(stationObject.type) && stationObject.body?.id) {
-          for (const parent of this.objectsInSystem) {
+          for (const parent of this.items) {
             if (parent.name === stationObject.body.name) {
               if (!parent._planetary_bases) {
                 parent._planetary_bases = [];
@@ -274,7 +274,7 @@ export default class SystemMap {
 
   getNearestStar(stationObject: MappedStation) {
     const doa = stationObject.distance_to_arrival;
-    const stars = this.objectsInSystem.filter((body) => body._type === "Star");
+    const stars = this.items.filter((body) => body._type === "Star");
     if (!doa || stars.length === 0) {
       return null;
     }
@@ -293,7 +293,7 @@ export default class SystemMap {
 
   getNearestPlanet(stationObject: MappedStation) {
     const doa = stationObject.distance_to_arrival;
-    const planets = this.objectsInSystem.filter((body) => body._type === "Planet");
+    const planets = this.items.filter((body) => body._type === "Planet");
 
     if (!doa || planets.length === 0) {
       return null;
@@ -329,7 +329,7 @@ export default class SystemMap {
       return [];
     }
 
-    for (const systemObject of this.objectsInSystem) {
+    for (const systemObject of this.items) {
       const type = <SystemBodyType>systemObject._type;
       if (filter.length && !filter.includes(type)) {
         continue;
