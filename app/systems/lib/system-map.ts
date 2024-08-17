@@ -444,8 +444,8 @@ export default class SystemMap {
     return bodies;
   }
 
-  getUniqueByProperty(arrayOfSystemObjects: MappedSystemBody[], key: MapKeyType) {
-    const systemObjectsBy64BitId: Record<string, MappedSystemBody> = {};
+  getUniqueByProperty(items: MappedSystemBody[], key: MapKeyType) {
+    const itemsById64: Record<string, MappedSystemBody> = {};
 
     // Loop through objects and assign them a timestamp based on date discovered
     //
@@ -454,41 +454,39 @@ export default class SystemMap {
     //
     // The purpose of this is to de-dupe duplicate planets from the EDSM data
     // by only using the most recent data for an object.
-    arrayOfSystemObjects.forEach((systemObject: MappedSystemBody) => {
-      const systemObjectWithTimestamp = JSON.parse(JSON.stringify(systemObject));
-      systemObjectWithTimestamp._timestamp = systemObject.discovered_at;
+    items.forEach((item: MappedSystemBody) => {
+      const itemWithTimestamp = JSON.parse(JSON.stringify(item));
+      itemWithTimestamp._timestamp = item.discovered_at;
 
       // This should never happen
       // TODO: It happened... see https://github.com/EDSM-NET/FrontEnd/issues/506
-      if (!Object.prototype.hasOwnProperty.call(systemObjectWithTimestamp, "id64")) {
+      if (!Object.prototype.hasOwnProperty.call(itemWithTimestamp, "id64")) {
         return console.error(
           "getUniqueByProperty error - systemObject does not have id64 property",
-          systemObject,
+          item,
         );
       }
 
-      if (systemObjectsBy64BitId[systemObjectWithTimestamp.id64]) {
+      if (itemsById64[itemWithTimestamp.id64]) {
         // If this item is newer, replace it with the one we already have
         const systemObjectDiscoveredAt =
-          systemObjectsBy64BitId[systemObjectWithTimestamp.id64].discovered_at;
+        itemsById64[itemWithTimestamp.id64].discovered_at;
         if (
           systemObjectDiscoveredAt &&
-          Date.parse(systemObjectWithTimestamp._timestamp) > Date.parse(systemObjectDiscoveredAt)
+          Date.parse(itemWithTimestamp._timestamp) > Date.parse(systemObjectDiscoveredAt)
         ) {
-          systemObjectsBy64BitId[systemObjectWithTimestamp.id64] = systemObjectWithTimestamp;
+          itemsById64[itemWithTimestamp.id64] = itemWithTimestamp;
         }
       } else {
-        systemObjectsBy64BitId[systemObjectWithTimestamp.id64] = systemObjectWithTimestamp;
+        itemsById64[itemWithTimestamp.id64] = itemWithTimestamp;
       }
     });
 
-    const prunedArrayOfSystemObjects = [
-      ...Object.keys(systemObjectsBy64BitId).map((id64: string) => systemObjectsBy64BitId[id64]),
-    ];
-
     return [
       ...new Map(
-        prunedArrayOfSystemObjects.map((item: MappedSystemBody) => [item[key], item]),
+        [
+          ...Object.keys(itemsById64).map((id64: string) => itemsById64[id64]),
+        ].map((item: MappedSystemBody) => [item[key], item]),
       ).values(),
     ];
   }
