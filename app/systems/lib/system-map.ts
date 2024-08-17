@@ -62,27 +62,27 @@ export default class SystemMap {
     // and the same body id from appearing in the map.
     bodies = this.getUniqueByProperty(bodies, "body_id");
     stations = stations.filter((c: Station) => {
-      return !c.name.toLowerCase().startsWith("rescue ship - ")
+      return !c.name.toLowerCase().startsWith("rescue ship - ");
     });
 
     // Map stars
     this.stars = bodies.filter((c: MappedSystemBody) => {
-      return c._type === SystemBodyType.Star
+      return c._type === SystemBodyType.Star;
     });
 
     // Map planets
     this.planets = bodies.filter((c: MappedSystemBody) => {
-      return c._type === SystemBodyType.Planet
+      return c._type === SystemBodyType.Planet;
     });
 
     // Map stations
     this.stations = stations.filter((s: Station) => {
-      return SPACE_STATIONS.includes(s.type)
+      return SPACE_STATIONS.includes(s.type);
     });
 
     // Map planetary outposts
     this.outposts = stations.filter((s: Station) => {
-      return PLANETARY_OUTPOSTS.includes(s.type)
+      return PLANETARY_OUTPOSTS.includes(s.type);
     });
 
     // Map planetary ports
@@ -92,12 +92,12 @@ export default class SystemMap {
 
     // Map planetary settlements
     this.settlements = stations.filter((s: Station) => {
-      return SETTLEMENTS.includes(s.type)
+      return SETTLEMENTS.includes(s.type);
     });
 
     // Map megaships
     this.megaships = stations.filter((s: Station) => {
-      return MEGASHIPS.includes(s.type)
+      return MEGASHIPS.includes(s.type);
     });
 
     // Merge all items into one array
@@ -216,7 +216,7 @@ export default class SystemMap {
 
   /**
    * Get the system name.
-   * 
+   *
    * @param item - the system item
    * @returns the system name
    */
@@ -226,7 +226,7 @@ export default class SystemMap {
 
   /**
    * Get the system label.
-   * 
+   *
    * @param item - the system item
    * @returns the system label
    */
@@ -258,7 +258,7 @@ export default class SystemMap {
   /**
    * Map the bodies orbiting the star, and bodies orbiting those bodies
    * and so on...
-   * 
+   *
    * @param star - the star
    * @returns the star with mapped bodies
    */
@@ -319,7 +319,7 @@ export default class SystemMap {
 
   /**
    * Get the nearest star to the station.
-   * 
+   *
    * @param station - the station
    * @returns the nearest star to the station or null
    */
@@ -344,7 +344,7 @@ export default class SystemMap {
 
   /**
    * Get the nearest planet to the station.
-   * 
+   *
    * @param station - the station
    * @returns the nearest planet to the station or null
    */
@@ -363,9 +363,9 @@ export default class SystemMap {
 
   /**
    * Get the nearest non-null parent.
-   * 
+   *
    * @param body - the system body
-   * @returns 
+   * @returns
    */
   getNearestNotNullParent(body: MappedSystemBody) {
     let nonNullParent = null;
