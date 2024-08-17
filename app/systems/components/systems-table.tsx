@@ -147,16 +147,6 @@ const SystemsTable: FunctionComponent<Props> = ({ systems }) => {
           system.information && system.information.security ? system.information.security : "None",
         ),
     },
-    view: {
-      title: "View",
-      render: (system: System) => {
-        return (
-          <Link className="text-blue-200 underline" href={`/systems/system/${system.slug}`}>
-            <EyeIcon className="h-6 w-6" />
-          </Link>
-        );
-      },
-    },
   };
 
   return (
