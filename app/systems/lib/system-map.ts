@@ -48,7 +48,7 @@ export default class SystemMap {
     const { name = "", bodies: _bodies } = this.detail;
     let { stations = [] } = this.detail;
 
-    this.name = this.getNameFromSystemObject(name);
+    this.name = this.getSystemName(name);
 
     // For this to work we need to to treat "Stars" that are more like Planets
     // (e.g. Class Y Brown Dawrf Stars or Class T Tauri Stars) that orbit other
@@ -104,8 +104,8 @@ export default class SystemMap {
         system._type = system.type;
       }
 
-      system.name = this.getNameFromSystemObject(system.name);
-      system._label = this.getLabelFromSystemObject(system);
+      system.name = this.getSystemName(system.name);
+      system._label = this.getSystemLabel(system);
 
       const isStation = SPACE_STATIONS.concat(PLANETARY_BASES)
         .concat(MEGASHIPS)
@@ -183,11 +183,11 @@ export default class SystemMap {
     });
   }
 
-  getNameFromSystemObject(systemObjectName: string) {
+  getSystemName(systemObjectName: string) {
     return systemObjectName;
   }
 
-  getLabelFromSystemObject(systemObject: MappedSystemBody | MappedStation) {
+  getSystemLabel(systemObject: MappedSystemBody | MappedStation) {
     if (systemObject._type && systemObject._type === SystemBodyType.Planet) {
       return (
         systemObject.name
