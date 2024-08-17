@@ -94,7 +94,7 @@ nav.main-nav__nav .main-nav__menu {
 }
 
 .overlay {
-  opacity: 0.8;
+  opacity: 0.5;
   height: 100%;
   z-index: -1;
   background-image: url(/images/textures/galaxy.jpg);

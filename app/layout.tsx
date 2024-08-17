@@ -8,7 +8,7 @@ import "./css/main.css";
 const jura = Jura({ subsets: ["latin"] });
 
 export const metadata: Metadata = {
-  title: "SJ3F - Fleet Carrier Services",
+  title: "ED:CTS - Carrier Transport Services",
   description: "Check out the discord channel - https://discord.gg/KFaakj2",
 };
 
