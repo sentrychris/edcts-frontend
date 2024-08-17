@@ -55,12 +55,12 @@ export const renderStatusText = (value: Schedule | string) => {
     <p
       className={
         status === "DEPARTED"
-          ? "text-blue-500 dark:text-blue-200"
+          ? "text-blue-200"
           : status === "NOT READY"
-            ? "text-orange-500 dark:text-orange-300"
+            ? "text-orange-300"
             : status === "CANCELLED"
-              ? "text-red-500 dark:text-red-300"
-              : "text-green-500 dark:text-green-200"
+              ? "text-red-300"
+              : "text-green-200"
       }
     >
       {status}

@@ -37,7 +37,7 @@ const Input: FunctionComponent<Props> = ({
       {label && (
         <label
           htmlFor={id}
-          className="mb-1 block text-sm font-semibold text-gray-700 dark:text-gray-200"
+          className="mb-1 block text-sm font-semibold text-gray-200"
         >
           {label}
         </label>

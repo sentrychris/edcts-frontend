@@ -41,7 +41,7 @@ function Table<T extends RequiredAttribute>({ columns, data, meta, links, page }
             <td
               colSpan={Object.keys(columns).length}
               scope="row"
-              className="font-italic whitespace-nowrap px-6 py-4 font-medium md:text-center dark:text-gray-200"
+              className="font-italic whitespace-nowrap px-6 py-4 font-medium md:text-center text-gray-200"
             >
               No data found...
             </td>
@@ -59,7 +59,7 @@ function Table<T extends RequiredAttribute>({ columns, data, meta, links, page }
                 <td
                   key={`rowColumn_${item.id}_${key}`}
                   scope="row"
-                  className="whitespace-nowrap px-5 font-medium text-gray-900 dark:text-gray-200"
+                  className="whitespace-nowrap px-5 font-medium text-gray-200"
                 >
                   {renderContent(item, key)}
                 </td>

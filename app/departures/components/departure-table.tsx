@@ -83,7 +83,7 @@ const DepartureTable: FunctionComponent<Props> = ({ schedule, filter = true }) =
       render: (schedule: Schedule) => {
         return (
           <Link
-            className="text-blue-500 hover:underline dark:text-blue-200"
+            className="text-blue-200 hover:underline"
             href={encodeURI(`/systems/system/${schedule.departure.slug}`)}
           >
             {schedule.departure.name}
@@ -96,7 +96,7 @@ const DepartureTable: FunctionComponent<Props> = ({ schedule, filter = true }) =
       render: (schedule: Schedule) => {
         return (
           <Link
-            className="text-blue-500 hover:underline dark:text-blue-200"
+            className="text-blue-200 hover:underline"
             href={encodeURI(`/systems/system/${schedule.destination.slug}`)}
           >
             {schedule.destination.name}

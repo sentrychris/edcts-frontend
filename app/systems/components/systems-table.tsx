@@ -64,10 +64,10 @@ const SystemsTable: FunctionComponent<Props> = ({ systems }) => {
       <p
         className={
           (level === "Medium"
-            ? "text-orange-500 dark:text-orange-300"
+            ? "text-orange-300"
             : level === "Low"
-              ? "text-red-500 dark:text-red-300"
-              : "text-green-500 dark:text-green-200") + " text-glow__white uppercase"
+              ? "text-red-300"
+              : "text-green-200") + " text-glow__white uppercase"
         }
       >
         {level}
@@ -80,12 +80,12 @@ const SystemsTable: FunctionComponent<Props> = ({ systems }) => {
       <p
         className={
           (value === "Federation"
-            ? "text-blue-500 dark:text-blue-200"
+            ? "text-blue-200"
             : value === "Empire"
-              ? "text-yellow-500 dark:text-yellow-400"
+              ? "text-yellow-400"
               : value === "Independent"
-                ? "text-green-500 dark:text-green-300"
-                : "text-stone-500 dark:text-stone-300") +
+                ? "text-green-300"
+                : "text-stone-300") +
           " text-glow__white uppercase tracking-wide"
         }
       >
