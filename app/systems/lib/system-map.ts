@@ -60,7 +60,7 @@ export default class SystemMap {
 
     // Squash duplicate entries to prevent two bodies with the different names
     // and the same body id from appearing in the map.
-    bodies = this.getUniqueObjectsByProperty(bodies, "body_id");
+    bodies = this.getUniqueByProperty(bodies, "body_id");
 
     stations = stations.filter((c: Station) => !c.name.toLowerCase().startsWith("rescue ship - "));
 
@@ -444,7 +444,7 @@ export default class SystemMap {
     return bodies;
   }
 
-  getUniqueObjectsByProperty(arrayOfSystemObjects: MappedSystemBody[], key: MapKeyType) {
+  getUniqueByProperty(arrayOfSystemObjects: MappedSystemBody[], key: MapKeyType) {
     const systemObjectsBy64BitId: Record<string, MappedSystemBody> = {};
 
     // Loop through objects and assign them a timestamp based on date discovered
@@ -462,7 +462,7 @@ export default class SystemMap {
       // TODO: It happened... see https://github.com/EDSM-NET/FrontEnd/issues/506
       if (!Object.prototype.hasOwnProperty.call(systemObjectWithTimestamp, "id64")) {
         return console.error(
-          "getUniqueObjectsByProperty error - systemObject does not have id64 property",
+          "getUniqueByProperty error - systemObject does not have id64 property",
           systemObject,
         );
       }
