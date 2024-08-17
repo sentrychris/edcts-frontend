@@ -1,5 +1,5 @@
-import Heading from "../../../components/heading";
-import SystemDetail from "../../components/system/system-detail";
+import Heading from "../../components/heading";
+import SystemDetail from "../components/system/system-detail";
 
 export default async function Page({ params }: { params: { slug: string } }) {
   return (

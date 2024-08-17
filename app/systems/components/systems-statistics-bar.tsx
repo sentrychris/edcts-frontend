@@ -75,7 +75,7 @@ const SystemsStatisticsBar: FunctionComponent<Props> = ({
             <div className="text-xs">
               <Link
                 className="text-glow__blue hover:text-glow__orange hover:underline"
-                href={`/systems/system/${latestSystem.slug}`}
+                href={`/systems/${latestSystem.slug}`}
               >
                 {latestSystem.name}
               </Link>

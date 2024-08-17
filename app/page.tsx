@@ -44,7 +44,7 @@ export default async function Home() {
             />
             <Link
               className="text-glow__blue font-bold hover:underline"
-              href={`systems/system/${latestSystem.detail.slug}`}
+              href={`systems/${latestSystem.detail.slug}`}
             >
               {latestSystem.name}
             </Link>

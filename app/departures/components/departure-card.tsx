@@ -32,7 +32,7 @@ const DepartureCard: FunctionComponent<Props> = ({ schedule, className }) => {
               <p>From:</p>
               <Link
                 className="hover:text-glow__orange hover:underline"
-                href={`systems/system/${schedule.departure.slug}`}
+                href={`systems/${schedule.departure.slug}`}
               >
                 {schedule.departure.name}
               </Link>
@@ -41,7 +41,7 @@ const DepartureCard: FunctionComponent<Props> = ({ schedule, className }) => {
               <p>To:</p>
               <Link
                 className="hover:text-glow__orange hover:underline"
-                href={`systems/system/${schedule.destination.slug}`}
+                href={`systems/${schedule.destination.slug}`}
               >
                 {schedule.destination.name}
               </Link>

@@ -97,7 +97,7 @@ const SystemsTable: FunctionComponent<Props> = ({ systems }) => {
       title: "Name",
       render: (system: System) => {
         return (
-          <Link className="text-blue-200 hover:underline" href={`/systems/system/${system.slug}`}>
+          <Link className="text-blue-200 hover:underline" href={`/systems/${system.slug}`}>
             {system.name}
           </Link>
         );
