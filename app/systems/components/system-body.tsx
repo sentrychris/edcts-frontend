@@ -88,7 +88,7 @@ const SystemBody: FunctionComponent<Props> = ({
         setIconCoords(calculateIconCoords());
       });
     }
-  }, [body, dispatcher, largeViewbox]);
+  }, [body, dispatcher, largeViewbox, calculateIconCoords]);
 
   return (
     <div className={'flex items-center ' + (body.rings && ' gap-3')}>

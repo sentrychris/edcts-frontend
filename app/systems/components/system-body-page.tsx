@@ -129,11 +129,11 @@ const SystemBodyPage: FunctionComponent<Props> = ({ initBody }) => {
                 view='body'
                 orbiting={(systemBody._children ? systemBody._children.length : 0)}
                 dispatcher={systemDispatcher}
-                className={`text-glow__white text-sm w-48`} />
+                className={'text-glow__white text-sm w-48'} />
             </div>
           </div>
-       
-         {systemBody.rings && systemBody.rings.length > 0 &&
+          
+          {systemBody.rings && systemBody.rings.length > 0 &&
             <div className='flex items-center gap-x-20 border-b border-neutral-800 mt-2.5 pb-2.5 text-sm'>
               <div>
                 <Heading

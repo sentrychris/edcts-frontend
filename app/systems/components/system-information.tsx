@@ -1,6 +1,7 @@
 import { FunctionComponent, memo } from 'react';
-import { SystemInformation } from '../../lib/interfaces/System';
 import { formatNumber, renderBadge } from '../../lib/util';
+
+import type { SystemInformation as SystemInfo } from '../../lib/interfaces/System';
 
 interface Props {
   coords: {
@@ -8,7 +9,7 @@ interface Props {
     y: number;
     z: number;
   };
-  information: SystemInformation;
+  information: SystemInfo;
 }
 
 const SystemInformation: FunctionComponent<Props> = ({ coords, information }) => {
