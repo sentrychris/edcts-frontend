@@ -14,7 +14,7 @@ interface Props {
   className?: string;
 }
 
-const SystemStatistics: FunctionComponent<Props> = ({
+const SystemsStatisticsBar: FunctionComponent<Props> = ({
   data,
   className = "",
   interval = 30000,
@@ -92,4 +92,4 @@ const SystemStatistics: FunctionComponent<Props> = ({
   );
 };
 
-export default memo(SystemStatistics);
+export default memo(SystemsStatisticsBar);

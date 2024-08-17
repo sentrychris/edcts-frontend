@@ -2,27 +2,27 @@
 
 import type { FunctionComponent } from "react";
 import { useEffect, useState, useCallback } from "react";
-import type { System } from "../../core/interfaces/System";
-import type { RawSystemBody, MappedSystemBody } from "../../core/interfaces/SystemBody";
-import { SystemBodyType } from "../../core/constants/system";
-import { getResource } from "../../core/api";
-import { systemState } from "../lib/store";
-import { systemDispatcher } from "../../core/events/SystemDispatcher";
-import SystemMap from "../lib/system-map";
+import type { System } from "../../../core/interfaces/System";
+import type { RawSystemBody, MappedSystemBody } from "../../../core/interfaces/SystemBody";
+import { SystemBodyType } from "../../../core/constants/system";
+import { getResource } from "../../../core/api";
+import { systemState } from "../../lib/store";
+import { systemDispatcher } from "../../../core/events/SystemDispatcher";
+import SystemMap from "../../lib/system-map";
 import SystemTitle from "./system-title";
-import SystemInformation from "./system-information";
-import SystemBody from "./system-body";
-import SystemBodyInformation from "./system-body-information";
+import SystemInformationBar from "./system-information-bar";
+import SystemBodySVG from "./system-body-svg";
+import SystemBodyPopover from "./system-body-popover";
 import SystemStarsTable from "./system-stars-table";
-import Loader from "../../components/loader";
-import Heading from "../../components/heading";
+import Loader from "../../../components/loader";
+import Heading from "../../../components/heading";
 
 interface Props {
   initSystem?: System;
   params: { slug: string };
 }
 
-const SystemPage: FunctionComponent<Props> = ({ initSystem, params }) => {
+const SystemDetail: FunctionComponent<Props> = ({ initSystem, params }) => {
   const [system, setSystem] = useState<System>(initSystem !== undefined ? initSystem : systemState);
 
   const [isLoading, setLoading] = useState<boolean>(true);
@@ -200,7 +200,7 @@ const SystemPage: FunctionComponent<Props> = ({ initSystem, params }) => {
     }
 
     return (
-      <SystemBody
+      <SystemBodySVG
         key={body.id64}
         system={system.name}
         selected={selectedBody}
@@ -235,7 +235,7 @@ const SystemPage: FunctionComponent<Props> = ({ initSystem, params }) => {
         <SystemTitle title={system.name} bodies={system.bodies.length} />
       </div>
 
-      <SystemInformation coords={system.coords} information={system.information} />
+      <SystemInformationBar coords={system.coords} information={system.information} />
 
       <div className="w-7xl overflow border-b border-neutral-800 bg-transparent py-5 backdrop-blur backdrop-filter">
         <Heading
@@ -272,7 +272,7 @@ const SystemPage: FunctionComponent<Props> = ({ initSystem, params }) => {
       </div>
 
       {selectedBodyDisplayInfo && systemMap && (
-        <SystemBodyInformation
+        <SystemBodyPopover
           body={selectedBodyDisplayInfo.body}
           system={systemMap}
           closer={selectedBodyDisplayInfo.closer}
@@ -285,4 +285,4 @@ const SystemPage: FunctionComponent<Props> = ({ initSystem, params }) => {
   );
 };
 
-export default SystemPage;
+export default SystemDetail;

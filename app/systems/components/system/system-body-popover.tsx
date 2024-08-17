@@ -1,12 +1,12 @@
 "use client";
 
 import { XMarkIcon, CheckIcon } from "@heroicons/react/24/outline";
-import type { SystemBodyRing, MappedSystemBody } from "../../core/interfaces/SystemBody";
-import { SystemBodyType } from "../../core/constants/system";
-import { formatDate, formatNumber } from "../../core/util";
-import type { SystemDispatcher } from "../../core/events/SystemDispatcher";
+import type { SystemBodyRing, MappedSystemBody } from "../../../core/interfaces/SystemBody";
+import { SystemBodyType } from "../../../core/constants/system";
+import { formatDate, formatNumber } from "../../../core/util";
+import type { SystemDispatcher } from "../../../core/events/SystemDispatcher";
 import Link from "next/link";
-import type SystemMap from "../lib/system-map";
+import type SystemMap from "../../lib/system-map";
 
 interface Props {
   body: MappedSystemBody | null;
@@ -24,7 +24,7 @@ interface Props {
   close?: () => void;
 }
 
-export default function SystemBodyInformation({
+export default function SystemBodyPopover({
   body,
   system,
   closer,

@@ -3,7 +3,6 @@
 import type { FunctionComponent } from "react";
 import { useState } from "react";
 import Link from "next/link";
-import { EyeIcon } from "@heroicons/react/24/outline";
 import type { Links, Meta, Pagination } from "../../core/interfaces/Pagination";
 import type { System } from "../../core/interfaces/System";
 import { getCollection } from "../../core/api";

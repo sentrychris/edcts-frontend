@@ -1,8 +1,8 @@
 import type { FunctionComponent } from "react";
 import { memo } from "react";
-import { formatNumber, renderBadge } from "../../core/util";
+import { formatNumber, renderBadge } from "../../../core/util";
 
-import type { SystemInformation as SystemInfo } from "../../core/interfaces/System";
+import type { SystemInformation } from "../../../core/interfaces/System";
 
 interface Props {
   coords: {
@@ -10,10 +10,10 @@ interface Props {
     y: number;
     z: number;
   };
-  information: SystemInfo;
+  information: SystemInformation;
 }
 
-const SystemInformation: FunctionComponent<Props> = ({ coords, information }) => {
+const SystemInformationBar: FunctionComponent<Props> = ({ coords, information }) => {
   return (
     <div className="border-b border-neutral-800 bg-transparent py-5 text-sm tracking-wide backdrop-blur backdrop-filter">
       <div className="align-center flex flex-row justify-between uppercase">
@@ -61,4 +61,4 @@ const SystemInformation: FunctionComponent<Props> = ({ coords, information }) =>
   );
 };
 
-export default memo(SystemInformation);
+export default memo(SystemInformationBar);

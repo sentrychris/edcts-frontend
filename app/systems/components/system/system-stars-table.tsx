@@ -3,10 +3,10 @@
 import type { FunctionComponent } from "react";
 import { useState, memo } from "react";
 import Link from "next/link";
-import type { RawSystemBody, MappedSystemBody } from "../../core/interfaces/SystemBody";
-import { formatDate, formatNumber } from "../../core/util";
-import type { SystemDispatcher } from "../../core/events/SystemDispatcher";
-import Table from "../../components/table";
+import type { RawSystemBody, MappedSystemBody } from "../../../core/interfaces/SystemBody";
+import { formatDate, formatNumber } from "../../../core/util";
+import type { SystemDispatcher } from "../../../core/events/SystemDispatcher";
+import Table from "../../../components/table";
 
 interface Props {
   stars: RawSystemBody[];

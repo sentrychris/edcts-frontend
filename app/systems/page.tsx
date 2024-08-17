@@ -3,7 +3,7 @@ import Heading from "../components/heading";
 import { getCollection, getResource } from "../core/api";
 import type { System } from "../core/interfaces/System";
 import type { Statistics } from "../core/interfaces/Statistics";
-import SystemStatistics from "./components/system-statistics";
+import SystemsStatisticsBar from "./components/systems-statistics-bar";
 
 export default async function Page() {
   const systems = await getCollection<System>("systems", {
@@ -17,7 +17,7 @@ export default async function Page() {
   return (
     <>
       <Heading icon="icarus-terminal-info" title="System Statistics" className="mb-5 gap-2" />
-      <SystemStatistics className="fx-fade-in" data={statistics} interval={300000} cached={true} />
+      <SystemsStatisticsBar className="fx-fade-in" data={statistics} interval={300000} cached={true} />
       <Heading
         icon="icarus-terminal-system-orbits"
         largeIcon={true}
