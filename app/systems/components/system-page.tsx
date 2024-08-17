@@ -14,7 +14,6 @@ import SystemInformation from "./system-information";
 import SystemBody from "./system-body";
 import SystemBodyInformation from "./system-body-information";
 import SystemStarsTable from "./system-stars-table";
-import SystemBodiesTable from "./system-bodies-table";
 import Loader from "../../components/loader";
 import Heading from "../../components/heading";
 
@@ -265,20 +264,6 @@ const SystemPage: FunctionComponent<Props> = ({ initSystem, params }) => {
           {!isLoading && systemMap && (
             <SystemStarsTable
               stars={systemMap.stars as RawSystemBody[]}
-              system={system.name}
-              dispatcher={systemDispatcher}
-            />
-          )}
-        </div>
-        <div>
-          <Heading
-            icon="icarus-terminal-system-orbits"
-            title="Orbital Bodies"
-            className="gap-2 pb-5"
-          />
-          {!isLoading && systemMap && (
-            <SystemBodiesTable
-              bodies={systemMap.planets as RawSystemBody[]}
               system={system.name}
               dispatcher={systemDispatcher}
             />

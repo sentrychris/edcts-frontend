@@ -53,11 +53,7 @@ body {
 
 body {
   color: rgb(var(--foreground-rgb));
-  background: radial-gradient(
-    circle at 240%,
-    var(--color-primary-dark) 25%,
-    #000000
-  );
+  background: black
 }
 
 nav.main-nav__nav {
@@ -82,9 +78,6 @@ nav.main-nav__nav .main-nav__menu {
 }
 
 .galaxy-background {
-  /* background-image: url(/images/textures/galaxy.jpg);
-  background-size: cover;
-  background-repeat: no-repeat; */
   background-color: black;
 }
 
@@ -98,14 +91,11 @@ nav.main-nav__nav .main-nav__menu {
   right: 0;
   opacity: 0.2;
   content: " ";
-  /* background-size: 2rem 2rem; */
-  /* background-image: url(/images/grid.svg); */
-  /* background-color: black; */
 }
 
 .overlay {
-  opacity: 0.4;
-  height: 100vw;
+  opacity: 0.8;
+  height: 100%;
   z-index: -1;
   background-image: url(/images/textures/galaxy.jpg);
   background-position-y: -25rem;
