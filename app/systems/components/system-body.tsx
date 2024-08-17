@@ -1,8 +1,9 @@
 "use client";
 
-import { FunctionComponent, memo, useCallback, useState } from "react";
-import { MappedSystemBody } from "../../lib/interfaces/SystemBody";
-import { SystemDispatcher } from "../../lib/events/SystemDispatcher";
+import type { FunctionComponent } from "react";
+import { memo, useCallback, useState } from "react";
+import type { MappedSystemBody } from "../../lib/interfaces/SystemBody";
+import type { SystemDispatcher } from "../../lib/events/SystemDispatcher";
 import { CIRCLE_DEG } from "../../lib/constants/math";
 import Icons from "../../icons";
 
@@ -55,7 +56,7 @@ const SystemBody: FunctionComponent<Props> = ({
     return text;
   };
 
-  const calculateIconCoords = () => {
+  const calculateIconCoords = useCallback(() => {
     const pos = {
       x: radius * Math.sin(Math.PI),
       y: (radius * Math.cos(Math.PI) + CIRCLE_DEG * 2) / 2,
@@ -67,9 +68,9 @@ const SystemBody: FunctionComponent<Props> = ({
     }
 
     return pos;
-  };
+  }, [radius, bodyIsSelectedUserFocus, view]);
 
-  const [iconCoords, setIconCoords] = useState(calculateIconCoords());
+  const [iconCoords, setIconCoords] = useState(calculateIconCoords);
 
   const selectedBodyGCircleElement = useCallback(
     (node: SVGGElement) => {
@@ -82,7 +83,7 @@ const SystemBody: FunctionComponent<Props> = ({
             position: { top, left, right, bottom, width, height },
           });
 
-          setIconCoords(calculateIconCoords());
+          setIconCoords(calculateIconCoords);
         });
       }
     },

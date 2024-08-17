@@ -1,5 +1,9 @@
-import { System } from "../../lib/interfaces/System";
-import { RawSystemBody, MappedSystemBody, SystemBodyParent } from "../../lib/interfaces/SystemBody";
+import type { System } from "../../lib/interfaces/System";
+import type {
+  RawSystemBody,
+  MappedSystemBody,
+  SystemBodyParent,
+} from "../../lib/interfaces/SystemBody";
 import {
   MEGASHIPS,
   SPACE_STATIONS,
@@ -19,7 +23,7 @@ import {
 } from "../../lib/constants/math";
 
 import { escapeRegExp } from "../../lib/util";
-import { Station, MappedStation } from "../../lib/interfaces/Station";
+import type { Station, MappedStation } from "../../lib/interfaces/Station";
 
 type MapKeyType = keyof MappedSystemBody;
 
@@ -41,7 +45,8 @@ export default class SystemMap {
   constructor(system: System) {
     this.detail = system;
 
-    let { name = "", bodies: _bodies, stations = [] } = this.detail;
+    const { name = "", bodies: _bodies } = this.detail;
+    let { stations = [] } = this.detail;
 
     this.name = this.getNameFromSystemObject(name);
 
@@ -455,7 +460,7 @@ export default class SystemMap {
 
       // This should never happen
       // TODO: It happened... see https://github.com/EDSM-NET/FrontEnd/issues/506
-      if (!systemObjectWithTimestamp.hasOwnProperty("id64")) {
+      if (!Object.prototype.hasOwnProperty.call(systemObjectWithTimestamp, "id64")) {
         return console.error(
           "#getUniqueObjectsByProperty error - systemObject does not have id64 property",
           systemObject,

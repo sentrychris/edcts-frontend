@@ -1,9 +1,10 @@
 "use client";
 
-import { FunctionComponent, useState } from "react";
+import type { FunctionComponent } from "react";
+import { useState } from "react";
 import Link from "next/link";
-import { Galnet } from "../../lib/interfaces/Galnet";
-import { Pagination } from "../../lib/interfaces/Pagination";
+import type { Galnet } from "../../lib/interfaces/Galnet";
+import type { Pagination } from "../../lib/interfaces/Pagination";
 import Heading from "../../components/heading";
 import PaginationLinks from "../../components/pagination-links";
 import { getCollection } from "../../lib/api";

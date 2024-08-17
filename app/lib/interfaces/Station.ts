@@ -1,5 +1,5 @@
-import { SystemBodyParent } from "./SystemBody";
-import { System } from "./System";
+import type { SystemBodyParent } from "./SystemBody";
+import type { System } from "./System";
 
 interface StationBody {
   id: number;

@@ -1,5 +1,5 @@
-import { RawSystemBody } from "./SystemBody";
-import { Station } from "./Station";
+import type { RawSystemBody } from "./SystemBody";
+import type { Station } from "./Station";
 
 export interface System {
   id: number;

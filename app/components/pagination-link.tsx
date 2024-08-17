@@ -1,6 +1,7 @@
 "use client";
 
-import { FormEvent, FunctionComponent, JSX, memo } from "react";
+import type { FormEvent, FunctionComponent, JSX } from "react";
+import { memo } from "react";
 
 interface Props {
   url: string | null;

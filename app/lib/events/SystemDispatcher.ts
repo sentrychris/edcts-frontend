@@ -1,5 +1,5 @@
-import { System } from "../interfaces/System";
-import { MappedSystemBody } from "../interfaces/SystemBody";
+import type { System } from "../interfaces/System";
+import type { MappedSystemBody } from "../interfaces/SystemBody";
 import EventDispatcher from "./EventDispatcher";
 
 export class SystemDispatcher extends EventDispatcher {

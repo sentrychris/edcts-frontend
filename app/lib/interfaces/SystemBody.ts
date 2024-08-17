@@ -1,6 +1,6 @@
-import { SystemBodyType } from "../constants/system";
-import { MappedStation } from "./Station";
-import { System } from "./System";
+import type { SystemBodyType } from "../constants/system";
+import type { MappedStation } from "./Station";
+import type { System } from "./System";
 
 export type SystemBodyParent = {
   [key in SystemBodyType]?: number;

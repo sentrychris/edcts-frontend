@@ -1,7 +1,8 @@
 "use client";
 
-import { FunctionComponent, useEffect, useState, memo } from "react";
-import { Statistics } from "../../lib/interfaces/Statistics";
+import type { FunctionComponent } from "react";
+import { useEffect, useState, memo } from "react";
+import type { Statistics } from "../../lib/interfaces/Statistics";
 import { getResource } from "../../lib/api";
 import { formatNumber, renderBadge } from "../../lib/util";
 import Link from "next/link";

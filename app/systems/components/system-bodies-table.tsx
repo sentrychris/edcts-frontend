@@ -1,10 +1,11 @@
 "use client";
 
-import { FunctionComponent, useState, memo } from "react";
+import type { FunctionComponent } from "react";
+import { useState, memo } from "react";
 import Link from "next/link";
-import { RawSystemBody, MappedSystemBody } from "../../lib/interfaces/SystemBody";
+import type { RawSystemBody, MappedSystemBody } from "../../lib/interfaces/SystemBody";
 import { formatDate } from "../../lib/util";
-import { SystemDispatcher } from "../../lib/events/SystemDispatcher";
+import type { SystemDispatcher } from "../../lib/events/SystemDispatcher";
 import Table from "../../components/table";
 
 interface Props {

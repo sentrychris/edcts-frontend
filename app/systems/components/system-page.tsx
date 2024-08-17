@@ -1,9 +1,10 @@
 "use client";
 
 import { usePathname } from "next/navigation";
-import { FunctionComponent, useEffect, useState, useCallback } from "react";
-import { System } from "../../lib/interfaces/System";
-import { RawSystemBody, MappedSystemBody } from "../../lib/interfaces/SystemBody";
+import type { FunctionComponent } from "react";
+import { useEffect, useState, useCallback } from "react";
+import type { System } from "../../lib/interfaces/System";
+import type { RawSystemBody, MappedSystemBody } from "../../lib/interfaces/SystemBody";
 import { SystemBodyType } from "../../lib/constants/system";
 import { getResource } from "../../lib/api";
 import { systemState } from "../lib/store";

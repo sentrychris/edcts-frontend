@@ -1,5 +1,5 @@
-import { Carrier } from "./Carrier";
-import { System } from "./System";
+import type { Carrier } from "./Carrier";
+import type { System } from "./System";
 
 export interface Schedule {
   id: number;

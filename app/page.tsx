@@ -1,11 +1,11 @@
 import Link from "next/link";
-import { Schedule } from "./lib/interfaces/Schedule";
-import { Galnet } from "./lib/interfaces/Galnet";
+import type { Schedule } from "./lib/interfaces/Schedule";
+import type { Galnet } from "./lib/interfaces/Galnet";
 import DepartureCard from "./departures/components/departure-card";
 import DepartureTable from "./departures/components/departure-table";
 import Heading from "./components/heading";
 import { getCollection, getResource } from "./lib/api";
-import { Statistics } from "./lib/interfaces/Statistics";
+import type { Statistics } from "./lib/interfaces/Statistics";
 import SystemMap from "./systems/lib/system-map";
 
 export default async function Home() {

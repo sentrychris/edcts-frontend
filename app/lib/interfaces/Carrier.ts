@@ -1,4 +1,4 @@
-import { Commander } from "./Commander";
+import type { Commander } from "./Commander";
 
 export interface Carrier {
   name: string;

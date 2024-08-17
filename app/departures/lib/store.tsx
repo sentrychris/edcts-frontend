@@ -1,5 +1,5 @@
-import { Schedule } from "../../lib/interfaces/Schedule";
-import { Pagination } from "../../lib/interfaces/Pagination";
+import type { Schedule } from "../../lib/interfaces/Schedule";
+import type { Pagination } from "../../lib/interfaces/Pagination";
 import { pagination } from "../../lib/api";
 import { systemState } from "../../systems/lib/store";
 

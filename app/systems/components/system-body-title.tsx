@@ -1,6 +1,7 @@
 import Link from "next/link";
-import { FunctionComponent, memo } from "react";
-import { System } from "../../lib/interfaces/System";
+import type { FunctionComponent } from "react";
+import { memo } from "react";
+import type { System } from "../../lib/interfaces/System";
 
 interface Props {
   title: string;

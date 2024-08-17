@@ -1,6 +1,7 @@
 "use client";
 
-import { FormEvent, FunctionComponent, memo, useState } from "react";
+import type { FormEvent, FunctionComponent } from "react";
+import { memo, useState } from "react";
 import Input from "./input";
 import Button from "./button";
 

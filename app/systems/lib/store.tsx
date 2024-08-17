@@ -1,5 +1,5 @@
-import { System } from "../../lib/interfaces/System";
-import { Pagination } from "../../lib/interfaces/Pagination";
+import type { System } from "../../lib/interfaces/System";
+import type { Pagination } from "../../lib/interfaces/Pagination";
 import { pagination } from "../../lib/api";
 
 export const systemState: System = {

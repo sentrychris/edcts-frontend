@@ -1,5 +1,6 @@
-import { JSX, useEffect } from "react";
-import { Meta, Links } from "../lib/interfaces/Pagination";
+import type { JSX } from "react";
+import { useEffect } from "react";
+import type { Meta, Links } from "../lib/interfaces/Pagination";
 import { useAnimateTable } from "../lib/hooks/animate";
 import PaginationLinks from "./pagination-links";
 

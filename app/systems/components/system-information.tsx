@@ -1,4 +1,5 @@
-import { FunctionComponent, memo } from "react";
+import type { FunctionComponent } from "react";
+import { memo } from "react";
 import { formatNumber, renderBadge } from "../../lib/util";
 
 import type { SystemInformation as SystemInfo } from "../../lib/interfaces/System";

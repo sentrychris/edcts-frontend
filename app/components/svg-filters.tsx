@@ -1,4 +1,5 @@
-import { FunctionComponent, memo } from "react";
+import type { FunctionComponent } from "react";
+import { memo } from "react";
 
 const SvgFilters: FunctionComponent = () => {
   return (

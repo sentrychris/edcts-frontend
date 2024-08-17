@@ -1,4 +1,4 @@
-import { Pagination } from "./interfaces/Pagination";
+import type { Pagination } from "./interfaces/Pagination";
 
 export const pagination = {
   data: [],

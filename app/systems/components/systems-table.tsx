@@ -1,10 +1,11 @@
 "use client";
 
-import { FunctionComponent, useState } from "react";
+import type { FunctionComponent } from "react";
+import { useState } from "react";
 import Link from "next/link";
 import { EyeIcon } from "@heroicons/react/24/outline";
-import { Links, Meta, Pagination } from "../../lib/interfaces/Pagination";
-import { System } from "../../lib/interfaces/System";
+import type { Links, Meta, Pagination } from "../../lib/interfaces/Pagination";
+import type { System } from "../../lib/interfaces/System";
 import { getCollection } from "../../lib/api";
 import { useDebounce } from "../../lib/hooks/debounce";
 import Filter from "../../components/filter";

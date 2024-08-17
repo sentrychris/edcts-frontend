@@ -1,8 +1,9 @@
 "use client";
 
 import { usePathname } from "next/navigation";
-import { FunctionComponent, useEffect, useState } from "react";
-import {
+import type { FunctionComponent } from "react";
+import { useEffect, useState } from "react";
+import type {
   MappedSystemBody,
   SystemBodyResource,
   SystemBodyRing,

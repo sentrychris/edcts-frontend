@@ -1,4 +1,4 @@
-import { Schedule } from "../lib/interfaces/Schedule";
+import type { Schedule } from "../lib/interfaces/Schedule";
 import DepartureCard from "./components/departure-card";
 import DepartureTable from "./components/departure-table";
 import Heading from "../components/heading";

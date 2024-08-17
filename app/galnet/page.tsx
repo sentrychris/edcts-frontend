@@ -1,4 +1,4 @@
-import { Galnet } from "../lib/interfaces/Galnet";
+import type { Galnet } from "../lib/interfaces/Galnet";
 import GalnetList from "./components/galnet-list";
 import { getCollection } from "../lib/api";
 

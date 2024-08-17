@@ -1,6 +1,7 @@
-import { FunctionComponent, memo } from "react";
+import type { FunctionComponent } from "react";
+import { memo } from "react";
 import Link from "next/link";
-import { Schedule } from "../../lib/interfaces/Schedule";
+import type { Schedule } from "../../lib/interfaces/Schedule";
 import { formatDate } from "../../lib/util";
 import { renderStatusText } from "../lib/store";
 

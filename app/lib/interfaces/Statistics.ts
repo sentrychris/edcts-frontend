@@ -1,4 +1,4 @@
-import { System } from "./System";
+import type { System } from "./System";
 
 export interface CartographicalStatistics {
   systems: number;
