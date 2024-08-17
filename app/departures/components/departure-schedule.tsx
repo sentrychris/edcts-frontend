@@ -26,10 +26,10 @@ const DepartureSchedule = () => {
 
   return (
     <>
-      <h2 className="uppercase text-3xl pb-3 border-b border-neutral-800">Departure Information</h2>
+      <h2 className="border-b border-neutral-800 pb-3 text-3xl uppercase">Departure Information</h2>
       <div className="relative border-b border-neutral-800 py-12">
         <h1 className="text-4xl">{schedule.title}</h1>
-        <div className="grid grid-cols-2 mt-10">
+        <div className="mt-10 grid grid-cols-2">
           <div>
             <p>
               Carrier: [{schedule.carrier.identifier}] {schedule.carrier.name}

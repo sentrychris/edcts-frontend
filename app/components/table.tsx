@@ -41,7 +41,7 @@ function Table<T extends RequiredAttribute>({ columns, data, meta, links, page }
             <td
               colSpan={Object.keys(columns).length}
               scope="row"
-              className="py-4 px-6 font-medium whitespace-nowrap dark:text-gray-200 font-italic md:text-center"
+              className="font-italic whitespace-nowrap px-6 py-4 font-medium md:text-center dark:text-gray-200"
             >
               No data found...
             </td>
@@ -59,7 +59,7 @@ function Table<T extends RequiredAttribute>({ columns, data, meta, links, page }
                 <td
                   key={`rowColumn_${item.id}_${key}`}
                   scope="row"
-                  className="px-5 font-medium whitespace-nowrap text-gray-900 dark:text-gray-200"
+                  className="whitespace-nowrap px-5 font-medium text-gray-900 dark:text-gray-200"
                 >
                   {renderContent(item, key)}
                 </td>
@@ -93,9 +93,9 @@ function Table<T extends RequiredAttribute>({ columns, data, meta, links, page }
 
   return (
     <>
-      <div className="border-t border-b border-neutral-800 pt-2 pb-5 overflow-x-auto relative backdrop-filter backdrop-blur bg-transparent">
-        <table className="w-full text-sm text-left text-gray-500 table--layout table--animated table--interactive">
-          <thead className="text-gray-400 uppercase">
+      <div className="relative overflow-x-auto border-b border-t border-neutral-800 bg-transparent pb-5 pt-2 backdrop-blur backdrop-filter">
+        <table className="table--layout table--animated table--interactive w-full text-left text-sm text-gray-500">
+          <thead className="uppercase text-gray-400">
             <tr>
               {Object.keys(columns).map((key) => (
                 <th

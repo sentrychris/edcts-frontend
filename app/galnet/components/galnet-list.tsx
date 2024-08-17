@@ -33,16 +33,16 @@ const GalnetList: FunctionComponent<Props> = ({ articles }) => {
           icon="icarus-terminal-notifications"
           largeIcon={true}
           title="Galnet News"
-          className="gap-3 pb-3 text-2xl border-b border-neutral-800"
+          className="gap-3 border-b border-neutral-800 pb-3 text-2xl"
         />
         {rows.map((article: Galnet) => {
           return (
             <div
               key={article.id}
-              className="relative border-b border-neutral-800 py-12 backdrop-filter backdrop-blur bg-transparent"
+              className="relative border-b border-neutral-800 bg-transparent py-12 backdrop-blur backdrop-filter"
             >
-              <h1 className="text-4xl mb-2">{article.title}</h1>
-              <p className="text-xs mb-6">{article.uploaded_at}</p>
+              <h1 className="mb-2 text-4xl">{article.title}</h1>
+              <p className="mb-6 text-xs">{article.uploaded_at}</p>
               <Link href={`/galnet/news/${article.slug}`} className="py-2 text-orange-400">
                 Read Article...
               </Link>

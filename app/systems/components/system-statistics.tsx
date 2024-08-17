@@ -37,7 +37,7 @@ const SystemStatistics: FunctionComponent<Props> = ({
   return (
     <div
       className={
-        "border-t border-b border-neutral-800 backdrop-filter backdrop-blur bg-transparent py-5 tracking-wide " +
+        "border-b border-t border-neutral-800 bg-transparent py-5 tracking-wide backdrop-blur backdrop-filter " +
         className
       }
     >
@@ -61,14 +61,14 @@ const SystemStatistics: FunctionComponent<Props> = ({
               icon: "icarus-terminal-star text-2xl",
             })}
           </div>
-          <div className="whitespace-nowrap hidden md:inline">
+          <div className="hidden whitespace-nowrap md:inline">
             <p className="mb-2">Carriers in service:</p>
             {renderBadge(formatNumber(statistics.data.carriers), {
               icon: "icarus-terminal-ship text-2xl",
             })}
           </div>
         </div>
-        <div className="whitespace-nowrap hidden md:flex items-center gap-4">
+        <div className="hidden items-center gap-4 whitespace-nowrap md:flex">
           <i className="icarus-terminal-location-filled text-glow__blue text-3xl"></i>
           <div className="text-xs">
             <p className="mb-1">Latest Logged System:</p>

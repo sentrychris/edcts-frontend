@@ -23,7 +23,7 @@ const SystemBodiesTable: FunctionComponent<Props> = ({ bodies, system, dispatche
       render: (body: RawSystemBody) => {
         return (
           <span
-            className="text-blue-200 hover:text-glow__orange hover:underline hover:cursor-pointer"
+            className="hover:text-glow__orange text-blue-200 hover:cursor-pointer hover:underline"
             onClick={() => dispatcher.selectBody({ body: body as MappedSystemBody })}
           >
             {body.name.split(system).pop()?.trim()}
@@ -41,7 +41,7 @@ const SystemBodiesTable: FunctionComponent<Props> = ({ bodies, system, dispatche
         const orbital = body as MappedSystemBody;
         return (
           <span
-            className="text-blue-200 hover:text-glow__orange hover:underline hover:cursor-pointer"
+            className="hover:text-glow__orange text-blue-200 hover:cursor-pointer hover:underline"
             onClick={() => dispatcher.selectBody({ body: orbital })}
           >
             {orbital._children?.length ?? 0}
@@ -79,7 +79,7 @@ const SystemBodiesTable: FunctionComponent<Props> = ({ bodies, system, dispatche
       title: "Discovered By",
       render: (body: RawSystemBody) => {
         return (
-          <Link className="hover:underline text-blue-200" href={"#"}>
+          <Link className="text-blue-200 hover:underline" href={"#"}>
             {body.discovered_by.startsWith("CMDR")
               ? body.discovered_by
               : `CMDR ${body.discovered_by}`}

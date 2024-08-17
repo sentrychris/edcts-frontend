@@ -157,12 +157,12 @@ const SystemPage: FunctionComponent<Props> = ({ initSystem }) => {
 
     return (
       <>
-        <div className="flex items-center content-center">
+        <div className="flex content-center items-center">
           {selectedBody && (
             <>
-              <div className="flex shrink-0 items-center md:border-r md:pe-12 md:border-neutral-700 md:rounded-full">
+              <div className="flex shrink-0 items-center md:rounded-full md:border-r md:border-neutral-700 md:pe-12">
                 {
-                  <div className={"hidden md:flex flex-col me-6 text-glow__orange"}>
+                  <div className={"text-glow__orange me-6 hidden flex-col md:flex"}>
                     <i
                       className={
                         "icarus-terminal-chevron-up text-glow__orange hover:text-glow__blue hover:cursor-pointer"
@@ -180,7 +180,7 @@ const SystemPage: FunctionComponent<Props> = ({ initSystem }) => {
                 {renderSystemBody(selectedBody)}
               </div>
               <div
-                className="system-body__children hidden md:flex w-full items-center overflow-x-auto hover:cursor-move"
+                className="system-body__children hidden w-full items-center overflow-x-auto hover:cursor-move md:flex"
                 ref={scrollableBodies}
               >
                 {renderSystemBodyChildren(selectedBody)}
@@ -220,7 +220,7 @@ const SystemPage: FunctionComponent<Props> = ({ initSystem }) => {
 
     if (!bodies) {
       return (
-        <span className="text-glow__orange uppercase ms-4">
+        <span className="text-glow__orange ms-4 uppercase">
           {body.name} {body.type} has no directly orbiting celestial bodies
         </span>
       );
@@ -233,13 +233,13 @@ const SystemPage: FunctionComponent<Props> = ({ initSystem }) => {
     <>
       {isLoading && <Loader visible={isLoading} />}
 
-      <div className="pb-5 border-b border-neutral-800">
+      <div className="border-b border-neutral-800 pb-5">
         <SystemTitle title={system.name} bodies={system.bodies.length} />
       </div>
 
       <SystemInformation coords={system.coords} information={system.information} />
 
-      <div className="py-5 w-7xl overflow border-b border-neutral-800 backdrop-filter backdrop-blur bg-transparent">
+      <div className="w-7xl overflow border-b border-neutral-800 bg-transparent py-5 backdrop-blur backdrop-filter">
         <Heading
           icon="icarus-terminal-system-bodies"
           title="System Overview"
@@ -251,7 +251,7 @@ const SystemPage: FunctionComponent<Props> = ({ initSystem }) => {
               {systemMap && systemMap.objectsInSystem.length > 0 ? (
                 renderSystemBodies(systemMap)
               ) : (
-                <div className="text-glow__orange text-lg font-bold uppercase text-center mx-auto py-6">
+                <div className="text-glow__orange mx-auto py-6 text-center text-lg font-bold uppercase">
                   Telemetry data not found for {system.name}
                 </div>
               )}
@@ -260,7 +260,7 @@ const SystemPage: FunctionComponent<Props> = ({ initSystem }) => {
         )}
       </div>
 
-      <div className="grid grid-cols-1 md:grid-cols-1 gap-5 py-5">
+      <div className="grid grid-cols-1 gap-5 py-5 md:grid-cols-1">
         <div>
           <Heading icon="icarus-terminal-star" title="Main Sequence Stars" className="gap-2 pb-5" />
           {!isLoading && systemMap && (

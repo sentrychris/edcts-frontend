@@ -160,7 +160,7 @@ const SystemBody: FunctionComponent<Props> = ({
 
             {body.is_landable && (
               <svg
-                className="text-xs system-map__planetary-lander-icon"
+                className="system-map__planetary-lander-icon text-xs"
                 x={iconCoords.x}
                 y={iconCoords.y}
               >
@@ -170,15 +170,15 @@ const SystemBody: FunctionComponent<Props> = ({
           </g>
         </g>
       </svg>
-      <div className="star_information uppercase text-sm tracking-wide">
+      <div className="star_information text-sm uppercase tracking-wide">
         <p className="text-glow">{displayName}</p>
 
-        <p className="text-xs text-glow whitespace-nowrap">{shortSubType(body.sub_type)}</p>
+        <p className="text-glow whitespace-nowrap text-xs">{shortSubType(body.sub_type)}</p>
 
         <div className="flex flex-row items-center gap-2">
           <span
             className={
-              "flex whitespace-nowrap items-center gap-2 text-glow__orange  " +
+              "text-glow__orange flex items-center gap-2 whitespace-nowrap " +
               (bodyIsSelectedUserFocus
                 ? "text-sm"
                 : "hover:text-glow__blue hover:scale-110 hover:cursor-grabbing")
@@ -194,7 +194,7 @@ const SystemBody: FunctionComponent<Props> = ({
             body._planetary_bases.length > 0 && (
               <span
                 className={
-                  "flex whitespace-nowrap items-center gap-2 text-glow__blue  " +
+                  "text-glow__blue flex items-center gap-2 whitespace-nowrap " +
                   (bodyIsSelectedUserFocus
                     ? "text-sm"
                     : "hover:text-glow__orange hover:scale-110 hover:cursor-grabbing")
@@ -210,7 +210,7 @@ const SystemBody: FunctionComponent<Props> = ({
 
         {bodyIsSelectedUserFocus && !body.is_main_star && (
           <span
-            className="flex items-center gap-2 text-label__small text-glow__blue hover:scale-105 hover:cursor-pointer"
+            className="text-label__small text-glow__blue flex items-center gap-2 hover:scale-105 hover:cursor-pointer"
             onClick={() => dispatcher.setIndex(0)}
           >
             <i className="icarus-terminal-chevron-up text-label__small"></i>

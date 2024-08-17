@@ -11,7 +11,7 @@ interface Props {
 
 const PaginationLinks: FunctionComponent<Props> = ({ metadata, links, paginate }) => {
   return (
-    <ul className="flex items-center mx-auto my-7 content-evenly">
+    <ul className="mx-auto my-7 flex content-evenly items-center">
       <li>
         <PaginationLink
           key={"link_first"}

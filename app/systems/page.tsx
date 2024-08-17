@@ -16,13 +16,13 @@ export default async function Page() {
 
   return (
     <>
-      <Heading icon="icarus-terminal-info" title="System Statistics" className="gap-2 mb-5" />
+      <Heading icon="icarus-terminal-info" title="System Statistics" className="mb-5 gap-2" />
       <SystemStatistics className="fx-fade-in" data={statistics} interval={300000} cached={true} />
       <Heading
         icon="icarus-terminal-system-orbits"
         largeIcon={true}
         title="Systems Information"
-        className="gap-3 my-5 text-2xl"
+        className="my-5 gap-3 text-2xl"
       />
       <SystemsTable systems={systems} />
     </>

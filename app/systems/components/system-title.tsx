@@ -9,10 +9,10 @@ interface Props {
 
 const SystemTitle: FunctionComponent<Props> = ({ title, bodies, special }) => {
   return (
-    <div className="flex gap-2 items-center text-glow__white">
+    <div className="text-glow__white flex items-center gap-2">
       <i className="icarus-terminal-system-orbits" style={{ fontSize: "3rem" }}></i>
       <div>
-        <h2 className="uppercase text-3xl">
+        <h2 className="text-3xl uppercase">
           {title} system {special && <span className="ml-1 text-xs">{special}</span>}
         </h2>
         <h4 className="text-glow__orange font-bold uppercase">{bodies} bodies found in system</h4>

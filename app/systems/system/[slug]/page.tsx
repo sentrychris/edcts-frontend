@@ -4,7 +4,7 @@ import SystemPage from "../../components/system-page";
 export default async function Page() {
   return (
     <>
-      <Heading title="System Information" className="gap-2 mb-5" />
+      <Heading title="System Information" className="mb-5 gap-2" />
       <SystemPage />
     </>
   );

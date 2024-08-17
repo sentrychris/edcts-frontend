@@ -12,8 +12,8 @@ export default async function Page() {
 
   return (
     <>
-      <Heading icon="icarus-terminal-route" title="Departure Board" className="gap-2 mb-5" />
-      <div className="border-t border-b border-neutral-800 grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6 font-bold">
+      <Heading icon="icarus-terminal-route" title="Departure Board" className="mb-5 gap-2" />
+      <div className="grid grid-cols-1 gap-6 border-b border-t border-neutral-800 font-bold md:grid-cols-2 lg:grid-cols-4">
         {schedule.data.slice(0, 4).map((schedule) => {
           return <DepartureCard key={schedule.id} schedule={schedule} />;
         })}
@@ -23,7 +23,7 @@ export default async function Page() {
           icon="icarus-terminal-route"
           largeIcon={true}
           title="Scheduled Departures"
-          className="gap-2 mb-5 text-2xl"
+          className="mb-5 gap-2 text-2xl"
         />
         <DepartureTable schedule={schedule} />
       </div>

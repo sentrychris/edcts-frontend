@@ -22,7 +22,7 @@ export default function MainNavigation() {
     <Disclosure as="nav" className="main-nav__nav">
       {({ open }) => (
         <>
-          <div className="main-nav__menu px-6 md:px-12 lg:px-24 uppercase">
+          <div className="main-nav__menu px-6 uppercase md:px-12 lg:px-24">
             <div className="relative flex h-16 items-center justify-between">
               <div className="absolute inset-y-0 left-0 flex items-center sm:hidden">
                 {/* Mobile menu button*/}
@@ -46,7 +46,7 @@ export default function MainNavigation() {
                         className={classNames(
                           item.current
                             ? "font-bold text-black dark:text-white"
-                            : "text-gray-900 dark:text-gray-300 hover:text-black dark:hover:text-white",
+                            : "text-gray-900 hover:text-black dark:text-gray-300 dark:hover:text-white",
                           "rounded-md px-3 py-2 text-sm",
                         )}
                         aria-current={item.current ? "page" : undefined}
@@ -60,8 +60,8 @@ export default function MainNavigation() {
               <div className="absolute inset-y-0 right-0 flex items-center pr-2 sm:static sm:inset-auto sm:ml-6 sm:pr-0">
                 <Menu as="div" className="relative ml-3">
                   <div className="flex items-center gap-3">
-                    <Menu.Button className="flex items-center gap-3 text-sm focus:outline-none align-items">
-                      <span className="hidden md:flex text-glow__orange text-xs[">
+                    <Menu.Button className="align-items flex items-center gap-3 text-sm focus:outline-none">
+                      <span className="text-glow__orange text-xs[ hidden md:flex">
                         CMDR Shaki Kazaro
                       </span>
                       <Image

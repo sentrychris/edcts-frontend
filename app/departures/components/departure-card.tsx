@@ -14,12 +14,12 @@ const DepartureCard: FunctionComponent<Props> = ({ schedule, className }) => {
   const departed = schedule.status.departed ? "line-through" : "";
 
   return (
-    <div className={"py-6 backdrop-filter backdrop-blur bg-transparent " + className}>
+    <div className={"bg-transparent py-6 backdrop-blur backdrop-filter " + className}>
       <div className="flex flex-col md:max-w-xl">
         <Link href={`/departures/schedule/${schedule.slug}`}>
           <h5
             className={
-              "mb-3 text-lg font-bold tracking-tight text-neutral-800 dark:text-gray-200 hover:text-glow__orange hover:underline" +
+              "hover:text-glow__orange mb-3 text-lg font-bold tracking-tight text-neutral-800 hover:underline dark:text-gray-200" +
               departed
             }
           >
@@ -30,7 +30,7 @@ const DepartureCard: FunctionComponent<Props> = ({ schedule, className }) => {
           {schedule.description.slice(0, 65) + "..."}
         </p>
         <hr className="w-full" />
-        <div className="flex flex-row justify-between items-center text-sm mt-3 text-neutral-800 dark:text-gray-100">
+        <div className="mt-3 flex flex-row items-center justify-between text-sm text-neutral-800 dark:text-gray-100">
           <div>
             <div className="flex flex-row gap-2">
               <p>From:</p>

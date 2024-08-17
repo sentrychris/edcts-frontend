@@ -15,12 +15,12 @@ interface Props {
 
 const SystemInformation: FunctionComponent<Props> = ({ coords, information }) => {
   return (
-    <div className="border-b border-neutral-800 backdrop-filter backdrop-blur bg-transparent py-5 tracking-wide text-sm">
-      <div className="flex flex-row align-center justify-between uppercase">
+    <div className="border-b border-neutral-800 bg-transparent py-5 text-sm tracking-wide backdrop-blur backdrop-filter">
+      <div className="align-center flex flex-row justify-between uppercase">
         <div className="flex flex-wrap items-center gap-10 lg:gap-x-20">
           <div className="flex flex-col">
             <p className="mb-2 whitespace-nowrap">Governance:</p>
-            <span className="flex items-center gap-2 py-1 uppercase text-glow__white font-bold">
+            <span className="text-glow__white flex items-center gap-2 py-1 font-bold uppercase">
               <i className="icarus-terminal-system-authority text-glow__orange"></i>
               <p>
                 <span className="me-3">{information.allegiance ?? "No Allegiance"}</span>
@@ -50,7 +50,7 @@ const SystemInformation: FunctionComponent<Props> = ({ coords, information }) =>
             })}
           </div>
         </div>
-        <div className="whitespace-nowrap hidden md:inline">
+        <div className="hidden whitespace-nowrap md:inline">
           <p className="mb-2">Galaxy Coordinates:</p>
           {renderBadge(`${coords.x}, ${coords.y}, ${coords.z}`, {
             icon: "icarus-terminal-location-filled",

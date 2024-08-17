@@ -37,7 +37,7 @@ const Input: FunctionComponent<Props> = ({
       {label && (
         <label
           htmlFor={id}
-          className="block text-sm font-semibold text-gray-700 dark:text-gray-200 mb-1"
+          className="mb-1 block text-sm font-semibold text-gray-700 dark:text-gray-200"
         >
           {label}
         </label>
@@ -49,9 +49,9 @@ const Input: FunctionComponent<Props> = ({
           type={type}
           className={`h-[37px] pl-4 ${error ? "border-red-500" : "border-gray-300"} focus:ring-1 focus:ring-neutral-900 ${
             error
-              ? "focus:ring-red-500 focus:border-red-500"
-              : "focus:ring-blue-500 focus:border-blue-500"
-          } block w-full text-sm text-gray-200 bg-transparent focus:outline-none placeholder-gray-300 ${extraStyling}`}
+              ? "focus:border-red-500 focus:ring-red-500"
+              : "focus:border-blue-500 focus:ring-blue-500"
+          } block w-full bg-transparent text-sm text-gray-200 placeholder-gray-300 focus:outline-none ${extraStyling}`}
           placeholder={placeholder ?? "Enter value"}
           value={value.toString()}
           onChange={onChange}

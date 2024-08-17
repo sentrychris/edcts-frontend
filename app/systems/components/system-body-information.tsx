@@ -57,24 +57,24 @@ export default function SystemBodyInformation({
 
   return (
     <div
-      className="fx-fade-in system-body-information__container galaxy-background fx-animated-text w-2/5 uppercase tracking-wider text-xs"
+      className="fx-fade-in system-body-information__container galaxy-background fx-animated-text w-2/5 text-xs uppercase tracking-wider"
       style={style}
     >
       {body && (
         <>
-          <div className="rounded backdrop-filter backdrop-blur bg-gradient-to-br from-sky-900/50 via-black/20 to-black/20 ">
-            <div className="system-body-information__container--header py-2.5 px-3 font-bold text-sm">
+          <div className="rounded bg-gradient-to-br from-sky-900/50 via-black/20 to-black/20 backdrop-blur backdrop-filter">
+            <div className="system-body-information__container--header px-3 py-2.5 text-sm font-bold">
               <h2 className="text mt-1">Cartographical Data</h2>
               <XMarkIcon
-                className="hover:text-glow__orange hover:cursor-pointer hover:scale-125"
+                className="hover:text-glow__orange hover:scale-125 hover:cursor-pointer"
                 onClick={close}
                 height={20}
                 width={20}
               />
             </div>
 
-            <div className="px-3 border rounded-b-lg border-orange-500/60">
-              <div className="grid grid-cols-1 md:grid-cols-1 mt-2.5 mb-1 text-lg">
+            <div className="rounded-b-lg border border-orange-500/60 px-3">
+              <div className="mb-1 mt-2.5 grid grid-cols-1 text-lg md:grid-cols-1">
                 <p className="flex items-center gap-x-2">
                   <i className="icarus-terminal-system-bodies text-glow__orange"></i>
                   <Link
@@ -87,7 +87,7 @@ export default function SystemBodyInformation({
 
                 {body._children && (
                   <p
-                    className="text-sm text-glow__blue hover:underline hover:cursor-pointer"
+                    className="text-glow__blue text-sm hover:cursor-pointer hover:underline"
                     onClick={() => {
                       dispatcher.selectBody({ body });
                       if (close) close();
@@ -98,14 +98,14 @@ export default function SystemBodyInformation({
                 )}
               </div>
 
-              <p className="flex flex-col gap-x-2 text-sm pb-5 border-b border-neutral-800">
+              <p className="flex flex-col gap-x-2 border-b border-neutral-800 pb-5 text-sm">
                 <span>
                   Discovered by <span className="text-glow__orange">CMDR {body.discovered_by}</span>
                 </span>
                 <span>at {formatDate(body.discovered_at)}</span>
               </p>
 
-              <p className="flex items-center gap-x-2 mt-2.5 mb-2.5 text-sm">
+              <p className="mb-2.5 mt-2.5 flex items-center gap-x-2 text-sm">
                 <i
                   className={
                     "text-glow__orange icarus-terminal-" +
@@ -119,7 +119,7 @@ export default function SystemBodyInformation({
               </p>
 
               {body.type === SystemBodyType.Star && (
-                <div className="text-xs border-b border-neutral-800 pb-2.5">
+                <div className="border-b border-neutral-800 pb-2.5 text-xs">
                   <div className="flex items-center gap-2 pb-2.5">
                     <p>
                       Class: <span className="ms-1">{body.spectral_class}</span>
@@ -166,7 +166,7 @@ export default function SystemBodyInformation({
                   <p className={"flex items-center gap-x-2 text-xs"}>
                     <span>Gravity:</span> <span>{body.gravity?.toFixed(2)}</span>
                   </p>
-                  <p className={"flex items-center gap-x-2 text-xs mb-2.5"}>
+                  <p className={"mb-2.5 flex items-center gap-x-2 text-xs"}>
                     <span>Surface temp:</span>{" "}
                     <span>{formatNumber(body.surface_temp as number)} K</span>
                   </p>
@@ -174,7 +174,7 @@ export default function SystemBodyInformation({
                   <p className={"flex items-center gap-x-2 text-xs"}>
                     <span>Atmosphere:</span> <span>{body.atmosphere_type}</span>
                   </p>
-                  <p className={"flex items-center gap-x-2 text-xs mb-2.5"}>
+                  <p className={"mb-2.5 flex items-center gap-x-2 text-xs"}>
                     <span>Volcanism:</span> <span>{body.volcanism_type}</span>
                   </p>
 
@@ -184,36 +184,36 @@ export default function SystemBodyInformation({
 
                   {body._planetary_bases && body._planetary_bases.length > 0 && (
                     <>
-                      <p className="flex items-center gap-x-2 mt-2.5 text-sm">
+                      <p className="mt-2.5 flex items-center gap-x-2 text-sm">
                         <i className={"text-glow__orange icarus-terminal-settlement"}></i>
                         <span>Planetary Settlements</span>
                       </p>
-                      <div className="border-b border-neutral-800 pb-5 grid grid-cols-2">
+                      <div className="grid grid-cols-2 border-b border-neutral-800 pb-5">
                         {body._planetary_bases.map((s, i) => {
                           return (
                             <div key={s.id} className={i > 1 ? "mt-5" : "mt-2.5"}>
                               <p className="text-glow__blue">{s.name}</p>
-                              <div className="mt-1 text-label__small">
+                              <div className="text-label__small mt-1">
                                 <p>{s.economy} economy</p>
                               </div>
-                              <div className="flex flex-row gap-x-2 mt-1">
+                              <div className="mt-1 flex flex-row gap-x-2">
                                 {s.has_market && (
                                   <div className="flex items-center gap-x-1">
-                                    <CheckIcon className="w-3 text-glow__orange" />
+                                    <CheckIcon className="text-glow__orange w-3" />
                                     <label className="text-label__small">Market</label>
                                   </div>
                                 )}
 
                                 {s.has_outfitting && (
                                   <div className="flex items-center gap-x-1">
-                                    <CheckIcon className="w-3 text-glow__orange" />
+                                    <CheckIcon className="text-glow__orange w-3" />
                                     <label className="text-label__small">Outfitting</label>
                                   </div>
                                 )}
 
                                 {s.has_shipyard && (
                                   <div className="flex items-center gap-x-1">
-                                    <CheckIcon className="w-3 text-glow__orange" />
+                                    <CheckIcon className="text-glow__orange w-3" />
                                     <label className="text-label__small">Shipyard</label>
                                   </div>
                                 )}
@@ -227,7 +227,7 @@ export default function SystemBodyInformation({
                 </>
               )}
 
-              <div className="grid grid-cols-2 border-b border-neutral-800 mt-2.5 pb-2.5">
+              <div className="mt-2.5 grid grid-cols-2 border-b border-neutral-800 pb-2.5">
                 <div>
                   <p className="flex items-center gap-x-2 text-sm">
                     <i className="icarus-terminal-planet text-glow__orange"></i>
@@ -281,7 +281,7 @@ export default function SystemBodyInformation({
               </div>
 
               {body.rings && body.rings.length > 0 && (
-                <div className="flex items-center gap-x-20 border-b border-neutral-800 mt-2.5 pb-2.5">
+                <div className="mt-2.5 flex items-center gap-x-20 border-b border-neutral-800 pb-2.5">
                   <div>
                     <p className="flex items-center gap-x-2 text-sm">
                       <i className="icarus-terminal-planet-ringed text-glow__orange"></i>

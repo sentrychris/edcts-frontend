@@ -26,21 +26,21 @@ export default async function Home() {
       <Heading
         icon="icarus-terminal-route text-glow__orange"
         title="Departure Board"
-        className="gap-2 mb-5"
+        className="mb-5 gap-2"
       />
-      <div className="border-t border-b border-neutral-800 grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6 font-bold">
+      <div className="grid grid-cols-1 gap-6 border-b border-t border-neutral-800 font-bold md:grid-cols-2 lg:grid-cols-4">
         {schedule.data.slice(0, 4).map((schedule) => {
           return <DepartureCard key={schedule.id} schedule={schedule} />;
         })}
       </div>
-      <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-x-10 mt-5">
+      <div className="mt-5 grid grid-cols-1 gap-x-10 md:grid-cols-2 lg:grid-cols-3">
         <div className="col-span-1">
           <div className="border-b border-neutral-800 pb-5">
             <Heading
               icon="icarus-terminal-location-filled text-glow__blue"
               largeIcon={true}
               title="ED:CTS Last Visited"
-              className="gap-2 mb-5 text-2xl"
+              className="mb-5 gap-2 text-2xl"
             />
             <Link
               className="text-glow__blue font-bold hover:underline"
@@ -48,7 +48,7 @@ export default async function Home() {
             >
               {latestSystem.name}
             </Link>
-            <div className="flex gap-x-20 mt-3">
+            <div className="mt-3 flex gap-x-20">
               <div>
                 <p>
                   {latestSystem.detail.coords.x}, {latestSystem.detail.coords.y},{" "}
@@ -72,14 +72,14 @@ export default async function Home() {
               icon="icarus-terminal-notifications text-glow__orange"
               largeIcon={true}
               title="Galnet News"
-              className="gap-3 mb-5 text-2xl"
+              className="mb-5 gap-3 text-2xl"
             />
             {news.data.slice(0, 5).map((article) => {
               return (
                 <div key={article.id} className="relative">
                   <div className="relative border-b border-neutral-800 py-4">
-                    <h3 className="text-2xl mb-2 lg:mb-4">{article.title}</h3>
-                    <p className="text-sm mb-4">{article.uploaded_at}</p>
+                    <h3 className="mb-2 text-2xl lg:mb-4">{article.title}</h3>
+                    <p className="mb-4 text-sm">{article.uploaded_at}</p>
                     <Link href={`/galnet/news/${article.slug}`} className="text-glow__orange">
                       Read More...
                     </Link>
@@ -94,7 +94,7 @@ export default async function Home() {
             icon="icarus-terminal-route text-glow__orange"
             largeIcon={true}
             title="Scheduled Departures"
-            className="gap-3 mb-5 text-2xl"
+            className="mb-5 gap-3 text-2xl"
           />
           <DepartureTable schedule={schedule} />
         </div>

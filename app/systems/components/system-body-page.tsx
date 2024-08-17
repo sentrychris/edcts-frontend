@@ -54,7 +54,7 @@ const SystemBodyPage: FunctionComponent<Props> = ({ initBody }) => {
     <>
       {isLoading && <Loader visible={isLoading} />}
 
-      <div className="pb-5 border-b border-neutral-800">
+      <div className="border-b border-neutral-800 pb-5">
         <SystemBodyTitle
           title={systemBody.name}
           ringed={systemBody.rings && systemBody.rings.length > 0 ? true : false}
@@ -64,7 +64,7 @@ const SystemBodyPage: FunctionComponent<Props> = ({ initBody }) => {
 
       {!isLoading && systemBody && (
         <div className="rounded">
-          <p className="flex flex-col gap-x-2 text-sm py-5 border-b border-neutral-800">
+          <p className="flex flex-col gap-x-2 border-b border-neutral-800 py-5 text-sm">
             <span>
               Discovered by{" "}
               <span className="text-glow__orange">CMDR {systemBody.discovery.commander}</span>
@@ -72,7 +72,7 @@ const SystemBodyPage: FunctionComponent<Props> = ({ initBody }) => {
             <span>at {formatDate(systemBody.discovery.date)}</span>
           </p>
 
-          <div className="flex flex-row items-center gap-x-24 text-sm border-b border-neutral-800 py-5">
+          <div className="flex flex-row items-center gap-x-24 border-b border-neutral-800 py-5 text-sm">
             <div>
               <Heading
                 icon={
@@ -81,7 +81,7 @@ const SystemBodyPage: FunctionComponent<Props> = ({ initBody }) => {
                 }
                 title="Overview"
               />
-              <p className={"flex items-center gap-x-2 mt-2.5"}>
+              <p className={"mt-2.5 flex items-center gap-x-2"}>
                 <span>{systemBody.type}</span> - <span>{systemBody.sub_type}</span>
               </p>
 
@@ -135,7 +135,7 @@ const SystemBodyPage: FunctionComponent<Props> = ({ initBody }) => {
                   <p className={"flex items-center gap-x-2"}>
                     <span>Gravity:</span> <span>{systemBody.gravity.toFixed(2)}</span>
                   </p>
-                  <p className={"flex items-center gap-x-2 mb-2.5"}>
+                  <p className={"mb-2.5 flex items-center gap-x-2"}>
                     <span>Surface temp:</span>{" "}
                     <span>{formatNumber(systemBody.surface_temp as number)} K</span>
                   </p>
@@ -143,7 +143,7 @@ const SystemBodyPage: FunctionComponent<Props> = ({ initBody }) => {
                   <p className={"flex items-center gap-x-2"}>
                     <span>Atmosphere:</span> <span>{systemBody.atmosphere_type}</span>
                   </p>
-                  <p className={"flex items-center gap-x-2 mb-2.5"}>
+                  <p className={"mb-2.5 flex items-center gap-x-2"}>
                     <span>Volcanism:</span> <span>{systemBody.volcanism_type}</span>
                   </p>
 
@@ -160,13 +160,13 @@ const SystemBodyPage: FunctionComponent<Props> = ({ initBody }) => {
                 view="body"
                 orbiting={systemBody._children ? systemBody._children.length : 0}
                 dispatcher={systemDispatcher}
-                className={"text-glow__white text-sm w-48"}
+                className={"text-glow__white w-48 text-sm"}
               />
             </div>
           </div>
 
           {systemBody.rings && systemBody.rings.length > 0 && (
-            <div className="flex items-center gap-x-20 border-b border-neutral-800 mt-2.5 pb-2.5 text-sm">
+            <div className="mt-2.5 flex items-center gap-x-20 border-b border-neutral-800 pb-2.5 text-sm">
               <div>
                 <Heading
                   icon="icarus-terminal-planet-ringed text-glow__orange me-2"

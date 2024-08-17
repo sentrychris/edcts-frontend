@@ -83,7 +83,7 @@ const DepartureTable: FunctionComponent<Props> = ({ schedule, filter = true }) =
       render: (schedule: Schedule) => {
         return (
           <Link
-            className="hover:underline text-blue-500 dark:text-blue-200"
+            className="text-blue-500 hover:underline dark:text-blue-200"
             href={encodeURI(`/systems/system/${schedule.departure.slug}`)}
           >
             {schedule.departure.name}
@@ -96,7 +96,7 @@ const DepartureTable: FunctionComponent<Props> = ({ schedule, filter = true }) =
       render: (schedule: Schedule) => {
         return (
           <Link
-            className="hover:underline text-blue-500 dark:text-blue-200"
+            className="text-blue-500 hover:underline dark:text-blue-200"
             href={encodeURI(`/systems/system/${schedule.destination.slug}`)}
           >
             {schedule.destination.name}
@@ -118,10 +118,10 @@ const DepartureTable: FunctionComponent<Props> = ({ schedule, filter = true }) =
       render: (schedule: Schedule) => {
         return (
           <Link
-            className="underline text-blue-500 dark:text-blue-200"
+            className="text-blue-500 underline dark:text-blue-200"
             href={`/departures/schedule/${schedule.slug}`}
           >
-            <EyeIcon className="w-6 h-6" />
+            <EyeIcon className="h-6 w-6" />
           </Link>
         );
       },

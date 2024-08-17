@@ -13,7 +13,7 @@ const Loader: FunctionComponent<Props> = ({
   return (
     <div className="elite-loader-container" style={{ opacity: visible ? "0.75" : "0" }}>
       <div className="elite-loader">
-        <h2 className="uppercase text-glow__orange mb-3 text-xs">
+        <h2 className="text-glow__orange mb-3 text-xs uppercase">
           {visible ? message : "Loading completed!"}
         </h2>
         <div className="row">

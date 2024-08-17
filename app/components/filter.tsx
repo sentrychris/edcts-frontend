@@ -27,7 +27,7 @@ const Filter: FunctionComponent<Props> = ({ className, handleInput }) => {
   return (
     <div
       className={
-        "w-full relative backdrop-filter backdrop-blur bg-transparent border border-neutral-800 " +
+        "relative w-full border border-neutral-800 bg-transparent backdrop-blur backdrop-filter " +
         className
       }
     >

@@ -67,7 +67,7 @@ const SystemsTable: FunctionComponent<Props> = ({ systems }) => {
             ? "text-orange-500 dark:text-orange-300"
             : level === "Low"
               ? "text-red-500 dark:text-red-300"
-              : "text-green-500 dark:text-green-200") + " uppercase text-glow__white"
+              : "text-green-500 dark:text-green-200") + " text-glow__white uppercase"
         }
       >
         {level}
@@ -86,7 +86,7 @@ const SystemsTable: FunctionComponent<Props> = ({ systems }) => {
               : value === "Independent"
                 ? "text-green-500 dark:text-green-300"
                 : "text-stone-500 dark:text-stone-300") +
-          " uppercase tracking-wide text-glow__white"
+          " text-glow__white uppercase tracking-wide"
         }
       >
         {value}
@@ -99,7 +99,7 @@ const SystemsTable: FunctionComponent<Props> = ({ systems }) => {
       title: "Name",
       render: (system: System) => {
         return (
-          <Link className="hover:underline text-blue-200" href={`/systems/system/${system.slug}`}>
+          <Link className="text-blue-200 hover:underline" href={`/systems/system/${system.slug}`}>
             {system.name}
           </Link>
         );
@@ -151,8 +151,8 @@ const SystemsTable: FunctionComponent<Props> = ({ systems }) => {
       title: "View",
       render: (system: System) => {
         return (
-          <Link className="underline text-blue-200" href={`/systems/system/${system.slug}`}>
-            <EyeIcon className="w-6 h-6" />
+          <Link className="text-blue-200 underline" href={`/systems/system/${system.slug}`}>
+            <EyeIcon className="h-6 w-6" />
           </Link>
         );
       },

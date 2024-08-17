@@ -26,7 +26,7 @@ const GalnetArticle = () => {
         icon="icarus-terminal-notifications"
         largeIcon={true}
         title="Galnet News"
-        className="gap-3 pb-3 text-2xl border-b border-neutral-800"
+        className="gap-3 border-b border-neutral-800 pb-3 text-2xl"
       />
       <div className="relative border-b border-neutral-800 py-10">
         <h1 className="text-4xl">{article.title}</h1>
