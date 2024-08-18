@@ -20,7 +20,7 @@ export function escapeRegExp(text: string) {
   return text.replace(/[[\]{}()*+?.,\-\\^$|#\s]/g, "\\$&");
 }
 
-export const renderBadge = (
+export const renderTextWithIcon = (
   text: string | number,
   options?: { className?: string; icon?: string },
 ) => {

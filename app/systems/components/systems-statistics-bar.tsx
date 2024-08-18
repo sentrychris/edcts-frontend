@@ -3,7 +3,7 @@
 import type { FunctionComponent } from "react";
 import type { Statistics } from "@/core/interfaces/Statistics";
 import { useEffect, useState, memo } from "react";
-import { formatNumber, renderBadge } from "@/core/util";
+import { formatNumber, renderTextWithIcon } from "@/core/util";
 import { getResource } from "@/core/api";
 import Link from "next/link";
 
@@ -45,25 +45,25 @@ const SystemsStatisticsBar: FunctionComponent<Props> = ({
         <div className="flex flex-wrap items-center gap-10 lg:gap-20">
           <div className="whitespace-nowrap">
             <p className="mb-2">Systems Logged:</p>
-            {renderBadge(formatNumber(statistics.data.cartographical.systems), {
+            {renderTextWithIcon(formatNumber(statistics.data.cartographical.systems), {
               icon: "icarus-terminal-system-orbits text-2xl",
             })}
           </div>
           <div className="whitespace-nowrap">
             <p className="mb-2">Primary Stars Logged:</p>
-            {renderBadge(formatNumber(statistics.data.cartographical.stars), {
+            {renderTextWithIcon(formatNumber(statistics.data.cartographical.stars), {
               icon: "icarus-terminal-star text-2xl",
             })}
           </div>
           <div className="whitespace-nowrap">
             <p className="mb-2">Orbital Bodies Logged:</p>
-            {renderBadge(formatNumber(statistics.data.cartographical.bodies), {
+            {renderTextWithIcon(formatNumber(statistics.data.cartographical.bodies), {
               icon: "icarus-terminal-system-bodies text-2xl",
             })}
           </div>
           <div className="hidden whitespace-nowrap md:inline">
             <p className="mb-2">ED:CTS Carriers in service:</p>
-            {renderBadge(formatNumber(statistics.data.carriers), {
+            {renderTextWithIcon(formatNumber(statistics.data.carriers), {
               icon: "icarus-terminal-ship text-2xl",
             })}
           </div>

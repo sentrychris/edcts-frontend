@@ -1,7 +1,7 @@
 import type { FunctionComponent } from "react";
 import type { SystemInformation } from "@/core/interfaces/System";
 import { memo } from "react";
-import { formatNumber, renderBadge } from "@/core/util";
+import { formatNumber, renderTextWithIcon } from "@/core/util";
 import { renderAllegianceText, renderSecurityText } from "@/systems/lib/render";
 
 interface Props {
@@ -34,19 +34,19 @@ const SystemInformationBar: FunctionComponent<Props> = ({ information }) => {
           </div>
           <div className="whitespace-nowrap">
             <p className="mb-2">Controlling Faction:</p>
-            {renderBadge(information.controlling_faction.name ?? "No Controlling Faction", {
+            {renderTextWithIcon(information.controlling_faction.name ?? "No Controlling Faction", {
               icon: "icarus-terminal-system-authority-solid",
             })}
           </div>
           <div className="whitespace-nowrap">
             <p className="mb-2">Economy:</p>
-            {renderBadge(`${information.economy ?? "No"} economy`, {
+            {renderTextWithIcon(`${information.economy ?? "No"} economy`, {
               icon: "icarus-terminal-economy",
             })}
           </div>
           <div className="whitespace-nowrap">
             <p className="mb-2">Population:</p>
-            {renderBadge(formatNumber(information.population), {
+            {renderTextWithIcon(formatNumber(information.population), {
               icon: "icarus-terminal-planet-life",
             })}
           </div>

@@ -1,6 +1,6 @@
 import type { FunctionComponent } from "react";
 import type { System } from "@/core/interfaces/System";
-import { renderBadge } from "@/core/util";
+import { renderTextWithIcon } from "@/core/util";
 import { memo } from "react";
 
 interface Props {
@@ -24,7 +24,7 @@ const SystemHeader: FunctionComponent<Props> = ({ system, special }) => {
       </div>
       <div className="hidden whitespace-nowrap md:inline">
         <p className="mb-2">Galaxy Coordinates:</p>
-        {renderBadge(Object.values(system.coords).join(", "), {
+        {renderTextWithIcon(Object.values(system.coords).join(", "), {
           icon: "icarus-terminal-location-filled",
         })}
       </div>
