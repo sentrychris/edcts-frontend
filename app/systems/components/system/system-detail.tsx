@@ -1,21 +1,21 @@
 "use client";
 
 import type { FunctionComponent } from "react";
+import type { System } from "@/core/interfaces/System";
+import type { RawSystemBody, MappedSystemBody } from "@/core/interfaces/SystemBody";
 import { useEffect, useState, useCallback } from "react";
-import type { System } from "../../../core/interfaces/System";
-import type { RawSystemBody, MappedSystemBody } from "../../../core/interfaces/SystemBody";
-import { SystemBodyType } from "../../../core/constants/system";
-import { getResource } from "../../../core/api";
+import { SystemBodyType } from "@/core/constants/system";
+import { systemDispatcher } from "@/core/events/SystemDispatcher";
+import { getResource } from "@/core/api";
 import { systemState } from "../../lib/store";
-import { systemDispatcher } from "../../../core/events/SystemDispatcher";
+import Heading from "@/components/heading";
+import Loader from "@/components/loader";
 import SystemMap from "../../lib/system-map";
 import SystemTitle from "./system-title";
 import SystemInformationBar from "./system-information-bar";
 import SystemBodySVG from "./system-body-svg";
 import SystemBodyPopover from "./system-body-popover";
 import SystemStarsTable from "./system-stars-table";
-import Loader from "../../../components/loader";
-import Heading from "../../../components/heading";
 
 interface Props {
   initSystem?: System;

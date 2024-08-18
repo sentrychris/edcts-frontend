@@ -1,9 +1,9 @@
-import SystemsTable from "./components/systems-table";
-import Heading from "../components/heading";
-import { getCollection, getResource } from "../core/api";
-import type { System } from "../core/interfaces/System";
-import type { Statistics } from "../core/interfaces/Statistics";
+import type { System } from "@/core/interfaces/System";
+import type { Statistics } from "@/core/interfaces/Statistics";
+import { getCollection, getResource } from "@/core/api";
+import Heading from "@/components/heading";
 import SystemsStatisticsBar from "./components/systems-statistics-bar";
+import SystemsTable from "./components/systems-table";
 
 export default async function Page() {
   const systems = await getCollection<System>("systems", {

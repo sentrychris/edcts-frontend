@@ -1,14 +1,14 @@
 "use client";
 
 import type { FunctionComponent } from "react";
+import type { Links, Meta, Pagination } from "@/core/interfaces/Pagination";
+import type { System } from "@/core/interfaces/System";
 import { useState } from "react";
+import { getCollection } from "@/core/api";
+import { useDebounce } from "@/core/hooks/debounce";
 import Link from "next/link";
-import type { Links, Meta, Pagination } from "../../core/interfaces/Pagination";
-import type { System } from "../../core/interfaces/System";
-import { getCollection } from "../../core/api";
-import { useDebounce } from "../../core/hooks/debounce";
-import Filter from "../../components/filter";
-import Table from "../../components/table";
+import Filter from "@/components/filter";
+import Table from "@/components/table";
 
 interface Props {
   systems: Pagination<System>;

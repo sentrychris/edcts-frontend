@@ -1,10 +1,10 @@
 "use client";
 
 import type { FunctionComponent } from "react";
+import type { Statistics } from "@/core/interfaces/Statistics";
 import { useEffect, useState, memo } from "react";
-import type { Statistics } from "../../core/interfaces/Statistics";
-import { getResource } from "../../core/api";
-import { formatNumber, renderBadge } from "../../core/util";
+import { formatNumber, renderBadge } from "@/core/util";
+import { getResource } from "@/core/api";
 import Link from "next/link";
 
 interface Props {

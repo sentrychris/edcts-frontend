@@ -1,9 +1,10 @@
-import type { System } from "../../core/interfaces/System";
+import type { System } from "@/core/interfaces/System";
+import type { Station, MappedStation } from "@/core/interfaces/Station";
 import type {
   RawSystemBody,
   MappedSystemBody,
   SystemBodyParent,
-} from "../../core/interfaces/SystemBody";
+} from "@/core/interfaces/SystemBody";
 import {
   MEGASHIPS,
   SPACE_STATIONS,
@@ -13,19 +14,16 @@ import {
   SETTLEMENTS,
   SOL_RADIUS_IN_KM,
   SystemBodyType,
-} from "../../core/constants/system";
-import {
-  MIN_RADIUS,
-  MAX_RADIUS,
-  SUB_MIN_RADIUS,
-  SUB_MAX_RADIUS,
-  RADIUS_DIVIDER,
-} from "../../core/constants/math";
-
-import { escapeRegExp } from "../../core/util";
-import type { Station, MappedStation } from "../../core/interfaces/Station";
+} from "@/core/constants/system";
+import { escapeRegExp } from "@/core/util";
 
 type MapKeyType = keyof MappedSystemBody;
+
+const MIN_RADIUS = 800;
+const MAX_RADIUS = 1600;
+const SUB_MIN_RADIUS = 800;
+const SUB_MAX_RADIUS = 1600;
+const RADIUS_DIVIDER = 10;
 
 export default class SystemMap {
   detail: System;

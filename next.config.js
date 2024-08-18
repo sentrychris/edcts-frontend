@@ -1,4 +1,6 @@
 /** @type {import('next').NextConfig} */
+const path = require('path');
+
 const nextConfig = {
   reactStrictMode: true,
   images: {
@@ -10,7 +12,11 @@ const nextConfig = {
         pathname: '/**',
       },
     ],
-  }
+  },
+  webpack: (config) => {
+    config.resolve.alias['@'] = path.resolve(__dirname, 'app');
+    return config;
+  } 
 }
 
 module.exports = nextConfig

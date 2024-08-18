@@ -1,8 +1,7 @@
 import type { FunctionComponent } from "react";
+import type { SystemInformation } from "@/core/interfaces/System";
 import { memo } from "react";
-import { formatNumber, renderBadge } from "../../../core/util";
-
-import type { SystemInformation } from "../../../core/interfaces/System";
+import { formatNumber, renderBadge } from "@/core/util";
 
 interface Props {
   coords: {

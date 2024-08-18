@@ -1,11 +1,10 @@
 "use client";
 
 import type { FunctionComponent } from "react";
+import type { SystemDispatcher } from "@/core/events/SystemDispatcher";
+import type { MappedSystemBody } from "@/core/interfaces/SystemBody";
 import { memo, useCallback, useState } from "react";
-import type { MappedSystemBody } from "../../../core/interfaces/SystemBody";
-import type { SystemDispatcher } from "../../../core/events/SystemDispatcher";
-import { CIRCLE_DEG } from "../../../core/constants/math";
-import Icons from "../../../icons";
+import Icons from "@/icons";
 
 interface Props {
   body: MappedSystemBody;
@@ -59,12 +58,12 @@ const SystemBodySVG: FunctionComponent<Props> = ({
   const calculateIconCoords = useCallback(() => {
     const pos = {
       x: radius * Math.sin(Math.PI),
-      y: (radius * Math.cos(Math.PI) + CIRCLE_DEG * 2) / 2,
+      y: (radius * Math.cos(Math.PI) + 360 * 2) / 2,
     };
 
     if (bodyIsSelectedUserFocus || (view && view === "body")) {
-      pos.x += CIRCLE_DEG * 2;
-      pos.y += CIRCLE_DEG * 4;
+      pos.x += 360 * 2;
+      pos.y += 360 * 4;
     }
 
     return pos;
