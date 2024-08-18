@@ -6,6 +6,7 @@ import type { System } from "@/core/interfaces/System";
 import { useState } from "react";
 import { getCollection } from "@/core/api";
 import { useDebounce } from "@/core/hooks/debounce";
+import { renderAllegianceText, renderSecurityText } from "../lib/render";
 import Link from "next/link";
 import Filter from "@/components/filter";
 import Table from "@/components/table";
@@ -56,42 +57,6 @@ const SystemsTable: FunctionComponent<Props> = ({ systems }) => {
   const paginate = async (link: string) => {
     const { data, meta, links } = await getCollection<System>(link);
     await setState(data, meta, links);
-  };
-
-  const renderSecurityText = (level: string = "None") => {
-    return (
-      <p
-        className={
-          "uppercase tracking-wide " +
-          (level === "Medium"
-            ? "text-orange-300"
-            : level === "Low"
-              ? "text-red-300"
-              : "text-green-200")
-        }
-      >
-        {level}
-      </p>
-    );
-  };
-
-  const renderAllegianceText = (value: string = "None") => {
-    return (
-      <p
-        className={
-          "uppercase tracking-wide " +
-          (value === "Federation"
-            ? "text-blue-200"
-            : value === "Empire"
-              ? "text-yellow-400"
-              : value === "Independent"
-                ? "text-green-300"
-                : "text-stone-300")
-        }
-      >
-        {value}
-      </p>
-    );
   };
 
   const columns = {

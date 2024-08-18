@@ -234,10 +234,10 @@ const SystemDetail: FunctionComponent<Props> = ({ initSystem, params }) => {
 
       <SystemInformationBar coords={system.coords} information={system.information} />
 
-      <div className="w-7xl overflow border-b border-neutral-800 bg-transparent py-5 backdrop-blur backdrop-filter">
+      <div className="border-b border-neutral-800 bg-transparent py-5 backdrop-blur backdrop-filter">
         <Heading
           icon="icarus-terminal-system-bodies"
-          title="System Overview"
+          title="System Bodies"
           className="gap-2 pb-5"
         />
         {!isLoading && (

@@ -2,6 +2,7 @@ import type { FunctionComponent } from "react";
 import type { SystemInformation } from "@/core/interfaces/System";
 import { memo } from "react";
 import { formatNumber, renderBadge } from "@/core/util";
+import { renderAllegianceText, renderSecurityText } from "@/systems/lib/render";
 
 interface Props {
   coords: {
@@ -22,13 +23,16 @@ const SystemInformationBar: FunctionComponent<Props> = ({ coords, information })
             <span className="text-glow__white flex items-center gap-2 py-1 font-bold uppercase">
               <i className="icarus-terminal-system-authority text-glow__orange"></i>
               <p>
-                <span className="me-3">{information.allegiance ?? "No Allegiance"}</span>
+                <span className="me-3">
+                  {renderAllegianceText(information.allegiance) ?? "No Allegiance"}
+                </span>
                 <span>/</span>
-                <span className="mx-3">{information.government ?? "No Government"}</span>
-                <span>/</span>
-                <span className="ms-3">{information.security ?? "No"} security</span>
+                <span className="ms-3">
+                  {renderSecurityText(information.security, "security") ?? "No"}
+                </span>
               </p>
             </span>
+            <span className="ms-7 text-xs">{information.government ?? "No"}</span>
           </div>
           <div className="whitespace-nowrap">
             <p className="mb-2">Controlling Faction:</p>
