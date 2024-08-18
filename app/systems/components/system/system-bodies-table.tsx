@@ -25,7 +25,7 @@ const SystemBodiesTable: FunctionComponent<Props> = ({ bodies, system, dispatche
             className="hover:text-glow__orange text-blue-200 hover:cursor-pointer hover:underline"
             onClick={() => dispatcher.selectBody({ body: body as MappedSystemBody })}
           >
-            {body.name.split(system).pop()?.trim()}
+            {body.name}
           </span>
         );
       },

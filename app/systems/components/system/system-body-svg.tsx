@@ -185,7 +185,7 @@ const SystemBodySVG: FunctionComponent<Props> = ({
             onClick={() => dispatcher.selectBody({ body })}
           >
             <i className="icarus-terminal-system-bodies text-label__small"></i>
-            {orbiting} {bodyIsSelectedUserFocus ? "orbiting bodies found" : ""}
+            {orbiting} {bodyIsSelectedUserFocus ? "orbital bodies" : ""}
           </span>
 
           {!bodyIsSelectedUserFocus &&
