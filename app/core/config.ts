@@ -5,11 +5,11 @@ import { AppSettings } from "./interfaces/Settings";
  */
 export const settings: AppSettings = {
   app: {
-    name: process.env.APP_NAME,
-    url: process.env.APP_URL,
+    name: process.env.NEXT_PUBLIC_APP_NAME,
+    url: process.env.NEXT_PUBLIC_APP_URL,
   },
   api: {
-    url: process.env.API_URL,
+    url: process.env.NEXT_PUBLIC_API_URL,
     auth: {
       basic: {
         secret: process.env.BASIC_SECRET,

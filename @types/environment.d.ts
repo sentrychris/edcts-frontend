@@ -8,11 +8,11 @@ declare global {
       DEBUG: string;
 
       // App info
-      APP_NAME: string;
-      APP_URL: string;
+      NEXT_PUBLIC_APP_NAME: string;
+      NEXT_PUBLIC_APP_URL: string;
 
       // API info
-      API_URL: string;
+      NEXT_PUBLIC_API_URL: string;
 
       // Basic auth secret
       BASIC_SECRET: string;
