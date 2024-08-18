@@ -16,6 +16,7 @@ import SystemInformationBar from "./system-information-bar";
 import SystemBodySVG from "./system-body-svg";
 import SystemBodyPopover from "./system-body-popover";
 import SystemStarsTable from "./system-stars-table";
+import SystemBodiesTable from "./system-bodies-table";
 
 interface Props {
   initSystem?: System;
@@ -216,7 +217,7 @@ const SystemDetail: FunctionComponent<Props> = ({ initSystem, params }) => {
     if (!bodies) {
       return (
         <span className="text-glow__orange ms-4 uppercase">
-          {body.name} {body.type} has no directly orbiting celestial bodies
+          {body.name} {body.type} has no direct orbiting celestial bodies
         </span>
       );
     }
@@ -235,11 +236,7 @@ const SystemDetail: FunctionComponent<Props> = ({ initSystem, params }) => {
       <SystemInformationBar coords={system.coords} information={system.information} />
 
       <div className="border-b border-neutral-800 bg-transparent py-5 backdrop-blur backdrop-filter">
-        <Heading
-          icon="icarus-terminal-system-bodies"
-          title="System Bodies"
-          className="gap-2 pb-5"
-        />
+        <Heading icon="icarus-terminal-system-bodies" title="System Map" className="gap-2 pb-5" />
         {!isLoading && (
           <div className="grid grid-cols-12">
             <div className="col-span-12">
@@ -261,6 +258,20 @@ const SystemDetail: FunctionComponent<Props> = ({ initSystem, params }) => {
           {!isLoading && systemMap && (
             <SystemStarsTable
               stars={systemMap.stars as RawSystemBody[]}
+              system={system.name}
+              dispatcher={systemDispatcher}
+            />
+          )}
+        </div>
+        <div>
+          <Heading
+            icon="icarus-terminal-system-orbits"
+            title="Orbital Bodies"
+            className="gap-2 pb-5"
+          />
+          {!isLoading && systemMap && (
+            <SystemBodiesTable
+              bodies={systemMap.planets as RawSystemBody[]}
               system={system.name}
               dispatcher={systemDispatcher}
             />
