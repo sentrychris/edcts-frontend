@@ -1,6 +1,6 @@
 import type { Metadata } from "next";
 import { Jura } from "next/font/google";
-import Image from "next/image";
+import MainBackground from "./components/main-background";
 import MainNavigation from "./components/main-navigation";
 import SvgFilters from "./components/svg-filters";
 import "./css/main.css";
@@ -17,18 +17,7 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
     <html lang="en" data-fx-crt-text="true" className="scroll-smooth">
       <body className={jura.className + " relative antialiased"}>
         <SvgFilters />
-        <div className="overlay pointer-events-none absolute inset-x-0 top-0 flex justify-center overflow-hidden">
-          <div className="flex w-[108rem] flex-none justify-end">
-            <Image
-              width="100"
-              height="100"
-              src="/tinyb.png"
-              className="w-[150rem] max-w-none"
-              decoding="async"
-              alt="glow"
-            ></Image>
-          </div>
-        </div>
+        <MainBackground />
         <MainNavigation />
         <main className="text-glow__white mx-auto flex flex-col px-6 py-6 text-neutral-200 md:px-12 lg:px-24">
           <h1 className="mb-5 text-4xl uppercase">
