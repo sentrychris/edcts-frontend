@@ -61,7 +61,8 @@ const SystemsTable: FunctionComponent<Props> = ({ systems }) => {
   const renderSecurityText = (level: string = "None") => {
     return (
       <p
-        className={"uppercase tracking-wide " +
+        className={
+          "uppercase tracking-wide " +
           (level === "Medium"
             ? "text-orange-300"
             : level === "Low"
@@ -77,7 +78,8 @@ const SystemsTable: FunctionComponent<Props> = ({ systems }) => {
   const renderAllegianceText = (value: string = "None") => {
     return (
       <p
-        className={"uppercase tracking-wide " +
+        className={
+          "uppercase tracking-wide " +
           (value === "Federation"
             ? "text-blue-200"
             : value === "Empire"
