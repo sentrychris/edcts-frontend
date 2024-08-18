@@ -78,8 +78,8 @@ export default async function Home() {
               return (
                 <div key={article.id} className="relative">
                   <div className="relative border-b border-neutral-800 py-4">
-                    <h3 className="mb-2">{article.title}</h3>
-                    <p className="mb-4 text-sm">{article.uploaded_at}</p>
+                    <h3 className="mb-2 text-lg">{article.title}</h3>
+                    <p className="mb-2 text-xs">{article.uploaded_at}</p>
                     <Link href={`/galnet/news/${article.slug}`} className="text-glow__orange">
                       Read more...
                     </Link>
