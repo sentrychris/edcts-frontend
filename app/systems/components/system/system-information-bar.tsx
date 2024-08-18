@@ -19,15 +19,18 @@ const SystemInformationBar: FunctionComponent<Props> = ({ information }) => {
               <i className="icarus-terminal-system-authority text-glow__orange"></i>
               <p>
                 <span className="me-3">
-                  {renderAllegianceText(information.allegiance) ?? "No Allegiance"}
+                  {renderAllegianceText(information.allegiance ?? "No Allegiance")}
                 </span>
                 <span>/</span>
                 <span className="ms-3">
-                  {renderSecurityText(information.security, "security") ?? "No"}
+                  {renderSecurityText(!information.security || information.security === "None"
+                      ? "No"
+                      : information.security, "security"
+                  )}
                 </span>
               </p>
             </span>
-            <span className="ms-7 text-xs">{information.government ?? "No"}</span>
+            <span className="ms-7 text-xs">{information.government ?? "No Governance"}</span>
           </div>
           <div className="whitespace-nowrap">
             <p className="mb-2">Controlling Faction:</p>

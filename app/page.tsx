@@ -20,26 +20,34 @@ export default async function Home() {
   });
 
   const latestSystem = new SystemMap(statistics.data.cartographical.latest_system);
+  const scheduleSize = schedule.data.length;
+  const gridClasses =
+    (scheduleSize > 0 ? "mt-12" : "mt-4") +
+    " grid grid-cols-1 gap-x-10 md:grid-cols-2 lg:grid-cols-3";
 
   return (
     <>
-      <Heading
-        icon="icarus-terminal-route text-glow__orange"
-        title="Departure Board"
-        className="mb-5 gap-2"
-      />
-      <div className="grid grid-cols-1 gap-6 border-b border-t border-neutral-800 font-bold md:grid-cols-2 lg:grid-cols-4">
-        {schedule.data.slice(0, 4).map((schedule) => {
-          return <DepartureCard key={schedule.id} schedule={schedule} />;
-        })}
-      </div>
-      <div className="mt-12 grid grid-cols-1 gap-x-10 md:grid-cols-2 lg:grid-cols-3">
+      {scheduleSize > 0 && (
+        <>
+          <Heading
+            icon="icarus-terminal-route text-glow__orange"
+            title="Departure Board"
+            className="mb-5 gap-2"
+          />
+          <div className="grid grid-cols-1 gap-6 border-b border-t border-neutral-800 font-bold md:grid-cols-2 lg:grid-cols-4">
+            {schedule.data.slice(0, 4).map((schedule) => {
+              return <DepartureCard key={schedule.id} schedule={schedule} />;
+            })}
+          </div>
+        </>
+      )}
+      <div className={gridClasses}>
         <div className="col-span-1">
           <div className="border-b border-neutral-800 pb-12">
             <Heading
               icon="icarus-terminal-location-filled text-glow__blue"
               largeIcon={true}
-              title="ED:CTS Last Visited"
+              title="Latest Updated System"
               className="mb-5 gap-2 text-2xl"
             />
             <Link
@@ -93,7 +101,7 @@ export default async function Home() {
           <Heading
             icon="icarus-terminal-route text-glow__orange"
             largeIcon={true}
-            title="Scheduled Departures"
+            title="Scheduled Fleet Carrier Departures"
             className="mb-5 gap-3 text-2xl"
           />
           <DepartureTable schedule={schedule} />

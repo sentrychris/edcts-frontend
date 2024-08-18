@@ -60,11 +60,23 @@ const SystemBodiesTable: FunctionComponent<Props> = ({ bodies, system, dispatche
     },
     atmosphere: {
       title: "Atmosphere",
-      accessor: "atmosphere_type",
+      render: (body: RawSystemBody) => {
+        return body.atmosphere_type ? (
+          <span>{body.atmosphere_type}</span>
+        ) : (
+          <span>No Atmosphere</span>
+        );
+      },
     },
     volcanism: {
       title: "Volcanism",
-      accessor: "volcanism_type",
+      render: (body: RawSystemBody) => {
+        return body.volcanism_type ? (
+          <span>{body.volcanism_type}</span>
+        ) : (
+          <span>No Volcanism</span>
+        );
+      },
     },
     terraforming: {
       title: "Terraforming",

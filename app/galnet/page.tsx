@@ -6,7 +6,7 @@ import GalnetList from "./components/galnet-list";
 export default async function Page() {
   return (
     <>
-      <div className="mt-6 grid grid-cols-1">
+      <div className="mt-4 grid grid-cols-1">
         <Heading
           icon="icarus-terminal-notifications"
           largeIcon={true}

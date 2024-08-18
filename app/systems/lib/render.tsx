@@ -11,7 +11,7 @@ export const renderSecurityText = (level: string = "None", suffix = "") => {
         "uppercase tracking-wide " +
         (level === "Medium"
           ? "text-orange-300"
-          : ["Low", "Anarchy"].includes(level)
+          : ["Low", "Anarchy", "None", "No"].includes(level)
             ? "text-red-300"
             : "text-green-200")
       }

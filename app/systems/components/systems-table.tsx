@@ -89,7 +89,9 @@ const SystemsTable: FunctionComponent<Props> = ({ systems }) => {
     faction: {
       title: "Faction",
       render: (system: System) =>
-        system.information && system.information.controlling_faction
+        system.information &&
+        system.information.controlling_faction &&
+        system.information.controlling_faction.name
           ? system.information.controlling_faction.name
           : "None",
     },

@@ -25,7 +25,7 @@ export function isAbsoluteUrl(url: string) {
 }
 
 export async function request(uri: string, params?: Record<string, string | number | boolean>) {
-  const url = !isAbsoluteUrl(uri) ? `https://edcts-api.versyx.net/api/${uri}` : uri;
+  const url = !isAbsoluteUrl(uri) ? `http://localhost/api/${uri}` : uri;
   const query: string = params ? "?" + new URLSearchParams(params as Record<string, string>) : "";
   const response = await fetch(`${url}${query}`);
 

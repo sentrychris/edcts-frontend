@@ -44,15 +44,9 @@ const SystemsStatisticsBar: FunctionComponent<Props> = ({
       <div className="flex flex-row items-center justify-between uppercase">
         <div className="flex flex-wrap items-center gap-10 lg:gap-20">
           <div className="whitespace-nowrap">
-            <p className="mb-2">ED:CTS Systems Logged:</p>
+            <p className="mb-2">Systems Logged:</p>
             {renderBadge(formatNumber(statistics.data.cartographical.systems), {
               icon: "icarus-terminal-system-orbits text-2xl",
-            })}
-          </div>
-          <div className="whitespace-nowrap">
-            <p className="mb-2">ED:CTS Bodies Logged:</p>
-            {renderBadge(formatNumber(statistics.data.cartographical.bodies), {
-              icon: "icarus-terminal-system-bodies text-2xl",
             })}
           </div>
           <div className="whitespace-nowrap">
@@ -61,8 +55,14 @@ const SystemsStatisticsBar: FunctionComponent<Props> = ({
               icon: "icarus-terminal-star text-2xl",
             })}
           </div>
+          <div className="whitespace-nowrap">
+            <p className="mb-2">Orbital Bodies Logged:</p>
+            {renderBadge(formatNumber(statistics.data.cartographical.bodies), {
+              icon: "icarus-terminal-system-bodies text-2xl",
+            })}
+          </div>
           <div className="hidden whitespace-nowrap md:inline">
-            <p className="mb-2">Carriers in service:</p>
+            <p className="mb-2">ED:CTS Carriers in service:</p>
             {renderBadge(formatNumber(statistics.data.carriers), {
               icon: "icarus-terminal-ship text-2xl",
             })}
@@ -71,7 +71,7 @@ const SystemsStatisticsBar: FunctionComponent<Props> = ({
         <div className="hidden items-center gap-4 whitespace-nowrap md:flex">
           <i className="icarus-terminal-location-filled text-glow__blue text-3xl"></i>
           <div className="text-xs">
-            <p className="mb-1">Latest Logged System:</p>
+            <p className="mb-1">Latest Updated System:</p>
             <div className="text-xs">
               <Link
                 className="text-glow__blue hover:text-glow__orange hover:underline"
