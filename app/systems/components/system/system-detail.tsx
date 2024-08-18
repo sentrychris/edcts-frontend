@@ -101,14 +101,11 @@ const SystemDetail: FunctionComponent<Props> = ({ initSystem, params }) => {
           const map = new SystemMap(system);
           setSystemMap(map);
 
-          console.log({ map });
-
           // Fetch the main star and initialise it as the selected body for the system overview.
           const star = map.stars.find((s) => s.is_main_star === 1);
           setSelectedBody(star);
 
-          // Listener to set the selected system body when the user selects a body either from the
-          // system overview or one of the tables.
+          // Listener to set the selected system body when the user selects a body from the overview.
           systemDispatcher.addEventListener("select-body", (event) => {
             setSelectedBody(event.message as MappedSystemBody);
           });
