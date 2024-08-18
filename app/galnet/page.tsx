@@ -1,7 +1,7 @@
-import type { Galnet } from "../core/interfaces/Galnet";
+import type { Galnet } from "@/core/interfaces/Galnet";
+import { getCollection } from "@/core/api";
+import Heading from "@/components/heading";
 import GalnetList from "./components/galnet-list";
-import { getCollection } from "../core/api";
-import Heading from "../components/heading";
 
 export default async function Page() {
   return (

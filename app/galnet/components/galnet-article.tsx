@@ -1,9 +1,9 @@
 "use client";
 
 import { type FunctionComponent, useEffect, useState } from "react";
-import type { Galnet } from "../../core/interfaces/Galnet";
+import type { Galnet } from "@/core/interfaces/Galnet";
+import { getResource } from "@/core/api";
 import { galnetState } from "../lib/store";
-import { getResource } from "../../core/api";
 
 interface Props {
   params: { slug: string };

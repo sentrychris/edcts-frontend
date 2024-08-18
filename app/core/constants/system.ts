@@ -30,10 +30,6 @@ export const SETTLEMENTS = ["Odyssey Settlement"];
 
 export const PLANETARY_BASES = SURFACE_PORTS.concat(PLANETARY_OUTPOSTS).concat(SETTLEMENTS);
 
-export const UNKNOWN_VALUE = "Unknown";
-
-export const SOL_RADIUS_IN_KM = 696340;
-
 export enum SystemBodyType {
   Star = "Star",
   Planet = "Planet",

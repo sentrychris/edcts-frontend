@@ -1,17 +1,16 @@
 "use client";
 
 import type { FunctionComponent } from "react";
+import type { Links, Meta, Pagination } from "@/core/interfaces/Pagination";
+import type { Schedule } from "@/core/interfaces/Schedule";
 import { useEffect, useState } from "react";
-import Link from "next/link";
-import { EyeIcon } from "@heroicons/react/24/outline";
-import type { Links, Meta, Pagination } from "../../core/interfaces/Pagination";
-import type { Schedule } from "../../core/interfaces/Schedule";
-import { useDebounce } from "../../core/hooks/debounce";
-import Filter from "../../components/filter";
-import Table from "../../components/table";
-import { getCollection } from "../../core/api";
+import { useDebounce } from "@/core/hooks/debounce";
+import { getCollection } from "@/core/api";
+import { formatDate } from "@/core/util";
 import { renderStatusText } from "../lib/store";
-import { formatDate } from "../../core/util";
+import Link from "next/link";
+import Filter from "@/components/filter";
+import Table from "@/components/table";
 
 interface Props {
   schedule: Pagination<Schedule>;

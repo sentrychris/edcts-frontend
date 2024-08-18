@@ -1,12 +1,12 @@
-import Link from "next/link";
+import type { Statistics } from "./core/interfaces/Statistics";
 import type { Schedule } from "./core/interfaces/Schedule";
 import type { Galnet } from "./core/interfaces/Galnet";
+import { getCollection, getResource } from "./core/api";
+import Heading from "./components/heading";
+import Link from "next/link";
+import SystemMap from "./systems/lib/system-map";
 import DepartureCard from "./departures/components/departure-card";
 import DepartureTable from "./departures/components/departure-table";
-import Heading from "./components/heading";
-import { getCollection, getResource } from "./core/api";
-import type { Statistics } from "./core/interfaces/Statistics";
-import SystemMap from "./systems/lib/system-map";
 
 export default async function Home() {
   const news = await getCollection<Galnet>("galnet/news");

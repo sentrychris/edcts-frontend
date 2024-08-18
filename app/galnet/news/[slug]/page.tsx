@@ -1,4 +1,4 @@
-import Heading from "../../../components/heading";
+import Heading from "@/components/heading";
 import GalnetArticle from "../../components/galnet-article";
 
 export default async function Page({ params }: { params: { slug: string } }) {

@@ -1,9 +1,9 @@
 "use client";
 
 import { type FunctionComponent, useEffect, useState } from "react";
-import type { Schedule } from "../../core/interfaces/Schedule";
+import type { Schedule } from "@/core/interfaces/Schedule";
 import { scheduleState } from "../lib/store";
-import { getResource } from "../../core/api";
+import { getResource } from "@/core/api";
 
 interface Props {
   params: { slug: string };

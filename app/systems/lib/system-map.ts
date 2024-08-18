@@ -12,7 +12,6 @@ import {
   PLANETARY_OUTPOSTS,
   PLANETARY_BASES,
   SETTLEMENTS,
-  SOL_RADIUS_IN_KM,
   SystemBodyType,
 } from "@/core/constants/system";
 import { escapeRegExp } from "@/core/util";
@@ -24,6 +23,7 @@ const MAX_RADIUS = 1600;
 const SUB_MIN_RADIUS = 800;
 const SUB_MAX_RADIUS = 1600;
 const RADIUS_DIVIDER = 10;
+const SOL_RADIUS_IN_KM = 696340;
 
 export default class SystemMap {
   detail: System;
