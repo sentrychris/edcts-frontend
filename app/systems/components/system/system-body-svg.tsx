@@ -89,6 +89,12 @@ const SystemBodySVG: FunctionComponent<Props> = ({
     [body, dispatcher, largeViewbox, calculateIconCoords],
   );
 
+  // TODO fix this properly, there is a bug in the system map resulting in the wrong
+  // _type classification for Y (brown dwarf) stars.
+  if (body.sub_type === "Y (Brown dwarf) Star") {
+    body._type = "Star";
+  }
+
   return (
     <div className={"flex items-center " + (body.rings && " gap-3")}>
       <svg
