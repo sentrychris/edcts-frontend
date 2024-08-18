@@ -27,7 +27,7 @@ const SystemBodySVG: FunctionComponent<Props> = ({
 }) => {
   const bodyIsSelectedUserFocus = selected && selected.id64 === body.id64;
 
-  const displayName = bodyIsSelectedUserFocus ? body.name : body.name.split(system).pop()?.trim();
+  const displayName = bodyIsSelectedUserFocus ? body.name : body.name; //.split(system).pop()?.trim();
 
   const radius = !bodyIsSelectedUserFocus ? (body._r ? body._r : 2000) : 2000;
 
@@ -177,10 +177,9 @@ const SystemBodySVG: FunctionComponent<Props> = ({
       </svg>
       <div className="star_information text-sm uppercase tracking-wide">
         <p className="text-glow">{displayName}</p>
+        <p className="text-glow whitespace-nowrap text-xs">{body.sub_type}</p>
 
-        <p className="text-glow whitespace-nowrap text-xs">{shortSubType(body.sub_type)}</p>
-
-        <div className="flex flex-row items-center gap-2">
+        <div className="flex flex-row items-center gap-2 text-xs">
           <span
             className={
               "text-glow__orange flex items-center gap-2 whitespace-nowrap " +
@@ -191,7 +190,7 @@ const SystemBodySVG: FunctionComponent<Props> = ({
             onClick={() => dispatcher.selectBody({ body })}
           >
             <i className="icarus-terminal-system-bodies text-label__small"></i>
-            {orbiting} {bodyIsSelectedUserFocus ? "orbital bodies" : ""}
+            {orbiting} orbital bodies
           </span>
 
           {!bodyIsSelectedUserFocus &&

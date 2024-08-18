@@ -11,7 +11,7 @@ import { systemState } from "../../lib/store";
 import Heading from "@/components/heading";
 import Loader from "@/components/loader";
 import SystemMap from "../../lib/system-map";
-import SystemTitle from "./system-title";
+import SystemHeader from "./system-header";
 import SystemInformationBar from "./system-information-bar";
 import SystemBodySVG from "./system-body-svg";
 import SystemBodyPopover from "./system-body-popover";
@@ -113,8 +113,7 @@ const SystemDetail: FunctionComponent<Props> = ({ initSystem, params }) => {
 
           // Listener to reset the selected body when the user clicks on "go back to primary star".
           systemDispatcher.addEventListener("set-index", (event) => {
-            const index = event.message as number;
-            if (index === 0) {
+            if ((event.message as number) === 0) {
               setSelectedBody(star);
             }
           });
@@ -229,11 +228,8 @@ const SystemDetail: FunctionComponent<Props> = ({ initSystem, params }) => {
     <>
       {isLoading && <Loader visible={isLoading} />}
 
-      <div className="border-b border-neutral-800 pb-5">
-        <SystemTitle title={system.name} bodies={system.bodies.length} />
-      </div>
-
-      <SystemInformationBar coords={system.coords} information={system.information} />
+      <SystemHeader system={system} />
+      <SystemInformationBar information={system.information} />
 
       <div className="border-b border-neutral-800 bg-transparent py-5 backdrop-blur backdrop-filter">
         <Heading icon="icarus-terminal-system-bodies" title="System Map" className="gap-2 pb-5" />

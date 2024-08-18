@@ -5,15 +5,10 @@ import { formatNumber, renderBadge } from "@/core/util";
 import { renderAllegianceText, renderSecurityText } from "@/systems/lib/render";
 
 interface Props {
-  coords: {
-    x: number;
-    y: number;
-    z: number;
-  };
   information: SystemInformation;
 }
 
-const SystemInformationBar: FunctionComponent<Props> = ({ coords, information }) => {
+const SystemInformationBar: FunctionComponent<Props> = ({ information }) => {
   return (
     <div className="border-b border-neutral-800 bg-transparent py-5 text-sm tracking-wide backdrop-blur backdrop-filter">
       <div className="align-center flex flex-row justify-between uppercase">
@@ -52,12 +47,6 @@ const SystemInformationBar: FunctionComponent<Props> = ({ coords, information })
               icon: "icarus-terminal-planet-life",
             })}
           </div>
-        </div>
-        <div className="hidden whitespace-nowrap md:inline">
-          <p className="mb-2">Galaxy Coordinates:</p>
-          {renderBadge(`${coords.x}, ${coords.y}, ${coords.z}`, {
-            icon: "icarus-terminal-location-filled",
-          })}
         </div>
       </div>
     </div>
