@@ -1,4 +1,4 @@
-import { AppSettings } from "./interfaces/Settings";
+import type { AppSettings } from "./interfaces/Settings";
 
 /**
  * App settings
