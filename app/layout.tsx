@@ -1,5 +1,6 @@
 import type { Metadata } from "next";
 import { Jura } from "next/font/google";
+import { settings } from "./core/config";
 import MainBackground from "./components/main-background";
 import MainNavigation from "./components/main-navigation";
 import SvgFilters from "./components/svg-filters";
@@ -7,8 +8,10 @@ import "./css/main.css";
 
 const jura = Jura({ subsets: ["latin"] });
 
+console.log({ settings });
+
 export const metadata: Metadata = {
-  title: "ED:CTS - Carrier Transport Services",
+  title: settings.app.name,
   description: "Check out the discord channel - https://discord.gg/KFaakj2",
 };
 
