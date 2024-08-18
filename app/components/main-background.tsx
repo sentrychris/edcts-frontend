@@ -2,7 +2,7 @@ import type { FunctionComponent } from "react";
 import Image from "next/image";
 
 const MainBackground: FunctionComponent = () => {
-  return(
+  return (
     <div className="overlay pointer-events-none absolute inset-x-0 top-0 flex justify-center overflow-hidden">
       <div className="flex w-[108rem] flex-none justify-end">
         <Image
@@ -16,6 +16,6 @@ const MainBackground: FunctionComponent = () => {
       </div>
     </div>
   );
-}
+};
 
 export default MainBackground;

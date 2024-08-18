@@ -71,17 +71,17 @@ export default async function Home() {
             <Heading
               icon="icarus-terminal-notifications text-glow__orange"
               largeIcon={true}
-              title="Galnet News"
-              className="mb-5 gap-3 text-2xl"
+              title="Latest Galnet News"
+              className="mb-3 gap-3 text-2xl"
             />
             {news.data.slice(0, 5).map((article) => {
               return (
                 <div key={article.id} className="relative">
                   <div className="relative border-b border-neutral-800 py-4">
-                    <h3 className="mb-2 text-2xl lg:mb-4">{article.title}</h3>
+                    <h3 className="mb-2">{article.title}</h3>
                     <p className="mb-4 text-sm">{article.uploaded_at}</p>
                     <Link href={`/galnet/news/${article.slug}`} className="text-glow__orange">
-                      Read More...
+                      Read more...
                     </Link>
                   </div>
                 </div>
