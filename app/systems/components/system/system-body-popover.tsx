@@ -168,14 +168,14 @@ export default function SystemBodyPopover({
                   </p>
                   <p className={"mb-2.5 flex items-center gap-x-2 text-xs"}>
                     <span>Surface temp:</span>{" "}
-                    <span>{formatNumber(body.surface_temp as number)} K</span>
+                    <span>{`${formatNumber(body.surface_temp as number)} K`}</span>
                   </p>
 
                   <p className={"flex items-center gap-x-2 text-xs"}>
-                    <span>Atmosphere:</span> <span>{body.atmosphere_type}</span>
+                    <span>Atmosphere:</span> <span>{body.atmosphere_type ?? "No Data"}</span>
                   </p>
                   <p className={"mb-2.5 flex items-center gap-x-2 text-xs"}>
-                    <span>Volcanism:</span> <span>{body.volcanism_type}</span>
+                    <span>Volcanism:</span> <span>{body.volcanism_type ?? "No Data"}</span>
                   </p>
 
                   <p className="border-b border-neutral-800 pb-5">
@@ -235,15 +235,15 @@ export default function SystemBodyPopover({
                   </p>
                   <div className="mt-2">
                     <p>
-                      Period: <span className="ms-1">{body.orbital_period?.toFixed(6)}</span>
+                      Period: <span className="ms-1">{body.orbital_period?.toFixed(6) ?? "No Data"}</span>
                     </p>
                     <p>
                       Inclination:{" "}
-                      <span className="ms-1">{body.orbital_inclination?.toFixed(6)}</span>
+                      <span className="ms-1">{body.orbital_inclination?.toFixed(6) ?? "No Data"}</span>
                     </p>
                     <p>
                       Eccentricity:{" "}
-                      <span className="ms-1">{body.orbital_eccentricity?.toFixed(6)}</span>
+                      <span className="ms-1">{body.orbital_eccentricity?.toFixed(6) ?? "No Data"}</span>
                     </p>
                   </div>
                 </div>

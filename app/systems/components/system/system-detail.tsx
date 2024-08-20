@@ -107,7 +107,8 @@ const SystemDetail: FunctionComponent<Props> = ({ initSystem, params }) => {
           const star = map.stars.find((s) => s.is_main_star === 1);
           setSelectedBody(star);
 
-          // Listener to set the selected system body when the user selects a body from the overview.
+          // Listener to set the selected system body when the user selects a body to enter into
+          // focus.
           systemDispatcher.addEventListener("select-body", (event) => {
             setSelectedBody(event.message as MappedSystemBody);
           });
