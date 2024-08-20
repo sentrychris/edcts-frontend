@@ -25,7 +25,7 @@ export default async function Home() {
 
   const latestSystem = new SystemMap(statistics.cartographical.latest_system);
 
-  const departureBoardGrid =
+  const fleetCarrierJourneyScheduleBoardGrid =
     "grid grid-cols-1 gap-6 border-b border-t border-neutral-800 " +
     " md:grid-cols-2 lg:grid-cols-4";
 
@@ -42,9 +42,9 @@ export default async function Home() {
             title="Departure Board"
             className="mb-5 gap-2"
           />
-          <div className={departureBoardGrid}>
-            {fleetCarrierJourneySchedule.data.slice(0, 4).map((departures) => {
-              return <DepartureCard key={departures.id} schedule={departures} />;
+          <div className={fleetCarrierJourneyScheduleBoardGrid}>
+            {fleetCarrierJourneySchedule.data.slice(0, 4).map((journey) => {
+              return <DepartureCard key={journey.id} schedule={journey} />;
             })}
           </div>
         </>
