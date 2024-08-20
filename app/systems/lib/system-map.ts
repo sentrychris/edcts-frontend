@@ -142,65 +142,66 @@ export default class SystemMap {
 
       // Begin mapping stations
       if (!item.parents && item.type && isStation) {
-        // TODO Station overlap for the MappedSystemBody interface
         const station = (<unknown>item) as MappedStation;
+        if (station.body) {
+          // Ensure station is near something (i.e. not some random fleet carrier somewhere)
+          const nearestStar = this.getNearestStarToStation(station);
+          const nearestPlanet = this.getNearestPlanetToStation(station);
+          const nearestPlanetParentType = nearestPlanet?.parents?.[0]
+            ? Object.keys(nearestPlanet.parents[0])[0]
+            : SystemBodyType.Null;
 
-        const nearestStar = this.getNearestStarToStation(station);
-        const nearestPlanet = this.getNearestPlanetToStation(station);
-        const nearestPlanetParentType = nearestPlanet?.parents?.[0]
-          ? Object.keys(nearestPlanet.parents[0])[0]
-          : SystemBodyType.Null;
+          // If the parent of the planet is a star (or null) then set it as the main
+          // body this station orbits, unless the nearest planet is orbiting another
+          // larger planet, in which assign that instead
+          const parentBodyId =
+            nearestPlanetParentType === SystemBodyType.Star ||
+            nearestPlanetParentType === SystemBodyType.Null
+              ? (nearestPlanet as RawSystemBody).body_id
+              : (nearestPlanet?.parents?.[0]?.["Planet"] ?? null);
 
-        // If the parent of the planet is a star (or null) then set it as the main
-        // body this station orbits, unless the nearest planet is orbiting another
-        // larger planet, in which assign that instead
-        const parentBodyId =
-          nearestPlanetParentType === SystemBodyType.Star ||
-          nearestPlanetParentType === SystemBodyType.Null
-            ? (nearestPlanet as RawSystemBody).body_id
-            : (nearestPlanet?.parents?.[0]?.["Planet"] ?? null);
+          // If the object doesn't have a nearby planet, then assume it's orbiting a star,
+          // For example, Asterope, which has 3 stars, 0 planets, 1 Megaship and a Coriolis.
+          station.parents =
+            parentBodyId === null
+              ? nearestStar
+                ? [{ [SystemBodyType.Star]: nearestStar.body_id }]
+                : [{ [SystemBodyType.Null]: 0 }]
+              : [{ [SystemBodyType.Planet]: parentBodyId }];
 
-        // If the object doesn't have a nearby planet, then assume it's orbiting a star,
-        // For example, Asterope, which has 3 stars, 0 planets, 1 Megaship and a Coriolis.
-        station.parents =
-          parentBodyId === null
-            ? nearestStar
-              ? [{ [SystemBodyType.Star]: nearestStar.body_id }]
-              : [{ [SystemBodyType.Null]: 0 }]
-            : [{ [SystemBodyType.Planet]: parentBodyId }];
+          const shipServices = [];
+          const otherServices = [];
 
-        const shipServices = [];
-        const otherServices = [];
+          if (station.has_shipyard) otherServices.push("Shipyard");
+          if (station.has_outfitting) otherServices.push("Outfitting");
+          if (station.has_market) otherServices.push("Market");
 
-        if (station.has_shipyard) otherServices.push("Shipyard");
-        if (station.has_outfitting) otherServices.push("Outfitting");
-        if (station.has_market) otherServices.push("Market");
+          if (station.other_services) {
+            if (station.other_services.includes("Repair")) shipServices.push("Repair");
+            if (station.other_services.includes("Refuel")) shipServices.push("Refuel");
+            if (station.other_services.includes("Restock")) shipServices.push("Restock");
+            if (station.other_services.includes("Tuning")) shipServices.push("Tuning");
 
-        if (station.other_services) {
-          if (station.other_services.includes("Repair")) shipServices.push("Repair");
-          if (station.other_services.includes("Refuel")) shipServices.push("Refuel");
-          if (station.other_services.includes("Restock")) shipServices.push("Restock");
-          if (station.other_services.includes("Tuning")) shipServices.push("Tuning");
-
-          for (const service of station.other_services) {
-            if (!shipServices.includes(service)) {
-              otherServices.push(service);
+            for (const service of station.other_services) {
+              if (!shipServices.includes(service)) {
+                otherServices.push(service);
+              }
             }
           }
-        }
 
-        station._ship_services = shipServices.sort();
-        station._other_services = otherServices.sort();
+          station._ship_services = shipServices.sort();
+          station._other_services = otherServices.sort();
 
-        // If the object is a planetary port, outpost or settlement then add it to its parent
-        if (PLANETARY_BASES.includes(station.type) && station.body?.id) {
-          for (const parent of this.items) {
-            if (parent.name === station.body.name) {
-              if (!parent._planetary_bases) {
-                parent._planetary_bases = [];
+          // If the object is a planetary port, outpost or settlement then add it to its parent
+          if (PLANETARY_BASES.includes(station.type) && station.body?.id) {
+            for (const parent of this.items) {
+              if (parent.name === station.body.name) {
+                if (!parent._planetary_bases) {
+                  parent._planetary_bases = [];
+                }
+
+                parent._planetary_bases.push(station);
               }
-
-              parent._planetary_bases.push(station);
             }
           }
         }
