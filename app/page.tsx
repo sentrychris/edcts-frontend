@@ -3,7 +3,8 @@ import type { Schedule } from "./core/interfaces/Schedule";
 import type { Galnet } from "./core/interfaces/Galnet";
 import { getCollection, getResource } from "./core/api";
 import Heading from "./components/heading";
-import Link from "next/link";
+import GalnetList from "./components/galnet-list";
+import LatestSystem from "./components/latest-system";
 import SystemMap from "./systems/lib/system-map";
 import DepartureCard from "./departures/components/departure-card";
 import DepartureTable from "./departures/components/departure-table";
@@ -34,9 +35,9 @@ export default async function Home() {
             title="Departure Board"
             className="mb-5 gap-2"
           />
-          <div className="grid grid-cols-1 gap-6 border-b border-t border-neutral-800 font-bold md:grid-cols-2 lg:grid-cols-4">
-            {schedule.data.slice(0, 4).map((schedule) => {
-              return <DepartureCard key={schedule.id} schedule={schedule} />;
+          <div className="grid grid-cols-1 gap-6 border-b border-t border-neutral-800 md:grid-cols-2 lg:grid-cols-4">
+            {schedule.data.slice(0, 4).map((departures) => {
+              return <DepartureCard key={departures.id} schedule={departures} />;
             })}
           </div>
         </>
@@ -44,57 +45,11 @@ export default async function Home() {
       <div className={gridClasses}>
         <div className="col-span-1">
           <div className="border-b border-neutral-800 pb-12">
-            <Heading
-              icon="icarus-terminal-location-filled text-glow__blue"
-              largeIcon={true}
-              title="Latest Updated System"
-              className="mb-5 gap-2 text-2xl"
-            />
-            <Link
-              className="text-glow__blue font-bold hover:underline"
-              href={`systems/${latestSystem.detail.slug}`}
-            >
-              {latestSystem.name}
-            </Link>
-            <div className="mt-3 flex gap-x-20">
-              <div>
-                <p>
-                  {latestSystem.detail.coords.x}, {latestSystem.detail.coords.y},{" "}
-                  {latestSystem.detail.coords.z}
-                </p>
-                <p>Population: {latestSystem.detail.information.population}</p>
-              </div>
-              <div>
-                <p>{latestSystem.stars.length} Main sequence stars</p>
-                <p>{latestSystem.planets.length} orbital bodies</p>
-              </div>
-            </div>
-            <p className="mt-2.5">
-              <span className="text-glow__blue">{2}</span> fleet carriers are currently in this
-              system
-            </p>
+            <LatestSystem system={latestSystem} />
           </div>
 
-          <div className="mt-10">
-            <Heading
-              icon="icarus-terminal-notifications text-glow__orange"
-              largeIcon={true}
-              title="Latest Galnet News"
-              className="mb-3 gap-3 text-2xl"
-            />
-            {news.data.slice(0, 5).map((article) => {
-              return (
-                <div key={article.id} className="relative">
-                  <div className="relative border-b border-neutral-800 py-4">
-                    <h3 className="mb-2 text-lg">{article.title}</h3>
-                    <p className="mb-2 text-xs">{article.uploaded_at}</p>
-                    <Link href={`/galnet/news/${article.slug}`} className="text-glow__orange">
-                      Read more...
-                    </Link>
-                  </div>
-                </div>
-              );
-            })}
+          <div className="pt-10">
+            <GalnetList articles={news} />
           </div>
         </div>
         <div className="col-span-1 lg:col-span-2">
