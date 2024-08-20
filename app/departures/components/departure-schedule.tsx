@@ -17,7 +17,7 @@ const DepartureSchedule: FunctionComponent<Props> = ({ params }) => {
   useEffect(() => {
     (async () => {
       if (slug) {
-        const data = await getResource<Schedule>(`fleet/schedule/${slug}`, {
+        const { data } = await getResource<Schedule>(`fleet-carriers/schedule/${slug}`, {
           withCarrierInformation: 1,
           withSystemInformation: 1,
         });

@@ -1,4 +1,4 @@
-import type { Statistics } from "./core/interfaces/Statistics";
+import type { SystemStatistiscs } from "./core/interfaces/Statistics";
 import type { Schedule } from "./core/interfaces/Schedule";
 import type { Galnet } from "./core/interfaces/Galnet";
 import { getCollection, getResource } from "./core/api";
@@ -11,16 +11,16 @@ import DepartureTable from "./departures/components/departure-table";
 
 export default async function Home() {
   const news = await getCollection<Galnet>("galnet/news");
-  const schedule = await getCollection<Schedule>("fleet/schedule", {
+  const schedule = await getCollection<Schedule>("fleet-carriers/schedule", {
     withCarrierInformation: 1,
     withSystemInformation: 1,
   });
 
-  const statistics = await getResource<Statistics>("statistics", {
+  const { data: statistics } = await getResource<SystemStatistiscs>("statistics", {
     resetCache: 1,
   });
 
-  const latestSystem = new SystemMap(statistics.data.cartographical.latest_system);
+  const latestSystem = new SystemMap(statistics.cartographical.latest_system);
   const scheduleSize = schedule.data.length;
   const gridClasses =
     (scheduleSize > 0 ? "mt-12" : "mt-4") +

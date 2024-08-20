@@ -42,13 +42,13 @@ const DepartureTable: FunctionComponent<Props> = ({ schedule, filter = true }) =
 
     let response;
     if (text.length === 0) {
-      response = await getCollection<Schedule>("fleet/schedule", {
+      response = await getCollection<Schedule>("fleet-carriers/schedule", {
         withCarrierInformation: 1,
         withSystemInformation: 1,
       });
     } else {
       if (debouncedQuery?.length > 1) {
-        response = await getCollection<Schedule>("fleet/schedule", {
+        response = await getCollection<Schedule>("fleet-carriers/schedule", {
           departure: text,
           exactMatch: false,
           withCarrierInformation: 1,
