@@ -235,15 +235,20 @@ export default function SystemBodyPopover({
                   </p>
                   <div className="mt-2">
                     <p>
-                      Period: <span className="ms-1">{body.orbital_period?.toFixed(6) ?? "No Data"}</span>
+                      Period:{" "}
+                      <span className="ms-1">{body.orbital_period?.toFixed(6) ?? "No Data"}</span>
                     </p>
                     <p>
                       Inclination:{" "}
-                      <span className="ms-1">{body.orbital_inclination?.toFixed(6) ?? "No Data"}</span>
+                      <span className="ms-1">
+                        {body.orbital_inclination?.toFixed(6) ?? "No Data"}
+                      </span>
                     </p>
                     <p>
                       Eccentricity:{" "}
-                      <span className="ms-1">{body.orbital_eccentricity?.toFixed(6) ?? "No Data"}</span>
+                      <span className="ms-1">
+                        {body.orbital_eccentricity?.toFixed(6) ?? "No Data"}
+                      </span>
                     </p>
                   </div>
                 </div>
