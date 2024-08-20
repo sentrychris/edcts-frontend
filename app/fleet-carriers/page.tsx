@@ -12,7 +12,8 @@ export default async function Page() {
 
   return (
     <>
-      <Heading icon="icarus-terminal-route"
+      <Heading
+        icon="icarus-terminal-route"
         title="Scheduled Fleet Carrier Journeys"
         className="mb-5 gap-2"
       />
