@@ -17,7 +17,7 @@ interface Props {
   filter?: boolean;
 }
 
-const DepartureTable: FunctionComponent<Props> = ({ schedule, filter = true }) => {
+const JourneyTable: FunctionComponent<Props> = ({ schedule, filter = true }) => {
   const { data, meta, links } = schedule;
 
   const [rows, setRows] = useState(data);
@@ -122,4 +122,4 @@ const DepartureTable: FunctionComponent<Props> = ({ schedule, filter = true }) =
   );
 };
 
-export default DepartureTable;
+export default JourneyTable;

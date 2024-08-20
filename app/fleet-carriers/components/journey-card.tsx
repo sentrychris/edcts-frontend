@@ -10,13 +10,13 @@ interface Props {
   schedule: Schedule;
 }
 
-const DepartureCard: FunctionComponent<Props> = ({ schedule, className }) => {
+const JourneyCard: FunctionComponent<Props> = ({ schedule, className }) => {
   const departed = schedule.status.departed ? "line-through" : "";
 
   return (
     <div className={"bg-transparent px-4 py-8 backdrop-blur backdrop-filter " + className}>
       <div className="flex flex-col md:max-w-xl">
-        <Link href={`/departures/schedule/${schedule.slug}`}>
+        <Link href={`/fleet-carriers/schedule/${schedule.slug}`}>
           <h5
             className={
               "hover:text-glow text-glow__orange mb-3 text-lg font-bold tracking-tight hover:underline" +
@@ -59,4 +59,4 @@ const DepartureCard: FunctionComponent<Props> = ({ schedule, className }) => {
   );
 };
 
-export default memo(DepartureCard);
+export default memo(JourneyCard);

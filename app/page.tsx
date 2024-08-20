@@ -6,8 +6,8 @@ import Heading from "./components/heading";
 import GalnetList from "./components/galnet-list";
 import LatestSystem from "./components/latest-system";
 import SystemMap from "./systems/lib/system-map";
-import DepartureCard from "./departures/components/departure-card";
-import DepartureTable from "./departures/components/departure-table";
+import JourneyCard from "./fleet-carriers/components/journey-card";
+import JourneyTable from "./fleet-carriers/components/journey-table";
 
 export default async function Home() {
   const news = await getCollection<Galnet>("galnet/news");
@@ -44,7 +44,7 @@ export default async function Home() {
           />
           <div className={fleetCarrierJourneyScheduleBoardGrid}>
             {fleetCarrierJourneySchedule.data.slice(0, 4).map((journey) => {
-              return <DepartureCard key={journey.id} schedule={journey} />;
+              return <JourneyCard key={journey.id} schedule={journey} />;
             })}
           </div>
         </>
@@ -61,7 +61,7 @@ export default async function Home() {
             title="Scheduled Fleet Carrier Journeys"
             className="mb-5 gap-3 text-2xl"
           />
-          <DepartureTable schedule={fleetCarrierJourneySchedule} />
+          <JourneyTable schedule={fleetCarrierJourneySchedule} />
         </div>
       </div>
     </>

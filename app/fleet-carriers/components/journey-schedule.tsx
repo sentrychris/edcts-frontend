@@ -9,7 +9,7 @@ interface Props {
   params: { slug: string };
 }
 
-const DepartureSchedule: FunctionComponent<Props> = ({ params }) => {
+const JourneySchedule: FunctionComponent<Props> = ({ params }) => {
   const [schedule, setSchedule] = useState<Schedule>(scheduleState);
 
   const { slug } = params;
@@ -28,7 +28,7 @@ const DepartureSchedule: FunctionComponent<Props> = ({ params }) => {
 
   return (
     <>
-      <h2 className="border-b border-neutral-800 pb-3 text-3xl uppercase">Departure Information</h2>
+      <h2 className="border-b border-neutral-800 pb-3 text-3xl uppercase">Journey Information</h2>
       <div className="relative border-b border-neutral-800 py-12">
         <h1 className="text-4xl">{schedule.title}</h1>
         <div className="mt-10 grid grid-cols-2">
@@ -49,4 +49,4 @@ const DepartureSchedule: FunctionComponent<Props> = ({ params }) => {
   );
 };
 
-export default DepartureSchedule;
+export default JourneySchedule;
