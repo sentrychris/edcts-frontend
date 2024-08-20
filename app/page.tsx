@@ -11,17 +11,19 @@ import DepartureTable from "./departures/components/departure-table";
 
 export default async function Home() {
   const news = await getCollection<Galnet>("galnet/news");
-  const schedule = await getCollection<Schedule>("fleet-carriers/schedule", {
+
+  const fleetCarrierJourneySchedule = await getCollection<Schedule>("fleet-carriers/schedule", {
     withCarrierInformation: 1,
     withSystemInformation: 1,
   });
+
+  const carrierJourneyScheduleSize = fleetCarrierJourneySchedule.data.length;
 
   const { data: statistics } = await getResource<AppStatistics>("statistics", {
     resetCache: 1,
   });
 
   const latestSystem = new SystemMap(statistics.cartographical.latest_system);
-  const carrierJourneyScheduleSize = schedule.data.length;
 
   const departureBoardGrid =
     "grid grid-cols-1 gap-6 border-b border-t border-neutral-800 " +
@@ -41,7 +43,7 @@ export default async function Home() {
             className="mb-5 gap-2"
           />
           <div className={departureBoardGrid}>
-            {schedule.data.slice(0, 4).map((departures) => {
+            {fleetCarrierJourneySchedule.data.slice(0, 4).map((departures) => {
               return <DepartureCard key={departures.id} schedule={departures} />;
             })}
           </div>
@@ -59,7 +61,7 @@ export default async function Home() {
             title="Scheduled Fleet Carrier Journeys"
             className="mb-5 gap-3 text-2xl"
           />
-          <DepartureTable schedule={schedule} />
+          <DepartureTable schedule={fleetCarrierJourneySchedule} />
         </div>
       </div>
     </>
