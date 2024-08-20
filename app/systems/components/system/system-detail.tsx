@@ -92,8 +92,7 @@ const SystemDetail: FunctionComponent<Props> = ({ initSystem, params }) => {
         withStations: 1,
       })
         .then((response) => {
-          const system = response.data;
-
+          const { data: system } = response;
           setSystem(system);
 
           // Map system bodies (e.g stars, planets and moons) into their respective orbits through

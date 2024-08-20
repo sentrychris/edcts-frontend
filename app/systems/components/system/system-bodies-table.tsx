@@ -71,11 +71,7 @@ const SystemBodiesTable: FunctionComponent<Props> = ({ bodies, system, dispatche
     volcanism: {
       title: "Volcanism",
       render: (body: RawSystemBody) => {
-        return body.volcanism_type ? (
-          <span>{body.volcanism_type}</span>
-        ) : (
-          <span>No Volcanism</span>
-        );
+        return body.volcanism_type ? <span>{body.volcanism_type}</span> : <span>No Volcanism</span>;
       },
     },
     terraforming: {

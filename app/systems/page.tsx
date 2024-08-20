@@ -1,5 +1,5 @@
 import type { System } from "@/core/interfaces/System";
-import type { Statistics } from "@/core/interfaces/Statistics";
+import type { AppStatistics } from "@/core/interfaces/Statistics";
 import { getCollection, getResource } from "@/core/api";
 import Heading from "@/components/heading";
 import SystemsStatisticsBar from "./components/systems-statistics-bar";
@@ -10,7 +10,7 @@ export default async function Page() {
     withInformation: 1,
   });
 
-  const statistics = await getResource<Statistics>("statistics", {
+  const { data: statistics } = await getResource<AppStatistics>("statistics", {
     resetCache: 1,
   });
 

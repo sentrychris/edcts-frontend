@@ -23,9 +23,11 @@ const SystemInformationBar: FunctionComponent<Props> = ({ information }) => {
                 </span>
                 <span>/</span>
                 <span className="ms-3">
-                  {renderSecurityText(!information.security || information.security === "None"
+                  {renderSecurityText(
+                    !information.security || information.security === "None"
                       ? "No"
-                      : information.security, "security"
+                      : information.security,
+                    "security",
                   )}
                 </span>
               </p>

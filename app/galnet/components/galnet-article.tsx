@@ -16,8 +16,8 @@ const GalnetArticle: FunctionComponent<Props> = ({ params }) => {
 
   useEffect(() => {
     (async () => {
-      const data = await getResource<Galnet>(`galnet/news/${slug}`);
-      setArticle(data);
+      const { data: article } = await getResource<Galnet>(`galnet/news/${slug}`);
+      setArticle(article);
     })();
   }, [slug]);
 

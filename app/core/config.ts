@@ -24,6 +24,6 @@ export const settings: AppSettings = {
           expiry: process.env.JWT_REFRESH_TOKEN_EXPIRY,
         },
       },
-    }
-  }
-}
+    },
+  },
+};

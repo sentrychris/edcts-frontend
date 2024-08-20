@@ -1,14 +1,14 @@
 "use client";
 
 import type { FunctionComponent } from "react";
-import type { Statistics } from "@/core/interfaces/Statistics";
+import type { AppStatistics } from "@/core/interfaces/Statistics";
 import { useEffect, useState, memo } from "react";
 import { formatNumber, renderTextWithIcon } from "@/core/util";
 import { getResource } from "@/core/api";
 import Link from "next/link";
 
 interface Props {
-  data: Statistics;
+  data: AppStatistics;
   interval?: number;
   cached?: boolean;
   className?: string;
@@ -20,19 +20,20 @@ const SystemsStatisticsBar: FunctionComponent<Props> = ({
   interval = 30000,
   cached = true,
 }) => {
-  const [statistics, setStatistics] = useState<Statistics>(data);
+  const [statistics, setStatistics] = useState<AppStatistics>(data);
 
   useEffect(() => {
     setInterval(() => {
-      getResource<Statistics>("statistics", {
+      getResource<AppStatistics>("statistics", {
         resetCache: cached ? 1 : 0,
-      }).then((statistics) => {
+      }).then((response) => {
+        const { data: statistics } = response;
         setStatistics(statistics);
       });
     }, interval);
   }, [cached, statistics, interval]);
 
-  const latestSystem = statistics.data.cartographical.latest_system;
+  const latestSystem = statistics.cartographical.latest_system;
 
   return (
     <div
@@ -45,25 +46,25 @@ const SystemsStatisticsBar: FunctionComponent<Props> = ({
         <div className="flex flex-wrap items-center gap-10 lg:gap-20">
           <div className="whitespace-nowrap">
             <p className="mb-2">Systems Logged:</p>
-            {renderTextWithIcon(formatNumber(statistics.data.cartographical.systems), {
+            {renderTextWithIcon(formatNumber(statistics.cartographical.systems), {
               icon: "icarus-terminal-system-orbits text-2xl",
             })}
           </div>
           <div className="whitespace-nowrap">
             <p className="mb-2">Primary Stars Logged:</p>
-            {renderTextWithIcon(formatNumber(statistics.data.cartographical.stars), {
+            {renderTextWithIcon(formatNumber(statistics.cartographical.stars), {
               icon: "icarus-terminal-star text-2xl",
             })}
           </div>
           <div className="whitespace-nowrap">
             <p className="mb-2">Orbital Bodies Logged:</p>
-            {renderTextWithIcon(formatNumber(statistics.data.cartographical.bodies), {
+            {renderTextWithIcon(formatNumber(statistics.cartographical.bodies), {
               icon: "icarus-terminal-system-bodies text-2xl",
             })}
           </div>
           <div className="hidden whitespace-nowrap md:inline">
             <p className="mb-2">ED:CTS Carriers in service:</p>
-            {renderTextWithIcon(formatNumber(statistics.data.carriers), {
+            {renderTextWithIcon(formatNumber(statistics.carriers), {
               icon: "icarus-terminal-ship text-2xl",
             })}
           </div>

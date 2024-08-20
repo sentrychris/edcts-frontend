@@ -1,4 +1,4 @@
-import type { SystemStatistiscs } from "./core/interfaces/Statistics";
+import type { AppStatistics } from "./core/interfaces/Statistics";
 import type { Schedule } from "./core/interfaces/Schedule";
 import type { Galnet } from "./core/interfaces/Galnet";
 import { getCollection, getResource } from "./core/api";
@@ -16,47 +16,47 @@ export default async function Home() {
     withSystemInformation: 1,
   });
 
-  const { data: statistics } = await getResource<SystemStatistiscs>("statistics", {
+  const { data: statistics } = await getResource<AppStatistics>("statistics", {
     resetCache: 1,
   });
 
   const latestSystem = new SystemMap(statistics.cartographical.latest_system);
-  const scheduleSize = schedule.data.length;
-  const gridClasses =
-    (scheduleSize > 0 ? "mt-12" : "mt-4") +
+  const carrierJourneyScheduleSize = schedule.data.length;
+
+  const departureBoardGrid =
+    "grid grid-cols-1 gap-6 border-b border-t border-neutral-800 " +
+    " md:grid-cols-2 lg:grid-cols-4";
+
+  const contentGrid =
+    (carrierJourneyScheduleSize > 0 ? "mt-12" : "mt-4") +
     " grid grid-cols-1 gap-x-10 md:grid-cols-2 lg:grid-cols-3";
 
   return (
     <>
-      {scheduleSize > 0 && (
+      {carrierJourneyScheduleSize > 0 && (
         <>
           <Heading
             icon="icarus-terminal-route text-glow__orange"
             title="Departure Board"
             className="mb-5 gap-2"
           />
-          <div className="grid grid-cols-1 gap-6 border-b border-t border-neutral-800 md:grid-cols-2 lg:grid-cols-4">
+          <div className={departureBoardGrid}>
             {schedule.data.slice(0, 4).map((departures) => {
               return <DepartureCard key={departures.id} schedule={departures} />;
             })}
           </div>
         </>
       )}
-      <div className={gridClasses}>
+      <div className={contentGrid}>
         <div className="col-span-1">
-          <div className="border-b border-neutral-800 pb-12">
-            <LatestSystem system={latestSystem} />
-          </div>
-
-          <div className="pt-10">
-            <GalnetList articles={news} />
-          </div>
+          <LatestSystem className="border-b border-neutral-800 pb-12" system={latestSystem} />
+          <GalnetList className="pt-10" articles={news} />
         </div>
         <div className="col-span-1 lg:col-span-2">
           <Heading
             icon="icarus-terminal-route text-glow__orange"
             largeIcon={true}
-            title="Scheduled Fleet Carrier Departures"
+            title="Scheduled Fleet Carrier Journeys"
             className="mb-5 gap-3 text-2xl"
           />
           <DepartureTable schedule={schedule} />

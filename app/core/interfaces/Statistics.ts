@@ -20,13 +20,9 @@ export interface JourneyStatistics {
   };
 }
 
-export interface SystemStatistiscs {
+export interface AppStatistics {
   cartographical: CartographicalStatistics;
   carriers: number;
   commanders: number;
   journeys: JourneyStatistics;
-}
-
-export interface Statistics {
-  data: SystemStatistiscs; // TODO expand the value with union types
 }
