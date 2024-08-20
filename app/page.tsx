@@ -17,7 +17,7 @@ export default async function Home() {
     withSystemInformation: 1,
   });
 
-  const carrierJourneyScheduleSize = fleetCarrierJourneySchedule.data.length;
+  const fleetCarrierJourneyScheduleSize = fleetCarrierJourneySchedule.data.length;
 
   const { data: statistics } = await getResource<AppStatistics>("statistics", {
     resetCache: 1,
@@ -30,12 +30,12 @@ export default async function Home() {
     " md:grid-cols-2 lg:grid-cols-4";
 
   const contentGrid =
-    (carrierJourneyScheduleSize > 0 ? "mt-12" : "mt-4") +
+    (fleetCarrierJourneyScheduleSize > 0 ? "mt-12" : "mt-4") +
     " grid grid-cols-1 gap-x-10 md:grid-cols-2 lg:grid-cols-3";
 
   return (
     <>
-      {carrierJourneyScheduleSize > 0 && (
+      {fleetCarrierJourneyScheduleSize > 0 && (
         <>
           <Heading
             icon="icarus-terminal-route text-glow__orange"
