@@ -47,6 +47,6 @@ export async function getCollection<T>(
 export async function getResource<T>(
   uri: string,
   params?: Record<string, string | number | boolean>,
-): Promise<T> {
+): Promise<{ data: T }> {
   return await request(uri, params);
 }
