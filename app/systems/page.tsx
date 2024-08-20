@@ -21,7 +21,7 @@ export default async function Page() {
         className="fx-fade-in"
         data={statistics}
         interval={300000}
-        cached={true}
+        cached={false}
       />
       <Heading
         icon="icarus-terminal-system-orbits"
