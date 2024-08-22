@@ -1,6 +1,5 @@
 import type { FunctionComponent } from "react";
 import type { SystemInformation } from "@/core/interfaces/System";
-import { memo } from "react";
 import { formatNumber, renderTextWithIcon } from "@/core/util";
 import { renderAllegianceText, renderSecurityText } from "@/systems/lib/render";
 
@@ -58,4 +57,4 @@ const SystemInformationBar: FunctionComponent<Props> = ({ information }) => {
   );
 };
 
-export default memo(SystemInformationBar);
+export default SystemInformationBar;

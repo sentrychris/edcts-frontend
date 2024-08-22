@@ -1,6 +1,5 @@
 import type { FunctionComponent } from "react";
 import type { Schedule } from "@/core/interfaces/Schedule";
-import { memo } from "react";
 import { formatDate } from "@/core/util";
 import { renderStatusText } from "../lib/store";
 import Link from "next/link";
@@ -59,4 +58,4 @@ const JourneyCard: FunctionComponent<Props> = ({ schedule, className }) => {
   );
 };
 
-export default memo(JourneyCard);
+export default JourneyCard;

@@ -1,6 +1,6 @@
 "use client";
 
-import { type FunctionComponent, useState, memo } from "react";
+import { type FunctionComponent, useState } from "react";
 import type { RawSystemBody, MappedSystemBody } from "@/core/interfaces/SystemBody";
 import type { SystemDispatcher } from "@/core/events/SystemDispatcher";
 import { formatDate } from "@/core/util";
@@ -105,4 +105,4 @@ const SystemBodiesTable: FunctionComponent<Props> = ({ bodies, system, dispatche
   return <Table columns={columns} data={rows} />;
 };
 
-export default memo(SystemBodiesTable);
+export default SystemBodiesTable;

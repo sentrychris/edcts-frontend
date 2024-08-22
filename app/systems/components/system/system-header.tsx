@@ -1,7 +1,6 @@
 import type { FunctionComponent } from "react";
 import type { System } from "@/core/interfaces/System";
 import { renderTextWithIcon } from "@/core/util";
-import { memo } from "react";
 
 interface Props {
   system: System;
@@ -32,4 +31,4 @@ const SystemHeader: FunctionComponent<Props> = ({ system, special }) => {
   );
 };
 
-export default memo(SystemHeader);
+export default SystemHeader;

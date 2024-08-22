@@ -2,7 +2,7 @@
 
 import type { FunctionComponent } from "react";
 import type { AppStatistics } from "@/core/interfaces/Statistics";
-import { useEffect, useState, memo } from "react";
+import { useEffect, useState } from "react";
 import { formatNumber, renderTextWithIcon } from "@/core/util";
 import { getResource } from "@/core/api";
 import Link from "next/link";
@@ -93,4 +93,4 @@ const SystemsStatisticsBar: FunctionComponent<Props> = ({
   );
 };
 
-export default memo(SystemsStatisticsBar);
+export default SystemsStatisticsBar;

@@ -3,7 +3,7 @@
 import type { FunctionComponent } from "react";
 import type { SystemDispatcher } from "@/core/events/SystemDispatcher";
 import type { MappedSystemBody } from "@/core/interfaces/SystemBody";
-import { memo, useCallback, useState } from "react";
+import { useCallback, useState } from "react";
 import Icons from "@/icons";
 
 interface Props {
@@ -226,4 +226,4 @@ const SystemBodySVG: FunctionComponent<Props> = ({
   );
 };
 
-export default memo(SystemBodySVG);
+export default SystemBodySVG;
