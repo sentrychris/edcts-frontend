@@ -18,14 +18,14 @@ interface Props {
 export default function SystemBodyPopover({ body, system, dispatcher, close }: Props) {
   return (
     <div
-      className="system-body-information__container galaxy-background fx-animated-text h-full w-full border-l border-orange-500/60 text-xs uppercase tracking-wider"
+      className="system-body-information__container galaxy-background fx-animated-text h-full w-full max-h-screen border-l border-orange-500/60 text-xs uppercase tracking-wider"
       style={{
         paddingTop: "60px",
       }}
     >
       {body && (
         <>
-          <div className="h-full w-full rounded bg-gradient-to-br from-sky-900/50 via-black/20 to-black/20 backdrop-blur backdrop-filter">
+          <div className="h-full w-full rounded bg-gradient-to-br from-sky-900/50 via-black/20 to-black/20 backdrop-blur backdrop-filter overflow-y-auto">
             <div className="system-body-information__container--header px-3 py-2.5 text-sm font-bold">
               <h2 className="text mt-1">Cartographical Data</h2>
               <XMarkIcon
