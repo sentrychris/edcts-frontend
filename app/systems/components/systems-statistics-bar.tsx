@@ -24,9 +24,14 @@ const SystemsStatisticsBar: FunctionComponent<Props> = ({
   latestSystem,
 }) => {
   const [statistics, setStatistics] = useState<AppStatistics>(data);
+  const [statisticsInterval, setStatisticsInterval] = useState<NodeJS.Timeout>();
 
   useEffect(() => {
-    setInterval(() => {
+    if (statisticsInterval) {
+      clearInterval(statisticsInterval);
+    }
+
+    const interval = setInterval(() => {
       getResource<AppStatistics>("statistics", {
         resetCache,
       }).then((response) => {
@@ -34,6 +39,8 @@ const SystemsStatisticsBar: FunctionComponent<Props> = ({
         setStatistics(statistics);
       });
     }, callInterval);
+
+    setStatisticsInterval(interval);
   }, [resetCache, statistics, callInterval]);
 
   return (
