@@ -65,7 +65,7 @@ export default function SystemBodyPopover({ body, system, dispatcher, close }: P
                 <span className="mb-1">
                   Discovered by <span className="text-glow__orange">CMDR {body.discovered_by}</span>
                 </span>
-                <span>on {formatDate(body.discovered_at)}</span>
+                <span className="text-xs">on {formatDate(body.discovered_at)}</span>
               </p>
 
               <p className="my-4 flex items-center gap-x-2 text-sm">
@@ -198,7 +198,7 @@ export default function SystemBodyPopover({ body, system, dispatcher, close }: P
                     <i className="icarus-terminal-planet text-glow__orange"></i>
                     <span>Orbital Information</span>
                   </p>
-                  <div className="mt-2">
+                  <div className="mt-4">
                     <p className="mb-1">
                       Period:{" "}
                       <span className="ms-1">{body.orbital_period?.toFixed(6) ?? "No Data"}</span>
@@ -222,7 +222,7 @@ export default function SystemBodyPopover({ body, system, dispatcher, close }: P
                     <i className="icarus-terminal-planet text-glow__orange"></i>
                     <span>Axial Information</span>
                   </p>
-                  <div className="mt-2">
+                  <div className="mt-4">
                     <p className="mb-1">
                       Axial tilt: <span className="ms-1">{body.axial_tilt?.toFixed(6) ?? 0}</span>
                     </p>
@@ -260,8 +260,8 @@ export default function SystemBodyPopover({ body, system, dispatcher, close }: P
                     <div className="mt-2">
                       {body.rings.map((ring: SystemBodyRing) => {
                         return (
-                          <div key={ring.mass} className="mb-2">
-                            <p className="text-glow__orange">{ring.name}</p>
+                          <div key={ring.mass} className="my-4">
+                            <p className="text-glow__orange mb-1">{ring.name}</p>
                             <p>Type: {ring.type}</p>
                             <p>Mass: {formatNumber(ring.mass)} KG</p>
                           </div>
