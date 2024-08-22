@@ -8,7 +8,6 @@ import Icons from "@/icons";
 
 interface Props {
   body: MappedSystemBody;
-  system: string;
   selected?: MappedSystemBody;
   view?: "body" | "system";
   orbiting?: number;
@@ -18,7 +17,6 @@ interface Props {
 
 const SystemBodySVG: FunctionComponent<Props> = ({
   body,
-  system,
   selected,
   view,
   orbiting,
@@ -27,7 +25,7 @@ const SystemBodySVG: FunctionComponent<Props> = ({
 }) => {
   const bodyIsSelectedUserFocus = selected && selected.id64 === body.id64;
 
-  const displayName = bodyIsSelectedUserFocus ? body.name : body.name; //.split(system).pop()?.trim();
+  const displayName = bodyIsSelectedUserFocus ? body.name : body.name;
 
   const radius = !bodyIsSelectedUserFocus ? (body._r ? body._r : 2000) : 2000;
 
@@ -41,19 +39,6 @@ const SystemBodySVG: FunctionComponent<Props> = ({
   };
 
   const largeViewbox = useLargerViewBox();
-
-  const shortSubType = (text?: string) => {
-    if (!text) text = body.sub_type ?? body.type;
-    if (body.name === "Earth") return "Home";
-
-    text = text.toLowerCase();
-    if (text.includes("metal")) return "Metal";
-    if (text.includes("gas giant")) return "Gas Giant";
-    if (text.includes("rocky ice")) return "Rocky Ice";
-    if (text.includes("earth-like")) return "Earth-Like";
-
-    return text;
-  };
 
   const calculateIconCoords = useCallback(() => {
     const pos = {

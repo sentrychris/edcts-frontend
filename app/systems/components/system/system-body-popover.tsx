@@ -25,7 +25,7 @@ export default function SystemBodyPopover({ body, system, dispatcher, close }: P
     >
       {body && (
         <>
-          <div className="h-full w-full rounded bg-gradient-to-br from-sky-900/50 via-black/20 to-black/20 backdrop-blur backdrop-filter overflow-y-auto">
+          <div className="h-full w-full bg-gradient-to-br from-sky-900/50 via-black/20 to-black/20 backdrop-blur backdrop-filter overflow-y-auto">
             <div className="system-body-information__container--header px-3 py-2.5 text-sm font-bold">
               <h2 className="text mt-1">Cartographical Data</h2>
               <XMarkIcon

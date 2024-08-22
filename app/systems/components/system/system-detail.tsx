@@ -183,7 +183,6 @@ const SystemDetail: FunctionComponent<Props> = ({ initSystem, params }) => {
     return (
       <SystemBodySVG
         key={body.id64}
-        system={system.name}
         selected={selectedBody}
         body={body}
         orbiting={body._children ? body._children.length : 0}
