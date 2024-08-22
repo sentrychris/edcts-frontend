@@ -1,6 +1,6 @@
-import type { AppStatistics } from "./core/interfaces/Statistics";
-import type { Schedule } from "./core/interfaces/Schedule";
 import type { Galnet } from "./core/interfaces/Galnet";
+import type { System } from "./core/interfaces/System";
+import type { Schedule } from "./core/interfaces/Schedule";
 import { getCollection, getResource } from "./core/api";
 import Heading from "./components/heading";
 import GalnetList from "./components/galnet-list";
@@ -12,18 +12,15 @@ import JourneyTable from "./fleet-carriers/components/journey-table";
 export default async function Home() {
   const news = await getCollection<Galnet>("galnet/news");
 
+  const { data: lastAddedSystem } = await getResource<System>("last-added-system");
+  const latestSystem = new SystemMap(lastAddedSystem);
+
   const fleetCarrierJourneySchedule = await getCollection<Schedule>("fleet-carriers/schedule", {
     withCarrierInformation: 1,
     withSystemInformation: 1,
   });
 
   const fleetCarrierJourneyScheduleSize = fleetCarrierJourneySchedule.data.length;
-
-  const { data: statistics } = await getResource<AppStatistics>("statistics", {
-    resetCache: 1,
-  });
-
-  const latestSystem = new SystemMap(statistics.cartographical.latest_system);
 
   const fleetCarrierJourneyScheduleBoardGrid =
     "grid grid-cols-1 gap-6 border-b border-t border-neutral-800 " +

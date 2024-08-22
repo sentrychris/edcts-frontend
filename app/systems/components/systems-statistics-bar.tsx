@@ -2,6 +2,7 @@
 
 import type { FunctionComponent } from "react";
 import type { AppStatistics } from "@/core/interfaces/Statistics";
+import type { System } from "@/core/interfaces/System";
 import { useEffect, useState } from "react";
 import { formatNumber, renderTextWithIcon } from "@/core/util";
 import { getResource } from "@/core/api";
@@ -9,31 +10,31 @@ import Link from "next/link";
 
 interface Props {
   data: AppStatistics;
-  interval?: number;
-  cached?: boolean;
+  callInterval?: number;
+  resetCache?: number;
   className?: string;
+  latestSystem: System;
 }
 
 const SystemsStatisticsBar: FunctionComponent<Props> = ({
   data,
   className = "",
-  interval = 30000,
-  cached = true,
+  callInterval = 30000,
+  resetCache = true,
+  latestSystem,
 }) => {
   const [statistics, setStatistics] = useState<AppStatistics>(data);
 
   useEffect(() => {
     setInterval(() => {
       getResource<AppStatistics>("statistics", {
-        resetCache: cached ? 1 : 0,
+        resetCache,
       }).then((response) => {
         const { data: statistics } = response;
         setStatistics(statistics);
       });
-    }, interval);
-  }, [cached, statistics, interval]);
-
-  const latestSystem = statistics.cartographical.latest_system;
+    }, callInterval);
+  }, [resetCache, statistics, callInterval]);
 
   return (
     <div

@@ -10,6 +10,8 @@ export default async function Page() {
     withInformation: 1,
   });
 
+  const { data: latestSystem } = await getResource<System>("last-added-system");
+
   const { data: statistics } = await getResource<AppStatistics>("statistics", {
     resetCache: 1,
   });
@@ -20,8 +22,9 @@ export default async function Page() {
       <SystemsStatisticsBar
         className="fx-fade-in"
         data={statistics}
-        interval={300000}
-        cached={false}
+        callInterval={10000}
+        resetCache={1}
+        latestSystem={latestSystem}
       />
       <Heading
         icon="icarus-terminal-system-orbits"

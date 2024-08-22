@@ -5,7 +5,6 @@ export interface CartographicalStatistics {
   bodies: number;
   stars: number;
   orbiting: number;
-  latest_system: System;
 }
 
 export interface JourneyStatistics {
