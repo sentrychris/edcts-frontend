@@ -236,7 +236,6 @@ const SystemDetail: FunctionComponent<Props> = ({ initSystem, params }) => {
           {!isLoading && systemMap && (
             <SystemStarsTable
               stars={systemMap.stars as RawSystemBody[]}
-              system={system.name}
               dispatcher={systemDispatcher}
             />
           )}
@@ -250,7 +249,6 @@ const SystemDetail: FunctionComponent<Props> = ({ initSystem, params }) => {
           {!isLoading && systemMap && (
             <SystemBodiesTable
               bodies={systemMap.planets as RawSystemBody[]}
-              system={system.name}
               dispatcher={systemDispatcher}
             />
           )}

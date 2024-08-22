@@ -10,26 +10,22 @@ import Table from "@/components/table";
 
 interface Props {
   stars: RawSystemBody[];
-  system: string;
   dispatcher: SystemDispatcher;
 }
 
-const SystemStarsTable: FunctionComponent<Props> = ({ stars, system, dispatcher }) => {
+const SystemStarsTable: FunctionComponent<Props> = ({ stars, dispatcher }) => {
   const [rows] = useState(stars);
 
   const columns = {
     name: {
       title: "Name - Type",
       render: (star: RawSystemBody) => {
-        let displayName = star.name.split(system).pop()?.trim();
-        if (displayName === "") displayName = star.name;
-
         return (
           <span
             className="hover:text-glow__orange text-blue-200 hover:cursor-pointer hover:underline"
             onClick={() => dispatcher.selectBody({ body: star as MappedSystemBody })}
           >
-            {displayName} - {star.sub_type.replace("Star", "")}
+            {star.name} - {star.sub_type.replace("Star", "")}
           </span>
         );
       },

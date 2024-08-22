@@ -9,11 +9,10 @@ import Table from "@/components/table";
 
 interface Props {
   bodies: RawSystemBody[];
-  system: string;
   dispatcher: SystemDispatcher;
 }
 
-const SystemBodiesTable: FunctionComponent<Props> = ({ bodies, system, dispatcher }) => {
+const SystemBodiesTable: FunctionComponent<Props> = ({ bodies, dispatcher }) => {
   const [rows] = useState(bodies);
 
   const columns = {

@@ -1,5 +1,6 @@
 "use client";
 
+import type { FunctionComponent } from "react";
 import type { SystemDispatcher } from "@/core/events/SystemDispatcher";
 import type { SystemBodyRing, MappedSystemBody } from "@/core/interfaces/SystemBody";
 import type SystemMap from "../../lib/system-map";
@@ -15,7 +16,7 @@ interface Props {
   close?: () => void;
 }
 
-export default function SystemBodyPopover({ body, system, dispatcher, close }: Props) {
+const SystemBodyPopover: FunctionComponent<Props> = ({ body, system, dispatcher, close }) => {
   return (
     <div
       className="system-body-information__container galaxy-background fx-animated-text h-full w-full max-h-screen border-l border-orange-500/60 text-xs uppercase tracking-wider"
@@ -278,3 +279,5 @@ export default function SystemBodyPopover({ body, system, dispatcher, close }: P
     </div>
   );
 }
+
+export default SystemBodyPopover;
