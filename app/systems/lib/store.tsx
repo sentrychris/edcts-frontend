@@ -19,7 +19,7 @@ export const systemState: System = {
     economy: "",
     controlling_faction: {
       name: "",
-      allegiance: "",
+      state: "",
     },
   },
   bodies: [],
