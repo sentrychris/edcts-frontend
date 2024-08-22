@@ -25,6 +25,6 @@ export interface SystemInformation {
   economy: string;
   controlling_faction: {
     name: string;
-    allegiance: string;
+    state: string;
   };
 }

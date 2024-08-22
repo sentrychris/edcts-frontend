@@ -15,7 +15,7 @@ const SystemInformationBar: FunctionComponent<Props> = ({ information }) => {
           <div className="flex flex-col">
             <p className="mb-2 whitespace-nowrap">Governance:</p>
             <span className="text-glow__white flex items-center gap-2 py-1 font-bold uppercase">
-              <i className="icarus-terminal-system-authority text-glow__orange"></i>
+              <i className="icarus-terminal-system-authority-solid text-glow__orange"></i>
               <p>
                 <span className="me-3">
                   {renderAllegianceText(information.allegiance ?? "No Allegiance")}
@@ -40,8 +40,14 @@ const SystemInformationBar: FunctionComponent<Props> = ({ information }) => {
             })}
           </div>
           <div className="whitespace-nowrap">
+            <p className="mb-2">Faction State:</p>
+            {renderTextWithIcon(information.controlling_faction.state ?? "No Data", {
+              icon: "icarus-terminal-system-authority-solid",
+            })}
+          </div>
+          <div className="whitespace-nowrap">
             <p className="mb-2">Economy:</p>
-            {renderTextWithIcon(`${information.economy ?? "No"} economy`, {
+            {renderTextWithIcon(`${information.economy ?? "None"}`, {
               icon: "icarus-terminal-economy",
             })}
           </div>
