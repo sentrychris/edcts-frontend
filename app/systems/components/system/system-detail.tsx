@@ -25,7 +25,6 @@ interface Props {
 
 const SystemDetail: FunctionComponent<Props> = ({ initSystem, params }) => {
   const [system, setSystem] = useState<System>(initSystem !== undefined ? initSystem : systemState);
-
   const [isLoading, setLoading] = useState<boolean>(true);
   const [systemMap, setSystemMap] = useState<SystemMap>();
   const [selectedBody, setSelectedBody] = useState<MappedSystemBody>();
@@ -42,6 +41,8 @@ const SystemDetail: FunctionComponent<Props> = ({ initSystem, params }) => {
       height: number;
     };
   } | null>(null);
+
+  const [isPanelOpen, setIsPanelOpen] = useState<boolean>(false);
 
   const { slug } = params;
 
@@ -84,8 +85,6 @@ const SystemDetail: FunctionComponent<Props> = ({ initSystem, params }) => {
     if (slug) {
       setLoading(true);
 
-      // Fetch systems along with system information (e.g. governance, economy, security etc.)
-      // and orbiting bodies
       getResource<System>(`systems/${slug}`, {
         withInformation: 1,
         withBodies: 1,
@@ -95,35 +94,25 @@ const SystemDetail: FunctionComponent<Props> = ({ initSystem, params }) => {
           const { data: system } = response;
           setSystem(system);
 
-          // Map system bodies (e.g stars, planets and moons) into their respective orbits through
-          // a parent-child relationship.
-          //
-          // This map contains bodies of type MappedSystemBody, which contain the same properties
-          // as RawSystemBody with extra _children, _label, _type used for mapping.
           const map = new SystemMap(system);
           setSystemMap(map);
 
-          // Fetch the main star and initialise it as the selected body for the system overview.
           const star = map.stars.find((s) => s.is_main_star === 1);
           setSelectedBody(star);
 
-          // Listener to set the selected system body when the user selects a body to enter into
-          // focus.
           systemDispatcher.addEventListener("select-body", (event) => {
             setSelectedBody(event.message as MappedSystemBody);
           });
 
-          // Listener to reset the selected body when the user clicks on "go back to primary star".
           systemDispatcher.addEventListener("set-index", (event) => {
             if ((event.message as number) === 0) {
               setSelectedBody(star);
             }
           });
 
-          // Listener to set the selected system body + positioning for the cartographical data widget
-          // when the user clicks on a body (attached to the SVG G "circle" element).
           systemDispatcher.addEventListener("display-body-info", (event) => {
             setSelectedBodyDisplayInfo(event.message);
+            setIsPanelOpen(true); // Open panel when body info is displayed
           });
         })
         .finally(() => {
@@ -133,7 +122,6 @@ const SystemDetail: FunctionComponent<Props> = ({ initSystem, params }) => {
   }, [slug]);
 
   function renderSystemBodies(map: SystemMap) {
-    // Handle user selection to allow switching between stars and orbiting bodies.
     function handleSelectedBodyChange(index: number) {
       if (
         index < 0 ||
@@ -146,11 +134,6 @@ const SystemDetail: FunctionComponent<Props> = ({ initSystem, params }) => {
       setSelectedBody(map.stars[index]);
       setSelectedBodyIndex(index);
     }
-
-    // If map contains two objects, a star and "additional objects not directly orbiting" then
-    // this system has only one primary star, this flag is useful for conditonally rendering certain
-    // ui elements that are only needed if we have multiple primary stars, for example, select buttons.
-    // const singlePrimaryStar = map.stars.length === 2 && map.stars[1].type === SystemBodyType.Null;
 
     return (
       <>
@@ -189,7 +172,6 @@ const SystemDetail: FunctionComponent<Props> = ({ initSystem, params }) => {
     );
   }
 
-  // Render a system body - an interactive SVG with conditional filters depending on body type.
   function renderSystemBody(body: MappedSystemBody) {
     let classes = "text-glow__white text-sm";
     if (body.is_main_star) {
@@ -211,7 +193,6 @@ const SystemDetail: FunctionComponent<Props> = ({ initSystem, params }) => {
     );
   }
 
-  // Render body's orbiting bodies - maps each orbiting body to be rendered using renderSystemBody.
   function renderSystemBodyChildren(body: MappedSystemBody) {
     const bodies = body._children && body._children.length > 0 ? body._children : false;
 
@@ -277,16 +258,21 @@ const SystemDetail: FunctionComponent<Props> = ({ initSystem, params }) => {
         </div>
       </div>
 
-      {selectedBodyDisplayInfo && systemMap && (
-        <SystemBodyPopover
-          body={selectedBodyDisplayInfo.body}
-          system={systemMap}
-          closer={selectedBodyDisplayInfo.closer}
-          position={selectedBodyDisplayInfo.position}
-          dispatcher={systemDispatcher}
-          close={() => setSelectedBodyDisplayInfo(null)}
-        />
-      )}
+      <div
+        className={`fixed right-0 top-0 h-full w-1/3 transform bg-white shadow-lg transition-transform ${isPanelOpen ? "translate-x-0" : "translate-x-full"}`}
+      >
+        <button className="absolute left-2 top-2 text-xl" onClick={() => setIsPanelOpen(false)}>
+          &times;
+        </button>
+        {selectedBodyDisplayInfo && systemMap && (
+          <SystemBodyPopover
+            body={selectedBodyDisplayInfo.body}
+            system={systemMap}
+            dispatcher={systemDispatcher}
+            close={() => setIsPanelOpen(false)}
+          />
+        )}
+      </div>
     </>
   );
 };

@@ -11,58 +11,21 @@ import Link from "next/link";
 interface Props {
   body: MappedSystemBody | null;
   system: SystemMap;
-  closer: boolean;
-  position: {
-    top: number;
-    left: number;
-    right: number;
-    bottom: number;
-    width: number;
-    height: number;
-  };
   dispatcher: SystemDispatcher;
   close?: () => void;
 }
 
-export default function SystemBodyPopover({
-  body,
-  system,
-  closer,
-  position,
-  dispatcher,
-  close,
-}: Props) {
-  const MIN_N = 100;
-  const MAX_N = 160;
-  const CONTAINER_WIDTH = 500;
-  const MAX_WIDTH = window.innerWidth;
-  const OFFSET = closer ? MIN_N : body?.is_main_star ? MAX_N : MIN_N;
-  const POSITION_LEFT = position.left + OFFSET;
-  const OFFSET_POSITION_LEFT = POSITION_LEFT + CONTAINER_WIDTH;
-
-  const bounds = document.body.getBoundingClientRect();
-
-  const OFFSET_Y = position.top - bounds.top;
-  const OFFSET_X = position.left - bounds.top;
-
-  let style = {
-    width: CONTAINER_WIDTH,
-    top: OFFSET_Y,
-  };
-
-  style =
-    OFFSET_POSITION_LEFT >= MAX_WIDTH
-      ? { ...style, ...{ right: position.top - 100 } }
-      : { ...style, ...{ left: POSITION_LEFT } };
-
+export default function SystemBodyPopover({ body, system, dispatcher, close }: Props) {
   return (
     <div
-      className="fx-fade-in system-body-information__container galaxy-background fx-animated-text w-2/5 text-xs uppercase tracking-wider"
-      style={style}
+      className="system-body-information__container galaxy-background fx-animated-text h-full w-full border-l border-orange-500/60 text-xs uppercase tracking-wider"
+      style={{
+        paddingTop: "60px",
+      }}
     >
       {body && (
         <>
-          <div className="rounded bg-gradient-to-br from-sky-900/50 via-black/20 to-black/20 backdrop-blur backdrop-filter">
+          <div className="h-full w-full rounded bg-gradient-to-br from-sky-900/50 via-black/20 to-black/20 backdrop-blur backdrop-filter">
             <div className="system-body-information__container--header px-3 py-2.5 text-sm font-bold">
               <h2 className="text mt-1">Cartographical Data</h2>
               <XMarkIcon
@@ -73,8 +36,8 @@ export default function SystemBodyPopover({
               />
             </div>
 
-            <div className="rounded-b-lg border border-orange-500/60 px-3">
-              <div className="mb-1 mt-2.5 grid grid-cols-1 text-lg md:grid-cols-1">
+            <div className="px-3">
+              <div className="my-4 grid grid-cols-1 text-lg md:grid-cols-1">
                 <p className="flex items-center gap-x-2">
                   <i className="icarus-terminal-system-bodies text-glow__orange"></i>
                   <Link
@@ -105,7 +68,7 @@ export default function SystemBodyPopover({
                 <span>at {formatDate(body.discovered_at)}</span>
               </p>
 
-              <p className="mb-2.5 mt-2.5 flex items-center gap-x-2 text-sm">
+              <p className="my-4 flex items-center gap-x-2 text-sm">
                 <i
                   className={
                     "text-glow__orange icarus-terminal-" +
@@ -119,7 +82,7 @@ export default function SystemBodyPopover({
               </p>
 
               {body.type === SystemBodyType.Star && (
-                <div className="border-b border-neutral-800 pb-2.5 text-xs">
+                <div className="border-b border-neutral-800 pb-4 text-xs">
                   <div className="flex items-center gap-2 pb-2.5">
                     <p>
                       Class: <span className="ms-1">{body.spectral_class}</span>
@@ -184,7 +147,7 @@ export default function SystemBodyPopover({
 
                   {body._planetary_bases && body._planetary_bases.length > 0 && (
                     <>
-                      <p className="mt-2.5 flex items-center gap-x-2 text-sm">
+                      <p className="mb-2 mt-4 flex items-center gap-x-2 text-sm">
                         <i className={"text-glow__orange icarus-terminal-settlement"}></i>
                         <span>Planetary Settlements</span>
                       </p>
@@ -196,7 +159,7 @@ export default function SystemBodyPopover({
                               <div className="text-label__small mt-1">
                                 <p>{s.economy} economy</p>
                               </div>
-                              <div className="mt-1 flex flex-row gap-x-2">
+                              <div className="mt-1 flex flex-row flex-wrap gap-x-2">
                                 {s.has_market && (
                                   <div className="flex items-center gap-x-1">
                                     <CheckIcon className="text-glow__orange w-3" />
@@ -227,7 +190,7 @@ export default function SystemBodyPopover({
                 </>
               )}
 
-              <div className="mt-2.5 grid grid-cols-2 border-b border-neutral-800 pb-2.5">
+              <div className="my-4 grid grid-cols-2 gap-y-4 border-b border-neutral-800 pb-4">
                 <div>
                   <p className="flex items-center gap-x-2 text-sm">
                     <i className="icarus-terminal-planet text-glow__orange"></i>
@@ -236,18 +199,18 @@ export default function SystemBodyPopover({
                   <div className="mt-2">
                     <p>
                       Period:{" "}
-                      <span className="ms-1">{body.orbital_period?.toFixed(6) ?? "No Data"}</span>
+                      <span className="ms-1">{body.orbital_period?.toFixed(4) ?? "No Data"}</span>
                     </p>
                     <p>
                       Inclination:{" "}
                       <span className="ms-1">
-                        {body.orbital_inclination?.toFixed(6) ?? "No Data"}
+                        {body.orbital_inclination?.toFixed(4) ?? "No Data"}
                       </span>
                     </p>
                     <p>
                       Eccentricity:{" "}
                       <span className="ms-1">
-                        {body.orbital_eccentricity?.toFixed(6) ?? "No Data"}
+                        {body.orbital_eccentricity?.toFixed(4) ?? "No Data"}
                       </span>
                     </p>
                   </div>
@@ -259,15 +222,15 @@ export default function SystemBodyPopover({
                   </p>
                   <div className="mt-2">
                     <p>
-                      Axial tilt: <span className="ms-1">{body.axial_tilt?.toFixed(6) ?? 0}</span>
+                      Axial tilt: <span className="ms-1">{body.axial_tilt?.toFixed(4) ?? 0}</span>
                     </p>
                     <p>
                       Semi-major axis:{" "}
-                      <span className="ms-1">{body.semi_major_axis?.toFixed(6) ?? 0}</span>
+                      <span className="ms-1">{body.semi_major_axis?.toFixed(4) ?? 0}</span>
                     </p>
                     <p>
                       Arg of periapsis:{" "}
-                      <span className="ms-1">{body.arg_of_periapsis?.toFixed(6) ?? 0}</span>
+                      <span className="ms-1">{body.arg_of_periapsis?.toFixed(4) ?? 0}</span>
                     </p>
                     {body.type === SystemBodyType.Planet && (
                       <p className="mt-1">
