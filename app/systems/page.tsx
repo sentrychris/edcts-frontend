@@ -28,12 +28,12 @@ export default async function Page() {
         resetCache={1}
         latestSystem={latestSystem}
       />
-      <div className="mt-2 grid grid-cols-12 gap-x-10">
+      <div className="mt-4 grid grid-cols-12 gap-x-10">
         <div className="col-span-3 uppercase">
           <Heading
             icon="icarus-terminal-route text-glow__orange"
             largeIcon={true}
-            title="Latest Nav Routes"
+            title="Nav Routes"
             className="mt-5 gap-3 text-2xl"
           />
           <SystemsNavRoutes className="mt-5" callInterval={45000} />
