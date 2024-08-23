@@ -133,4 +133,14 @@ nav.main-nav__nav .main-nav__menu {
     color: rgb(101 234 255 / 1);
     text-shadow: 0px 0 20px rgb(101 234 255 / 1);
   }
+
+  .border-top-glow__orange {
+    border-top: 2px solid rgb(85, 41, 0);
+    box-shadow: 0 0 12px rgb(85, 41, 0);
+  }
+
+  .border-bottom-glow__orange {
+    border-bottom: 2px solid rgb(85, 41, 0);
+    box-shadow: 0 0 12px rgb(85, 41, 0);
+  }
 }

@@ -28,6 +28,22 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
           </h1>
           {children}
         </main>
+        <footer className="flex flex-col items-center justify-center gap-x-10 border-t border-neutral-800 py-4 text-center text-sm text-neutral-200">
+          <span className="">
+            <span className="text-glow__orange">Elite: Dangerous</span> © 2012 - 2024 Frontier
+            Developments plc. All rights reserved.
+          </span>
+          <span className="">
+            ED:CTS is neither affiliated with nor endorsed by Frontier Developments.
+          </span>
+          <span className="">
+            Made with <span className="text-glow__orange">♥</span> by{" "}
+            <a className="text-glow__blue" href="https://versyx.dev">
+              Chris Rowles
+            </a>
+            .
+          </span>
+        </footer>
       </body>
     </html>
   );
