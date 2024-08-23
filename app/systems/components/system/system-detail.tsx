@@ -222,10 +222,10 @@ const SystemDetail: FunctionComponent<Props> = ({ initSystem, params }) => {
           {!isLoading && systemMap && (
             <div className="items-center gap-x-6 text-xs md:flex">
               <h4 className="text-glow__orange font-bold uppercase">
-                {systemMap.stars.filter((s) => s.type === "Null").length}
+                {systemMap.stars.filter((s) => s.type !== "Null").length}
                 <span className="ms-1">
                   {pluralizeArray(
-                    systemMap.stars.filter((s) => s.type === "Null"),
+                    systemMap.stars.filter((s) => s.type !== "Null"),
                     {
                       singular: "star",
                       plural: "stars",
