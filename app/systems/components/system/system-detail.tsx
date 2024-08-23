@@ -219,6 +219,9 @@ const SystemDetail: FunctionComponent<Props> = ({ initSystem, params }) => {
           {!isLoading && systemMap && (
             <div className="flex items-center gap-x-6 text-xs">
               <h4 className="text-glow__orange font-bold uppercase">
+                {systemMap.stars.length ? systemMap.stars.length - 1 : 0} stars
+              </h4>
+              <h4 className="text-glow__orange font-bold uppercase">
                 {systemMap.planets.length ?? 0} planets
               </h4>
               <h4 className="text-glow__orange font-bold uppercase">
