@@ -24,6 +24,5 @@ export function pluralizeTextFromArray(
   arr: any[],
   { singular, plural }: { singular: string; plural: string },
 ) {
-  console.log(arr);
   return arr.length === 1 ? singular : plural;
 }
