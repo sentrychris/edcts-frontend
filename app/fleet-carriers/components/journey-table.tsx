@@ -7,7 +7,7 @@ import { useEffect, useState } from "react";
 import { useDebounce } from "@/core/hooks/debounce";
 import { getCollection } from "@/core/api";
 import { formatDate } from "@/core/util";
-import { renderStatusText } from "../lib/store";
+import { renderStatusText } from "../lib/render";
 import Link from "next/link";
 import Filter from "@/components/filter";
 import Table from "@/components/table";
