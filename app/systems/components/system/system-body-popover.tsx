@@ -19,14 +19,14 @@ interface Props {
 const SystemBodyPopover: FunctionComponent<Props> = ({ body, system, dispatcher, close }) => {
   return (
     <div
-      className="system-body-information__container galaxy-background fx-animated-text h-full w-full max-h-screen border-l border-orange-500/60 text-xs uppercase tracking-wider"
+      className="system-body-information__container galaxy-background fx-animated-text h-full max-h-screen w-full border-l border-orange-500/60 text-xs uppercase tracking-wider"
       style={{
         paddingTop: "60px",
       }}
     >
       {body && (
         <>
-          <div className="h-full w-full bg-gradient-to-br from-sky-900/50 via-black/20 to-black/20 backdrop-blur backdrop-filter overflow-y-auto">
+          <div className="h-full w-full overflow-y-auto bg-gradient-to-br from-sky-900/50 via-black/20 to-black/20 backdrop-blur backdrop-filter">
             <div className="system-body-information__container--header px-3 py-2.5 text-sm font-bold">
               <h2 className="text mt-1">Cartographical Data</h2>
               <XMarkIcon
@@ -38,8 +38,8 @@ const SystemBodyPopover: FunctionComponent<Props> = ({ body, system, dispatcher,
             </div>
 
             <div className="px-3">
-              <div className="mt-4 mb-3 grid grid-cols-1 text-lg md:grid-cols-1">
-                <p className="flex items-center gap-x-2 mb-1">
+              <div className="mb-3 mt-4 grid grid-cols-1 text-lg md:grid-cols-1">
+                <p className="mb-1 flex items-center gap-x-2">
                   <i className="icarus-terminal-system-bodies text-glow__orange"></i>
                   <Link
                     className="text-glow__orange"
@@ -78,7 +78,7 @@ const SystemBodyPopover: FunctionComponent<Props> = ({ body, system, dispatcher,
                 ></i>
                 <span>Body Information</span>
               </p>
-              <p className={"flex items-center gap-x-2 mb-1"}>
+              <p className={"mb-1 flex items-center gap-x-2"}>
                 <span>{body.type}</span> - <span>{body.sub_type}</span>
               </p>
 
@@ -115,9 +115,11 @@ const SystemBodyPopover: FunctionComponent<Props> = ({ body, system, dispatcher,
                 <>
                   <p className="pb-2.5">
                     Distance to Main Star:{" "}
-                    <span className="ms-1">{formatNumber(body.distance_to_arrival as number)} LS</span>
+                    <span className="ms-1">
+                      {formatNumber(body.distance_to_arrival as number)} LS
+                    </span>
                   </p>
-                  <p className={"flex items-center gap-x-2 text-xs mb-1"}>
+                  <p className={"mb-1 flex items-center gap-x-2 text-xs"}>
                     <span>Is Landable:</span>{" "}
                     <span>
                       {body.is_landable ? (
@@ -127,7 +129,7 @@ const SystemBodyPopover: FunctionComponent<Props> = ({ body, system, dispatcher,
                       )}
                     </span>
                   </p>
-                  <p className={"flex items-center gap-x-2 text-xs mb-1"}>
+                  <p className={"mb-1 flex items-center gap-x-2 text-xs"}>
                     <span>Gravity:</span> <span>{body.gravity?.toFixed(2)}</span>
                   </p>
                   <p className={"mb-2.5 flex items-center gap-x-2 text-xs"}>
@@ -135,7 +137,7 @@ const SystemBodyPopover: FunctionComponent<Props> = ({ body, system, dispatcher,
                     <span>{`${formatNumber(body.surface_temp as number)} K`}</span>
                   </p>
 
-                  <p className={"flex items-center gap-x-2 text-xs mb-1"}>
+                  <p className={"mb-1 flex items-center gap-x-2 text-xs"}>
                     <span>Atmosphere:</span> <span>{body.atmosphere_type ?? "No Data"}</span>
                   </p>
                   <p className={"mb-2.5 flex items-center gap-x-2 text-xs"}>
@@ -143,9 +145,15 @@ const SystemBodyPopover: FunctionComponent<Props> = ({ body, system, dispatcher,
                   </p>
 
                   <p className="border-b border-neutral-800 pb-5">
-                    <span className={body.terraforming_state === "Candidate for terraforming" ? 'text-green-300' : 'text-red-300'}>
+                    <span
+                      className={
+                        body.terraforming_state === "Candidate for terraforming"
+                          ? "text-green-300"
+                          : "text-red-300"
+                      }
+                    >
                       {body.terraforming_state}
-                      </span>
+                    </span>
                   </p>
 
                   {body._planetary_bases && body._planetary_bases.length > 0 && (
@@ -278,6 +286,6 @@ const SystemBodyPopover: FunctionComponent<Props> = ({ body, system, dispatcher,
       )}
     </div>
   );
-}
+};
 
 export default SystemBodyPopover;

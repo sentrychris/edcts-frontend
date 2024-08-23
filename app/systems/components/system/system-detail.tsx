@@ -214,7 +214,22 @@ const SystemDetail: FunctionComponent<Props> = ({ initSystem, params }) => {
       <SystemInformationBar information={system.information} />
 
       <div className="border-b border-neutral-800 bg-transparent py-5 backdrop-blur backdrop-filter">
-        <Heading icon="icarus-terminal-system-bodies" title="System Map" className="gap-2 pb-5" />
+        <div className="flex items-center justify-between">
+          <Heading icon="icarus-terminal-system-bodies" title="System Map" className="mb-2 gap-2" />
+          {!isLoading && systemMap && (
+            <div className="flex items-center gap-x-6 text-xs">
+              <h4 className="text-glow__orange font-bold uppercase">
+                {systemMap.planets.length ?? 0} planets
+              </h4>
+              <h4 className="text-glow__orange font-bold uppercase">
+                {systemMap.stations.length ?? 0} stations
+              </h4>
+              <h4 className="text-glow__blue font-bold uppercase">
+                {systemMap.settlements.length ?? 0} settlements
+              </h4>
+            </div>
+          )}
+        </div>
         {!isLoading && (
           <div className="grid grid-cols-12">
             <div className="col-span-12">
