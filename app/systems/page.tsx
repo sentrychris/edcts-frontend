@@ -15,7 +15,7 @@ export default async function Page() {
   return (
     <>
       <Heading icon="icarus-terminal-info" title="System Statistics" className="mt-4 gap-2" />
-      <small className="mb-4 text-xs text-stone-300">
+      <small className="mb-8 text-xs text-stone-300">
         Updated every <span className="text-glow__blue">30 seconds</span>. (Source:{" "}
         <a className="text-glow__orange" href="https://eddn.edcd.io/">
           EDDN
@@ -43,9 +43,9 @@ export default async function Page() {
             icon="icarus-terminal-system-orbits text-glow__orange"
             largeIcon={true}
             title="Systems Information"
-            className="my-5 gap-3 text-2xl"
+            className="mt-5 gap-3 text-2xl"
           />
-          <SystemsTable systems={systems} />
+          <SystemsTable className="mt-5" systems={systems} />
         </div>
       </div>
     </>

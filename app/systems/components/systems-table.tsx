@@ -12,10 +12,11 @@ import Filter from "@/components/filter";
 import Table from "@/components/table";
 
 interface Props {
+  className?: string;
   systems: Pagination<System>;
 }
 
-const SystemsTable: FunctionComponent<Props> = ({ systems }) => {
+const SystemsTable: FunctionComponent<Props> = ({ className = "", systems }) => {
   const { data, meta, links } = systems;
   const [rows, setRows] = useState(data);
   const [metadata, setMetadata] = useState(meta);
@@ -117,7 +118,7 @@ const SystemsTable: FunctionComponent<Props> = ({ systems }) => {
   };
 
   return (
-    <div>
+    <div className={className}>
       <Filter handleInput={searchData} className="mb-5" />
       <Table columns={columns} data={rows} meta={metadata} links={navigation} page={paginate} />
     </div>
