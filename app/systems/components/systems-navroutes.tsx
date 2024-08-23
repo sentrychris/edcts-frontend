@@ -1,7 +1,7 @@
 "use client";
 
 import type { SystemsNavRoutes } from "@/core/interfaces/System";
-import { useEffect, useState, type FunctionComponent } from "react";
+import { type FunctionComponent, useEffect, useState } from "react";
 import { getResource } from "@/core/api";
 
 interface Props {
@@ -14,7 +14,9 @@ const SystemsNavRoutes: FunctionComponent<Props> = ({ className = "", callInterv
   const [systemsNavRoutesInterval, setSystemsNavRoutesInterval] = useState<NodeJS.Timeout>();
 
   useEffect(() => {
-    getResource<SystemsNavRoutes[]>("nav-routes").then(({ data }) => {
+    getResource<SystemsNavRoutes[]>("nav-routes", {
+      limit: 20,
+    }).then(({ data }) => {
       setSystemsNavRoutes(data);
     });
 
@@ -23,7 +25,9 @@ const SystemsNavRoutes: FunctionComponent<Props> = ({ className = "", callInterv
     }
 
     const interval = setInterval(() => {
-      getResource<SystemsNavRoutes[]>("nav-routes").then(({ data }) => {
+      getResource<SystemsNavRoutes[]>("nav-routes", {
+        limit: 20,
+      }).then(({ data }) => {
         setSystemsNavRoutes(data);
       });
     }, callInterval);
