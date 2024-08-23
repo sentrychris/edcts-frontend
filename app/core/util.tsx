@@ -20,6 +20,14 @@ export function escapeRegExp(text: string) {
   return text.replace(/[[\]{}()*+?.,\-\\^$|#\s]/g, "\\$&");
 }
 
+export function pluralizeArray(
+  arr: any[],
+  { singular, plural }: { singular: string; plural: string },
+) {
+  console.log(arr);
+  return arr.length === 1 ? singular : plural;
+}
+
 export const renderTextWithIcon = (
   text: string | number,
   options?: { className?: string; icon?: string },

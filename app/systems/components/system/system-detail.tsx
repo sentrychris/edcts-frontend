@@ -17,6 +17,7 @@ import SystemBodySVG from "./system-body-svg";
 import SystemBodyPopover from "./system-body-popover";
 import SystemStarsTable from "./system-stars-table";
 import SystemBodiesTable from "./system-bodies-table";
+import { pluralizeArray } from "@/core/util";
 
 interface Props {
   initSystem?: System;
@@ -96,6 +97,8 @@ const SystemDetail: FunctionComponent<Props> = ({ initSystem, params }) => {
 
           const map = new SystemMap(system);
           setSystemMap(map);
+
+          console.log(map);
 
           const star = map.stars.find((s) => s.is_main_star === 1);
           setSelectedBody(star);
@@ -217,29 +220,44 @@ const SystemDetail: FunctionComponent<Props> = ({ initSystem, params }) => {
         <div className="flex items-center justify-between">
           <Heading icon="icarus-terminal-system-bodies" title="System Map" className="mb-2 gap-2" />
           {!isLoading && systemMap && (
-            <div className="md:flex items-center gap-x-6 text-xs">
+            <div className="items-center gap-x-6 text-xs md:flex">
               <h4 className="text-glow__orange font-bold uppercase">
-                {systemMap.stars.length ? systemMap.stars.length - 1 : 0}
+                {systemMap.stars.filter((s) => s.type === "Null").length}
                 <span className="ms-1">
-                  star{systemMap.stars.length - 1 > 1 && 's'}
+                  {pluralizeArray(
+                    systemMap.stars.filter((s) => s.type === "Null"),
+                    {
+                      singular: "star",
+                      plural: "stars",
+                    },
+                  )}
                 </span>
               </h4>
               <h4 className="text-glow__orange font-bold uppercase">
-                {systemMap.planets.length ?? 0}
+                {systemMap.planets.length}
                 <span className="ms-1">
-                  {systemMap.planets.length > 1 ? 'bodies' : 'body'}
+                  {pluralizeArray(systemMap.planets, {
+                    singular: "body",
+                    plural: "bodies",
+                  })}
                 </span>
               </h4>
               <h4 className="text-glow__orange font-bold uppercase">
                 {systemMap.stations.length}
                 <span className="ms-1">
-                  station{(systemMap.stations.length === 0 || systemMap.stations.length > 1) && 's'}
+                  {pluralizeArray(systemMap.stations, {
+                    singular: "station",
+                    plural: "stations",
+                  })}
                 </span>
               </h4>
               <h4 className="text-glow__blue font-bold uppercase">
-              {systemMap.settlements.length}
-              <span className="ms-1">
-                  settlement{(systemMap.settlements.length === 0 || systemMap.settlements.length > 1) && 's'}
+                {systemMap.settlements.length}
+                <span className="ms-1">
+                  {pluralizeArray(systemMap.settlements, {
+                    singular: "settlement",
+                    plural: "settlements",
+                  })}
                 </span>
               </h4>
             </div>
