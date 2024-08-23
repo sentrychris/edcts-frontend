@@ -280,10 +280,7 @@ const SystemDetail: FunctionComponent<Props> = ({ initSystem, params }) => {
 
       <div className="grid grid-cols-1 gap-5 py-5 md:grid-cols-1">
         <div>
-          <Heading icon="icarus-terminal-star"
-            title="Main Sequence Stars"
-            className="gap-2 pb-5"
-          />
+          <Heading icon="icarus-terminal-star" title="Main Sequence Stars" className="gap-2 pb-5" />
           {!isLoading && systemMap && (
             <SystemStarsTable
               stars={systemMap.stars as RawSystemBody[]}
