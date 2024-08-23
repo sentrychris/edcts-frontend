@@ -1,7 +1,6 @@
 import type { FunctionComponent } from "react";
 import type { Pagination } from "@/core/interfaces/Pagination";
 import type { Galnet } from "@/core/interfaces/Galnet";
-import Heading from "./heading";
 import Link from "next/link";
 
 interface Props {
@@ -12,12 +11,6 @@ interface Props {
 const GalnetList: FunctionComponent<Props> = ({ className, articles }) => {
   return (
     <div className={className}>
-      <Heading
-        icon="icarus-terminal-notifications text-glow__orange"
-        largeIcon={true}
-        title="Latest Galnet News"
-        className="mb-3 gap-3 text-2xl"
-      />
       {articles.data.slice(0, 5).map((article) => {
         return (
           <div key={article.id} className="relative">

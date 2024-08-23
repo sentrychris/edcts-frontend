@@ -28,3 +28,8 @@ export interface SystemInformation {
     state: string;
   };
 }
+
+export interface SystemsNavRoutes {
+  from: string;
+  to: string;
+}

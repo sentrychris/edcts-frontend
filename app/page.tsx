@@ -27,7 +27,7 @@ export default async function Home() {
     " md:grid-cols-2 lg:grid-cols-4";
 
   const contentGrid =
-    (fleetCarrierJourneyScheduleSize > 0 ? "mt-12" : "mt-4") +
+    (fleetCarrierJourneyScheduleSize > 0 ? "mt-8" : "mt-4") +
     " grid grid-cols-1 gap-x-10 md:grid-cols-2 lg:grid-cols-3";
 
   return (
@@ -35,9 +35,9 @@ export default async function Home() {
       {fleetCarrierJourneyScheduleSize > 0 && (
         <>
           <Heading
-            icon="icarus-terminal-route text-glow__orange"
+            icon="icarus-terminal-route"
             title="Departure Board"
-            className="mb-5 gap-2"
+            className="mb-8 mt-4 gap-2"
           />
           <div className={fleetCarrierJourneyScheduleBoardGrid}>
             {fleetCarrierJourneySchedule.data.slice(0, 4).map((journey) => {
@@ -48,15 +48,28 @@ export default async function Home() {
       )}
       <div className={contentGrid}>
         <div className="col-span-1">
-          <LatestSystem className="border-b border-neutral-800 pb-12" system={latestSystem} />
-          <GalnetList className="pt-10" articles={news} />
+          <Heading
+            icon="icarus-terminal-location-filled text-glow__blue"
+            largeIcon={true}
+            title="Latest Updated System"
+            className="mb-8 gap-2 text-2xl"
+          />
+          <LatestSystem className="border-b border-neutral-800 pb-8" system={latestSystem} />
+
+          <Heading
+            icon="icarus-terminal-notifications text-glow__orange"
+            largeIcon={true}
+            title="Latest Galnet News"
+            className="mb-4 mt-8 gap-3 text-2xl"
+          />
+          <GalnetList articles={news} />
         </div>
         <div className="col-span-1 lg:col-span-2">
           <Heading
             icon="icarus-terminal-route text-glow__orange"
             largeIcon={true}
             title="Scheduled Fleet Carrier Journeys"
-            className="mb-5 gap-3 text-2xl"
+            className="mb-8 gap-3 text-2xl"
           />
           <JourneyTable schedule={fleetCarrierJourneySchedule} />
         </div>

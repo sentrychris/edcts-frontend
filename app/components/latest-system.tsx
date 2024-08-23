@@ -1,6 +1,5 @@
 import type { FunctionComponent } from "react";
 import type SystemMap from "@/systems/lib/system-map";
-import Heading from "./heading";
 import Link from "next/link";
 
 interface Props {
@@ -11,12 +10,6 @@ interface Props {
 const LatestSystem: FunctionComponent<Props> = ({ className, system }) => {
   return (
     <div className={className}>
-      <Heading
-        icon="icarus-terminal-location-filled text-glow__blue"
-        largeIcon={true}
-        title="Latest Updated System"
-        className="mb-5 gap-2 text-2xl"
-      />
       <Link
         className="text-glow__blue font-bold hover:underline"
         href={`systems/${system.detail.slug}`}

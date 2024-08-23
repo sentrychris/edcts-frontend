@@ -1,5 +1,3 @@
-import type { System } from "./System";
-
 export interface CartographicalStatistics {
   systems: number;
   bodies: number;
@@ -24,9 +22,4 @@ export interface AppStatistics {
   carriers: number;
   commanders: number;
   journeys: JourneyStatistics;
-}
-
-export interface LastTenNavRoutes {
-  from: string;
-  to: string;
 }
