@@ -217,18 +217,30 @@ const SystemDetail: FunctionComponent<Props> = ({ initSystem, params }) => {
         <div className="flex items-center justify-between">
           <Heading icon="icarus-terminal-system-bodies" title="System Map" className="mb-2 gap-2" />
           {!isLoading && systemMap && (
-            <div className="flex items-center gap-x-6 text-xs">
+            <div className="md:flex items-center gap-x-6 text-xs">
               <h4 className="text-glow__orange font-bold uppercase">
-                {systemMap.stars.length ? systemMap.stars.length - 1 : 0} stars
+                {systemMap.stars.length ? systemMap.stars.length - 1 : 0}
+                <span className="ms-1">
+                  star{systemMap.stars.length - 1 > 1 && 's'}
+                </span>
               </h4>
               <h4 className="text-glow__orange font-bold uppercase">
-                {systemMap.planets.length ?? 0} planets
+                {systemMap.planets.length ?? 0}
+                <span className="ms-1">
+                  {systemMap.planets.length > 1 ? 'bodies' : 'body'}
+                </span>
               </h4>
               <h4 className="text-glow__orange font-bold uppercase">
-                {systemMap.stations.length ?? 0} stations
+                {systemMap.stations.length}
+                <span className="ms-1">
+                  station{(systemMap.stations.length === 0 || systemMap.stations.length > 1) && 's'}
+                </span>
               </h4>
               <h4 className="text-glow__blue font-bold uppercase">
-                {systemMap.settlements.length ?? 0} settlements
+              {systemMap.settlements.length}
+              <span className="ms-1">
+                  settlement{(systemMap.settlements.length === 0 || systemMap.settlements.length > 1) && 's'}
+                </span>
               </h4>
             </div>
           )}
