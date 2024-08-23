@@ -25,3 +25,8 @@ export interface AppStatistics {
   commanders: number;
   journeys: JourneyStatistics;
 }
+
+export interface LastTenNavRoutes {
+  from: string;
+  to: string;
+}
