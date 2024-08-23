@@ -20,7 +20,7 @@ export function escapeRegExp(text: string) {
   return text.replace(/[[\]{}()*+?.,\-\\^$|#\s]/g, "\\$&");
 }
 
-export function pluralizeArray(
+export function pluralizeTextFromArray(
   arr: any[],
   { singular, plural }: { singular: string; plural: string },
 ) {

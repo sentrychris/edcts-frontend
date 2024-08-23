@@ -17,7 +17,7 @@ import SystemBodySVG from "./system-body-svg";
 import SystemBodyPopover from "./system-body-popover";
 import SystemStarsTable from "./system-stars-table";
 import SystemBodiesTable from "./system-bodies-table";
-import { pluralizeArray } from "@/core/util";
+import { pluralizeTextFromArray } from "@/core/util";
 
 interface Props {
   initSystem?: System;
@@ -224,7 +224,7 @@ const SystemDetail: FunctionComponent<Props> = ({ initSystem, params }) => {
               <h4 className="text-glow__orange font-bold uppercase">
                 {systemMap.stars.filter((s) => s.type !== "Null").length}
                 <span className="ms-1">
-                  {pluralizeArray(
+                  {pluralizeTextFromArray(
                     systemMap.stars.filter((s) => s.type !== "Null"),
                     {
                       singular: "star",
@@ -236,7 +236,7 @@ const SystemDetail: FunctionComponent<Props> = ({ initSystem, params }) => {
               <h4 className="text-glow__orange font-bold uppercase">
                 {systemMap.planets.length}
                 <span className="ms-1">
-                  {pluralizeArray(systemMap.planets, {
+                  {pluralizeTextFromArray(systemMap.planets, {
                     singular: "body",
                     plural: "bodies",
                   })}
@@ -245,7 +245,7 @@ const SystemDetail: FunctionComponent<Props> = ({ initSystem, params }) => {
               <h4 className="text-glow__orange font-bold uppercase">
                 {systemMap.stations.length}
                 <span className="ms-1">
-                  {pluralizeArray(systemMap.stations, {
+                  {pluralizeTextFromArray(systemMap.stations, {
                     singular: "station",
                     plural: "stations",
                   })}
@@ -254,7 +254,7 @@ const SystemDetail: FunctionComponent<Props> = ({ initSystem, params }) => {
               <h4 className="text-glow__blue font-bold uppercase">
                 {systemMap.settlements.length}
                 <span className="ms-1">
-                  {pluralizeArray(systemMap.settlements, {
+                  {pluralizeTextFromArray(systemMap.settlements, {
                     singular: "settlement",
                     plural: "settlements",
                   })}
@@ -280,7 +280,10 @@ const SystemDetail: FunctionComponent<Props> = ({ initSystem, params }) => {
 
       <div className="grid grid-cols-1 gap-5 py-5 md:grid-cols-1">
         <div>
-          <Heading icon="icarus-terminal-star" title="Main Sequence Stars" className="gap-2 pb-5" />
+          <Heading icon="icarus-terminal-star"
+            title="Main Sequence Stars"
+            className="gap-2 pb-5"
+          />
           {!isLoading && systemMap && (
             <SystemStarsTable
               stars={systemMap.stars as RawSystemBody[]}
