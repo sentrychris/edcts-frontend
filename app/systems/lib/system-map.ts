@@ -158,7 +158,7 @@ export default class SystemMap {
             nearestPlanetParentType === SystemBodyType.Star ||
             nearestPlanetParentType === SystemBodyType.Null
               ? (nearestPlanet as RawSystemBody).body_id
-              : (nearestPlanet?.parents?.[0]?.["Planet"] ?? null);
+              : (nearestPlanet?.parents?.[0]?.[SystemBodyType.Planet] ?? null);
 
           // If the object doesn't have a nearby planet, then assume it's orbiting a star,
           // For example, Asterope, which has 3 stars, 0 planets, 1 Megaship and a Coriolis.
@@ -324,7 +324,7 @@ export default class SystemMap {
    */
   getNearestStarToStation(station: MappedStation): MappedSystemBody | null {
     const doa = station.distance_to_arrival;
-    const stars = this.items.filter((body) => body._type === "Star");
+    const stars = this.items.filter((body) => body._type === SystemBodyType.Star);
     if (!doa || stars.length === 0) {
       return null;
     }
@@ -349,7 +349,7 @@ export default class SystemMap {
    */
   getNearestPlanetToStation(station: MappedStation) {
     const doa = station.distance_to_arrival;
-    const planets = this.items.filter((body) => body._type === "Planet");
+    const planets = this.items.filter((body) => body._type === SystemBodyType.Planet);
 
     if (!doa || planets.length === 0) {
       return null;

@@ -1,9 +1,8 @@
 "use client";
 
-import type { FunctionComponent } from "react";
+import { type FunctionComponent, useState } from "react";
 import type { SystemDispatcher } from "@/core/events/SystemDispatcher";
 import type { RawSystemBody, MappedSystemBody } from "@/core/interfaces/SystemBody";
-import { useState } from "react";
 import { formatDate, formatNumber } from "@/core/util";
 import Link from "next/link";
 import Table from "@/components/table";

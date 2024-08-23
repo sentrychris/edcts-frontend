@@ -5,6 +5,7 @@ import type { SystemDispatcher } from "@/core/events/SystemDispatcher";
 import type { MappedSystemBody } from "@/core/interfaces/SystemBody";
 import { useCallback, useState } from "react";
 import Icons from "@/icons";
+import { SystemBodyType } from "@/core/constants/system";
 
 interface Props {
   body: MappedSystemBody;
@@ -77,7 +78,7 @@ const SystemBodySVG: FunctionComponent<Props> = ({
   // TODO fix this properly, there is a bug in the system map resulting in the wrong
   // _type classification for Y (brown dwarf) stars.
   if (body.sub_type === "Y (Brown dwarf) Star") {
-    body._type = "Star";
+    body._type = SystemBodyType.Star;
   }
 
   return (
