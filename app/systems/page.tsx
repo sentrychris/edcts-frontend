@@ -13,7 +13,10 @@ export default async function Page() {
 
   return (
     <>
-      <Heading icon="icarus-terminal-info" title="System Statistics" className="mb-5 gap-2" />
+      <Heading icon="icarus-terminal-info"
+        title="System Statistics"
+        className="mb-5 gap-2"
+      />
       <SystemsStatisticsBar
         className="fx-fade-in"
         callInterval={10000}

@@ -6,6 +6,7 @@ import type { System } from "@/core/interfaces/System";
 import { useEffect, useState } from "react";
 import { formatNumber, renderTextWithIcon } from "@/core/util";
 import { getResource } from "@/core/api";
+import { statisticsState } from "../lib/store";
 import Link from "next/link";
 
 interface Props {
@@ -21,7 +22,7 @@ const SystemsStatisticsBar: FunctionComponent<Props> = ({
   resetCache = true,
   latestSystem,
 }) => {
-  const [statistics, setStatistics] = useState<AppStatistics>();
+  const [statistics, setStatistics] = useState<AppStatistics>(statisticsState.data);
   const [statisticsInterval, setStatisticsInterval] = useState<NodeJS.Timeout>();
 
   useEffect(() => {
@@ -65,25 +66,25 @@ const SystemsStatisticsBar: FunctionComponent<Props> = ({
         <div className="flex flex-wrap items-center gap-10 lg:gap-20">
           <div className="whitespace-nowrap">
             <p className="mb-2">Systems Logged:</p>
-            {renderTextWithIcon(formatNumber(statistics?.cartographical?.systems ?? 0), {
+            {renderTextWithIcon(formatNumber(statistics.cartographical.systems), {
               icon: "icarus-terminal-system-orbits text-2xl",
             })}
           </div>
           <div className="whitespace-nowrap">
             <p className="mb-2">Primary Stars Logged:</p>
-            {renderTextWithIcon(formatNumber(statistics?.cartographical?.stars ?? 0), {
+            {renderTextWithIcon(formatNumber(statistics.cartographical.stars), {
               icon: "icarus-terminal-star text-2xl",
             })}
           </div>
           <div className="whitespace-nowrap">
             <p className="mb-2">Orbital Bodies Logged:</p>
-            {renderTextWithIcon(formatNumber(statistics?.cartographical?.bodies ?? 0), {
+            {renderTextWithIcon(formatNumber(statistics.cartographical.bodies), {
               icon: "icarus-terminal-system-bodies text-2xl",
             })}
           </div>
           <div className="hidden whitespace-nowrap md:inline">
             <p className="mb-2">ED:CTS Carriers in service:</p>
-            {renderTextWithIcon(formatNumber(statistics?.carriers ?? 0), {
+            {renderTextWithIcon(formatNumber(statistics.carriers), {
               icon: "icarus-terminal-ship text-2xl",
             })}
           </div>
