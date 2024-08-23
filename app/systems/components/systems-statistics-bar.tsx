@@ -9,7 +9,6 @@ import { getResource } from "@/core/api";
 import Link from "next/link";
 
 interface Props {
-  data: AppStatistics;
   callInterval?: number;
   resetCache?: number;
   className?: string;
@@ -17,20 +16,28 @@ interface Props {
 }
 
 const SystemsStatisticsBar: FunctionComponent<Props> = ({
-  data,
   className = "",
   callInterval = 30000,
   resetCache = true,
   latestSystem,
 }) => {
-  const [statistics, setStatistics] = useState<AppStatistics>(data);
+  const [statistics, setStatistics] = useState<AppStatistics>();
   const [statisticsInterval, setStatisticsInterval] = useState<NodeJS.Timeout>();
 
   useEffect(() => {
+    // Initial API call to retrieve statistics
+    getResource<AppStatistics>("statistics", {
+      resetCache: 1,
+    }).then((response) => {
+      setStatistics(response.data);
+    });
+
+    // Clear any existing interval
     if (statisticsInterval) {
       clearInterval(statisticsInterval);
     }
 
+    // Set up a new interval to fetch statistics periodically
     const interval = setInterval(() => {
       getResource<AppStatistics>("statistics", {
         resetCache,
@@ -40,8 +47,12 @@ const SystemsStatisticsBar: FunctionComponent<Props> = ({
       });
     }, callInterval);
 
+    // setStaisitcsInterval to the interval
     setStatisticsInterval(interval);
-  }, [resetCache, statistics, callInterval]);
+
+    // Cleanup function to clear interval on unmount or when deps change
+    return () => clearInterval(interval);
+  }, [resetCache, callInterval]);
 
   return (
     <div
@@ -54,25 +65,25 @@ const SystemsStatisticsBar: FunctionComponent<Props> = ({
         <div className="flex flex-wrap items-center gap-10 lg:gap-20">
           <div className="whitespace-nowrap">
             <p className="mb-2">Systems Logged:</p>
-            {renderTextWithIcon(formatNumber(statistics.cartographical.systems), {
+            {renderTextWithIcon(formatNumber(statistics?.cartographical?.systems ?? 0), {
               icon: "icarus-terminal-system-orbits text-2xl",
             })}
           </div>
           <div className="whitespace-nowrap">
             <p className="mb-2">Primary Stars Logged:</p>
-            {renderTextWithIcon(formatNumber(statistics.cartographical.stars), {
+            {renderTextWithIcon(formatNumber(statistics?.cartographical?.stars ?? 0), {
               icon: "icarus-terminal-star text-2xl",
             })}
           </div>
           <div className="whitespace-nowrap">
             <p className="mb-2">Orbital Bodies Logged:</p>
-            {renderTextWithIcon(formatNumber(statistics.cartographical.bodies), {
+            {renderTextWithIcon(formatNumber(statistics?.cartographical?.bodies ?? 0), {
               icon: "icarus-terminal-system-bodies text-2xl",
             })}
           </div>
           <div className="hidden whitespace-nowrap md:inline">
             <p className="mb-2">ED:CTS Carriers in service:</p>
-            {renderTextWithIcon(formatNumber(statistics.carriers), {
+            {renderTextWithIcon(formatNumber(statistics?.carriers ?? 0), {
               icon: "icarus-terminal-ship text-2xl",
             })}
           </div>
