@@ -56,7 +56,6 @@ nav.main-nav__nav {
   position: sticky;
   width: full;
   z-index: 40;
-  padding-bottom: 0.75rem;
 }
 
 nav.main-nav__nav .main-nav__menu {
@@ -67,7 +66,6 @@ nav.main-nav__nav .main-nav__menu {
   margin-right: auto;
   background: black;
   border-bottom: 2px solid rgb(85, 41, 0);
-  box-shadow: 0 0 12px rgb(85, 41, 0);
   text-shadow: var(--text-shadow);
   z-index: 40;
 }
@@ -146,12 +144,10 @@ nav.main-nav__nav .main-nav__menu {
 
   .border-t-glow__orange {
     border-top: 2px solid rgb(85, 41, 0);
-    box-shadow: 0 0 12px rgb(85, 41, 0);
   }
 
   .border-b-glow__orange {
     border-bottom: 2px solid rgb(85, 41, 0);
-    box-shadow: 0 0 12px rgb(85, 41, 0);
   }
 }
 
@@ -183,6 +179,7 @@ nav.main-nav__nav .main-nav__menu {
   overflow: hidden;
   white-space: nowrap;
   color: #fff;
+  background: black;
   position: relative;
   display: flex;
   align-items: center;

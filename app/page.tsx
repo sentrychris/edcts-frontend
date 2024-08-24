@@ -34,7 +34,6 @@ export default async function Home() {
 
   return (
     <>
-      <NewsTicker headlines={headlines} />
       {fleetCarrierJourneyScheduleSize > 0 && (
         <>
           <Heading

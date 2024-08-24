@@ -3,6 +3,7 @@ import { Jura } from "next/font/google";
 import { settings } from "./core/config";
 import MainBackground from "./components/main-background";
 import MainNavigation from "./components/main-navigation";
+import NewsTicker from "./galnet/components/galnet-ticker";
 import SvgFilters from "./components/svg-filters";
 import "./css/main.css";
 
@@ -20,6 +21,7 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
         <SvgFilters />
         <MainBackground />
         <MainNavigation />
+        <NewsTicker />
         <main className="text-glow__white mx-auto flex flex-col px-6 py-6 text-neutral-200 md:px-12 lg:px-24">
           <h1 className="mb-5 text-4xl uppercase">
             ED:CTS <span className="hidden md:inline">- Carrier Transport Services</span>
