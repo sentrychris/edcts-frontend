@@ -1,28 +1,64 @@
 "use client";
 
-import { type FunctionComponent, useEffect, useState } from 'react';
+import React, { useEffect, useRef, useState } from 'react';
 
-interface Props {
+interface NewsTickerProps {
   headlines: string[];
-  speed?: number; // speed of the ticker in milliseconds
 }
 
-const NewsTicker: FunctionComponent<Props> = ({ headlines, speed = 2000 }) => {
+const NewsTicker: React.FC<NewsTickerProps> = ({ headlines }) => {
   const [currentHeadlineIndex, setCurrentHeadlineIndex] = useState(0);
+  const tickerContentRef = useRef<HTMLDivElement>(null);
+  const tickerRef = useRef<HTMLDivElement>(null);
+
+  const updateAnimation = () => {
+    const tickerContent = tickerContentRef.current;
+    const ticker = tickerRef.current;
+
+    if (!tickerContent || !ticker) return;
+
+    // Reset the transform to start from the right (off-screen)
+    tickerContent.style.transition = 'none';
+    tickerContent.style.transform = `translateX(${ticker.offsetWidth}px)`;
+
+    // Trigger a reflow and start the animation
+    requestAnimationFrame(() => {
+      const distance = tickerContent.offsetWidth + ticker.offsetWidth;
+      const duration = distance / 50; // Adjust speed here (lower number for slower speed)
+      tickerContent.style.transition = `transform ${duration}s linear`;
+      tickerContent.style.transform = `translateX(-${tickerContent.offsetWidth}px)`;
+    });
+  };
 
   useEffect(() => {
-    const tickerInterval = setInterval(() => {
-      setCurrentHeadlineIndex((prevIndex) => 
-        (prevIndex + 1) % headlines.length
-      );
-    }, speed);
+    updateAnimation();
 
-    return () => clearInterval(tickerInterval);
-  }, [headlines, speed]);
+    const handleTransitionEnd = () => {
+      setCurrentHeadlineIndex((prevIndex) => (prevIndex + 1) % headlines.length);
+      updateAnimation();
+    };
+
+    const tickerContent = tickerContentRef.current;
+    if (tickerContent) {
+      tickerContent.addEventListener('transitionend', handleTransitionEnd);
+    }
+
+    return () => {
+      if (tickerContent) {
+        tickerContent.removeEventListener('transitionend', handleTransitionEnd);
+      }
+    };
+  }, [currentHeadlineIndex, headlines]);
 
   return (
-    <div className="ticker">
-      <div className="ticker-content">
+    <div ref={tickerRef} className="flex items-center ticker border-t border-b border-neutral-900 uppercase"
+      style={{ overflow: 'hidden', whiteSpace: 'nowrap' }}>
+      <span className="text-glow text-sm border-r border-neutral-900 pe-4">Galnet Latest:</span>
+      <div
+        ref={tickerContentRef}
+        className="ticker-content text-glow__blue text-sm"
+        style={{ display: 'inline-block', whiteSpace: 'nowrap' }}
+      >
         {headlines[currentHeadlineIndex]}
       </div>
     </div>
