@@ -3,6 +3,7 @@
 import type { SystemsNavRoutes } from "@/core/interfaces/System";
 import { type FunctionComponent, useEffect, useState } from "react";
 import { getResource } from "@/core/api";
+import Filter from "@/components/filter";
 
 interface Props {
   className?: string;
@@ -11,6 +12,7 @@ interface Props {
 
 const SystemsNavRoutes: FunctionComponent<Props> = ({ className = "", callInterval = 30000 }) => {
   const [systemsNavRoutes, setSystemsNavRoutes] = useState<SystemsNavRoutes[]>([]);
+  const [filteredSystemsNavRoutes, setFilteredSystemsNavRoutes] = useState<SystemsNavRoutes[]>([]);
   const [systemsNavRoutesInterval, setSystemsNavRoutesInterval] = useState<NodeJS.Timeout>();
 
   useEffect(() => {
@@ -18,6 +20,7 @@ const SystemsNavRoutes: FunctionComponent<Props> = ({ className = "", callInterv
       limit: 20,
     }).then(({ data }) => {
       setSystemsNavRoutes(data);
+      setFilteredSystemsNavRoutes(data);
     });
 
     if (systemsNavRoutesInterval) {
@@ -29,6 +32,7 @@ const SystemsNavRoutes: FunctionComponent<Props> = ({ className = "", callInterv
         limit: 20,
       }).then(({ data }) => {
         setSystemsNavRoutes(data);
+        setFilteredSystemsNavRoutes(data);
       });
     }, callInterval);
 
@@ -39,13 +43,29 @@ const SystemsNavRoutes: FunctionComponent<Props> = ({ className = "", callInterv
 
   return (
     <>
+      <Filter
+        handleInput={(input: string) => {
+          if (input.length === 0) {
+            return setFilteredSystemsNavRoutes(systemsNavRoutes);
+          }
+          const filtered = systemsNavRoutes.filter((route) => {
+            return (
+              route.from.toLowerCase().includes(input.toLowerCase()) ||
+              route.to.toLowerCase().includes(input.toLowerCase())
+            );
+          });
+
+          setFilteredSystemsNavRoutes(filtered);
+        }}
+        className="my-5"
+      />
       <div
         className={`${className} grid grid-cols-2 gap-x-10 border-b border-neutral-800 py-2 text-sm`}
       >
         <span className="text-glow__orange tracking-wide">From</span>
         <span className="text-glow__orange tracking-wide">To</span>
       </div>
-      {systemsNavRoutes.map((route) => {
+      {filteredSystemsNavRoutes.map((route) => {
         return (
           <div
             key={route.from + route.to}
