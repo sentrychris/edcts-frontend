@@ -1,3 +1,5 @@
+"use client";
+
 import React from "react";
 import Loader from "@/components/loader";
 
@@ -34,14 +36,12 @@ const loadScriptsAndInitialize = (() => {
       (window as any).Ed3d.init({
         container: 'edmap',
         basePath: './',
-        jsonContainer: "json-coords",
-        withHudPanel: true,
+        jsonPath: "./data/milkyway.json",
+        withHudPanel: false,
         showGalaxyInfos: true,
-        effectScaleSystem: [4000, 8000],
         startAnim: true,
-        systemColor: '#C7F900',
         playerPos: [-2638, 175, -436],
-        cameraPos: [-7638, 15175, -15436]
+        cameraPos: [-14638, 4175, -1436]
       });
     };
 
@@ -49,7 +49,7 @@ const loadScriptsAndInitialize = (() => {
       .then(() => loadScript("https://cdnjs.cloudflare.com/ajax/libs/three.js/r75/three.min.js"))
       .then(() => {
         loadStylesheet("https://wiki.ed-board.net/ED3D-Galaxy-Map/css/styles.css");
-        return loadScript("https://wiki.ed-board.net/ED3D-Galaxy-Map/js/ed3dmap.min.js?v=9");
+        return loadScript("/js/ed3dmap.min.js?v=10");
       })
       .then(() => {
         $(initializeMap);
@@ -63,18 +63,16 @@ const loadScriptsAndInitialize = (() => {
 // Ensure scripts and initialization run when the module is first imported
 loadScriptsAndInitialize();
 
-const MyComponent: React.FC<{ isLoading: boolean; }> = ({ isLoading }) => {
+const GalaxyMap: React.FC<{ isLoading: boolean; }> = ({ isLoading }) => {
   return (
-    <>
+    <div className="edmap-wrapper">
       {isLoading && <Loader visible={isLoading} />}
 
-      <div className="p-20">
-        <div id="minimap">
-          <div id="edmap"></div>
-        </div>
+      <div id="minimap" className="mt-4 rounded">
+        <div id="edmap"></div>
       </div>
-    </>
+    </div>
   );
 };
 
-export default MyComponent;
+export default GalaxyMap;
