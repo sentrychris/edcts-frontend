@@ -23,7 +23,7 @@ export default function MainNavigation() {
     <Disclosure as="nav" className="main-nav__nav">
       {({ open }) => (
         <>
-          <div className="main-nav__menu px-6 uppercase md:px-12 lg:px-24">
+          <div className="main-nav__menu border-b border-neutral-900 px-6 uppercase md:px-12 lg:px-24">
             <div className="relative flex h-10 items-center justify-between">
               <div className="absolute inset-y-0 left-0 flex items-center sm:hidden">
                 {/* Mobile menu button*/}

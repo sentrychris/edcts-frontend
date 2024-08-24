@@ -1,19 +1,19 @@
 "use client";
 
-import { type FunctionComponent, useEffect, useRef, useState } from "react";
+import { type FunctionComponent, useEffect, useRef, useState, memo } from "react";
 import type { Galnet } from "@/core/interfaces/Galnet";
 import { getCollection } from "@/core/api";
 import Link from "next/link";
 
 const NewsTicker: FunctionComponent = () => {
-  const [currentTime, setCurrentTime] = useState("");
+  const [currentTime, setCurrentTime] = useState(new Date().toUTCString().slice(17, 22));
+  const [currentHeadlineIndex, setCurrentHeadlineIndex] = useState(0);
   const [headlines, setHeadlines] = useState<Array<{ title: string; slug: string }>>([
     {
       title: "Loading...",
       slug: "",
     },
   ]);
-  const [currentHeadlineIndex, setCurrentHeadlineIndex] = useState(0);
 
   const tickerContentRef = useRef<HTMLDivElement>(null);
   const tickerRef = useRef<HTMLDivElement>(null);
@@ -31,7 +31,7 @@ const NewsTicker: FunctionComponent = () => {
 
   useEffect(() => {
     const interval = setInterval(() => {
-      setCurrentTime(new Date().toUTCString().slice(17, 25));
+      setCurrentTime(new Date().toUTCString().slice(17, 22));
     }, 1000);
 
     console.log(interval);
@@ -85,11 +85,11 @@ const NewsTicker: FunctionComponent = () => {
       </span>
       <div
         ref={tickerRef}
-        className="ticker border-b-glow__orange flex flex-1 items-center overflow-hidden whitespace-nowrap uppercase"
+        className="ticker flex flex-1 items-center overflow-hidden whitespace-nowrap border-b border-neutral-900 bg-black/60 uppercase"
       >
         <div
           ref={tickerContentRef}
-          className="ticker-content text-glow__orange inline-block whitespace-nowrap text-sm font-bold tracking-wide"
+          className="ticker-content text-glow__orange inline-block whitespace-nowrap text-xs font-bold tracking-wide"
         >
           <Link
             href={`/galnet/news/${headlines[currentHeadlineIndex].slug}`}
@@ -103,4 +103,4 @@ const NewsTicker: FunctionComponent = () => {
   );
 };
 
-export default NewsTicker;
+export default memo(NewsTicker);

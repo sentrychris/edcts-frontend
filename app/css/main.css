@@ -65,7 +65,6 @@ nav.main-nav__nav .main-nav__menu {
   margin-left: auto;
   margin-right: auto;
   background: black;
-  border-bottom: 2px solid rgb(85, 41, 0);
   text-shadow: var(--text-shadow);
   z-index: 40;
 }
@@ -149,6 +148,10 @@ nav.main-nav__nav .main-nav__menu {
   .border-b-glow__orange {
     border-bottom: 2px solid rgb(85, 41, 0);
   }
+
+  .border-r-glow__orange {
+    border-right: 2px solid rgb(85, 41, 0);
+  }
 }
 
 #minimap {
@@ -179,7 +182,6 @@ nav.main-nav__nav .main-nav__menu {
   overflow: hidden;
   white-space: nowrap;
   color: #fff;
-  background: black;
   position: relative;
   display: flex;
   align-items: center;
