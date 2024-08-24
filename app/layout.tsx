@@ -1,6 +1,8 @@
 import type { Metadata } from "next";
+import type { Galnet } from "./core/interfaces/Galnet";
 import { Jura } from "next/font/google";
 import { settings } from "./core/config";
+import { getCollection } from "./core/api";
 import MainBackground from "./components/main-background";
 import MainNavigation from "./components/main-navigation";
 import NewsTicker from "./galnet/components/galnet-ticker";
@@ -14,14 +16,21 @@ export const metadata: Metadata = {
   description: "Check out the discord channel - https://discord.gg/KFaakj2",
 };
 
-export default function RootLayout({ children }: { children: React.ReactNode }) {
+export default async function RootLayout({ children }: { children: React.ReactNode }) {
+  const news = await getCollection<Galnet>("galnet/news");
+  const headlines = news.data.map((article) => ({
+    title: article.title,
+    slug: article.slug,
+    uploaded_at: article.uploaded_at,
+  }));
+
   return (
     <html lang="en" data-fx-crt-text="true" className="scroll-smooth">
       <body className={jura.className + " overlay relative antialiased"}>
         <SvgFilters />
         <MainBackground />
         <MainNavigation />
-        <NewsTicker />
+        <NewsTicker headlines={headlines} />
         <main className="text-glow__white mx-auto flex flex-col px-6 py-6 text-neutral-200 md:px-12 lg:px-24">
           <h1 className="mb-5 text-4xl uppercase">
             ED:CTS <span className="hidden md:inline">- Carrier Transport Services</span>

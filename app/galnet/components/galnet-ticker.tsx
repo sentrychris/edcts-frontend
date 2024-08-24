@@ -2,42 +2,57 @@
 
 import { type FunctionComponent, useEffect, useRef, useState, memo } from "react";
 import type { Galnet } from "@/core/interfaces/Galnet";
-import { getCollection } from "@/core/api";
 import Link from "next/link";
 
-const NewsTicker: FunctionComponent = () => {
-  const [currentTime, setCurrentTime] = useState(new Date().toUTCString().slice(17, 22));
+interface Props {
+  headlines: Pick<Galnet, "title" | "slug" | "uploaded_at">[];
+}
+
+const NewsTicker: FunctionComponent<Props> = ({ headlines }) => {
+  const [currentTime, setCurrentTime] = useState("00:00");
+
   const [currentHeadlineIndex, setCurrentHeadlineIndex] = useState(0);
-  const [headlines, setHeadlines] = useState<Array<{ title: string; slug: string, uploaded_at: string; }>>([
-    {
-      title: "Loading...",
-      slug: "",
-      uploaded_at: "",
-    },
-  ]);
 
   const tickerContentRef = useRef<HTMLDivElement>(null);
   const tickerRef = useRef<HTMLDivElement>(null);
 
   useEffect(() => {
-    getCollection<Galnet>("galnet/news").then((articles) => {
-      const headlines = articles.data.map((article) => {
-        return { title: article.title, slug: article.slug, uploaded_at: article.uploaded_at };
-      });
-      setHeadlines(headlines);
+    const updateClock = () => {
+      setCurrentTime(
+        new Date().toLocaleTimeString("en-US", {
+          timeZone: "UTC",
+          hour: "2-digit",
+          minute: "2-digit",
+          hour12: false,
+        }),
+      );
+    };
 
-      console.log(headlines);
-    });
-  }, []);
+    // Update immediately
+    updateClock();
 
-  useEffect(() => {
-    const interval = setInterval(() => {
-      setCurrentTime(new Date().toUTCString().slice(17, 22));
-    }, 1000);
+    // Calculate time remaining until the start of the next minute
+    const now = new Date();
+    const nextMinute = new Date(
+      now.getFullYear(),
+      now.getMonth(),
+      now.getDate(),
+      now.getHours(),
+      now.getMinutes() + 1,
+    );
+    const timeUntilNextMinute = nextMinute.getTime() - now.getTime();
 
-    console.log(interval);
+    // Set timeout to update at the start of the next minute
+    const timeoutId = setTimeout(() => {
+      updateClock(); // Initial update
+      const intervalId = setInterval(updateClock, 60000); // Update every minute
 
-    return () => clearInterval(interval);
+      // Cleanup interval on component unmount
+      return () => clearInterval(intervalId);
+    }, timeUntilNextMinute);
+
+    // Cleanup timeout on component unmount
+    return () => clearTimeout(timeoutId);
   }, []);
 
   const updateAnimation = () => {
@@ -81,7 +96,7 @@ const NewsTicker: FunctionComponent = () => {
 
   return (
     <div className="flex items-center">
-      <span className="text-glow__orange border-b-glow__orange bg-black/60 ticker-label px-4 text-sm text-xs uppercase">
+      <span className="text-glow__orange border-b-glow__orange ticker-label bg-black/60 px-4 text-sm text-xs uppercase">
         Galnet <span className="ms-2">{currentTime} UTC</span>
       </span>
       <div
