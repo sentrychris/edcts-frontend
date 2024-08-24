@@ -24,7 +24,7 @@ export default async function Home() {
 
   const fleetCarrierJourneyScheduleBoardGrid =
     "grid grid-cols-1 gap-6 border-b border-t border-neutral-800 " +
-    " md:grid-cols-2 xl:grid-cols-4";
+    " lg:grid-cols-2 xl:grid-cols-4";
 
   const contentGrid =
     (fleetCarrierJourneyScheduleSize > 0 ? "mt-8" : "mt-4") +
