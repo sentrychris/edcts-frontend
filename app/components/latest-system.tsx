@@ -9,9 +9,9 @@ interface Props {
 
 const LatestSystem: FunctionComponent<Props> = ({ className, system }) => {
   return (
-    <div className={className}>
+    <div className={`${className} uppercase text-sm`}>
       <Link
-        className="text-glow__blue font-bold hover:underline"
+        className="text-glow__blue font-bold hover:underline text-lg"
         href={`systems/${system.detail.slug}`}
       >
         {system.name}
@@ -19,13 +19,13 @@ const LatestSystem: FunctionComponent<Props> = ({ className, system }) => {
       <div className="mt-3 flex gap-x-20">
         <div>
           <p>
-            {system.detail.coords.x}, {system.detail.coords.y}, {system.detail.coords.z}
+            {system.detail.coords.x.toFixed(2)}, {system.detail.coords.y.toFixed(2)}, {system.detail.coords.z.toFixed(2)}
           </p>
-          <p>Population: {system.detail.information.population}</p>
+          <p className="mt-2">Population: {system.detail.information.population}</p>
         </div>
         <div>
-          <p>{system.stars.length} Main sequence stars</p>
-          <p>{system.planets.length} orbital bodies</p>
+          <p className="whitespace-nowrap">{system.stars.length} stars</p>
+          <p className="whitespace-nowrap">{system.planets.length} bodies</p>
         </div>
       </div>
       <p className="mt-2.5">

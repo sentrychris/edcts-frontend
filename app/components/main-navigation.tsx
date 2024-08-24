@@ -132,7 +132,7 @@ export default function MainNavigation() {
           </div>
 
           <Disclosure.Panel className="sm:hidden">
-            <div className="space-y-1 px-2 pb-3 pt-2">
+            <div className="space-y-1 px-2 pb-3 pt-2 bg-black/80">
               {navigation.map((item) => (
                 <Disclosure.Button
                   key={item.name}
@@ -140,7 +140,7 @@ export default function MainNavigation() {
                   href={item.href}
                   className={classNames(
                     item.current
-                      ? "bg-zinc-900 text-white"
+                      ? "bg-orange-800 text-glow"
                       : "text-gray-300 hover:bg-zinc-700 hover:text-white",
                     "block rounded-md px-3 py-2 text-base font-medium",
                   )}
