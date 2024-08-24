@@ -18,6 +18,7 @@ import SystemBodyPopover from "./system-body-popover";
 import SystemStarsTable from "./system-stars-table";
 import SystemBodiesTable from "./system-bodies-table";
 import { pluralizeTextFromArray } from "@/core/util";
+import SystemMiniMap from "./system-minimap";
 
 interface Props {
   initSystem?: System;
@@ -215,6 +216,8 @@ const SystemDetail: FunctionComponent<Props> = ({ initSystem, params }) => {
 
       <SystemHeader system={system} />
       <SystemInformationBar information={system.information} />
+
+      {/* <SystemMiniMap isLoading={isLoading} /> */}
 
       <div className="border-b border-neutral-800 bg-transparent py-5 backdrop-blur backdrop-filter">
         <div className="flex items-center justify-between">

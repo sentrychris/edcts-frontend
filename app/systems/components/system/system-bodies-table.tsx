@@ -16,8 +16,6 @@ interface Props {
 const SystemBodiesTable: FunctionComponent<Props> = ({ bodies, dispatcher }) => {
   const [rows] = useState(bodies);
 
-  console.log(bodies);
-
   const isOrbitingPlanet = (body: RawSystemBody) => {
     return body.parents.find((parent) => {
       return (

@@ -8,8 +8,6 @@ import "./css/main.css";
 
 const jura = Jura({ subsets: ["latin"] });
 
-console.log({ settings });
-
 export const metadata: Metadata = {
   title: settings.app.name,
   description: "Check out the discord channel - https://discord.gg/KFaakj2",
@@ -18,7 +16,7 @@ export const metadata: Metadata = {
 export default function RootLayout({ children }: { children: React.ReactNode }) {
   return (
     <html lang="en" data-fx-crt-text="true" className="scroll-smooth">
-      <body className={jura.className + " relative antialiased"}>
+      <body className={jura.className + " relative antialiased overlay"}>
         <SvgFilters />
         <MainBackground />
         <MainNavigation />

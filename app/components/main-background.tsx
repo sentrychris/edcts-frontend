@@ -3,7 +3,7 @@ import Image from "next/image";
 
 const MainBackground: FunctionComponent = () => {
   return (
-    <div className="overlay pointer-events-none absolute inset-x-0 top-0 flex justify-center overflow-hidden">
+    <div className="z-overlay pointer-events-none absolute inset-x-0 top-0 flex justify-center overflow-hidden">
       <div className="flex w-[108rem] flex-none justify-end">
         <Image
           width="100"
