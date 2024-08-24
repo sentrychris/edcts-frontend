@@ -16,7 +16,7 @@ export const metadata: Metadata = {
 export default function RootLayout({ children }: { children: React.ReactNode }) {
   return (
     <html lang="en" data-fx-crt-text="true" className="scroll-smooth">
-      <body className={jura.className + " relative antialiased overlay"}>
+      <body className={jura.className + " overlay relative antialiased"}>
         <SvgFilters />
         <MainBackground />
         <MainNavigation />

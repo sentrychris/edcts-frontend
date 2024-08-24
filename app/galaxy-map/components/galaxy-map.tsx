@@ -1,21 +1,19 @@
 "use client";
 
-import React from "react";
+import { type FunctionComponent, useEffect } from "react";
 import Loader from "@/components/loader";
 
 declare const $: any; // Declare $ to avoid TypeScript errors, assuming jQuery will be globally available
 
-// This will ensure scripts are only loaded once
-const loadScriptsAndInitialize = (() => {
-  let isInitialized = false;
-
-  return () => {
-    if (isInitialized) return; // Prevent running this multiple times
-
-    isInitialized = true;
-
+const GalaxyMap: FunctionComponent<{ isLoading: boolean }> = ({ isLoading }) => {
+  useEffect(() => {
     const loadScript = (src: string): Promise<void> => {
       return new Promise((resolve, reject) => {
+        if (document === undefined) {
+          reject(new Error("Document is not available"));
+          return;
+        }
+
         const script = document.createElement("script");
         script.src = src;
         script.async = true;
@@ -33,18 +31,24 @@ const loadScriptsAndInitialize = (() => {
     };
 
     const initializeMap = () => {
+      const edmap = document.getElementById("edmap");
+      if (edmap) {
+        edmap.innerHTML = ""; // Clear the map container to ensure it's reset
+      }
+
       (window as any).Ed3d.init({
-        container: 'edmap',
-        basePath: './',
+        container: "edmap",
+        basePath: "./",
         jsonPath: "./data/milkyway.json",
         withHudPanel: false,
         showGalaxyInfos: true,
         startAnim: true,
         playerPos: [-2638, 175, -436],
-        cameraPos: [-14638, 4175, -1436]
+        cameraPos: [-14638, 4175, -1436],
       });
     };
 
+    // Load scripts and initialize the map
     loadScript("https://code.jquery.com/jquery-2.1.4.min.js")
       .then(() => loadScript("https://cdnjs.cloudflare.com/ajax/libs/three.js/r75/three.min.js"))
       .then(() => {
@@ -54,16 +58,19 @@ const loadScriptsAndInitialize = (() => {
       .then(() => {
         $(initializeMap);
       })
-      .catch(error => {
+      .catch((error) => {
         console.error("Failed to load scripts or initialize map:", error);
       });
-  };
-})();
 
-// Ensure scripts and initialization run when the module is first imported
-loadScriptsAndInitialize();
+    // Cleanup on unmount
+    return () => {
+      const edmap = document.getElementById("edmap");
+      if (edmap) {
+        edmap.innerHTML = "";
+      }
+    };
+  }, []);
 
-const GalaxyMap: React.FC<{ isLoading: boolean; }> = ({ isLoading }) => {
   return (
     <div className="edmap-wrapper">
       {isLoading && <Loader visible={isLoading} />}

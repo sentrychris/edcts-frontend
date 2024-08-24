@@ -5,5 +5,5 @@ export default async function Page() {
     <div>
       <GalaxyMap isLoading={false} />
     </div>
-  )
+  );
 }
