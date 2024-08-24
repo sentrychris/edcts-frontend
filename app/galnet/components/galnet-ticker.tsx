@@ -51,16 +51,18 @@ const NewsTicker: React.FC<NewsTickerProps> = ({ headlines }) => {
   }, [currentHeadlineIndex, headlines]);
 
   return (
-    <div ref={tickerRef}
-      className="flex items-center ticker border-t border-b border-neutral-900 uppercase overflow-hidden whitespace-nowrap">
-      <span className="text-glow text-sm border-r border-neutral-900 pe-4">
+    <div className="flex items-center">
+      <span className="text-glow__orange text-sm border-t border-b border-neutral-900 pe-4 ticker-label uppercase text-sm">
         Galnet Latest:
       </span>
-      <div
-        ref={tickerContentRef}
-        className="ticker-content text-glow__blue text-sm inline-block whitespace-nowrap"
-      >
-        {headlines[currentHeadlineIndex]}
+      <div ref={tickerRef}
+        className="flex items-center flex-1 ticker border-t border-b border-neutral-900 uppercase overflow-hidden whitespace-nowrap">
+        <div
+          ref={tickerContentRef}
+          className="ticker-content text-glow__blue text-sm inline-block whitespace-nowrap"
+        >
+          {headlines[currentHeadlineIndex]}
+        </div>
       </div>
     </div>
   );
