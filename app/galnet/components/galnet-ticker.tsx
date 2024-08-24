@@ -97,7 +97,7 @@ const NewsTicker: FunctionComponent<Props> = ({ headlines }) => {
 
   return (
     <div className="flex items-center">
-      <span className="text-glow__orange border-b-glow__orange ticker-label bg-black/60 px-4 text-sm text-xs uppercase">
+      <span className="text-glow__orange border-b-glow__orange ticker-label lg:px-18 bg-black/60 px-6 text-sm text-xs uppercase md:px-12">
         <span>Galnet</span>
         <span className="ms-2">{currentTime} UTC</span>
         <AudioPlayer

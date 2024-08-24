@@ -31,7 +31,7 @@ export default async function RootLayout({ children }: { children: React.ReactNo
         <MainBackground />
         <MainNavigation />
         <NewsTicker headlines={headlines} />
-        <main className="text-glow__white mx-auto flex flex-col px-6 py-6 text-neutral-200 md:px-12 lg:px-24">
+        <main className="text-glow__white lg:px-18 mx-auto flex flex-col px-6 py-6 text-neutral-200 md:px-12">
           <h1 className="mb-5 text-4xl uppercase">
             ED:CTS <span className="hidden md:inline">- Carrier Transport Services</span>
           </h1>

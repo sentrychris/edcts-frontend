@@ -9,9 +9,9 @@ interface Props {
 
 const LatestSystem: FunctionComponent<Props> = ({ className, system }) => {
   return (
-    <div className={`${className} uppercase text-sm`}>
+    <div className={`${className} text-sm uppercase`}>
       <Link
-        className="text-glow__blue font-bold hover:underline text-lg"
+        className="text-glow__blue text-lg font-bold hover:underline"
         href={`systems/${system.detail.slug}`}
       >
         {system.name}
@@ -19,7 +19,8 @@ const LatestSystem: FunctionComponent<Props> = ({ className, system }) => {
       <div className="mt-3 flex gap-x-20">
         <div>
           <p>
-            {system.detail.coords.x.toFixed(2)}, {system.detail.coords.y.toFixed(2)}, {system.detail.coords.z.toFixed(2)}
+            {system.detail.coords.x.toFixed(2)}, {system.detail.coords.y.toFixed(2)},{" "}
+            {system.detail.coords.z.toFixed(2)}
           </p>
           <p className="mt-2">Population: {system.detail.information.population}</p>
         </div>
