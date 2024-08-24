@@ -8,10 +8,11 @@ import Link from "next/link";
 const NewsTicker: FunctionComponent = () => {
   const [currentTime, setCurrentTime] = useState(new Date().toUTCString().slice(17, 22));
   const [currentHeadlineIndex, setCurrentHeadlineIndex] = useState(0);
-  const [headlines, setHeadlines] = useState<Array<{ title: string; slug: string }>>([
+  const [headlines, setHeadlines] = useState<Array<{ title: string; slug: string, uploaded_at: string; }>>([
     {
       title: "Loading...",
       slug: "",
+      uploaded_at: "",
     },
   ]);
 
@@ -21,7 +22,7 @@ const NewsTicker: FunctionComponent = () => {
   useEffect(() => {
     getCollection<Galnet>("galnet/news").then((articles) => {
       const headlines = articles.data.map((article) => {
-        return { title: article.title, slug: article.slug };
+        return { title: article.title, slug: article.slug, uploaded_at: article.uploaded_at };
       });
       setHeadlines(headlines);
 
@@ -80,7 +81,7 @@ const NewsTicker: FunctionComponent = () => {
 
   return (
     <div className="flex items-center">
-      <span className="text-glow__orange border-b-glow__orange ticker-label px-4 text-sm text-xs uppercase">
+      <span className="text-glow__orange border-b-glow__orange bg-black/60 ticker-label px-4 text-sm text-xs uppercase">
         Galnet <span className="ms-2">{currentTime} UTC</span>
       </span>
       <div
@@ -95,7 +96,7 @@ const NewsTicker: FunctionComponent = () => {
             href={`/galnet/news/${headlines[currentHeadlineIndex].slug}`}
             className="hover:underline"
           >
-            {headlines[currentHeadlineIndex].title}
+            {headlines[currentHeadlineIndex].uploaded_at} - {headlines[currentHeadlineIndex].title}
           </Link>
         </div>
       </div>
