@@ -100,7 +100,14 @@ const NewsTicker: FunctionComponent<Props> = ({ headlines }) => {
       <span className="text-glow__orange border-b-glow__orange ticker-label bg-black/60 px-4 text-sm text-xs uppercase">
         <span>Galnet</span>
         <span className="ms-2">{currentTime} UTC</span>
-        <AudioPlayer file="/audio/galnet-1.mp3" />
+        <AudioPlayer
+          files={[
+            "/audio/galnet-1.mp3",
+            "/audio/galnet-2.mp3",
+            "/audio/galnet-3.mp3",
+            "/audio/galnet-4.mp3",
+          ]}
+        />
       </span>
       <div
         ref={tickerRef}
