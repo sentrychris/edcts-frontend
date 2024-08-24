@@ -8,9 +8,11 @@ import LatestSystem from "./components/latest-system";
 import SystemMap from "./systems/lib/system-map";
 import JourneyCard from "./fleet-carriers/components/journey-card";
 import JourneyTable from "./fleet-carriers/components/journey-table";
+import NewsTicker from "./galnet/components/galnet-ticker";
 
 export default async function Home() {
   const news = await getCollection<Galnet>("galnet/news");
+  const headlines = news.data.map((article) => article.title);
 
   const { data: lastAddedSystem } = await getResource<System>("last-added-system");
   const latestSystem = new SystemMap(lastAddedSystem);
@@ -32,6 +34,7 @@ export default async function Home() {
 
   return (
     <>
+      <NewsTicker headlines={headlines} speed={35000} />
       {fleetCarrierJourneyScheduleSize > 0 && (
         <>
           <Heading
