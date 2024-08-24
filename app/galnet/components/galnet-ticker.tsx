@@ -24,7 +24,7 @@ const NewsTicker: React.FC<NewsTickerProps> = ({ headlines }) => {
     // Trigger a reflow and start the animation
     requestAnimationFrame(() => {
       const distance = tickerContent.offsetWidth + ticker.offsetWidth;
-      const duration = distance / 50; // Adjust speed here (lower number for slower speed)
+      const duration = distance / 80;
       tickerContent.style.transition = `transform ${duration}s linear`;
       tickerContent.style.transform = `translateX(-${tickerContent.offsetWidth}px)`;
     });
@@ -51,13 +51,14 @@ const NewsTicker: React.FC<NewsTickerProps> = ({ headlines }) => {
   }, [currentHeadlineIndex, headlines]);
 
   return (
-    <div ref={tickerRef} className="flex items-center ticker border-t border-b border-neutral-900 uppercase"
-      style={{ overflow: 'hidden', whiteSpace: 'nowrap' }}>
-      <span className="text-glow text-sm border-r border-neutral-900 pe-4">Galnet Latest:</span>
+    <div ref={tickerRef}
+      className="flex items-center ticker border-t border-b border-neutral-900 uppercase overflow-hidden whitespace-nowrap">
+      <span className="text-glow text-sm border-r border-neutral-900 pe-4">
+        Galnet Latest:
+      </span>
       <div
         ref={tickerContentRef}
-        className="ticker-content text-glow__blue text-sm"
-        style={{ display: 'inline-block', whiteSpace: 'nowrap' }}
+        className="ticker-content text-glow__blue text-sm inline-block whitespace-nowrap"
       >
         {headlines[currentHeadlineIndex]}
       </div>
