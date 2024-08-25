@@ -11,9 +11,42 @@ import "./css/main.css";
 
 const jura = Jura({ subsets: ["latin"] });
 
+const title = `${settings.app.name} - For Elite Dangerous.`;
+const description =
+  "All the latest news and updates from the Elite: Dangerous galaxy. Find scheduled flights, carrier services, and more.";
+
 export const metadata: Metadata = {
-  title: settings.app.name,
-  description: "Check out the discord channel - https://discord.gg/KFaakj2",
+  authors: [
+    {
+      name: "Chris Rowles",
+      url: "https://versyx.net",
+    },
+  ],
+  title,
+  description,
+  keywords: [
+    "Elite Dangerous",
+    "Frontier Developments",
+    "EDSM",
+    "EDDN",
+    "Spansh",
+    "Icarus",
+    "Galnet",
+    "Milky Way",
+    "Astronomy",
+    "Carrier Services",
+    "Fleet Carriers",
+  ],
+  openGraph: {
+    title,
+    description,
+    images: [
+      {
+        url: "https://edcts.versyx.net/images/edcts.png",
+      },
+    ],
+    url: "https://edcts.versyx.net/",
+  },
 };
 
 export default async function RootLayout({ children }: { children: React.ReactNode }) {
