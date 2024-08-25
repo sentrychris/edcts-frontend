@@ -36,8 +36,11 @@ const GalnetList: FunctionComponent<Props> = ({ articles }) => {
             >
               <h1 className="mb-2 text-4xl">{article.title}</h1>
               <p className="mb-6 text-xs">{article.uploaded_at}</p>
-              <Link href={`/galnet/news/${article.slug}`} className="py-2 text-orange-400">
-                Read Article...
+              <Link
+                href={`/galnet/news/${article.slug}`}
+                className="text-glow__orange py-2 font-bold"
+              >
+                Read more...
               </Link>
             </div>
           );
