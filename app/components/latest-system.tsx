@@ -1,6 +1,7 @@
 import type { FunctionComponent } from "react";
 import type SystemMap from "@/systems/lib/system-map";
 import Link from "next/link";
+import { pluralizeTextFromArray } from "@/core/util";
 
 interface Props {
   className?: string;
@@ -25,12 +26,24 @@ const LatestSystem: FunctionComponent<Props> = ({ className, system }) => {
           <p className="mt-2">Population: {system.detail.information.population}</p>
         </div>
         <div>
-          <p className="whitespace-nowrap">{system.stars.length} stars</p>
-          <p className="whitespace-nowrap">{system.planets.length} bodies</p>
+          <p className="whitespace-nowrap">
+            <span className="me-1">{system.stars.length}</span>
+            {pluralizeTextFromArray(system.stars, {
+              singular: "star",
+              plural: "stars",
+            })}
+          </p>
+          <p className="whitespace-nowrap">
+            <span className="me-1">{system.planets.length}</span>
+            {pluralizeTextFromArray(system.planets, {
+              singular: "planet",
+              plural: "planets",
+            })}
+          </p>
         </div>
       </div>
       <p className="mt-2.5">
-        <span className="text-glow__blue">{2}</span> fleet carriers are currently in this system
+        <span className="text-glow__blue">{5}</span> fleet carriers are currently in this system
       </p>
     </div>
   );

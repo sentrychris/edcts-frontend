@@ -4,6 +4,7 @@ import { type FunctionComponent, useEffect, useRef, useState, memo } from "react
 import type { Galnet } from "@/core/interfaces/Galnet";
 import AudioPlayer from "@/components/audio-player";
 import Link from "next/link";
+import { getCurrentEliteDate } from "@/core/util";
 
 interface Props {
   headlines: Pick<Galnet, "title" | "slug" | "uploaded_at">[];
@@ -95,11 +96,15 @@ const NewsTicker: FunctionComponent<Props> = ({ headlines }) => {
     };
   }, [currentHeadlineIndex, headlines]);
 
+  const currentDate = getCurrentEliteDate();
+
   return (
     <div className="flex items-center">
       <span className="text-glow__orange border-b-glow__orange ticker-label lg:px-18 bg-black/60 px-6 text-sm text-xs uppercase md:px-12">
         <span>Galnet</span>
-        <span className="ms-2">{currentTime} UTC</span>
+        <span className="ms-2 hidden sm:flex">
+          {currentDate} {currentTime} UTC
+        </span>
         <AudioPlayer
           files={[
             "/audio/galnet-1.mp3",

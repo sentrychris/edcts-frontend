@@ -26,3 +26,12 @@ export function pluralizeTextFromArray(
 ) {
   return arr.length === 1 ? singular : plural;
 }
+
+export function getCurrentEliteDate() {
+  const date = new Date();
+  const currentDay = date.toLocaleString("en-GB", { day: "numeric" });
+  const currentMonth = date.toLocaleString("en-GB", { month: "short" }).toUpperCase();
+  const currentYear = date.getFullYear() + 1286;
+
+  return `${currentDay} ${currentMonth} ${currentYear}`;
+}
