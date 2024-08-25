@@ -17,21 +17,30 @@ const SystemStarsTable: FunctionComponent<Props> = ({ stars, dispatcher }) => {
 
   const columns = {
     name: {
-      title: "Name - Type",
+      title: "Name",
       render: (star: RawSystemBody) => {
         return (
           <span
             className="hover:text-glow__orange text-blue-200 hover:cursor-pointer hover:underline"
             onClick={() => dispatcher.selectBody({ body: star as MappedSystemBody })}
           >
-            {star.name} - {star.sub_type.replace("Star", "")}
+            <i className={`icarus-terminal-star text-glow me-2 text-sm`}></i>
+            {star.name}
           </span>
         );
       },
     },
+    type: {
+      title: "Type",
+      render: (star: RawSystemBody) => {
+        return star.sub_type.replace("Star", "");
+      },
+    },
     spectral_class: {
       title: "Class",
-      accessor: "spectral_class",
+      render: (star: RawSystemBody) => {
+        return star.spectral_class ?? "No Data";
+      },
     },
     main_star: {
       title: "Is Main",
@@ -75,15 +84,21 @@ const SystemStarsTable: FunctionComponent<Props> = ({ stars, dispatcher }) => {
     },
     solar_masses: {
       title: "Sol Mass",
-      accessor: "solar_masses",
+      render: (body: RawSystemBody) => {
+        return (body.solar_masses as number).toFixed(4);
+      },
     },
     solar_radius: {
       title: "Sol Radius",
-      accessor: "solar_radius",
+      render: (body: RawSystemBody) => {
+        return (body.solar_radius as number).toFixed(4);
+      },
     },
     magnitude: {
       title: "Magnitude",
-      accessor: "absolute_magnitude",
+      render: (body: RawSystemBody) => {
+        return (body.absolute_magnitude as number).toFixed(4);
+      },
     },
     commander: {
       title: "Discovered By",

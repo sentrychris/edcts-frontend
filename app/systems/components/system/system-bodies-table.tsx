@@ -32,7 +32,7 @@ const SystemBodiesTable: FunctionComponent<Props> = ({ bodies, dispatcher }) => 
       render: (body: RawSystemBody) => {
         const childClass = isOrbitingPlanet(body) ? "ms-5" : "";
         const iconClass =
-          body.atmosphere_type.toLowerCase() !== "no atmosphere"
+          body.atmosphere_type !== null && body.atmosphere_type.toLowerCase() !== "no atmosphere"
             ? "atmosphere text-glow"
             : body.is_landable
               ? "planet-landable text-glow__blue"

@@ -32,7 +32,7 @@ export const renderAllegianceText = (value: string = "None") => {
       className={
         "uppercase tracking-wide " +
         (["Federation", "Alliance"].includes(value)
-          ? "text-blue-400"
+          ? "text-glow__blue"
           : value === "Empire"
             ? "text-yellow-400"
             : ["Independent"].includes(value)
