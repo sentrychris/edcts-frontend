@@ -24,12 +24,12 @@ const GalnetArticle: FunctionComponent<Props> = ({ params }) => {
 
   return (
     <>
-      <div className="relative border-b border-neutral-800 py-10">
+      <div className="relative border-b border-neutral-800 py-10 galnet-article">
         <h1 className="text-4xl">{article.title}</h1>
         <small>{article.uploaded_at}</small>
         <ElevenLabsAudioNative />
         <p
-          className="mt-4 tracking-wider"
+          className="mt-4 tracking-wider galnet-article-content"
           dangerouslySetInnerHTML={{ __html: article.content }}
         ></p>
       </div>
