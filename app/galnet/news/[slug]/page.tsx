@@ -4,7 +4,9 @@ import Heading from "@/components/heading";
 import GalnetArticle from "../../components/galnet-article";
 import GalnetList from "@/components/galnet-list";
 
-const news = await getCollection<Galnet>("galnet/news");
+const news = await getCollection<Galnet>("galnet/news", {
+  limit: 100,
+});
 
 export default async function Page({ params }: { params: { slug: string } }) {
   return (

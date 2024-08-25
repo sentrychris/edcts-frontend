@@ -10,7 +10,9 @@ import JourneyCard from "./fleet-carriers/components/journey-card";
 import JourneyTable from "./fleet-carriers/components/journey-table";
 
 export default async function Home() {
-  const news = await getCollection<Galnet>("galnet/news");
+  const news = await getCollection<Galnet>("galnet/news", {
+    limit: 100,
+  });
 
   const { data: lastAddedSystem } = await getResource<System>("last-added-system");
   const latestSystem = new SystemMap(lastAddedSystem);

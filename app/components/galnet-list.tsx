@@ -1,4 +1,6 @@
-import type { FunctionComponent } from "react";
+"use client";
+
+import { useState, type FunctionComponent } from "react";
 import type { Pagination } from "@/core/interfaces/Pagination";
 import type { Galnet } from "@/core/interfaces/Galnet";
 import Link from "next/link";
@@ -9,9 +11,27 @@ interface Props {
 }
 
 const GalnetList: FunctionComponent<Props> = ({ className, articles }) => {
+  const [currentSlice, setCurrentSlice] = useState(0);
+  const itemsPerSlice = 5;
+
+  const handleNextSlice = () => {
+    if ((currentSlice + 1) * itemsPerSlice < articles.data.length) {
+      setCurrentSlice((prev) => prev + 1);
+    }
+  };
+
+  const handlePrevSlice = () => {
+    if (currentSlice > 0) {
+      setCurrentSlice((prev) => prev - 1);
+    }
+  };
+
+  const startIndex = currentSlice * itemsPerSlice;
+  const slicedArticles = articles.data.slice(startIndex, startIndex + itemsPerSlice);
+
   return (
     <div className={className}>
-      {articles.data.slice(0, 5).map((article) => {
+      {slicedArticles.map((article) => {
         return (
           <div key={article.id} className="relative">
             <div className="relative border-b border-neutral-800 py-4">
@@ -24,6 +44,22 @@ const GalnetList: FunctionComponent<Props> = ({ className, articles }) => {
           </div>
         );
       })}
+      <div className="mt-4 flex justify-between">
+        <button
+          onClick={handlePrevSlice}
+          disabled={currentSlice === 0}
+          className="text-glow__orange py-2 text-xs uppercase disabled:opacity-50"
+        >
+          {"<<"} Prev
+        </button>
+        <button
+          onClick={handleNextSlice}
+          disabled={(currentSlice + 1) * itemsPerSlice >= articles.data.length}
+          className="text-glow__orange py-2 text-xs uppercase disabled:opacity-50"
+        >
+          Next {">>"}
+        </button>
+      </div>
     </div>
   );
 };
