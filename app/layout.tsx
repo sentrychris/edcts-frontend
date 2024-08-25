@@ -18,9 +18,10 @@ export const metadata: Metadata = {
 
 export default async function RootLayout({ children }: { children: React.ReactNode }) {
   const news = await getCollection<Galnet>("galnet/news");
-  const headlines = news.data.map((article) => ({
+  const articles = news.data.map((article) => ({
     title: article.title,
     slug: article.slug,
+    audio_file: article.audio_file,
     uploaded_at: article.uploaded_at,
   }));
 
@@ -30,7 +31,7 @@ export default async function RootLayout({ children }: { children: React.ReactNo
         <SvgFilters />
         <MainBackground />
         <MainNavigation />
-        <NewsTicker headlines={headlines} />
+        <NewsTicker articles={articles} />
         <main className="text-glow__white lg:px-18 mx-auto flex flex-col px-6 py-6 text-neutral-200 md:px-12">
           <h1 className="mb-5 text-4xl uppercase">
             ED:CTS <span className="hidden md:inline">- Carrier Transport Services</span>

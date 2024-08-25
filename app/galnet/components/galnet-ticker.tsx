@@ -2,18 +2,18 @@
 
 import { type FunctionComponent, useEffect, useRef, useState, memo } from "react";
 import type { Galnet } from "@/core/interfaces/Galnet";
+import { getCurrentEliteDate } from "@/core/util";
 import AudioPlayer from "@/components/audio-player";
 import Link from "next/link";
-import { getCurrentEliteDate } from "@/core/util";
 
 interface Props {
-  headlines: Pick<Galnet, "title" | "slug" | "uploaded_at">[];
+  articles: Pick<Galnet, "title" | "slug" | "audio_file" | "uploaded_at">[];
 }
 
-const NewsTicker: FunctionComponent<Props> = ({ headlines }) => {
+const NewsTicker: FunctionComponent<Props> = ({ articles }) => {
   const [currentTime, setCurrentTime] = useState("00:00");
 
-  const [currentHeadlineIndex, setCurrentHeadlineIndex] = useState(0);
+  const [currentArticleIndex, setCurrentArticleIndex] = useState(0);
 
   const tickerContentRef = useRef<HTMLDivElement>(null);
   const tickerRef = useRef<HTMLDivElement>(null);
@@ -80,7 +80,7 @@ const NewsTicker: FunctionComponent<Props> = ({ headlines }) => {
     updateAnimation();
 
     const handleTransitionEnd = () => {
-      setCurrentHeadlineIndex((prevIndex) => (prevIndex + 1) % headlines.length);
+      setCurrentArticleIndex((prevIndex) => (prevIndex + 1) % articles.length);
       updateAnimation();
     };
 
@@ -94,7 +94,7 @@ const NewsTicker: FunctionComponent<Props> = ({ headlines }) => {
         tickerContent.removeEventListener("transitionend", handleTransitionEnd);
       }
     };
-  }, [currentHeadlineIndex, headlines]);
+  }, [currentArticleIndex, articles]);
 
   const currentDate = getCurrentEliteDate();
 
@@ -105,14 +105,7 @@ const NewsTicker: FunctionComponent<Props> = ({ headlines }) => {
         <span className="ms-2 hidden sm:flex">
           {currentDate} {currentTime} UTC
         </span>
-        <AudioPlayer
-          files={[
-            "/audio/galnet-1.mp3",
-            "/audio/galnet-2.mp3",
-            "/audio/galnet-3.mp3",
-            "/audio/galnet-4.mp3",
-          ]}
-        />
+        <AudioPlayer files={articles.map((article) => article.audio_file)} />
       </span>
       <div
         ref={tickerRef}
@@ -123,10 +116,10 @@ const NewsTicker: FunctionComponent<Props> = ({ headlines }) => {
           className="ticker-content text-glow__orange inline-block whitespace-nowrap text-xs font-bold tracking-wide"
         >
           <Link
-            href={`/galnet/news/${headlines[currentHeadlineIndex].slug}`}
+            href={`/galnet/news/${articles[currentArticleIndex].slug}`}
             className="hover:underline"
           >
-            {headlines[currentHeadlineIndex].uploaded_at} - {headlines[currentHeadlineIndex].title}
+            {articles[currentArticleIndex].uploaded_at} - {articles[currentArticleIndex].title}
           </Link>
         </div>
       </div>
