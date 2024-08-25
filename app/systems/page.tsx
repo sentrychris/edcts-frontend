@@ -29,7 +29,7 @@ export default async function Page() {
         latestSystem={latestSystem}
       />
       <div className="mt-4 grid grid-cols-1 gap-10 md:grid-cols-12">
-        <div className="col-span-1 uppercase md:col-span-4">
+        <div className="order-last col-span-1 uppercase md:order-first md:col-span-4">
           <Heading
             icon="icarus-terminal-route text-glow__orange"
             largeIcon={true}
@@ -38,7 +38,7 @@ export default async function Page() {
           />
           <SystemsNavRoutes className="mt-5" callInterval={45000} />
         </div>
-        <div className="col-span-1 md:col-span-8">
+        <div className="order-first col-span-1 md:order-last md:col-span-8">
           <Heading
             icon="icarus-terminal-system-orbits text-glow__orange"
             largeIcon={true}

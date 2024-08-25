@@ -64,7 +64,7 @@ export default async function Home() {
           />
           <GalnetList articles={news} />
         </div>
-        <div className="col-span-1 lg:col-span-2">
+        <div className="col-span-1 hidden md:block lg:col-span-2">
           <Heading
             icon="icarus-terminal-route text-glow__orange"
             largeIcon={true}

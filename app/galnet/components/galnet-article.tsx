@@ -27,12 +27,7 @@ const GalnetArticle: FunctionComponent<Props> = ({ params }) => {
       <div className="galnet-article relative py-10">
         <h1 className="text-4xl">{article.title}</h1>
         <small>{article.uploaded_at}</small>
-        <div
-          className="mt-4"
-          style={{
-            height: 150,
-          }}
-        >
+        <div className="mt-4 h-20 md:h-40">
           <Image
             className="relative max-h-full w-full rounded-lg object-cover shadow"
             src={article.banner_image}

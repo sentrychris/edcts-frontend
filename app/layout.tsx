@@ -38,7 +38,7 @@ export default async function RootLayout({ children }: { children: React.ReactNo
           </h1>
           {children}
         </main>
-        <footer className="flex flex-col items-center justify-center gap-x-10 border-t border-neutral-800 py-4 text-center text-sm text-neutral-200">
+        <footer className="flex flex-col items-center justify-center gap-x-10 border-t border-neutral-800 px-4 py-4 text-center text-sm text-neutral-200">
           <span className="">
             <span className="text-glow__orange">Elite: Dangerous</span> © 2012 - 2024 Frontier
             Developments plc. All rights reserved.
