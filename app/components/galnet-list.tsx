@@ -31,20 +31,7 @@ const GalnetList: FunctionComponent<Props> = ({ className, articles }) => {
 
   return (
     <div className={className}>
-      {slicedArticles.map((article) => {
-        return (
-          <div key={article.id} className="relative">
-            <div className="relative border-b border-neutral-800 py-4">
-              <h3 className="mb-2 text-lg">{article.title}</h3>
-              <p className="mb-2 text-xs">{article.uploaded_at}</p>
-              <Link href={`/galnet/news/${article.slug}`} className="text-glow__orange">
-                Read more...
-              </Link>
-            </div>
-          </div>
-        );
-      })}
-      <div className="mt-4 flex justify-between">
+      <div className="flex justify-between pt-5">
         <button
           onClick={handlePrevSlice}
           disabled={currentSlice === 0}
@@ -60,6 +47,19 @@ const GalnetList: FunctionComponent<Props> = ({ className, articles }) => {
           Next {">>"}
         </button>
       </div>
+      {slicedArticles.map((article) => {
+        return (
+          <div key={article.id} className="relative">
+            <div className="relative border-b border-neutral-800 py-5">
+              <h3 className="mb-2 text-lg">{article.title}</h3>
+              <p className="mb-2 text-xs">{article.uploaded_at}</p>
+              <Link href={`/galnet/news/${article.slug}`} className="text-glow__orange">
+                Read more...
+              </Link>
+            </div>
+          </div>
+        );
+      })}
     </div>
   );
 };

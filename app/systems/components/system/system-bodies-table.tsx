@@ -31,11 +31,19 @@ const SystemBodiesTable: FunctionComponent<Props> = ({ bodies, dispatcher }) => 
       title: "Name - Type",
       render: (body: RawSystemBody) => {
         const childClass = isOrbitingPlanet(body) ? "ms-5" : "";
+        const iconClass =
+          body.atmosphere_type.toLowerCase() !== "no atmosphere"
+            ? "atmosphere text-glow"
+            : body.is_landable
+              ? "planet-landable text-glow__blue"
+              : "planet text-glow__orange";
+
         return (
           <span
-            className={`${childClass} hover:text-glow__orange text-blue-200 hover:cursor-pointer hover:underline`}
+            className={`${childClass} hover:text-glow__orange flex items-center text-blue-200 hover:cursor-pointer hover:underline`}
             onClick={() => dispatcher.selectBody({ body: body as MappedSystemBody })}
           >
+            <i className={`icarus-terminal-${iconClass} me-2 text-sm`}></i>
             {body.name}
           </span>
         );

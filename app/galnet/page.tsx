@@ -8,9 +8,9 @@ export default async function Page() {
     <>
       <div className="mt-4 grid grid-cols-1">
         <Heading
-          icon="icarus-terminal-notifications"
+          icon="icarus-terminal-atmosphere"
           largeIcon={true}
-          title="Galnet News"
+          title="Galnet Network"
           className="gap-3 border-b border-neutral-800 pb-3 text-2xl"
         />
 

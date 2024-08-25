@@ -13,16 +13,19 @@ export default async function Page({ params }: { params: { slug: string } }) {
     <>
       <div className="mt-4 grid grid-cols-1 bg-transparent backdrop-blur backdrop-filter">
         <Heading
-          icon="icarus-terminal-notifications"
+          icon="icarus-terminal-atmosphere"
           largeIcon={true}
-          title="Galnet News"
+          title="Galnet Network"
           className="gap-3 border-b border-neutral-800 pb-3 text-2xl"
         />
 
         <div className="grid grid-cols-12">
           <div className="order-last col-span-12 border-neutral-900 md:order-first md:col-span-3 md:border-r md:pe-10">
             <div className="pt-10">
-              <h1 className="text-glow__orange text-xl uppercase">Latest</h1>
+              <h1 className="text-glow flex items-center gap-x-2 text-xl uppercase">
+                <i className="icarus-terminal-notifications text-glow__orange text-2xl"></i>
+                Latest News
+              </h1>
               <GalnetList articles={news} />
             </div>
           </div>

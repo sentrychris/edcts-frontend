@@ -17,9 +17,9 @@ import Image from "next/image";
 const navigation = [
   { name: "Home", href: "/", current: true },
   { name: "Star Systems", href: "/systems", current: false },
-  { name: "Galaxy Map", href: "/galaxy-map", current: false },
   { name: "Carrier Journeys", href: "/fleet-carriers", current: false },
   { name: "Galnet News", href: "/galnet", current: false },
+  { name: "Galaxy Map [alpha]", href: "/galaxy-map", current: false },
 ];
 
 function classNames(...classes: string[]) {
