@@ -195,13 +195,21 @@
     "Sagittarius A*" : [
       {"x":25 , "z":25900, "rotate":0}
     ],
+    "Sol" : [
+      {"x":0 , "z":0, "rotate":0}
+    ],
+    "Colonia": [
+      {"x":-9530.5 , "z":19808.125, "rotate":45}
+    ],
+    "Oevasy SG-Y d0": [
+      {"x":1502.15625 , "z":65630.15625, "rotate":0}
+    ],
     "The western neutron fields" : [
       {"x":-3669 , "z":25478, "rotate":45}
     ],
     "The eastern neutron fields" : [
       {"x":3263 , "z":25727, "rotate":45}
     ]
-
   },
 
   "hypergiant" : {
@@ -268,9 +276,92 @@
     "GRS 1739-278":[]
   },
 
+  "systems": [
+    {
+      "name": "Colonia",
+      "coords": {
+          "x": "-9530.5",
+          "y": "-910.28125",
+          "z": "19808.125"
+      }
+    },
+    {
+      "name": "Sagittarius A*",
+      "coords": {
+          "x": "25",
+          "y": "-20.90625",
+          "z": "25899.96875"
+      }
+    },
+    {
+      "name": "Beagle Point",
+      "coords": {
+          "x": "-1111.5625",
+          "y": "-134.21875",
+          "z": "65269.75"
+      }
+    },
+    {
+      "name": "Oevasy SG-Y d0",
+      "coords": {
+          "x": "1502.15625",
+          "y": "-2.625",
+          "z": "65630.15625"
+      }
+    },
+    {
+      "name": "Skaude AA-A h-294",
+      "coords": {
+          "x": "-5131.71875",
+          "y": "-275.625",
+          "z": "10365.21875"
+      }
+    }
+  ],
+  
+  "routes": [
+    {
+      "title":"Sol",
+      "points": [
+        {
+          "s":"Sol",
+          "label":"Sol",
+          "coords": {
+              "x": "0",
+              "y": "0",
+              "z": "0"
+          }
+        }
+      ]
+    },
+    {
+      "title": "Colonia",
+      "points": [
+        {"s":"Colonia"}
+      ]
+    },
+    {
+      "title": "Sagittarius A*",
+      "points": [
+        {"s":"Sagittarius A*"}
+      ]
+    },
+    {
+      "title": "Oevasy SG-Y d0",
+      "points": [
+        {"s":"Oevasy SG-Y d0"}
+      ]
+    },
+    {
+      "title": "Skaude AA-A h-294",
+      "points": [
+        {"s":"Skaude AA-A h-294"}
+      ]
+    }
+  ], 
+
   "super_star_cluster" : {
     "Westerlund 1":[],
     "NGC 3603":[]
   }
-
 }
