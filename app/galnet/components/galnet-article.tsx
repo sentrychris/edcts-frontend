@@ -1,27 +1,14 @@
 "use client";
 
-import { type FunctionComponent, useEffect, useState } from "react";
+import type { FunctionComponent } from "react";
 import type { Galnet } from "@/core/interfaces/Galnet";
-import { getResource } from "@/core/api";
-import { galnetState } from "../lib/store";
 import Image from "next/image";
 
 interface Props {
-  params: { slug: string };
+  article: Galnet;
 }
 
-const GalnetArticle: FunctionComponent<Props> = ({ params }) => {
-  const [article, setArticle] = useState<Galnet>(galnetState);
-
-  const { slug } = params;
-
-  useEffect(() => {
-    (async () => {
-      const { data: article } = await getResource<Galnet>(`galnet/news/${slug}`);
-      setArticle(article);
-    })();
-  }, [slug]);
-
+const GalnetArticle: FunctionComponent<Props> = ({ article }) => {
   return (
     <>
       <div className="galnet-article relative py-10">

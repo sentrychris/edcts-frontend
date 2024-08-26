@@ -1,3 +1,4 @@
+import type { Metadata, ResolvingMetadata } from "next";
 import type { System } from "@/core/interfaces/System";
 import { getCollection, getResource } from "@/core/api";
 import Heading from "@/components/heading";
@@ -5,11 +6,55 @@ import SystemsStatisticsBar from "./components/systems-statistics-bar";
 import SystemsTable from "./components/systems-table";
 import SystemsNavRoutes from "./components/systems-navroutes";
 
-export default async function Page() {
+/**
+ * Define the page properties.
+ */
+interface Props {
+  params: {
+    slug: string;
+  };
+  searchParams: { [key: string]: string | string[] | undefined };
+}
+
+/**
+ * Get the page data.
+ *
+ * Note: Next automatically dedupes fetch calls on the server.
+ *
+ * @returns systems data
+ */
+const getPageData = async () => {
   const systems = await getCollection<System>("systems", {
     withInformation: 1,
   });
 
+  return systems;
+};
+
+/**
+ * Generate the page metadata.
+ *
+ * @param params
+ * @param parent
+ * @returns
+ */
+export async function generateMetadata(
+  { params }: Props,
+  parent: ResolvingMetadata,
+): Promise<Metadata> {
+  return {
+    title: `Systems Overview | ${(await parent).title?.absolute}`,
+    description: `Galaxy systems information, find systems, latest navigation routes and more.`,
+  };
+}
+
+/**
+ * Create the page.
+ *
+ * @returns
+ */
+export default async function Page() {
+  const systems = await getPageData();
   const { data: latestSystem } = await getResource<System>("last-added-system");
 
   return (

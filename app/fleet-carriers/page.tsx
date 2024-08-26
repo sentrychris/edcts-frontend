@@ -1,14 +1,60 @@
+import type { Metadata, ResolvingMetadata } from "next";
 import type { Schedule } from "../core/interfaces/Schedule";
 import { getCollection } from "@/core/api";
 import Heading from "@/components/heading";
 import JourneyCard from "./components/journey-card";
 import JourneyTable from "./components/journey-table";
 
-export default async function Page() {
+/**
+ * Define the page properties.
+ */
+interface Props {
+  params: {
+    slug: string;
+  };
+  searchParams: { [key: string]: string | string[] | undefined };
+}
+
+/**
+ * Get the page data.
+ *
+ * Note: Next automatically dedupes fetch calls on the server.
+ *
+ * @returns systems data
+ */
+const getPageData = async () => {
   const schedule = await getCollection<Schedule>("fleet-carriers/schedule", {
     withCarrierInformation: 1,
     withSystemInformation: 1,
   });
+
+  return schedule;
+};
+
+/**
+ * Generate the page metadata.
+ *
+ * @param params
+ * @param parent
+ * @returns
+ */
+export async function generateMetadata(
+  { params }: Props,
+  parent: ResolvingMetadata,
+): Promise<Metadata> {
+  return {
+    title: `Fleet Carrier Journey Schedule | ${(await parent).title?.absolute}`,
+    description: `Find fleet carrier scheduled journeys and hop on board.`,
+  };
+}
+
+/**
+ * Create the page.
+ *
+ * @returns
+ */
+export default async function Page() {
+  const schedule = await getPageData();
 
   return (
     <>

@@ -1,9 +1,55 @@
+import type { Metadata, ResolvingMetadata } from "next";
 import type { Galnet } from "@/core/interfaces/Galnet";
 import { getCollection } from "@/core/api";
 import Heading from "@/components/heading";
 import GalnetList from "./components/galnet-list";
 
+/**
+ * Define the page properties.
+ */
+interface Props {
+  params: {
+    slug: string;
+  };
+  searchParams: { [key: string]: string | string[] | undefined };
+}
+
+/**
+ * Get the page data.
+ *
+ * Note: Next automatically dedupes fetch calls on the server.
+ *
+ * @returns systems data
+ */
+const getPageData = async () => {
+  return await getCollection<Galnet>("galnet/news");
+};
+
+/**
+ * Generate the page metadata.
+ *
+ * @param params
+ * @param parent
+ * @returns
+ */
+export async function generateMetadata(
+  { params }: Props,
+  parent: ResolvingMetadata,
+): Promise<Metadata> {
+  return {
+    title: `Galnet News | ${(await parent).title?.absolute}`,
+    description: `Latest from the Milky Way, with Vox Galactica and other independent affiliates.`,
+  };
+}
+
+/**
+ * Create the page.
+ *
+ * @returns
+ */
 export default async function Page() {
+  const articles = await getPageData();
+
   return (
     <>
       <div className="mt-4 grid grid-cols-1">
@@ -14,7 +60,7 @@ export default async function Page() {
           className="gap-3 border-b border-neutral-800 pb-3 text-2xl"
         />
 
-        <GalnetList articles={await getCollection<Galnet>("galnet/news")} />
+        <GalnetList articles={articles} />
       </div>
     </>
   );

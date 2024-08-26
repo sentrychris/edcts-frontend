@@ -1,14 +1,66 @@
+import type { Metadata, ResolvingMetadata } from "next";
 import type { Galnet } from "@/core/interfaces/Galnet";
-import { getCollection } from "@/core/api";
+import { getCollection, getResource } from "@/core/api";
 import Heading from "@/components/heading";
 import GalnetArticle from "../../components/galnet-article";
 import GalnetList from "@/components/galnet-list";
 
-const news = await getCollection<Galnet>("galnet/news", {
-  limit: 100,
-});
+/**
+ * Define the page properties.
+ */
+interface Props {
+  params: {
+    slug: string;
+  };
+}
 
+/**
+ * Get the page data.
+ *
+ * Note: Next automatically dedupes fetch calls on the server.
+ *
+ * @returns systems data
+ */
+const getPageData = async ({ params }: Props) => {
+  const articles = await getCollection<Galnet>("galnet/news", {
+    limit: 100,
+  });
+
+  const { data: article } = await getResource<Galnet>(`galnet/news/${params.slug}`);
+
+  return {
+    articles,
+    article,
+  };
+};
+
+/**
+ * Generate the page metadata.
+ *
+ * @param params
+ * @param parent
+ * @returns
+ */
+export async function generateMetadata(
+  { params }: Props,
+  parent: ResolvingMetadata,
+): Promise<Metadata> {
+  const galnet = await getPageData({ params });
+
+  return {
+    title: `${galnet.article.title} - ${galnet.article.uploaded_at} | ${(await parent).title?.absolute}`,
+    description: `${galnet.article.content}`,
+  };
+}
+
+/**
+ * Create the page.
+ *
+ * @returns
+ */
 export default async function Page({ params }: { params: { slug: string } }) {
+  const galnet = await getPageData({ params });
+
   return (
     <>
       <div className="mt-4 grid grid-cols-1 bg-transparent backdrop-blur backdrop-filter">
@@ -26,11 +78,11 @@ export default async function Page({ params }: { params: { slug: string } }) {
                 <i className="icarus-terminal-notifications text-glow__orange text-2xl"></i>
                 Latest News
               </h1>
-              <GalnetList articles={news} />
+              <GalnetList articles={galnet.articles} />
             </div>
           </div>
           <div className="order-first col-span-12 md:order-last md:col-span-9 md:ps-10">
-            <GalnetArticle params={params} />
+            <GalnetArticle article={galnet.article} />
           </div>
         </div>
       </div>
