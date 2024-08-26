@@ -23,11 +23,11 @@ export async function generateMetadata(
   parent: ResolvingMetadata,
 ): Promise<Metadata> {
   return {
-    title: `Star System Information | ${(await parent).title?.absolute}`,
+    title: `Star System Detail | ${(await parent).title?.absolute}`,
     openGraph: {
       ...(await parent).openGraph,
       url: `https://edcts.versyx.net/systems/${params.slug}`,
-      title: `Star System Information | ${(await parent).title?.absolute}`,
+      title: `Star System Detail | ${(await parent).title?.absolute}`,
       description: `Star system information including stars, orbital bodies, settlements, and more.`,
     },
     description: `Star system information including stars, orbital bodies, settlements, and more.`,

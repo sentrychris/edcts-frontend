@@ -53,11 +53,11 @@ export async function generateMetadata(
   const galnet = await getPageData({ params });
 
   return {
-    title: `${galnet.article.title} - ${galnet.article.uploaded_at} | ${(await parent).title?.absolute}`,
+    title: `${galnet.article.title} - ${galnet.article.uploaded_at} | GalNet News`,
     openGraph: {
       ...(await parent).openGraph,
       url: `https://edcts.versyx.net/galnet/news/${params.slug}`,
-      title: `${galnet.article.title} - ${galnet.article.uploaded_at} | ${(await parent).title?.absolute}`,
+      title: `${galnet.article.title} - ${galnet.article.uploaded_at} | Galnet News`,
       description: `${galnet.article.uploaded_at} - ${galnet.article.title}`,
     },
     description: `${galnet.article.uploaded_at} - ${galnet.article.title}`,
