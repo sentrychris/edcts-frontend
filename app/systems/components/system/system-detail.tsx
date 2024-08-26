@@ -6,8 +6,10 @@ import type { RawSystemBody, MappedSystemBody } from "@/core/interfaces/SystemBo
 import { useEffect, useState, useCallback } from "react";
 import { SystemBodyType } from "@/core/constants/system";
 import { systemDispatcher } from "@/core/events/SystemDispatcher";
-import { pluralizeTextFromArray } from "@/core/util";
+import { getResource } from "@/core/api";
+import { systemState } from "../../lib/store";
 import Heading from "@/components/heading";
+import Loader from "@/components/loader";
 import SystemMap from "../../lib/system-map";
 import SystemHeader from "./system-header";
 import SystemInformationBar from "./system-information-bar";
@@ -15,12 +17,15 @@ import SystemBodySVG from "./system-body-svg";
 import SystemBodyPopover from "./system-body-popover";
 import SystemStarsTable from "./system-stars-table";
 import SystemBodiesTable from "./system-bodies-table";
+import { pluralizeTextFromArray } from "@/core/util";
 
 interface Props {
-  system: System;
+  initSystem?: System;
+  params: { slug: string };
 }
 
-const SystemDetail: FunctionComponent<Props> = ({ system }) => {
+const SystemDetail: FunctionComponent<Props> = ({ initSystem, params }) => {
+  const [system, setSystem] = useState<System>(initSystem !== undefined ? initSystem : systemState);
   const [isLoading, setLoading] = useState<boolean>(true);
   const [systemMap, setSystemMap] = useState<SystemMap>();
   const [selectedBody, setSelectedBody] = useState<MappedSystemBody>();
@@ -39,6 +44,8 @@ const SystemDetail: FunctionComponent<Props> = ({ system }) => {
   } | null>(null);
 
   const [isPanelOpen, setIsPanelOpen] = useState<boolean>(false);
+
+  const { slug } = params;
 
   const scrollableBodies = useCallback((node: HTMLDivElement) => {
     let pos = { top: 0, left: 0, x: 0, y: 0 };
@@ -75,38 +82,47 @@ const SystemDetail: FunctionComponent<Props> = ({ system }) => {
     }
   }, []);
 
-  const initializeSystemDetailHandler = async (system: System) => {
-    const map = new SystemMap(system);
-    setSystemMap(map);
-
-    const star = map.stars.find((s) => s.is_main_star === 1);
-    setSelectedBody(star);
-
-    systemDispatcher.addEventListener("select-body", (event) => {
-      setSelectedBody(event.message as MappedSystemBody);
-    });
-
-    systemDispatcher.addEventListener("set-index", (event) => {
-      if ((event.message as number) === 0) {
-        setSelectedBody(star);
-      }
-    });
-
-    systemDispatcher.addEventListener("display-body-info", (event) => {
-      setSelectedBodyDisplayInfo(event.message);
-      setIsPanelOpen(true); // Open panel when body info is displayed
-    });
-  };
-
   useEffect(() => {
-    setLoading(true);
+    if (slug) {
+      setLoading(true);
 
-    initializeSystemDetailHandler(system).then(() => {
-      setLoading(false);
-    });
-  }, [system]);
+      getResource<System>(`systems/${slug}`, {
+        withInformation: 1,
+        withBodies: 1,
+        withStations: 1,
+      })
+        .then((response) => {
+          const { data: system } = response;
+          setSystem(system);
 
-  const renderSystemBodies = (map: SystemMap) => {
+          const map = new SystemMap(system);
+          setSystemMap(map);
+
+          const star = map.stars.find((s) => s.is_main_star === 1);
+          setSelectedBody(star);
+
+          systemDispatcher.addEventListener("select-body", (event) => {
+            setSelectedBody(event.message as MappedSystemBody);
+          });
+
+          systemDispatcher.addEventListener("set-index", (event) => {
+            if ((event.message as number) === 0) {
+              setSelectedBody(star);
+            }
+          });
+
+          systemDispatcher.addEventListener("display-body-info", (event) => {
+            setSelectedBodyDisplayInfo(event.message);
+            setIsPanelOpen(true); // Open panel when body info is displayed
+          });
+        })
+        .finally(() => {
+          setLoading(false);
+        });
+    }
+  }, [slug]);
+
+  function renderSystemBodies(map: SystemMap) {
     function handleSelectedBodyChange(index: number) {
       if (
         index < 0 ||
@@ -155,9 +171,9 @@ const SystemDetail: FunctionComponent<Props> = ({ system }) => {
         </div>
       </>
     );
-  };
+  }
 
-  const renderSystemBody = (body: MappedSystemBody) => {
+  function renderSystemBody(body: MappedSystemBody) {
     let classes = "text-glow__white text-sm";
     if (body.is_main_star) {
       classes += " w-main-star";
@@ -175,9 +191,9 @@ const SystemDetail: FunctionComponent<Props> = ({ system }) => {
         className={classes}
       />
     );
-  };
+  }
 
-  const renderSystemBodyChildren = (body: MappedSystemBody) => {
+  function renderSystemBodyChildren(body: MappedSystemBody) {
     const bodies = body._children && body._children.length > 0 ? body._children : false;
 
     if (!bodies) {
@@ -189,10 +205,12 @@ const SystemDetail: FunctionComponent<Props> = ({ system }) => {
     }
 
     return bodies.map((body: MappedSystemBody) => renderSystemBody(body));
-  };
+  }
 
   return (
     <>
+      {isLoading && <Loader visible={isLoading} />}
+
       <SystemHeader system={system} />
       <SystemInformationBar information={system.information} />
 
