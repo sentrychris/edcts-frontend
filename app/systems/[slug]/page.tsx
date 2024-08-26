@@ -18,11 +18,11 @@ const getPageData = async ({ params }: Props) => {
   });
 
   return system;
-}
+};
 
 export async function generateMetadata(
   { params }: Props,
-  parent: ResolvingMetadata
+  parent: ResolvingMetadata,
 ): Promise<Metadata> {
   const system = await getPageData({ params });
   return {

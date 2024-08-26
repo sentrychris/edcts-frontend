@@ -96,7 +96,7 @@ const SystemDetail: FunctionComponent<Props> = ({ system }) => {
       setSelectedBodyDisplayInfo(event.message);
       setIsPanelOpen(true); // Open panel when body info is displayed
     });
-  }
+  };
 
   useEffect(() => {
     setLoading(true);
@@ -104,7 +104,7 @@ const SystemDetail: FunctionComponent<Props> = ({ system }) => {
     initializeSystemDetailHandler(system).then(() => {
       setLoading(false);
     });
-  }, []);
+  }, [system]);
 
   const renderSystemBodies = (map: SystemMap) => {
     function handleSelectedBodyChange(index: number) {
@@ -155,7 +155,7 @@ const SystemDetail: FunctionComponent<Props> = ({ system }) => {
         </div>
       </>
     );
-  }
+  };
 
   const renderSystemBody = (body: MappedSystemBody) => {
     let classes = "text-glow__white text-sm";
@@ -175,7 +175,7 @@ const SystemDetail: FunctionComponent<Props> = ({ system }) => {
         className={classes}
       />
     );
-  }
+  };
 
   const renderSystemBodyChildren = (body: MappedSystemBody) => {
     const bodies = body._children && body._children.length > 0 ? body._children : false;
@@ -189,7 +189,7 @@ const SystemDetail: FunctionComponent<Props> = ({ system }) => {
     }
 
     return bodies.map((body: MappedSystemBody) => renderSystemBody(body));
-  }
+  };
 
   return (
     <>
