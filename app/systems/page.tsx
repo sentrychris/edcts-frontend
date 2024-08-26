@@ -45,6 +45,7 @@ export async function generateMetadata(
   return {
     title: `Star Systems Overview | ${(await parent).title?.absolute}`,
     openGraph: {
+      ...(await parent).openGraph,
       url: `https://edcts.versyx.net/systems`,
       title: `Star Systems Overview | ${(await parent).title?.absolute}`,
       description: `Star systems information, find star systems, latest navigation routes and more.`,

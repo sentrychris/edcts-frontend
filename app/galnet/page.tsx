@@ -39,7 +39,8 @@ export async function generateMetadata(
   return {
     title: `Galnet News | ${(await parent).title?.absolute}`,
     openGraph: {
-      url: `https://edcts.versyx.net/galnet/news/${params.slug}`,
+      ...(await parent).openGraph,
+      url: `https://edcts.versyx.net/galnet`,
       title: `Galnet News | ${(await parent).title?.absolute}`,
       description: `Latest news from the Galaxy, with Vox Galactica and other independent affiliates.`,
     },

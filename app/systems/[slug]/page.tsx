@@ -25,6 +25,7 @@ export async function generateMetadata(
   return {
     title: `Star System Information | ${(await parent).title?.absolute}`,
     openGraph: {
+      ...(await parent).openGraph,
       url: `https://edcts.versyx.net/systems/${params.slug}`,
       title: `Star System Information | ${(await parent).title?.absolute}`,
       description: `Star system information including stars, orbital bodies, settlements, and more.`,

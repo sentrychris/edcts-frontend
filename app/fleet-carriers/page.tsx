@@ -45,6 +45,7 @@ export async function generateMetadata(
   return {
     title: `Fleet Carrier Journey Schedule | ${(await parent).title?.absolute}`,
     openGraph: {
+      ...(await parent).openGraph,
       url: `https://edcts.versyx.net/fleet-carriers`,
       title: `Fleet Carrier Journey Schedule | ${(await parent).title?.absolute}`,
       description: `Find fleet carrier scheduled journeys and hop on board.`,
