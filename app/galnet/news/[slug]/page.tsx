@@ -54,6 +54,11 @@ export async function generateMetadata(
 
   return {
     title: `${galnet.article.title} - ${galnet.article.uploaded_at} | ${(await parent).title?.absolute}`,
+    openGraph: {
+      url: `https://edcts.versyx.net/galnet/news/${params.slug}`,
+      title: `${galnet.article.title} - ${galnet.article.uploaded_at} | ${(await parent).title?.absolute}`,
+      description: `${galnet.article.content}`,
+    },
     description: `${galnet.article.content}`,
   };
 }
