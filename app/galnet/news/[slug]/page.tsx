@@ -1,9 +1,14 @@
 import type { Metadata, ResolvingMetadata } from "next";
 import type { Galnet } from "@/core/interfaces/Galnet";
 import { getCollection, getResource } from "@/core/api";
+import dynamic from "next/dynamic";
 import Heading from "@/components/heading";
-import GalnetArticle from "../../components/galnet-article";
 import GalnetList from "@/components/galnet-list";
+
+const GalnetArticle = dynamic(() => import("../../components/galnet-article"), {
+  ssr: false
+});
+
 
 /**
  * Define the page properties.
