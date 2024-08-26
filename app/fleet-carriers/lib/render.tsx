@@ -17,9 +17,9 @@ export const renderStatusText = (value: Schedule | string) => {
     <p
       className={
         status === "DEPARTED"
-          ? "text-blue-200"
+          ? "text-glow__blue"
           : status === "NOT READY"
-            ? "text-orange-300"
+            ? "text-glow__orange"
             : status === "CANCELLED"
               ? "text-red-300"
               : "text-green-200"
