@@ -11,7 +11,7 @@ import "./css/main.css";
 
 const jura = Jura({ subsets: ["latin"] });
 
-const title = `${settings.app.name} - For Elite Dangerous.`;
+const title = `${settings.app.name}.`;
 const description =
   "All the latest news and updates from the Elite: Dangerous galaxy. Find scheduled flights, carrier services, and more.";
 
