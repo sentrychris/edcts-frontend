@@ -43,8 +43,8 @@ export async function generateMetadata(
   parent: ResolvingMetadata,
 ): Promise<Metadata> {
   return {
-    title: `Systems Overview | ${(await parent).title?.absolute}`,
-    description: `Galaxy systems information, find systems, latest navigation routes and more.`,
+    title: `Star Systems Overview | ${(await parent).title?.absolute}`,
+    description: `Star systems information, find star systems, latest navigation routes and more.`,
   };
 }
 

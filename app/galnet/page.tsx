@@ -38,7 +38,7 @@ export async function generateMetadata(
 ): Promise<Metadata> {
   return {
     title: `Galnet News | ${(await parent).title?.absolute}`,
-    description: `Latest from the Milky Way, with Vox Galactica and other independent affiliates.`,
+    description: `Latest news from the Galaxy, with Vox Galactica and other independent affiliates.`,
   };
 }
 
