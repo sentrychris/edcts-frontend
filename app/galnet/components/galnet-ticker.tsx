@@ -99,8 +99,8 @@ const NewsTicker: FunctionComponent<Props> = ({ articles }) => {
   const currentDate = getCurrentEliteDate();
 
   return (
-    <div className="relative z-30 flex items-center">
-      <span className="text-glow__orange border-b-glow__orange ticker-label lg:px-18 bg-black/60 px-6 text-sm text-xs uppercase md:px-12">
+    <div className="relative flex items-center">
+      <span className="text-glow__orange border-b-glow__orange ticker-label lg:px-18 z-10 bg-black/60 px-6 text-sm text-xs uppercase md:px-12">
         <span>Galnet</span>
         <span className="ms-2 hidden sm:flex">
           {currentDate} {currentTime} UTC

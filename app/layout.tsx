@@ -25,6 +25,7 @@ export const metadata: Metadata = {
   title,
   description,
   keywords: [
+    "EDCTS",
     "Elite Dangerous",
     "Frontier Developments",
     "EDSM",

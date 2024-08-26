@@ -6,9 +6,8 @@ import Heading from "@/components/heading";
 import GalnetList from "@/components/galnet-list";
 
 const GalnetArticle = dynamic(() => import("../../components/galnet-article"), {
-  ssr: false
+  ssr: false,
 });
-
 
 /**
  * Define the page properties.
@@ -56,9 +55,11 @@ export async function generateMetadata(
     title: `${galnet.article.title} - ${galnet.article.uploaded_at} | GalNet News`,
     openGraph: {
       ...(await parent).openGraph,
-      images: [{
-        url: `https://edcts.versyx.net${galnet.article.banner_image}`
-      }],
+      images: [
+        {
+          url: `https://edcts.versyx.net${galnet.article.banner_image}`,
+        },
+      ],
       url: `https://edcts.versyx.net/galnet/news/${params.slug}`,
       title: `${galnet.article.title} - ${galnet.article.uploaded_at} | Galnet News`,
       description: `${galnet.article.uploaded_at} - ${galnet.article.title}`,
