@@ -15,7 +15,7 @@ const JourneyCard: FunctionComponent<Props> = ({ schedule, className }) => {
   return (
     <div className={"bg-transparent px-4 py-4 backdrop-blur backdrop-filter xl:py-8 " + className}>
       <div className="flex flex-col md:max-w-xl">
-        <Link href={`/fleet-carriers/schedule/${schedule.slug}`}>
+        <Link href={`/fleet-carriers`}>
           <h5
             className={
               "hover:text-glow text-glow__orange mb-3 text-2xl font-bold tracking-tight hover:underline xl:text-lg" +

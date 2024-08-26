@@ -1,0 +1,30 @@
+.ticker {
+  overflow: hidden;
+  white-space: nowrap;
+  color: #fff;
+  position: relative;
+  display: flex;
+  align-items: center;
+  height: 40px; /* Adjust based on your font size */
+}
+
+.ticker-label {
+  height: 40px;
+  display: flex;
+  align-items: center;
+}
+
+.ticker-content {
+  display: inline-block;
+  white-space: nowrap;
+  transition: transform linear;
+}
+
+@keyframes ticker-scroll {
+  from {
+    transform: translateX(100%);
+  }
+  to {
+    transform: translateX(-100%);
+  }
+}

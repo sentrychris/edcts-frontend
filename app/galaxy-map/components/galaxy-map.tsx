@@ -1,11 +1,13 @@
 "use client";
 
-import { type FunctionComponent, useEffect } from "react";
+import { type FunctionComponent, useEffect, useState } from "react";
 import Loader from "@/components/loader";
 
 declare const $: any; // Declare $ to avoid TypeScript errors, assuming jQuery will be globally available
 
-const GalaxyMap: FunctionComponent<{ isLoading: boolean }> = ({ isLoading }) => {
+const GalaxyMap: FunctionComponent = () => {
+  const [isLoading, setIsLoading] = useState(true);
+
   useEffect(() => {
     const loadScript = (src: string): Promise<void> => {
       return new Promise((resolve, reject) => {
@@ -48,6 +50,7 @@ const GalaxyMap: FunctionComponent<{ isLoading: boolean }> = ({ isLoading }) => 
       });
     };
 
+    setIsLoading(true);
     // Load scripts and initialize the map
     loadScript("https://code.jquery.com/jquery-2.1.4.min.js")
       .then(() => loadScript("https://cdnjs.cloudflare.com/ajax/libs/three.js/r75/three.min.js"))
@@ -57,6 +60,7 @@ const GalaxyMap: FunctionComponent<{ isLoading: boolean }> = ({ isLoading }) => 
       })
       .then(() => {
         $(initializeMap);
+        setIsLoading(false);
       })
       .catch((error) => {
         console.error("Failed to load scripts or initialize map:", error);
@@ -75,7 +79,7 @@ const GalaxyMap: FunctionComponent<{ isLoading: boolean }> = ({ isLoading }) => 
     <div className="edmap-wrapper">
       {isLoading && <Loader visible={isLoading} />}
 
-      <div id="minimap" className="mt-4 rounded">
+      <div id="minimap" className="mt-24 rounded">
         <div id="edmap"></div>
       </div>
     </div>
