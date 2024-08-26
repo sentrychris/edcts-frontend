@@ -76,8 +76,8 @@ const SystemBodySVG: FunctionComponent<Props> = ({
   );
 
   // TODO fix this properly, there is a bug in the system map resulting in the wrong
-  // _type classification for Y (brown dwarf) stars.
-  if (body.sub_type === "Y (Brown dwarf) Star") {
+  // _type classification for  e.g. Y (brown dwarf) stars.
+  if (body.sub_type?.includes("Star")) {
     body._type = SystemBodyType.Star;
   }
 

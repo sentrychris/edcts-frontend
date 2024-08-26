@@ -98,8 +98,6 @@ const SystemDetail: FunctionComponent<Props> = ({ initSystem, params }) => {
           const map = new SystemMap(system);
           setSystemMap(map);
 
-          console.log(map);
-
           const star = map.stars.find((s) => s.is_main_star === 1);
           setSelectedBody(star);
 

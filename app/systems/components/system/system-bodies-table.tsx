@@ -28,7 +28,7 @@ const SystemBodiesTable: FunctionComponent<Props> = ({ bodies, dispatcher }) => 
 
   const columns = {
     name: {
-      title: "Name - Type",
+      title: "Name",
       render: (body: RawSystemBody) => {
         const childClass = isOrbitingPlanet(body) ? "ms-5" : "";
         const iconClass =
