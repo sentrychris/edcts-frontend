@@ -19,7 +19,7 @@ export const renderStatusText = (value: Schedule | string) => {
         status === "DEPARTED"
           ? "text-glow__blue"
           : status === "NOT READY"
-            ? "text-glow__orange"
+            ? "text-orange-300"
             : status === "CANCELLED"
               ? "text-red-300"
               : "text-green-200"
