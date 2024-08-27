@@ -29,7 +29,7 @@ const getPageData = async ({ params }: Props) => {
   const articles = await getCollection<Galnet>("galnet/news", {
     params: {
       limit: 100,
-    }
+    },
   });
 
   const { data: article } = await getResource<Galnet>(`galnet/news/${params.slug}`);

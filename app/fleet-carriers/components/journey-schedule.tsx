@@ -21,7 +21,7 @@ const JourneySchedule: FunctionComponent<Props> = ({ params }) => {
           params: {
             withCarrierInformation: 1,
             withSystemInformation: 1,
-          }
+          },
         });
 
         setSchedule(data);

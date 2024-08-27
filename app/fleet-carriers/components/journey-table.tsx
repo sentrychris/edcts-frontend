@@ -46,7 +46,7 @@ const JourneyTable: FunctionComponent<Props> = ({ schedule, filter = true }) => 
         params: {
           withCarrierInformation: 1,
           withSystemInformation: 1,
-        }
+        },
       });
     } else {
       if (debouncedQuery?.length > 1) {
@@ -56,7 +56,7 @@ const JourneyTable: FunctionComponent<Props> = ({ schedule, filter = true }) => 
             exactMatch: false,
             withCarrierInformation: 1,
             withSystemInformation: 1,
-          }
+          },
         });
       }
     }

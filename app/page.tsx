@@ -13,7 +13,7 @@ export default async function Home() {
   const news = await getCollection<Galnet>("galnet/news", {
     params: {
       limit: 5,
-    }
+    },
   });
 
   const { data: lastUpdatedSystem } = await getResource<System>("system/last-updated");
@@ -23,7 +23,7 @@ export default async function Home() {
     params: {
       withCarrierInformation: 1,
       withSystemInformation: 1,
-    }
+    },
   });
 
   const fleetCarrierJourneyScheduleSize = fleetCarrierJourneySchedule.data.length;

@@ -91,7 +91,7 @@ const SystemDetail: FunctionComponent<Props> = ({ initSystem, params }) => {
           withInformation: 1,
           withBodies: 1,
           withStations: 1,
-        }
+        },
       })
         .then((response) => {
           const { data: system } = response;

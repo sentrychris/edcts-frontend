@@ -37,14 +37,18 @@ const SystemsTable: FunctionComponent<Props> = ({ className = "", systems }) => 
     let response;
     if (text.length === 0) {
       response = await getCollection<System>("systems", {
-        withInformation: 1,
+        params: {
+          withInformation: 1,
+        },
       });
     } else {
       if (debouncedQuery?.length > 1) {
         response = await getCollection<System>("systems", {
-          name: text,
-          exactSearch: 0,
-          withInformation: 1,
+          params: {
+            name: text,
+            exactSearch: 0,
+            withInformation: 1,
+          },
         });
       }
     }

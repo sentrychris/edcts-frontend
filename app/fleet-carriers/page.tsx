@@ -27,7 +27,7 @@ const getPageData = async () => {
     params: {
       withCarrierInformation: 1,
       withSystemInformation: 1,
-    }
+    },
   });
 
   return schedule;

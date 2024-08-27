@@ -19,7 +19,7 @@ const SystemsNavRoutes: FunctionComponent<Props> = ({ className = "", callInterv
     getResource<SystemsNavRoutes[]>("nav-routes", {
       params: {
         limit: 20,
-      }
+      },
     }).then(({ data }) => {
       setSystemsNavRoutes(data);
       setFilteredSystemsNavRoutes(data);
@@ -33,7 +33,7 @@ const SystemsNavRoutes: FunctionComponent<Props> = ({ className = "", callInterv
       getResource<SystemsNavRoutes[]>("nav-routes", {
         params: {
           limit: 20,
-        }
+        },
       }).then(({ data }) => {
         setSystemsNavRoutes(data);
         setFilteredSystemsNavRoutes(data);

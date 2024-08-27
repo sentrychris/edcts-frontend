@@ -25,15 +25,19 @@ export function isAbsoluteUrl(url: string) {
   return url.indexOf("http://") === 0 || url.indexOf("https://") === 0;
 }
 
-export async function request(uri: string, params?: Record<string, string | number | boolean>, tags: string[] | null = null) {
+export async function request(
+  uri: string,
+  params?: Record<string, string | number | boolean>,
+  tags: string[] | null = null,
+) {
   const url = !isAbsoluteUrl(uri) ? `${settings.api.url}/${uri}` : uri;
   const query: string = params ? "?" + new URLSearchParams(params as Record<string, string>) : "";
   const response = tags
     ? await fetch(`${url}${query}`, {
-      next: {
-        tags: tags,
-      }
-    })
+        next: {
+          tags: tags,
+        },
+      })
     : await fetch(`${url}${query}`);
 
   if (!response.ok) {
@@ -55,9 +59,6 @@ export async function getCollection<T>(
   return await request(uri, options?.params, options?.tags);
 }
 
-export async function getResource<T>(
-  uri: string,
-  options?: RequestOptions,
-): Promise<{ data: T }> {
+export async function getResource<T>(uri: string, options?: RequestOptions): Promise<{ data: T }> {
   return await request(uri, options?.params, options?.tags);
 }

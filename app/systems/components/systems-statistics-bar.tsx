@@ -31,7 +31,7 @@ const SystemsStatisticsBar: FunctionComponent<Props> = ({
     getResource<AppStatistics>("statistics", {
       params: {
         resetCache: 1,
-      }
+      },
     }).then((response) => {
       setStatistics(response.data);
     });
@@ -46,7 +46,7 @@ const SystemsStatisticsBar: FunctionComponent<Props> = ({
       getResource<AppStatistics>("statistics", {
         params: {
           resetCache,
-        }
+        },
       }).then((response) => {
         const { data: statistics } = response;
         setStatistics(statistics);
