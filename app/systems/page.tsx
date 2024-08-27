@@ -61,7 +61,7 @@ export async function generateMetadata(
  */
 export default async function Page() {
   const systems = await getPageData();
-  const { data: latestSystem } = await getResource<System>("last-added-system");
+  const { data: latestSystem } = await getResource<System>("system/last-updated");
 
   return (
     <>

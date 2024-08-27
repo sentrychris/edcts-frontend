@@ -14,8 +14,8 @@ export default async function Home() {
     limit: 100,
   });
 
-  const { data: lastAddedSystem } = await getResource<System>("last-added-system");
-  const latestSystem = new SystemMap(lastAddedSystem);
+  const { data: lastUpdatedSystem } = await getResource<System>("system/last-updated");
+  const latestSystem = new SystemMap(lastUpdatedSystem);
 
   const fleetCarrierJourneySchedule = await getCollection<Schedule>("fleet-carriers/schedule", {
     withCarrierInformation: 1,
