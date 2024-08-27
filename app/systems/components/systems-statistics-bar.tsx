@@ -109,7 +109,7 @@ const SystemsStatisticsBar: FunctionComponent<Props> = ({
                 {latestSystem.coords.x}, {latestSystem.coords.y}, {latestSystem.coords.z}
               </p>
               <p>{latestSystem.bodies.length} orbital bodies</p>
-              <p>population: {formatNumber(latestSystem.information.population)}</p>
+              <p>population: {latestSystem.information ? formatNumber(latestSystem.information.population) : 0}</p>
             </div>
           </div>
         </div>
