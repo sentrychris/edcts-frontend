@@ -1,7 +1,6 @@
 import type { Galnet } from "./core/interfaces/Galnet";
 import type { System } from "./core/interfaces/System";
 import type { Schedule } from "./core/interfaces/Schedule";
-import { revalidateTag } from "next/cache";
 import { getCollection, getResource } from "./core/api";
 import Heading from "./components/heading";
 import GalnetList from "./components/galnet-list";
@@ -17,11 +16,7 @@ export default async function Home() {
     },
   });
 
-  const { data: lastUpdatedSystem } = await getResource<System>("system/last-updated", {
-    tags: ["latestSystem"]
-  });
-  revalidateTag("latestSystem");
-
+  const { data: lastUpdatedSystem } = await getResource<System>("system/last-updated");
   const latestSystem = new SystemMap(lastUpdatedSystem);
 
   const fleetCarrierJourneySchedule = await getCollection<Schedule>("fleet-carriers/schedule", {

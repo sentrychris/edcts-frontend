@@ -1,5 +1,4 @@
 import type { Metadata, ResolvingMetadata } from "next";
-import { revalidateTag } from "next/cache";
 import type { System } from "@/core/interfaces/System";
 import { getCollection, getResource } from "@/core/api";
 import Heading from "@/components/heading";
@@ -64,10 +63,7 @@ export async function generateMetadata(
  */
 export default async function Page() {
   const systems = await getPageData();
-  const { data: latestSystem } = await getResource<System>("system/last-updated", {
-    tags: ["latestSystem"],
-  });
-  revalidateTag("latestSystem");
+  const { data: latestSystem } = await getResource<System>("system/last-updated");
 
   return (
     <>
