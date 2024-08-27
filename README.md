@@ -62,7 +62,7 @@ Special thanks to:
 
 
 - [ED:CD](https://edcd.github.io/)  - for all of their projects, data, guidance and more.
-- [AnthorNet/EDSM](https://github.com/EDSM-NET) - for the wonderful data and API.
+- [EDSM](https://github.com/EDSM-NET) - for the wonderful data and API.
 - [Spansh](https://www.spansh.co.uk) - for the wonderful data and API.
 - [iaincollinnns/icarus](https://github.com/iaincollins/icarus) - for UI inspiration, through his fantastic app - fonts and icons.
 - [James Panter](https://codepen.io/jpanter/pen/PWWQXK) - for the loader animation.
