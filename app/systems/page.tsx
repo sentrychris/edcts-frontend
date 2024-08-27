@@ -25,7 +25,9 @@ interface Props {
  */
 const getPageData = async () => {
   const systems = await getCollection<System>("systems", {
-    withInformation: 1,
+    params: {
+      withInformation: 1,
+    },
   });
 
   return systems;

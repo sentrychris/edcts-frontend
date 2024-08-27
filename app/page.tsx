@@ -11,15 +11,19 @@ import JourneyTable from "./fleet-carriers/components/journey-table";
 
 export default async function Home() {
   const news = await getCollection<Galnet>("galnet/news", {
-    limit: 100,
+    params: {
+      limit: 5,
+    }
   });
 
   const { data: lastUpdatedSystem } = await getResource<System>("system/last-updated");
   const latestSystem = new SystemMap(lastUpdatedSystem);
 
   const fleetCarrierJourneySchedule = await getCollection<Schedule>("fleet-carriers/schedule", {
-    withCarrierInformation: 1,
-    withSystemInformation: 1,
+    params: {
+      withCarrierInformation: 1,
+      withSystemInformation: 1,
+    }
   });
 
   const fleetCarrierJourneyScheduleSize = fleetCarrierJourneySchedule.data.length;

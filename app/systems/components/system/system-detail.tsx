@@ -87,9 +87,11 @@ const SystemDetail: FunctionComponent<Props> = ({ initSystem, params }) => {
       setLoading(true);
 
       getResource<System>(`systems/${slug}`, {
-        withInformation: 1,
-        withBodies: 1,
-        withStations: 1,
+        params: {
+          withInformation: 1,
+          withBodies: 1,
+          withStations: 1,
+        }
       })
         .then((response) => {
           const { data: system } = response;

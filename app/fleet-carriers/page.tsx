@@ -24,8 +24,10 @@ interface Props {
  */
 const getPageData = async () => {
   const schedule = await getCollection<Schedule>("fleet-carriers/schedule", {
-    withCarrierInformation: 1,
-    withSystemInformation: 1,
+    params: {
+      withCarrierInformation: 1,
+      withSystemInformation: 1,
+    }
   });
 
   return schedule;

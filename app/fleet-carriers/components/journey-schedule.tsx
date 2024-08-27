@@ -18,9 +18,12 @@ const JourneySchedule: FunctionComponent<Props> = ({ params }) => {
     (async () => {
       if (slug) {
         const { data } = await getResource<Schedule>(`fleet-carriers/schedule/${slug}`, {
-          withCarrierInformation: 1,
-          withSystemInformation: 1,
+          params: {
+            withCarrierInformation: 1,
+            withSystemInformation: 1,
+          }
         });
+
         setSchedule(data);
       }
     })();

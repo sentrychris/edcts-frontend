@@ -29,7 +29,9 @@ const SystemsStatisticsBar: FunctionComponent<Props> = ({
   useEffect(() => {
     // Initial API call to retrieve statistics
     getResource<AppStatistics>("statistics", {
-      resetCache: 1,
+      params: {
+        resetCache: 1,
+      }
     }).then((response) => {
       setStatistics(response.data);
     });
@@ -42,7 +44,9 @@ const SystemsStatisticsBar: FunctionComponent<Props> = ({
     // Set up a new interval to fetch statistics periodically
     const interval = setInterval(() => {
       getResource<AppStatistics>("statistics", {
-        resetCache,
+        params: {
+          resetCache,
+        }
       }).then((response) => {
         const { data: statistics } = response;
         setStatistics(statistics);
