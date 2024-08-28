@@ -50,44 +50,62 @@ export function getCurrentEliteDate() {
 export function getBoxelDataFromId64(id64: number) {
   const id64BigInt = BigInt(id64);
 
-  function unpackAndShift(value: bigint, bits: bigint) {
-    return [(value >> bits), value & (2n ** bits - 1n)];
+  /**
+   * Unpacks a value and shifts it to the right by a number of bits.
+   * 
+   * Returns a tuple with two elements, the first element is the value
+   * shifted to the right by the number of bits, and the second element
+   * is the value masked with 2^bits - 1, this part captures the lower bits.
+   * 
+   * @param value 
+   * @param bits 
+   * @returns 
+   */
+  const rshift = (value: bigint, bits: bigint) => {
+    return [
+      (value >> bits), // shtift the value to the right by bits
+      value & (2n ** bits - 1n) // mask the value with 2^bits - 1
+    ];
   };
 
-  let lenUsed = 0n;
-  // The meta-coordinate, affects the size of other components
-  const [i1, mc]      = unpackAndShift(id64BigInt, 3n); lenUsed += 3n; // mc = 0-7 for a-h
+  let used = 0n;
+  // The meta-coordinate, affects the size of other components, encoded in 3 bits
+  const [i1, mc]      = rshift(id64BigInt, 3n); used += 3n; // mc = 0-7 for a-h
 
-  // 3D cartesian coordinates with sectors and boxels indicating different levels
-  // of spatial granularity (e.g. sectors are larger and boxels are smaller subdivisions).
-  const [i2, boxelZ]  = unpackAndShift(i1, 7n - mc); lenUsed += 7n - mc;
-  const [i3, sectorZ] = unpackAndShift(i2, 7n); lenUsed += 7n;
-  const [i4, boxelY]  = unpackAndShift(i3, 7n - mc); lenUsed += 7n - mc;
-  const [i5, sectorY] = unpackAndShift(i4, 6n); lenUsed += 6n;
-  const [i6, boxelX]  = unpackAndShift(i5, 7n - mc); lenUsed += 7n - mc;
-  const [i7, sectorX] = unpackAndShift(i6, 7n); lenUsed += 7n;
+  // 3D cartesian coordinates with sectors and boxels, encoded in 7-bit chunks
+  // minus the meta-coordinate for the boxel.
+  const [i2, boxelZ]  = rshift(i1, 7n - mc); used += 7n - mc;
+  const [i3, sectorZ] = rshift(i2, 7n); used += 7n;
+  const [i4, boxelY]  = rshift(i3, 7n - mc); used += 7n - mc;
+  const [i5, sectorY] = rshift(i4, 6n); used += 6n;
+  const [i6, boxelX]  = rshift(i5, 7n - mc); used += 7n - mc;
+  const [i7, sectorX] = rshift(i6, 7n); used += 7n;
 
   // Shift the remainder of the 64-bit identifier
-  const [i9, n2]      = unpackAndShift(i7, 55n - lenUsed);
+  const [i9, n2]      = rshift(i7, 55n - used);
 
   // Use the final 9 bits to determine the identifier for the bodies and entities
   // within the star system.
-  const [i8, bodyId]  = unpackAndShift(i9, 9n);
+  const [i8, bodyId]  = rshift(i9, 9n);
 
   // Boxel size is calculated based on mc
   const boxelSize = 10n * (2n ** mc);
 
   // Return the parsed data
-  return JSON.stringify({
-    mc: Number(mc),
-    boxel_size: Number(boxelSize),
-    sector_x: Number(sectorX),
-    sector_y: Number(sectorY),
-    sector_z: Number(sectorZ),
-    boxel_x: Number(boxelX),
-    boxel_y: Number(boxelY),
-    boxel_z: Number(boxelZ),
+  return {
+    metaCoordinate: Number(mc),
+    boxel: {
+      size: Number(boxelSize),
+      x: Number(boxelX),
+      y: Number(boxelY),
+      z: Number(boxelZ),
+    },
+    sector: {
+      x: Number(sectorX),
+      y: Number(sectorY),
+      z: Number(sectorZ),
+    },
     n2: Number(n2),
     body_id: Number(bodyId),
-  });
+  };
 };
