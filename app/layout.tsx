@@ -72,9 +72,11 @@ export default async function RootLayout({ children }: { children: React.ReactNo
           </h1>
           {children}
         </main>
-        <footer className="bg-transparent backdrop-blur backdrop-filter flex flex-col items-center justify-center gap-x-10 border-t border-neutral-800 px-4 py-4 text-center text-neutral-200">
-          <div className="flex items-center gap-4 mb-3 uppercase text-glow__orange text-sm">
-            <Link className="border-r border-neutral-800 pe-3" href="/legal/privacy-policy">Privacy Policy</Link>
+        <footer className="flex flex-col items-center justify-center gap-x-10 border-t border-neutral-800 bg-transparent px-4 py-4 text-center text-neutral-200 backdrop-blur backdrop-filter">
+          <div className="text-glow__orange mb-3 flex items-center gap-4 text-sm uppercase">
+            <Link className="border-r border-neutral-800 pe-3" href="/legal/privacy-policy">
+              Privacy Policy
+            </Link>
             <Link href="/legal/privacy-policy">Terms & Conditions</Link>
           </div>
           <span className="text-xs">
