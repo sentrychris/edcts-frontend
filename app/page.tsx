@@ -12,7 +12,7 @@ import JourneyTable from "./fleet-carriers/components/journey-table";
 export default async function Home() {
   const news = await getCollection<Galnet>("galnet/news", {
     params: {
-      limit: 5,
+      limit: 100,
     },
   });
 
