@@ -1,8 +1,7 @@
 import type { Metadata } from "next";
 import type { Galnet } from "./core/interfaces/Galnet";
 import { Jura } from "next/font/google";
-import { settings } from "./core/config";
-import { getCollection } from "./core/api";
+import { getCollection, getResource } from "./core/api";
 import MainBackground from "./components/main-background";
 import MainNavigation from "./components/main-navigation";
 import NewsTicker from "./galnet/components/galnet-ticker";

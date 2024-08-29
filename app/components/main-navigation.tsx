@@ -1,18 +1,11 @@
 "use client";
 
-import {
-  Disclosure,
-  DisclosureButton,
-  DisclosurePanel,
-  Menu,
-  MenuItem,
-  MenuItems,
-  Transition,
-} from "@headlessui/react";
+import type { FunctionComponent } from "react";
+import type { AuthorizationServerInformation } from "@/core/interfaces/Auth";
+import { Disclosure, DisclosureButton, DisclosurePanel } from "@headlessui/react";
 import { Bars3Icon, XMarkIcon } from "@heroicons/react/24/outline";
-import { Fragment } from "react";
+import { getResource } from "@/core/api";
 import Link from "next/link";
-import Image from "next/image";
 
 const navigation = [
   { name: "Home", href: "/", current: true },
@@ -26,7 +19,13 @@ function classNames(...classes: string[]) {
   return classes.filter(Boolean).join(" ");
 }
 
-export default function MainNavigation() {
+const MainNavigation: FunctionComponent = () => {
+  const makeFrontierSSOLoginRequest = async () => {
+    const { data: authorizationDetails } =
+      await getResource<AuthorizationServerInformation>("auth/frontier/login");
+    window.location.href = authorizationDetails.authorization_url;
+  };
+
   return (
     <Disclosure as="nav" className="main-nav__nav">
       {({ open }) => (
@@ -67,74 +66,13 @@ export default function MainNavigation() {
                 </div>
               </div>
               <div className="absolute inset-y-0 right-0 flex items-center pr-2 sm:static sm:inset-auto sm:ml-6 sm:pr-0">
-                <Menu as="div" className="relative ml-3">
-                  <div className="flex items-center gap-3">
-                    <Menu.Button className="align-items flex items-center gap-3 text-sm focus:outline-none">
-                      <span className="text-glow__orange text-xs[ hidden md:flex">
-                        CMDR Shaki Kazaro
-                      </span>
-                      <Image
-                        className="h-10 w-10 rounded-lg border-2 border-neutral-700"
-                        width={32}
-                        height={32}
-                        src="/me.jpg?v=2.0"
-                        alt=""
-                      />
-                      <i className="icarus-terminal-chevron-down text-glow__white"></i>
-                    </Menu.Button>
-                  </div>
-                  <Transition
-                    as={Fragment}
-                    enter="transition ease-out duration-100"
-                    enterFrom="transform opacity-0 scale-95"
-                    enterTo="transform opacity-100 scale-100"
-                    leave="transition ease-in duration-75"
-                    leaveFrom="transform opacity-100 scale-100"
-                    leaveTo="transform opacity-0 scale-95"
-                  >
-                    <MenuItems className="absolute right-0 z-10 mt-2 w-48 origin-top-right rounded-md bg-white py-1 shadow-lg ring-1 ring-black ring-opacity-5 focus:outline-none">
-                      <MenuItem>
-                        {({ active }) => (
-                          <Link
-                            href="#"
-                            className={classNames(
-                              active ? "bg-zinc-100" : "",
-                              "block px-4 py-2 text-sm text-gray-700",
-                            )}
-                          >
-                            Your Profile
-                          </Link>
-                        )}
-                      </MenuItem>
-                      <MenuItem>
-                        {({ active }) => (
-                          <Link
-                            href="#"
-                            className={classNames(
-                              active ? "bg-zinc-100" : "",
-                              "block px-4 py-2 text-sm text-gray-700",
-                            )}
-                          >
-                            Settings
-                          </Link>
-                        )}
-                      </MenuItem>
-                      <MenuItem>
-                        {({ active }) => (
-                          <Link
-                            href="#"
-                            className={classNames(
-                              active ? "bg-zinc-100" : "",
-                              "block px-4 py-2 text-sm text-gray-700",
-                            )}
-                          >
-                            Sign out
-                          </Link>
-                        )}
-                      </MenuItem>
-                    </MenuItems>
-                  </Transition>
-                </Menu>
+                <button
+                  className="flex items-center gap-1 rounded-lg border border-neutral-900 bg-neutral-900 px-3 py-1 uppercase hover:scale-x-105"
+                  onClick={makeFrontierSSOLoginRequest}
+                >
+                  <i className="icarus-terminal-planet text-lg"></i>
+                  <span className="text-glow text-sm">Login with frontier</span>
+                </button>
               </div>
             </div>
           </div>
@@ -161,4 +99,6 @@ export default function MainNavigation() {
       )}
     </Disclosure>
   );
-}
+};
+
+export default MainNavigation;
