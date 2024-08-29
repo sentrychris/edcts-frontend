@@ -185,8 +185,8 @@ export default async function Page() {
             <h3 className="my-4 mt-12 text-2xl">How to Exercise Your Rights</h3>
             <p className="text">
               If you wish to exercise any of your rights under the GDPR, please contact us at{" "}
-              <a href="mailto:[Your Contact Email]" className="email-link">
-                [Your Contact Email]
+              <a href="mailto:christopher.rowles@outlook.com" className="email-link text-glow__blue font-bold">
+                support@versyx.net
               </a>
               . We may require you to verify your identity before fulfilling your request.
             </p>
