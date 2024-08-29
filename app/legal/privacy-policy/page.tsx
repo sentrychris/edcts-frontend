@@ -150,7 +150,7 @@ export default async function Page() {
             </ul>
 
             <h3 className="my-4 mt-12 text-2xl">Your GDPR Rights</h3>
-            <p className="text">
+            <p className="text mb-4">
               As an EU data subject, you have the following rights under the GDPR:
             </p>
             <ul className="list-disc ms-8">
