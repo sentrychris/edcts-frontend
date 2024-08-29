@@ -7,6 +7,7 @@ import MainNavigation from "./components/main-navigation";
 import NewsTicker from "./galnet/components/galnet-ticker";
 import SvgFilters from "./components/svg-filters";
 import "./css/main.css";
+import Link from "next/link";
 
 const jura = Jura({ subsets: ["latin"] });
 
@@ -71,15 +72,19 @@ export default async function RootLayout({ children }: { children: React.ReactNo
           </h1>
           {children}
         </main>
-        <footer className="flex flex-col items-center justify-center gap-x-10 border-t border-neutral-800 px-4 py-4 text-center text-sm text-neutral-200">
-          <span className="">
+        <footer className="bg-transparent backdrop-blur backdrop-filter flex flex-col items-center justify-center gap-x-10 border-t border-neutral-800 px-4 py-4 text-center text-neutral-200">
+          <div className="flex items-center gap-4 mb-3 uppercase text-glow__orange text-sm">
+            <Link className="border-r border-neutral-800 pe-3" href="/legal/privacy-policy">Privacy Policy</Link>
+            <Link href="/legal/privacy-policy">Terms & Conditions</Link>
+          </div>
+          <span className="text-xs">
             <span className="text-glow__orange">Elite: Dangerous</span> © 2012 - 2024 Frontier
             Developments plc. All rights reserved.
           </span>
-          <span className="">
+          <span className="text-xs">
             ED:CTS is neither affiliated with nor endorsed by Frontier Developments.
           </span>
-          <span className="">
+          <span className="text-xs">
             Made with <span className="text-glow__orange">♥</span> by{" "}
             <a className="text-glow__blue" href="https://versyx.dev">
               Chris Rowles
