@@ -7,10 +7,19 @@ import Button from "./button";
 
 interface Props {
   className?: string;
+  type?: string;
+  placeholder?: string;
+  displayClearButton?: boolean;
   handleInput: (text: string) => void;
 }
 
-const Filter: FunctionComponent<Props> = ({ className, handleInput }) => {
+const Filter: FunctionComponent<Props> = ({
+  className,
+  type = "text",
+  placeholder = "Filter...",
+  displayClearButton = true,
+  handleInput
+}) => {
   const [filterInputState, setFilterInputState] = useState<string>("");
 
   async function handleFilterStringChange(e: FormEvent) {
@@ -32,23 +41,36 @@ const Filter: FunctionComponent<Props> = ({ className, handleInput }) => {
       }
     >
       <form className="flex flex-row items-center gap-4">
-        <Input
-          placeholder="Filter..."
-          value={filterInputState}
-          onChange={handleFilterStringChange}
-          extraStyling="w-[400px]"
-        />
-        <Button
-          type="submit"
-          theme="elite"
-          disabled={false}
-          onClick={async (e: FormEvent) => {
-            e.preventDefault();
-            clearFilter();
-          }}
-        >
-          Clear
-        </Button>
+        {type === "text" ? (
+          <Input
+            type="text"
+            placeholder={placeholder}
+            value={filterInputState}
+            onChange={handleFilterStringChange}
+            extraStyling="w-[400px]"
+          />
+        ) : (
+          <Input
+            type="number"
+            placeholder={placeholder}
+            value={filterInputState}
+            onChange={handleFilterStringChange}
+          />
+        )}
+
+        {displayClearButton && (
+          <Button
+            type="submit"
+            theme="elite"
+            disabled={false}
+            onClick={async (e: FormEvent) => {
+              e.preventDefault();
+              clearFilter();
+            }}
+          >
+            Clear
+          </Button>
+        )}
       </form>
     </div>
   );

@@ -123,7 +123,33 @@ const SystemsTable: FunctionComponent<Props> = ({ className = "", systems }) => 
 
   return (
     <div className={className}>
-      <Filter handleInput={searchData} className="mb-5" />
+      <Filter placeholder="Search by system name..." handleInput={searchData} className="mb-5" />
+      <div className="grid grid-cols-1 md:grid-cols-5 lg:grid-cols-11 gap-5 mb-5">
+        <Filter displayClearButton={false}
+          type="number"
+          className="col-span-3 md:col-span-2"
+          placeholder="Population..."
+          handleInput={() => {}}
+        />
+
+        <Filter displayClearButton={false}
+          className="col-span-3"
+          placeholder="Government..."
+          handleInput={() => {}}
+        />
+
+        <Filter displayClearButton={false}
+          className="col-span-3 md:col-span-2 lg:col-span-3"
+          placeholder="Allegiance..."
+          handleInput={() => {}}
+        />
+
+        <Filter displayClearButton={false}
+          className="col-span-3"
+          placeholder="Economy..."
+          handleInput={() => {}}
+        />
+      </div>
       <Table columns={columns} data={rows} meta={metadata} links={navigation} page={paginate} />
     </div>
   );

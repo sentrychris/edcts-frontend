@@ -90,7 +90,7 @@ nav.main-nav__nav .main-nav__menu {
 .z-overlay {
   height: 100%;
   z-index: -1;
-  opacity: 0.5;
+  opacity: 0.8;
   background: black;
 }
 
