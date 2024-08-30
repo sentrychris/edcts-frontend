@@ -18,7 +18,7 @@ const Filter: FunctionComponent<Props> = ({
   type = "text",
   placeholder = "Filter...",
   displayClearButton = true,
-  handleInput
+  handleInput,
 }) => {
   const [filterInputState, setFilterInputState] = useState<string>("");
 

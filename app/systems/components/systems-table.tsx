@@ -69,9 +69,9 @@ const SystemsTable: FunctionComponent<Props> = ({ className = "", systems }) => 
 
   /**
    * Construct the search query for the information fields.
-   * 
+   *
    * Used to search by population, government, allegiance, and security.
-   * 
+   *
    * @param field - the field we are searching by
    * @param value - the value we are searching for
    */
@@ -106,14 +106,14 @@ const SystemsTable: FunctionComponent<Props> = ({ className = "", systems }) => 
     }
 
     const response = await getCollection<System>("system/search/information", {
-      params
+      params,
     });
 
     if (response) {
       const { data, meta, links } = response;
       await setState(data, meta, links);
     }
-  }
+  };
 
   const paginate = async (link: string) => {
     const { data, meta, links } = await getCollection<System>(link);
@@ -179,12 +179,10 @@ const SystemsTable: FunctionComponent<Props> = ({ className = "", systems }) => 
 
   return (
     <div className={className}>
-      <Filter placeholder="Search by system name..."
-        handleInput={searchByName}
-        className="mb-5" 
-      />
-      <div className="grid grid-cols-1 md:grid-cols-5 lg:grid-cols-11 gap-5 mb-5">
-        <Filter displayClearButton={false}
+      <Filter placeholder="Search by system name..." handleInput={searchByName} className="mb-5" />
+      <div className="mb-5 grid grid-cols-1 gap-5 md:grid-cols-5 lg:grid-cols-11">
+        <Filter
+          displayClearButton={false}
           type="number"
           className="col-span-3 md:col-span-2"
           placeholder="Population..."
@@ -193,7 +191,8 @@ const SystemsTable: FunctionComponent<Props> = ({ className = "", systems }) => 
           }}
         />
 
-        <Filter displayClearButton={false}
+        <Filter
+          displayClearButton={false}
           className="col-span-3"
           placeholder="Government..."
           handleInput={(input) => {
@@ -201,7 +200,8 @@ const SystemsTable: FunctionComponent<Props> = ({ className = "", systems }) => 
           }}
         />
 
-        <Filter displayClearButton={false}
+        <Filter
+          displayClearButton={false}
           className="col-span-3 md:col-span-2 lg:col-span-3"
           placeholder="Allegiance..."
           handleInput={(input) => {
@@ -209,7 +209,8 @@ const SystemsTable: FunctionComponent<Props> = ({ className = "", systems }) => 
           }}
         />
 
-        <Filter displayClearButton={false}
+        <Filter
+          displayClearButton={false}
           className="col-span-3"
           placeholder="Security..."
           handleInput={(input) => {

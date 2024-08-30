@@ -128,12 +128,12 @@ export default async function Page() {
           <section className="gdpr-compliance py-5">
             <h2 className="text-glow__orange my-4 text-3xl">GDPR Compliance</h2>
 
-            <h3 className="mt-4 mt-12 text-2xl">Legal Basis for Processing</h3>
+            <h3 className="mt-12 mt-4 text-2xl">Legal Basis for Processing</h3>
             <p className="text my-4">
               Under the GDPR, we must have a legal basis for processing your personal data. The
               legal bases for processing your data may include:
             </p>
-            <ul className="list-disc ms-8">
+            <ul className="ms-8 list-disc">
               <li className="list-item">
                 <strong>Consent</strong>: When you have given explicit consent for us to process
                 your data for specific purposes, such as when you sign in using SSO.
@@ -153,7 +153,7 @@ export default async function Page() {
             <p className="text mb-4">
               As an EU data subject, you have the following rights under the GDPR:
             </p>
-            <ul className="list-disc ms-8">
+            <ul className="ms-8 list-disc">
               <li className="list-item">
                 <strong>Right to Access</strong>: You can request access to the personal data we
                 hold about you.
@@ -185,7 +185,10 @@ export default async function Page() {
             <h3 className="my-4 mt-12 text-2xl">How to Exercise Your Rights</h3>
             <p className="text">
               If you wish to exercise any of your rights under the GDPR, please contact us at{" "}
-              <a href="mailto:christopher.rowles@outlook.com" className="email-link text-glow__blue font-bold">
+              <a
+                href="mailto:christopher.rowles@outlook.com"
+                className="email-link text-glow__blue font-bold"
+              >
                 support@versyx.net
               </a>
               . We may require you to verify your identity before fulfilling your request.
@@ -209,7 +212,10 @@ export default async function Page() {
             <p className="text mb-2">
               If you have any questions or concerns about our GDPR compliance or how we handle your
               personal data, you may contact our Data Protection Officer (DPO) at{" "}
-              <a href="mailto:christopher.rowles@outlook.com" className="email-link text-glow__blue font-bold">
+              <a
+                href="mailto:christopher.rowles@outlook.com"
+                className="email-link text-glow__blue font-bold"
+              >
                 support@versyx.net
               </a>
               .
