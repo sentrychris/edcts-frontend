@@ -80,7 +80,7 @@ const SystemsTable: FunctionComponent<Props> = ({ className = "", systems }) => 
     setInformationQuery((prev) => ({ ...prev, [field]: value }));
 
     // Construct default query params
-    let params: Record<string, string | number> = {
+    const params: Record<string, string | number> = {
       withInformation: 1,
     };
 
