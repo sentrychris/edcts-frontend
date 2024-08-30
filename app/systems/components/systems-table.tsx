@@ -79,38 +79,35 @@ const SystemsTable: FunctionComponent<Props> = ({ className = "", systems }) => 
     // Update the query state object
     setInformationQuery((prev) => ({ ...prev, [field]: value }));
 
-    let response;
-    if (value.length === 0) {
-      const params: Record<string, string|number> = {
-        withInformation: 1,
-      };
+    // Construct default query params
+    let params: Record<string, string | number> = {
+      withInformation: 1,
+    };
 
+    // Check if the value is empty
+    if (value.length === 0) {
+      // Loop through the query object and add the values to the params object
+      // if the field is not the current field and the value is not empty
       for (const [key, val] of Object.entries(informationQuery)) {
         if (field !== key && val.length > 0) {
           params[key] = val;
         }
       }
-
-      response = await getCollection<System>("system/search/information", {
-        params
-      });
     } else {
+      // Check if the debounced query object has a length greater than 1
       if (debouncedInformationQuery[field]?.length > 1) {
-        const params: Record<string, string|number> = {
-          withInformation: 1,
-        };
-
+        // Loop through the query object and add the values to the params object
         for (const [key, val] of Object.entries(informationQuery)) {
           if (val.length > 0) {
             params[key] = val;
           }
         }
-
-        response = await getCollection<System>("system/search/information", {
-          params,
-        });
       }
     }
+
+    const response = await getCollection<System>("system/search/information", {
+      params
+    });
 
     if (response) {
       const { data, meta, links } = response;
