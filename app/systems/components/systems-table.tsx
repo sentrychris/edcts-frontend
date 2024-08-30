@@ -30,7 +30,8 @@ const SystemsTable: FunctionComponent<Props> = ({ className = "", systems }) => 
     security: "",
   });
 
-  const debouncedQuery = useDebounce(nameQuery, 200);
+  const debouncedNameQuery = useDebounce(nameQuery, 200);
+  const debouncedInformationQuery = useDebounce(informationQuery, 200);
 
   const setState = async (data: System[], meta: Meta, links: Links) => {
     setRows(data);
@@ -49,7 +50,7 @@ const SystemsTable: FunctionComponent<Props> = ({ className = "", systems }) => 
         },
       });
     } else {
-      if (debouncedQuery?.length > 1) {
+      if (debouncedNameQuery?.length > 1) {
         response = await getCollection<System>("systems", {
           params: {
             name: value,
@@ -80,27 +81,35 @@ const SystemsTable: FunctionComponent<Props> = ({ className = "", systems }) => 
 
     let response;
     if (value.length === 0) {
-      // TODO refactor this, it works for the name query because name is a single field
-      //      but the information query is an object with multiple fields
-      response = await getCollection<System>("system/search/information", {
-        params: {
-          withInformation: 1,
-        },
-      });
-    } else {
       const params: Record<string, string|number> = {
         withInformation: 1,
       };
 
       for (const [key, val] of Object.entries(informationQuery)) {
-        if (val.length > 0) {
+        if (field !== key && val.length > 0) {
           params[key] = val;
         }
       }
 
       response = await getCollection<System>("system/search/information", {
-        params,
+        params
       });
+    } else {
+      if (debouncedInformationQuery[field]?.length > 1) {
+        const params: Record<string, string|number> = {
+          withInformation: 1,
+        };
+
+        for (const [key, val] of Object.entries(informationQuery)) {
+          if (val.length > 0) {
+            params[key] = val;
+          }
+        }
+
+        response = await getCollection<System>("system/search/information", {
+          params,
+        });
+      }
     }
 
     if (response) {
@@ -173,7 +182,10 @@ const SystemsTable: FunctionComponent<Props> = ({ className = "", systems }) => 
 
   return (
     <div className={className}>
-      <Filter placeholder="Search by system name..." handleInput={searchByName} className="mb-5" />
+      <Filter placeholder="Search by system name..."
+        handleInput={searchByName}
+        className="mb-5" 
+      />
       <div className="grid grid-cols-1 md:grid-cols-5 lg:grid-cols-11 gap-5 mb-5">
         <Filter displayClearButton={false}
           type="number"
