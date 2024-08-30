@@ -22,8 +22,15 @@ const SystemsTable: FunctionComponent<Props> = ({ className = "", systems }) => 
   const [metadata, setMetadata] = useState(meta);
   const [navigation, setNavigation] = useState(links);
 
-  const [query, setQuery] = useState("");
-  const debouncedQuery = useDebounce(query, 200);
+  const [nameQuery, setNameQuery] = useState("");
+  const [informationQuery, setInformationQuery] = useState({
+    population: "",
+    government: "",
+    allegiance: "",
+    security: "",
+  });
+
+  const debouncedQuery = useDebounce(nameQuery, 200);
 
   const setState = async (data: System[], meta: Meta, links: Links) => {
     setRows(data);
@@ -31,11 +38,11 @@ const SystemsTable: FunctionComponent<Props> = ({ className = "", systems }) => 
     setNavigation(links);
   };
 
-  const searchData = async (text: string) => {
-    setQuery(text);
+  const searchByName = async (value: string) => {
+    setNameQuery(value);
 
     let response;
-    if (text.length === 0) {
+    if (value.length === 0) {
       response = await getCollection<System>("systems", {
         params: {
           withInformation: 1,
@@ -45,7 +52,7 @@ const SystemsTable: FunctionComponent<Props> = ({ className = "", systems }) => 
       if (debouncedQuery?.length > 1) {
         response = await getCollection<System>("systems", {
           params: {
-            name: text,
+            name: value,
             exactSearch: 0,
             withInformation: 1,
           },
@@ -58,6 +65,49 @@ const SystemsTable: FunctionComponent<Props> = ({ className = "", systems }) => 
       await setState(data, meta, links);
     }
   };
+
+  /**
+   * Construct the search query for the information fields.
+   * 
+   * Used to search by population, government, allegiance, and security.
+   * 
+   * @param field - the field we are searching by
+   * @param value - the value we are searching for
+   */
+  const searchByInformation = async (field: string, value: string) => {
+    // Update the query state object
+    setInformationQuery((prev) => ({ ...prev, [field]: value }));
+
+    let response;
+    if (value.length === 0) {
+      // TODO refactor this, it works for the name query because name is a single field
+      //      but the information query is an object with multiple fields
+      response = await getCollection<System>("system/search/information", {
+        params: {
+          withInformation: 1,
+        },
+      });
+    } else {
+      const params: Record<string, string|number> = {
+        withInformation: 1,
+      };
+
+      for (const [key, val] of Object.entries(informationQuery)) {
+        if (val.length > 0) {
+          params[key] = val;
+        }
+      }
+
+      response = await getCollection<System>("system/search/information", {
+        params,
+      });
+    }
+
+    if (response) {
+      const { data, meta, links } = response;
+      await setState(data, meta, links);
+    }
+  }
 
   const paginate = async (link: string) => {
     const { data, meta, links } = await getCollection<System>(link);
@@ -123,31 +173,39 @@ const SystemsTable: FunctionComponent<Props> = ({ className = "", systems }) => 
 
   return (
     <div className={className}>
-      <Filter placeholder="Search by system name..." handleInput={searchData} className="mb-5" />
+      <Filter placeholder="Search by system name..." handleInput={searchByName} className="mb-5" />
       <div className="grid grid-cols-1 md:grid-cols-5 lg:grid-cols-11 gap-5 mb-5">
         <Filter displayClearButton={false}
           type="number"
           className="col-span-3 md:col-span-2"
           placeholder="Population..."
-          handleInput={() => {}}
+          handleInput={(input) => {
+            searchByInformation("population", input);
+          }}
         />
 
         <Filter displayClearButton={false}
           className="col-span-3"
           placeholder="Government..."
-          handleInput={() => {}}
+          handleInput={(input) => {
+            searchByInformation("government", input);
+          }}
         />
 
         <Filter displayClearButton={false}
           className="col-span-3 md:col-span-2 lg:col-span-3"
           placeholder="Allegiance..."
-          handleInput={() => {}}
+          handleInput={(input) => {
+            searchByInformation("allegiance", input);
+          }}
         />
 
         <Filter displayClearButton={false}
           className="col-span-3"
-          placeholder="Economy..."
-          handleInput={() => {}}
+          placeholder="Security..."
+          handleInput={(input) => {
+            searchByInformation("security", input);
+          }}
         />
       </div>
       <Table columns={columns} data={rows} meta={metadata} links={navigation} page={paginate} />
