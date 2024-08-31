@@ -76,7 +76,7 @@ const GalaxyMap: FunctionComponent = () => {
   }, []);
 
   return (
-    <div className="edmap-wrapper">
+    <div className="edmap-wrapper z-10">
       {isLoading && <Loader visible={isLoading} />}
 
       <div id="minimap" className="mt-24 rounded">
