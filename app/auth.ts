@@ -27,6 +27,8 @@ export const authOptions: NextAuthConfig = {
       },
     }),
   ],
+  trustHost: true,
+  secret: process.env.NEXTAUTH_SECRET, // Ensure this is set
 };
 
 export const { handlers, signIn, signOut, auth } = NextAuth(authOptions);
