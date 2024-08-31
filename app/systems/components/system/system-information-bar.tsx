@@ -19,7 +19,10 @@ const SystemInformationBar: FunctionComponent<Props> = ({ information }) => {
               <i className="icarus-terminal-system-authority-solid text-glow__orange"></i>
               <p>
                 <span className="me-3">
-                  {renderAllegianceText(information.allegiance ?? "No Allegiance")}
+                  {renderAllegianceText(information && information.allegiance
+                      ? information.allegiance
+                      : "No Allegiance"
+                  )}
                 </span>
                 <span>/</span>
                 <span className="ms-3">
@@ -32,29 +35,45 @@ const SystemInformationBar: FunctionComponent<Props> = ({ information }) => {
                 </span>
               </p>
             </span>
-            <span className="ms-7 text-xs">{information.government ?? "No Governance"}</span>
+            <span className="ms-7 text-xs">{
+              information && information.government
+                ? information.government
+                : "No Governance"
+            }</span>
           </div>
           <div className="whitespace-nowrap">
             <p className="mb-2">Controlling Faction:</p>
-            {renderTextWithIcon(information.controlling_faction.name ?? "No Controlling Faction", {
-              icon: "icarus-terminal-system-authority-solid",
-            })}
+            {renderTextWithIcon(information && information.controlling_faction
+              ? information.controlling_faction.name
+              : "No Controlling Faction", {
+                icon: "icarus-terminal-system-authority-solid",
+              }
+            )}
           </div>
           <div className="whitespace-nowrap">
             <p className="mb-2">Faction State:</p>
-            {renderTextWithIcon(information.controlling_faction.state ?? "No Data", {
-              icon: "icarus-terminal-system-authority-solid",
-            })}
+            {renderTextWithIcon(information && information.controlling_faction
+              ? information.controlling_faction.state
+              : "No Data", {
+                icon: "icarus-terminal-system-authority-solid",
+              }
+            )}
           </div>
           <div className="whitespace-nowrap">
             <p className="mb-2">Economy:</p>
-            {renderTextWithIcon(`${information.economy ?? "None"}`, {
-              icon: "icarus-terminal-economy",
-            })}
+            {renderTextWithIcon(`${information && information.economy
+              ? information.economy
+              : "None"}`, {
+                icon: "icarus-terminal-economy",
+              }
+            )}
           </div>
           <div className="whitespace-nowrap">
             <p className="mb-2">Population:</p>
-            {renderTextWithIcon(formatNumber(information.population), {
+            {renderTextWithIcon(formatNumber(information && information.population
+              ? information.population
+              : 0
+            ), {
               icon: "icarus-terminal-planet-life",
             })}
           </div>
