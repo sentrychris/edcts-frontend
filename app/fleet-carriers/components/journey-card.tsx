@@ -1,7 +1,7 @@
 import type { FunctionComponent } from "react";
 import type { Schedule } from "@/core/interfaces/Schedule";
-import { formatDate } from "@/core/util";
-import { renderStatusText } from "../lib/render";
+import { formatDate } from "@/core/string-utils";
+import { renderStatusText } from "../lib/render-utils";
 import Link from "next/link";
 
 interface Props {

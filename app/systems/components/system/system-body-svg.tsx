@@ -3,9 +3,9 @@
 import type { FunctionComponent } from "react";
 import type { SystemDispatcher } from "@/core/events/SystemDispatcher";
 import type { MappedSystemBody } from "@/core/interfaces/SystemBody";
-import { useCallback, useState } from "react";
-import Icons from "@/icons";
 import { SystemBodyType } from "@/core/constants/system";
+import { useCallback, useState } from "react";
+import Icons from "@/core/icons";
 
 interface Props {
   body: MappedSystemBody;

@@ -6,7 +6,7 @@ import type { System } from "@/core/interfaces/System";
 import { useState } from "react";
 import { getCollection } from "@/core/api";
 import { useDebounce } from "@/core/hooks/debounce";
-import { renderAllegianceText, renderSecurityText } from "../lib/render";
+import { renderAllegianceText, renderSecurityText } from "../lib/render-utils";
 import Link from "next/link";
 import Filter from "@/components/filter";
 import Table from "@/components/table";

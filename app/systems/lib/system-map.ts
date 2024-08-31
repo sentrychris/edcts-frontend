@@ -14,7 +14,7 @@ import {
   SETTLEMENTS,
   SystemBodyType,
 } from "@/core/constants/system";
-import { escapeRegExp } from "@/core/util";
+import { escapeRegExp } from "@/core/string-utils";
 
 type MapKeyType = keyof MappedSystemBody;
 

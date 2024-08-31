@@ -3,7 +3,7 @@
 import { type FunctionComponent, useState } from "react";
 import type { SystemDispatcher } from "@/core/events/SystemDispatcher";
 import type { RawSystemBody, MappedSystemBody } from "@/core/interfaces/SystemBody";
-import { formatDate, formatNumber } from "@/core/util";
+import { formatDate, formatNumber } from "@/core/string-utils";
 import Link from "next/link";
 import Table from "@/components/table";
 

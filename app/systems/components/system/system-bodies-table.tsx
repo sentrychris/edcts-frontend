@@ -4,7 +4,7 @@ import { type FunctionComponent, useState } from "react";
 import type { RawSystemBody, MappedSystemBody } from "@/core/interfaces/SystemBody";
 import type { SystemDispatcher } from "@/core/events/SystemDispatcher";
 import { SystemBodyType } from "@/core/constants/system";
-import { formatDate } from "@/core/util";
+import { formatDate } from "@/core/string-utils";
 import Link from "next/link";
 import Table from "@/components/table";
 

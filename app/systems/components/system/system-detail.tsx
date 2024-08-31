@@ -17,7 +17,7 @@ import SystemBodySVG from "./system-body-svg";
 import SystemBodyPopover from "./system-body-popover";
 import SystemStarsTable from "./system-stars-table";
 import SystemBodiesTable from "./system-bodies-table";
-import { pluralizeTextFromArray } from "@/core/util";
+import { pluralizeTextFromArray } from "@/core/string-utils";
 
 interface Props {
   initSystem?: System;
