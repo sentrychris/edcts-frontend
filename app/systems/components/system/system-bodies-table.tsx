@@ -104,13 +104,10 @@ const SystemBodiesTable: FunctionComponent<Props> = ({ bodies, dispatcher }) => 
       title: "Discovered By",
       render: (body: RawSystemBody) => {
         const childClass = isOrbitingPlanet(body) ? orbitalMargin : "";
+        const value = body.discovered_by ? body.discovered_by : "Unknown";
         return (
           <Link className={`${childClass} text-blue-200 hover:underline`} href={"#"}>
-            {body.discovered_by
-              ? (body.discovered_by.startsWith("CMDR")
-                ? body.discovered_by
-                : `CMDR ${body.discovered_by}`)
-              : "Unknown"}
+            {value.startsWith("CMDR") ? value : `CMDR ${value}`}
           </Link>
         );
       },

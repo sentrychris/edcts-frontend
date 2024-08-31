@@ -103,11 +103,10 @@ const SystemStarsTable: FunctionComponent<Props> = ({ stars, dispatcher }) => {
     commander: {
       title: "Discovered By",
       render: (body: RawSystemBody) => {
+        const value = body.discovered_by ? body.discovered_by : "Unknown";
         return (
           <Link className="text-blue-200 hover:underline" href={"#"}>
-            {body.discovered_by.startsWith("CMDR")
-              ? body.discovered_by
-              : `CMDR ${body.discovered_by}`}
+            {value.startsWith("CMDR") ? value : `CMDR ${value}`}
           </Link>
         );
       },
