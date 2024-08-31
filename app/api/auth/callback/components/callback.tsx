@@ -3,6 +3,7 @@
 import { type FunctionComponent, useEffect } from "react";
 import { useRouter } from "next/navigation";
 import { signIn } from "next-auth/react";
+import { settings } from "@/core/config";
 
 const AuthCallback: FunctionComponent = () => {
   const router = useRouter();
@@ -10,7 +11,7 @@ const AuthCallback: FunctionComponent = () => {
   useEffect(() => {
     const fetchUser = async () => {
       try {
-        const response = await fetch("http://localhost/api/auth/frontier/me", {
+        const response = await fetch(`${settings.api.url}/auth/frontier/me`, {
           method: "POST",
           headers: {
             "Content-Type": "application/json",
