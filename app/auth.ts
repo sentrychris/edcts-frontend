@@ -12,7 +12,7 @@ export const authOptions: NextAuthConfig = {
       credentials: {
         token: {
           label: "Token",
-          type: "text"
+          type: "text",
         },
       },
       async authorize(credentials) {
