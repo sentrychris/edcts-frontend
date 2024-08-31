@@ -1,5 +1,5 @@
 import type { Metadata, ResolvingMetadata } from "next";
-import type { Schedule } from "../../core/interfaces/Schedule";
+import type { Schedule } from "@/core/interfaces/Schedule";
 import { getCollection } from "@/core/api";
 import Heading from "@/components/heading";
 import JourneyCard from "./components/journey-card";

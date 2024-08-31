@@ -1,13 +1,13 @@
-import type { Galnet } from "../core/interfaces/Galnet";
-import type { System } from "../core/interfaces/System";
-import type { Schedule } from "../core/interfaces/Schedule";
-import { getCollection, getResource } from "../core/api";
+import type { Galnet } from "@/core/interfaces/Galnet";
+import type { System } from "@/core/interfaces/System";
+import type { Schedule } from "@/core/interfaces/Schedule";
+import { getCollection, getResource } from "@/core/api";
 import Heading from "@/components/heading";
-import GalnetList from "@/components/galnet-list";
-import LatestSystem from "@/components/latest-system";
-import SystemMap from "./systems/lib/system-map";
+import GalnetList from "./galnet/components/galnet-sidebar";
+import LatestSystem from "./systems/components/latest-system";
 import JourneyCard from "./fleet-carriers/components/journey-card";
 import JourneyTable from "./fleet-carriers/components/journey-table";
+import SystemMap from "./systems/lib/system-map";
 
 export default async function Home() {
   const news = await getCollection<Galnet>("galnet/news", {

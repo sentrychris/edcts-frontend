@@ -1,5 +1,5 @@
 import type { FunctionComponent } from "react";
-import type SystemMap from "@/app/systems/lib/system-map";
+import type SystemMap from "../../systems/lib/system-map";
 import { pluralizeTextFromArray } from "@/core/string-utils";
 import Link from "next/link";
 
