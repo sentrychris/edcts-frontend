@@ -1,5 +1,4 @@
 import Heading from "@/components/heading";
-import { FunctionComponent } from "react";
 
 export default async function Page() {
   return (

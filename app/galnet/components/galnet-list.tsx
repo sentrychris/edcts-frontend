@@ -5,8 +5,8 @@ import type { Galnet } from "@/core/interfaces/Galnet";
 import type { Pagination } from "@/core/interfaces/Pagination";
 import { useState } from "react";
 import { getCollection } from "@/core/api";
-import Link from "next/link";
 import PaginationLinks from "@/components/pagination-links";
+import Link from "next/link";
 
 interface Props {
   articles: Pagination<Galnet>;
