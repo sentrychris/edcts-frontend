@@ -1,5 +1,32 @@
-import NextAuth from "next-auth";
+import NextAuth, { type NextAuthConfig } from "next-auth";
+import CredentialsProvider from "next-auth/providers/credentials";
 
-export const { handlers, signIn, signOut, auth } = NextAuth({
-  providers: [],
-});
+interface User {
+  name: string;
+  email: string;
+}
+
+export const authOptions: NextAuthConfig = {
+  providers: [
+    CredentialsProvider({
+      credentials: {
+        token: {
+          label: "Token",
+          type: "text"
+        },
+      },
+      async authorize(credentials) {
+        if (credentials?.token) {
+          // Validate the token with your backend if needed
+          return {
+            name: "User",
+            email: "user@example.com",
+          } as User; // Replace with actual user data
+        }
+        return null;
+      },
+    }),
+  ],
+};
+
+export const { handlers, signIn, signOut, auth } = NextAuth(authOptions);
