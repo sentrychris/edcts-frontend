@@ -106,9 +106,11 @@ const SystemBodiesTable: FunctionComponent<Props> = ({ bodies, dispatcher }) => 
         const childClass = isOrbitingPlanet(body) ? orbitalMargin : "";
         return (
           <Link className={`${childClass} text-blue-200 hover:underline`} href={"#"}>
-            {body.discovered_by.startsWith("CMDR")
-              ? body.discovered_by
-              : `CMDR ${body.discovered_by}`}
+            {body.discovered_by
+              ? (body.discovered_by.startsWith("CMDR")
+                ? body.discovered_by
+                : `CMDR ${body.discovered_by}`)
+              : "Unknown"}
           </Link>
         );
       },
