@@ -43,7 +43,7 @@ const SystemInformationBar: FunctionComponent<Props> = ({ information }) => {
           </div>
           <div className="whitespace-nowrap">
             <p className="mb-2">Controlling Faction:</p>
-            {renderTextWithIcon(information && information.controlling_faction
+            {renderTextWithIcon(information && information.controlling_faction && information.controlling_faction.name
               ? information.controlling_faction.name
               : "No Controlling Faction", {
                 icon: "icarus-terminal-system-authority-solid",
@@ -52,7 +52,7 @@ const SystemInformationBar: FunctionComponent<Props> = ({ information }) => {
           </div>
           <div className="whitespace-nowrap">
             <p className="mb-2">Faction State:</p>
-            {renderTextWithIcon(information && information.controlling_faction
+            {renderTextWithIcon(information && information.controlling_faction && information.controlling_faction.state
               ? information.controlling_faction.state
               : "No Data", {
                 icon: "icarus-terminal-system-authority-solid",
