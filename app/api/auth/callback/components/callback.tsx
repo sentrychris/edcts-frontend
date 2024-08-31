@@ -8,32 +8,27 @@ const AuthCallback: FunctionComponent = () => {
   const router = useRouter();
 
   useEffect(() => {
-    const fetchToken = async () => {
+    const fetchUser = async () => {
       try {
-        // Directly fetch the token from the Laravel backend
-        const response = await fetch("http://localhost/api/auth/frontier/token", {
+        const response = await fetch("http://localhost/api/auth/frontier/me", {
           method: "POST",
           headers: {
             "Content-Type": "application/json",
           },
-          credentials: "include", // Ensure cookies are sent with the request
+          credentials: "include",
         });
 
         if (!response.ok) {
-          throw new Error("Failed to fetch token");
+          throw new Error("Failed to fetch user");
         }
 
         const data = await response.json();
         const { token } = data;
 
-        console.log({ data });
-
         const result = await signIn("credentials", {
           redirect: false,
           token: token,
         });
-
-        console.log({ result });
 
         if (result?.ok) {
           router.push("/");
@@ -42,12 +37,12 @@ const AuthCallback: FunctionComponent = () => {
           // Optionally redirect to an error page
         }
       } catch (error) {
-        console.error("Error fetching token:", error);
+        console.error("Error fetching user:", error);
         // Optionally redirect to an error page
       }
     };
 
-    fetchToken();
+    fetchUser();
   }, [router]);
 
   return <div>Loading...</div>;
