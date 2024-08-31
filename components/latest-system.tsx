@@ -1,6 +1,6 @@
 import type { FunctionComponent } from "react";
 import type SystemMap from "@/app/systems/lib/system-map";
-import { pluralizeTextFromArray } from "@/core/util";
+import { pluralizeTextFromArray } from "@/core/string-utils";
 import Link from "next/link";
 
 interface Props {

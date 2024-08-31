@@ -2,7 +2,7 @@
 
 import { type FunctionComponent, useEffect, useRef, useState, memo } from "react";
 import type { Galnet } from "@/core/interfaces/Galnet";
-import { getCurrentEliteDate } from "@/core/util";
+import { getCurrentEliteDate } from "@/core/string-utils";
 import AudioPlayer from "@/components/audio-player";
 import Link from "next/link";
 

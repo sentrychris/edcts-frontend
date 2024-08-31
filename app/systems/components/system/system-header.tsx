@@ -1,6 +1,6 @@
 import type { FunctionComponent } from "react";
 import type { System } from "@/core/interfaces/System";
-import { renderTextWithIcon } from "@/core/render";
+import { renderTextWithIcon } from "@/core/render-utils";
 
 interface Props {
   system: System;
