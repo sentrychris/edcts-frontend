@@ -10,7 +10,7 @@ interface Props {
   articles: Pagination<Galnet>;
 }
 
-const GalnetList: FunctionComponent<Props> = ({ className, articles }) => {
+const GalnetSidebar: FunctionComponent<Props> = ({ className, articles }) => {
   const [currentSlice, setCurrentSlice] = useState(0);
   const itemsPerSlice = 5;
 
@@ -64,4 +64,4 @@ const GalnetList: FunctionComponent<Props> = ({ className, articles }) => {
   );
 };
 
-export default GalnetList;
+export default GalnetSidebar;

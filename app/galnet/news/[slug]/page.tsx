@@ -3,7 +3,7 @@ import type { Galnet } from "@/core/interfaces/Galnet";
 import { getCollection, getResource } from "@/core/api";
 import dynamic from "next/dynamic";
 import Heading from "@/components/heading";
-import GalnetList from "@/components/galnet-list";
+import GalnetSidebar from "../../components/galnet-sidebar";
 
 const GalnetArticle = dynamic(() => import("../../components/galnet-article"), {
   ssr: false,
@@ -95,7 +95,7 @@ export default async function Page({ params }: { params: { slug: string } }) {
                 <i className="icarus-terminal-notifications text-glow__orange text-2xl"></i>
                 Latest News
               </h1>
-              <GalnetList articles={galnet.articles} />
+              <GalnetSidebar articles={galnet.articles} />
             </div>
           </div>
           <div className="order-first col-span-12 md:order-last md:col-span-9 md:ps-10">
