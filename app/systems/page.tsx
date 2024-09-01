@@ -69,9 +69,9 @@ export default async function Page() {
     <>
       <Heading icon="icarus-terminal-info" title="System Statistics" className="mt-4 gap-2" />
       <small className="mb-8 text-xs text-stone-300">
-        Updated every <span className="text-glow__blue">30 seconds</span>. (Source:{" "}
-        <a className="text-glow__orange" href="https://eddn.edcd.io/">
-          EDDN
+        Updated every <span className="text-glow__blue">60 minutes</span>. (Source:{" "}
+        <a className="text-glow__orange" href="https://status.versyx.net/">
+          API
         </a>
         ).
       </small>
@@ -82,21 +82,28 @@ export default async function Page() {
         latestSystem={latestSystem}
       />
       <div className="mt-4 grid grid-cols-1 gap-10 md:grid-cols-12">
-        <div className="order-last col-span-1 uppercase md:order-first md:col-span-4">
+        <div className="order-last col-span-1 md:order-first md:col-span-4">
           <Heading
             icon="icarus-terminal-route text-glow__orange"
             largeIcon={true}
             title="Nav Routes"
-            className="mt-5 gap-3 text-2xl"
+            className="mt-4 gap-3 text-2xl"
           />
-          <SystemsNavRoutes className="mt-5" callInterval={45000} />
+          <small className="text-xs text-stone-300">
+            Updated every <span className="text-glow__blue">30 seconds</span>. (Source:{" "}
+            <a className="text-glow__orange" href="https://eddn.edcd.io/">
+              EDDN
+            </a>
+            ).
+          </small>
+          <SystemsNavRoutes callInterval={30000} />
         </div>
         <div className="order-first col-span-1 md:order-last md:col-span-8">
           <Heading
             icon="icarus-terminal-system-orbits text-glow__orange"
             largeIcon={true}
             title="Systems Information"
-            className="mt-5 gap-3 text-2xl"
+            className="mt-4 gap-3 text-2xl"
           />
           <SystemsTable className="mt-5" systems={systems} />
         </div>

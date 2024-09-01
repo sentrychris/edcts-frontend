@@ -64,7 +64,7 @@ const SystemsNavRoutes: FunctionComponent<Props> = ({ className = "", callInterv
         className="my-5"
       />
       <div
-        className={`${className} grid grid-cols-2 gap-x-10 border-b border-neutral-800 py-2 text-sm`}
+        className={`${className} uppercase grid grid-cols-2 gap-x-10 border-b border-neutral-800 py-2 text-sm`}
       >
         <span className="text-glow__orange tracking-wide">From</span>
         <span className="text-glow__orange tracking-wide">To</span>
@@ -73,7 +73,7 @@ const SystemsNavRoutes: FunctionComponent<Props> = ({ className = "", callInterv
         return (
           <div
             key={route.from + route.to}
-            className="grid grid-cols-2 gap-x-10 py-2 text-sm text-xs text-white"
+            className="uppercase grid grid-cols-2 gap-x-10 py-2 text-sm text-xs text-white"
           >
             <span>{route.from}</span>
             <span>{route.to}</span>
