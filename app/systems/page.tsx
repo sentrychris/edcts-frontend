@@ -78,7 +78,7 @@ export default async function Page() {
       <SystemsStatisticsBar
         className="fx-fade-in"
         callInterval={10000}
-        resetCache={1}
+        resetCache={0}
         latestSystem={latestSystem}
       />
       <div className="mt-4 grid grid-cols-1 gap-10 md:grid-cols-12">

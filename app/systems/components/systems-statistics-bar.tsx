@@ -20,7 +20,7 @@ interface Props {
 const SystemsStatisticsBar: FunctionComponent<Props> = ({
   className = "",
   callInterval = 30000,
-  resetCache = true,
+  resetCache = 1,
   latestSystem,
 }) => {
   const [statistics, setStatistics] = useState<AppStatistics>(statisticsState.data);
