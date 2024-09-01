@@ -30,7 +30,7 @@ const SystemsStatisticsBar: FunctionComponent<Props> = ({
     // Initial API call to retrieve statistics
     getResource<AppStatistics>("statistics", {
       params: {
-        resetCache: 1,
+        resetCache: 0,
       },
     }).then((response) => {
       setStatistics(response.data);
