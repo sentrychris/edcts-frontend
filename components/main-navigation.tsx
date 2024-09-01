@@ -7,7 +7,9 @@ import { Bars3Icon, XMarkIcon } from "@heroicons/react/24/outline";
 import { getResource } from "@/core/api";
 import Link from "next/link";
 import Image from "next/image";
+import { useSession } from "next-auth/react";
 
+// session ? (session.user as SessionUser) : null
 const navigation = [
   { name: "Home", href: "/", current: true },
   { name: "Star Systems", href: "/systems", current: false },
@@ -20,7 +22,12 @@ function classNames(...classes: string[]) {
   return classes.filter(Boolean).join(" ");
 }
 
-const MainNavigation: FunctionComponent<{ user: SessionUser|null }> = ({ user }) => {
+const MainNavigation: FunctionComponent = () => {
+  const { data } = useSession();
+  const user = data && data?.user
+    ? (data.user as SessionUser)
+    : null;
+
   const makeFrontierSSOLoginRequest = async () => {
     const { data: authorizationDetails } =
       await getResource<AuthorizationServerInformation>("auth/frontier/login");
