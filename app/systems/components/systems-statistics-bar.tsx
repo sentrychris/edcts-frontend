@@ -12,7 +12,7 @@ import Link from "next/link";
 
 interface Props {
   callInterval?: number;
-  resetCache?: number;
+  flushCache?: number;
   className?: string;
   latestSystem: System;
 }
@@ -20,21 +20,25 @@ interface Props {
 const SystemsStatisticsBar: FunctionComponent<Props> = ({
   className = "",
   callInterval = 30000,
-  resetCache = 1,
+  flushCache = 0,
   latestSystem,
 }) => {
   const [statistics, setStatistics] = useState<AppStatistics>(statisticsState.data);
   const [statisticsInterval, setStatisticsInterval] = useState<NodeJS.Timeout>();
 
   useEffect(() => {
-    // Initial API call to retrieve statistics
-    getResource<AppStatistics>("statistics", {
-      params: {
-        resetCache: 0,
-      },
-    }).then((response) => {
-      setStatistics(response.data);
-    });
+    const callStatistics = (flushCache = 0) => {
+      getResource<AppStatistics>("statistics", {
+        params: {
+          flushCache,
+        },
+      }).then((response) => {
+        setStatistics(response.data);
+      });
+    }
+
+    // First call to initialize statistics
+    callStatistics(0);
 
     // Clear any existing interval
     if (statisticsInterval) {
@@ -43,22 +47,15 @@ const SystemsStatisticsBar: FunctionComponent<Props> = ({
 
     // Set up a new interval to fetch statistics periodically
     const interval = setInterval(() => {
-      getResource<AppStatistics>("statistics", {
-        params: {
-          resetCache,
-        },
-      }).then((response) => {
-        const { data: statistics } = response;
-        setStatistics(statistics);
-      });
+      callStatistics(flushCache);
     }, callInterval);
 
-    // setStaisitcsInterval to the interval
+    // setStatisticsInterval to the interval
     setStatisticsInterval(interval);
 
     // Cleanup function to clear interval on unmount or when deps change
     return () => clearInterval(interval);
-  }, [resetCache, callInterval]);
+  }, [flushCache, callInterval]);
 
   return (
     <div
