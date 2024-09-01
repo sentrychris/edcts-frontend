@@ -2,12 +2,14 @@ import type { Metadata } from "next";
 import type { Galnet } from "@/core/interfaces/Galnet";
 import { Jura } from "next/font/google";
 import { getCollection } from "@/core/api";
+import { auth } from "@/core/auth";
 import SvgFilters from "@/components/svg-filters";
 import MainBackground from "@/components/main-background";
 import MainNavigation from "@/components/main-navigation";
 import NewsTicker from "./galnet/components/galnet-ticker";
 import Link from "next/link";
 import "@/css/main.css";
+import { SessionUser } from "@/core/interfaces/Auth";
 
 const jura = Jura({ subsets: ["latin"] });
 
@@ -51,6 +53,8 @@ export const metadata: Metadata = {
 };
 
 export default async function RootLayout({ children }: { children: React.ReactNode }) {
+  const session = await auth();
+
   const news = await getCollection<Galnet>("galnet/news");
   const articles = news.data.map((article) => ({
     title: article.title,
@@ -64,7 +68,7 @@ export default async function RootLayout({ children }: { children: React.ReactNo
       <body className={jura.className + " overlay relative antialiased"}>
         <SvgFilters />
         <MainBackground />
-        <MainNavigation />
+        <MainNavigation user={session ? (session.user as SessionUser) : null}  />
         <NewsTicker articles={articles} />
         <main className="text-glow__white lg:px-18 mx-auto flex flex-col px-6 py-6 text-neutral-200 md:px-12">
           <h1 className="mb-5 text-4xl uppercase">

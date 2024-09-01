@@ -5,7 +5,7 @@ import { useRouter } from "next/navigation";
 import { signIn } from "next-auth/react";
 import { settings } from "@/core/config";
 
-const AuthCallback: FunctionComponent = () => {
+const AuthCallback: FunctionComponent<{ csrf: string }> = ({ csrf }) => {
   const router = useRouter();
 
   useEffect(() => {
@@ -23,12 +23,15 @@ const AuthCallback: FunctionComponent = () => {
           throw new Error("Failed to fetch user");
         }
 
-        const data = await response.json();
-        const { token } = data;
+        const { data } = await response.json();
+        const { user, token } = data;
+        // TODO error handling, ensure user and token are present
 
         const result = await signIn("credentials", {
           redirect: false,
+          user: JSON.stringify(user),
           token: token,
+          csrfToken: csrf,
         });
 
         if (result?.ok) {
