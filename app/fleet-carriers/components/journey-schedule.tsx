@@ -3,7 +3,7 @@
 import { type FunctionComponent, useEffect, useState } from "react";
 import type { Schedule } from "@/core/interfaces/Schedule";
 import { getResource } from "@/core/api";
-import { scheduleState } from "../lib/store";
+import { scheduleState } from "../lib/state";
 
 interface Props {
   params: { slug: string };

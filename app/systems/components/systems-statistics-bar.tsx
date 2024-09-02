@@ -7,7 +7,7 @@ import { useEffect, useState } from "react";
 import { formatNumber } from "@/core/string-utils";
 import { renderTextWithIcon } from "@/core/render-utils";
 import { getResource } from "@/core/api";
-import { statisticsState } from "../lib/store";
+import { statisticsState } from "../lib/state";
 import Link from "next/link";
 
 interface Props {

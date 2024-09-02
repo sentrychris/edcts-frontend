@@ -4,12 +4,11 @@ import { Fragment, type FunctionComponent } from "react";
 import type { AuthorizationServerInformation, SessionUser } from "@/core/interfaces/Auth";
 import { Disclosure, DisclosureButton, DisclosurePanel, Menu, MenuButton, MenuItem, MenuItems, Transition } from "@headlessui/react";
 import { Bars3Icon, XMarkIcon } from "@heroicons/react/24/outline";
+import { useSession } from "next-auth/react";
 import { getResource } from "@/core/api";
 import Link from "next/link";
 import Image from "next/image";
-import { useSession } from "next-auth/react";
 
-// session ? (session.user as SessionUser) : null
 const navigation = [
   { name: "Home", href: "/", current: true },
   { name: "Star Systems", href: "/systems", current: false },

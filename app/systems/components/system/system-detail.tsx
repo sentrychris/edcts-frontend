@@ -7,7 +7,7 @@ import { useEffect, useState, useCallback } from "react";
 import { SystemBodyType } from "@/core/constants/system";
 import { systemDispatcher } from "@/core/events/SystemDispatcher";
 import { getResource } from "@/core/api";
-import { systemState } from "../../lib/store";
+import { systemState } from "../../lib/state";
 import Heading from "@/components/heading";
 import Loader from "@/components/loader";
 import SystemMap from "../../lib/system-map";
