@@ -26,29 +26,9 @@ const PaginationLinks: FunctionComponent<Props> = ({ metadata, links, paginate }
           Previous
         </PaginationLink>
       </li>
-      {metadata.links.map(
-        (link) =>
-          !isNaN(+link.label) && (
-            <li key={`link_${link.label}`} className="mx-1 hidden md:block">
-              <PaginationLink url={link.url} active={link.active} paginate={paginate}>
-                {link.label}
-              </PaginationLink>
-            </li>
-          ),
-      )}
       <li>
         <PaginationLink key={"link_next"} url={links.next} active={false} paginate={paginate}>
           Next
-        </PaginationLink>
-      </li>
-      <li>
-        <PaginationLink
-          key={"link_last"}
-          url={metadata.current_page !== metadata.last_page && links.last ? links.last : null}
-          active={false}
-          paginate={paginate}
-        >
-          Last
         </PaginationLink>
       </li>
     </ul>
