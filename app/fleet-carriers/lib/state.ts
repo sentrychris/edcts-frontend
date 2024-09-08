@@ -1,6 +1,4 @@
 import type { Schedule } from "@/core/interfaces/Schedule";
-import type { Pagination } from "@/core/interfaces/Pagination";
-import { pagination } from "@/core/api";
 import { systemState } from "../../systems/lib/state";
 
 export const scheduleState: Schedule = {
@@ -35,5 +33,3 @@ export const scheduleState: Schedule = {
   },
   slug: "",
 };
-
-export const paginatedScheduleState: Pagination<Schedule> = pagination;

@@ -115,11 +115,6 @@ const SystemsTable: FunctionComponent<Props> = ({ className = "", systems }) => 
     }
   };
 
-  const paginate = async (link: string) => {
-    const { data, meta, links } = await getCollection<System>(link);
-    await setState(data, meta, links);
-  };
-
   const columns = {
     name: {
       title: "Name",
@@ -218,7 +213,7 @@ const SystemsTable: FunctionComponent<Props> = ({ className = "", systems }) => 
           }}
         />
       </div>
-      <Table columns={columns} data={rows} meta={metadata} links={navigation} page={paginate} />
+      <Table columns={columns} data={rows} meta={metadata} links={navigation} />
     </div>
   );
 };

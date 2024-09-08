@@ -1,6 +1,4 @@
 import type { System } from "@/core/interfaces/System";
-import type { Pagination } from "@/core/interfaces/Pagination";
-import { pagination } from "@/core/api";
 
 export const systemState: System = {
   id: 0,
@@ -95,5 +93,3 @@ export const statisticsState = {
     },
   },
 };
-
-export const paginatedSystemState: Pagination<System> = pagination;

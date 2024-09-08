@@ -2,7 +2,6 @@ import type { JSX } from "react";
 import type { Meta, Links } from "@/core/interfaces/Pagination";
 import { useEffect } from "react";
 import { useAnimateTable } from "@/core/hooks/animate";
-import PaginationLinks from "./pagination-links";
 
 type RenderColumn<T> = (item: T) => string | JSX.Element;
 
@@ -23,10 +22,9 @@ interface Props<T extends RequiredAttribute> {
   data: T[];
   meta?: Meta;
   links?: Links;
-  page?: (link: string) => void;
 }
 
-function Table<T extends RequiredAttribute>({ columns, data, meta, links, page }: Props<T>) {
+function Table<T extends RequiredAttribute>({ columns, data, meta, links }: Props<T>) {
   type Mode = { accessor?: string; render?: RenderColumn<T> };
   const isRender = (ctx: Mode): ctx is Required<Mode> => !!ctx.render;
   const isAccessor = (ctx: Mode): ctx is Required<Mode> => !!ctx.accessor;
@@ -87,10 +85,6 @@ function Table<T extends RequiredAttribute>({ columns, data, meta, links, page }
     return item[key];
   };
 
-  const paginate = (link: string) => {
-    if (page) page(link);
-  };
-
   return (
     <>
       <div className="relative overflow-x-auto border-b border-t border-neutral-800 bg-transparent pb-5 pt-2 backdrop-blur backdrop-filter">
@@ -111,7 +105,6 @@ function Table<T extends RequiredAttribute>({ columns, data, meta, links, page }
           {renderBody(data)}
         </table>
       </div>
-      {links && meta && <PaginationLinks metadata={meta} links={links} paginate={paginate} />}
     </>
   );
 }

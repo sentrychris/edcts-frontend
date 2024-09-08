@@ -41,6 +41,7 @@ export async function request(
     : await fetch(`${url}${query}`);
 
   if (!response.ok) {
+    console.error(response);
     throw new Error("Failed to fetch data");
   }
 

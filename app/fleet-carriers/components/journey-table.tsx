@@ -67,11 +67,6 @@ const JourneyTable: FunctionComponent<Props> = ({ schedule, filter = true }) => 
     }
   };
 
-  const paginate = async (link: string) => {
-    const { data, meta, links } = await getCollection<Schedule>(link);
-    await setState(data, meta, links);
-  };
-
   const columns = {
     status: {
       title: "Status",
@@ -121,7 +116,7 @@ const JourneyTable: FunctionComponent<Props> = ({ schedule, filter = true }) => 
   return (
     <div>
       {filter && <Filter handleInput={searchData} className="mb-5" />}
-      <Table columns={columns} data={rows} meta={metadata} links={navigation} page={paginate} />
+      <Table columns={columns} data={rows} meta={metadata} links={navigation} />
     </div>
   );
 };
