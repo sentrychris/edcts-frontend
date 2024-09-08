@@ -65,7 +65,7 @@ const SystemsStatisticsBar: FunctionComponent<Props> = ({
       <div className="flex flex-row items-center justify-between uppercase">
         <div className="flex flex-wrap items-center gap-10 lg:gap-20">
           <div className="whitespace-nowrap">
-            <p className="mb-2">Systems:</p>
+            <p className="mb-2">Systems Logged:</p>
             {renderTextWithIcon(formatNumber(statistics.cartographical.systems), {
               icon: "icarus-terminal-system-orbits text-2xl",
             })}
