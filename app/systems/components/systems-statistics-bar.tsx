@@ -90,13 +90,8 @@ const SystemsStatisticsBar: FunctionComponent<Props> = ({
           </div>
         </div>
         <div className="hidden items-center gap-4 whitespace-nowrap md:flex">
-          <i className="icarus-terminal-location-filled text-glow__blue text-3xl"></i>
           <div>
-            <Heading
-              title="Latest Updated System"
-              className="text-xs"
-            />
-            <LatestSystem className="text-xs" />
+            <LatestSystem className="text-xs" showIcon={true} showHeading={true} />
           </div>
         </div>
       </div>
