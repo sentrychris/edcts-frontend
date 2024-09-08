@@ -15,16 +15,22 @@ interface Props {
   showHeading?: boolean;
 }
 
-const LatestSystem: FunctionComponent<Props> = ({ className, showIcon = false, showHeading = false }) => {
+const LatestSystem: FunctionComponent<Props> = ({
+  className,
+  showIcon = false,
+  showHeading = false,
+}) => {
   const [isLoading, setIsLoading] = useState(true);
   const [system, setLastUpdatedSystem] = useState<SystemMap>();
 
   useEffect(() => {
-    getResource<System>("system/last-updated").then((response) => {
-      setLastUpdatedSystem(new SystemMap(response.data));
-    }).finally(() => {
-      setIsLoading(false);
-    });
+    getResource<System>("system/last-updated")
+      .then((response) => {
+        setLastUpdatedSystem(new SystemMap(response.data));
+      })
+      .finally(() => {
+        setIsLoading(false);
+      });
   }, []);
 
   return (
@@ -33,10 +39,7 @@ const LatestSystem: FunctionComponent<Props> = ({ className, showIcon = false, s
         <div className="flex items-center gap-x-3">
           {showIcon && <i className="icarus-terminal-location-filled text-glow__blue text-3xl"></i>}
           <div>
-            {showHeading && <Heading
-              title="Latest Updated System"
-              className="text-xs"
-            />}
+            {showHeading && <Heading title="Latest Updated System" className="text-xs" />}
             <Link
               className="text-glow__blue text-lg font-bold hover:underline"
               href={`systems/${system.detail.slug}`}
@@ -70,11 +73,11 @@ const LatestSystem: FunctionComponent<Props> = ({ className, showIcon = false, s
             </div>
           </div>
         </div>
-      ) :
-      <div className="flex items-center justify-center">
-        <LoaderMini visible={isLoading} message="Loading latest updated system..."/>
-      </div>
-    }
+      ) : (
+        <div className="flex items-center justify-center">
+          <LoaderMini visible={isLoading} message="Loading latest updated system..." />
+        </div>
+      )}
     </div>
   );
 };

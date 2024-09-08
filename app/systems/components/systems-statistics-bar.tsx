@@ -33,7 +33,7 @@ const SystemsStatisticsBar: FunctionComponent<Props> = ({
       }).then((response) => {
         setStatistics(response.data);
       });
-    }
+    };
 
     // First call to initialize statistics
     callStatistics(0);

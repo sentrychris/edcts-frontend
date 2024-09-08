@@ -55,7 +55,7 @@ export default async function Home() {
             title="Latest Updated System"
             className="mb-8 gap-2 text-2xl"
           />
-          <LatestSystem className="text-sm border-b border-neutral-800 pb-8" />
+          <LatestSystem className="border-b border-neutral-800 pb-8 text-sm" />
 
           <Heading
             icon="icarus-terminal-notifications text-glow__orange"

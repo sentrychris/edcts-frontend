@@ -1,7 +1,7 @@
 import type { Metadata } from "next";
 import type { Galnet } from "@/core/interfaces/Galnet";
 import type { SessionUser } from "@/core/interfaces/Auth";
-import { SessionProvider } from "next-auth/react"
+import { SessionProvider } from "next-auth/react";
 import { Jura } from "next/font/google";
 import { getCollection } from "@/core/api";
 import { auth } from "@/core/auth";
@@ -66,8 +66,8 @@ export default async function RootLayout({ children }: { children: React.ReactNo
 
   return (
     <html lang="en" data-fx-crt-text="true" className="scroll-smooth">
-      <body className={jura.className + " overlay relative antialiased"}>
-        <SessionProvider session={session} refetchInterval={5*60} refetchOnWindowFocus={true}>
+      <body className={jura.className + " overlay text-glow relative antialiased"}>
+        <SessionProvider session={session} refetchInterval={5 * 60} refetchOnWindowFocus={true}>
           <SvgFilters />
           <MainBackground />
           <MainNavigation />
