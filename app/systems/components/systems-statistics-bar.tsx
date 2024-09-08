@@ -2,26 +2,24 @@
 
 import type { FunctionComponent } from "react";
 import type { AppStatistics } from "@/core/interfaces/Statistics";
-import type { System } from "@/core/interfaces/System";
 import { useEffect, useState } from "react";
 import { formatNumber } from "@/core/string-utils";
 import { renderTextWithIcon } from "@/core/render-utils";
 import { getResource } from "@/core/api";
 import { statisticsState } from "../lib/state";
-import Link from "next/link";
+import LatestSystem from "./latest-system";
+import Heading from "@/components/heading";
 
 interface Props {
   callInterval?: number;
   flushCache?: number;
   className?: string;
-  latestSystem: System;
 }
 
 const SystemsStatisticsBar: FunctionComponent<Props> = ({
   className = "",
   callInterval = 30000,
   flushCache = 0,
-  latestSystem,
 }) => {
   const [statistics, setStatistics] = useState<AppStatistics>(statisticsState.data);
   const [statisticsInterval, setStatisticsInterval] = useState<NodeJS.Timeout>();
@@ -93,21 +91,12 @@ const SystemsStatisticsBar: FunctionComponent<Props> = ({
         </div>
         <div className="hidden items-center gap-4 whitespace-nowrap md:flex">
           <i className="icarus-terminal-location-filled text-glow__blue text-3xl"></i>
-          <div className="text-xs">
-            <p className="mb-1">Latest Updated System:</p>
-            <div className="text-xs">
-              <Link
-                className="text-glow__blue hover:text-glow__orange hover:underline"
-                href={`/systems/${latestSystem.slug}`}
-              >
-                {latestSystem.name}
-              </Link>
-              <p>
-                {latestSystem.coords.x}, {latestSystem.coords.y}, {latestSystem.coords.z}
-              </p>
-              <p>{latestSystem.bodies.length} orbital bodies</p>
-              <p>population: {formatNumber(latestSystem.information.population)}</p>
-            </div>
+          <div>
+            <Heading
+              title="Latest Updated System"
+              className="text-xs"
+            />
+            <LatestSystem className="text-xs" />
           </div>
         </div>
       </div>

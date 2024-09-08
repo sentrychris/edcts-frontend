@@ -63,7 +63,6 @@ export async function generateMetadata(
  */
 export default async function Page() {
   const systems = await getPageData();
-  const { data: latestSystem } = await getResource<System>("system/last-updated");
 
   return (
     <>
@@ -79,7 +78,6 @@ export default async function Page() {
         className="fx-fade-in"
         callInterval={10000}
         flushCache={0}
-        latestSystem={latestSystem}
       />
       <div className="mt-4 grid grid-cols-1 gap-10 md:grid-cols-12">
         <div className="order-last col-span-1 md:order-first md:col-span-4">

@@ -1,13 +1,11 @@
 import type { Galnet } from "@/core/interfaces/Galnet";
-import type { System } from "@/core/interfaces/System";
 import type { Schedule } from "@/core/interfaces/Schedule";
-import { getCollection, getResource } from "@/core/api";
+import { getCollection } from "@/core/api";
 import Heading from "@/components/heading";
 import GalnetList from "./galnet/components/galnet-sidebar";
 import LatestSystem from "./systems/components/latest-system";
 import JourneyCard from "./fleet-carriers/components/journey-card";
 import JourneyTable from "./fleet-carriers/components/journey-table";
-import SystemMap from "./systems/lib/system-map";
 
 export default async function Home() {
   const news = await getCollection<Galnet>("galnet/news", {
@@ -15,9 +13,6 @@ export default async function Home() {
       limit: 100,
     },
   });
-
-  const { data: lastUpdatedSystem } = await getResource<System>("system/last-updated");
-  const latestSystem = new SystemMap(lastUpdatedSystem);
 
   const fleetCarrierJourneySchedule = await getCollection<Schedule>("fleet-carriers/schedule", {
     params: {
@@ -60,7 +55,7 @@ export default async function Home() {
             title="Latest Updated System"
             className="mb-8 gap-2 text-2xl"
           />
-          <LatestSystem className="border-b border-neutral-800 pb-8" system={latestSystem} />
+          <LatestSystem className="text-sm border-b border-neutral-800 pb-8" />
 
           <Heading
             icon="icarus-terminal-notifications text-glow__orange"
