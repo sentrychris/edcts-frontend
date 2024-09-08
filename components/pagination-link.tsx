@@ -28,7 +28,7 @@ const PaginationLink: FunctionComponent<Props> = ({ url, active, children, pagin
       className={
         active
           ? `rounded bg-neutral-900 px-3 py-2 text-sm text-white ${disabledClass}`
-          : `px-3 py-2 text-sm text-neutral-400 transition hover:rounded hover:bg-neutral-900 hover:text-white ${disabledClass}`
+          : `px-3 py-2 text-xs text-glow__orange uppercase transition hover:rounded hover:text-glow__blue ${disabledClass}`
       }
     >
       {children}

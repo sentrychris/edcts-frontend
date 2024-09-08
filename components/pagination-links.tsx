@@ -18,12 +18,12 @@ const PaginationLinks: FunctionComponent<Props> = ({ metadata, links, paginate }
           active={false}
           paginate={paginate}
         >
-          First
+          Back to start
         </PaginationLink>
       </li>
       <li>
         <PaginationLink key={"link_prev"} url={links.prev} active={false} paginate={paginate}>
-          Previous
+          Prev
         </PaginationLink>
       </li>
       <li>

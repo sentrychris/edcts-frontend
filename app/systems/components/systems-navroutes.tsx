@@ -4,6 +4,7 @@ import type { SystemsNavRoutes } from "@/core/interfaces/System";
 import { type FunctionComponent, useEffect, useState } from "react";
 import { getResource } from "@/core/api";
 import Filter from "@/components/filter";
+import LoaderMini from "@/components/loader-mini";
 
 interface Props {
   className?: string;
@@ -11,6 +12,7 @@ interface Props {
 }
 
 const SystemsNavRoutes: FunctionComponent<Props> = ({ className = "", callInterval = 30000 }) => {
+  const [isLoading, setIsLoading] = useState(true);
   const [systemsNavRoutes, setSystemsNavRoutes] = useState<SystemsNavRoutes[]>([]);
   const [filteredSystemsNavRoutes, setFilteredSystemsNavRoutes] = useState<SystemsNavRoutes[]>([]);
   const [systemsNavRoutesInterval, setSystemsNavRoutesInterval] = useState<NodeJS.Timeout>();
@@ -20,10 +22,14 @@ const SystemsNavRoutes: FunctionComponent<Props> = ({ className = "", callInterv
       params: {
         limit: 20,
       },
-    }).then(({ data }) => {
-      setSystemsNavRoutes(data);
-      setFilteredSystemsNavRoutes(data);
-    });
+    })
+      .then(({ data }) => {
+        setSystemsNavRoutes(data);
+        setFilteredSystemsNavRoutes(data);
+      })
+      .finally(() => {
+        setIsLoading(false);
+      });
 
     if (systemsNavRoutesInterval) {
       clearInterval(systemsNavRoutesInterval);
@@ -69,17 +75,25 @@ const SystemsNavRoutes: FunctionComponent<Props> = ({ className = "", callInterv
         <span className="text-glow__orange tracking-wide">From</span>
         <span className="text-glow__orange tracking-wide">To</span>
       </div>
-      {filteredSystemsNavRoutes.map((route) => {
-        return (
-          <div
-            key={route.from + route.to}
-            className="grid grid-cols-2 gap-x-10 py-2 text-sm text-xs uppercase text-white"
-          >
-            <span>{route.from}</span>
-            <span>{route.to}</span>
-          </div>
-        );
-      })}
+      {!isLoading ? (
+        <>
+          {filteredSystemsNavRoutes.map((route) => {
+            return (
+              <div
+                key={route.from + route.to}
+                className="grid grid-cols-2 gap-x-10 py-2 text-sm text-xs uppercase text-white"
+              >
+                <span>{route.from}</span>
+                <span>{route.to}</span>
+              </div>
+            );
+          })}
+        </>
+      ) : (
+        <div className="pt-10">
+          <LoaderMini visible={isLoading} message="Loading latest nav routes..." />
+        </div>
+      )}
     </>
   );
 };

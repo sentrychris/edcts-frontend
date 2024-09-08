@@ -35,14 +35,14 @@ const GalnetSidebar: FunctionComponent<Props> = ({ className, articles }) => {
         <button
           onClick={handlePrevSlice}
           disabled={currentSlice === 0}
-          className="text-glow__orange py-2 text-xs uppercase disabled:opacity-50"
+          className="text-glow__orange hover:text-glow__blue py-2 text-xs uppercase disabled:opacity-50"
         >
           {"<<"} Prev
         </button>
         <button
           onClick={handleNextSlice}
           disabled={(currentSlice + 1) * itemsPerSlice >= articles.data.length}
-          className="text-glow__orange py-2 text-xs uppercase disabled:opacity-50"
+          className="text-glow__orange hover:text-glow__blue py-2 text-xs uppercase disabled:opacity-50"
         >
           Next {">>"}
         </button>
