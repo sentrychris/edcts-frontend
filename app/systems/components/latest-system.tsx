@@ -72,7 +72,7 @@ const LatestSystem: FunctionComponent<Props> = ({ className, showIcon = false, s
         </div>
       ) :
       <div className="flex items-center justify-center">
-        <LoaderMini visible={isLoading} />
+        <LoaderMini visible={isLoading} message="Loading latest updated system..."/>
       </div>
     }
     </div>

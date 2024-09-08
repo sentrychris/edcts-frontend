@@ -8,10 +8,14 @@ interface Props {
 
 const LoaderMini: FunctionComponent<Props> = ({
   visible = true,
+  message = "Loading, please wait...",
 }) => {
   return (
     <div className="mini-elite-loader-container" style={{ opacity: visible ? "0.75" : "0" }}>
       <div className="mini-elite-loader">
+        <h2 className="text-glow__orange mb-3 text-xs uppercase">
+          {visible ? message : "Loading completed!"}
+        </h2>
         <div className="row">
           <div className="mini-arrow up outer outer-18"></div>
           <div className="mini-arrow down outer outer-17"></div>
