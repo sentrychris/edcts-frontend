@@ -63,7 +63,7 @@ const SystemBodySVG: FunctionComponent<Props> = ({
         node.addEventListener("click", () => {
           dispatcher.selectBody({
             body,
-            type: "display-body-info",
+            type: "display-body-panel",
           });
           setIconCoords(calculateIconCoords);
         });

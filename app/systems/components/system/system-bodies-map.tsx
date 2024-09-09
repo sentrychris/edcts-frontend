@@ -42,10 +42,10 @@ const SystemBodiesMap: FunctionComponent<Props> = ({
       }
     });
 
-    systemDispatcher.addEventListener("display-body-info", (event) => {
+    systemDispatcher.addEventListener("display-body-panel", (event) => {
       console.log(event);
       setSelectedBodyDisplayInfo(event.message);
-      setIsPanelOpen(true); // Open panel when body info is displayed
+      setIsPanelOpen(true);
     });
   }, [setSelectedBodyDisplayInfo, setIsPanelOpen, systemMap.stars]);
 
