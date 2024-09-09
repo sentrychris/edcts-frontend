@@ -20,33 +20,33 @@ const SystemStarsTable: FunctionComponent<Props> = ({ stars, dispatcher }) => {
   const columns = {
     name: {
       title: "Name",
-      render: (star: SystemStar) => {
+      render: (body: SystemStar) => {
         return (
           <span
             className="hover:text-glow__orange text-blue-200 hover:cursor-pointer hover:underline"
             onClick={() =>
               dispatcher.selectBody({
-                body: star,
+                body,
                 type: "select-body",
               })
             }
           >
             <i className={`icarus-terminal-star text-glow me-2 text-sm`}></i>
-            {star.name}
+            {body.name}
           </span>
         );
       },
     },
     type: {
       title: "Type",
-      render: (star: SystemStar) => {
-        return star.sub_type.replace("Star", "");
+      render: (body: SystemStar) => {
+        return body.sub_type.replace("Star", "");
       },
     },
     spectral_class: {
       title: "Class",
-      render: (star: SystemStar) => {
-        return star.spectral_class ?? "No Data";
+      render: (body: SystemStar) => {
+        return body.spectral_class ?? "No Data";
       },
     },
     main_star: {
