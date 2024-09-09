@@ -38,7 +38,7 @@ const SystemsNavRoutes: FunctionComponent<Props> = ({ className = "", callInterv
     const interval = setInterval(() => {
       getResource<SystemsNavRoutes[]>("nav-routes", {
         params: {
-          limit: 20,
+          limit: 15,
         },
       }).then(({ data }) => {
         setSystemsNavRoutes(data);
