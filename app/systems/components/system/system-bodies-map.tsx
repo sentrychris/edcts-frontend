@@ -96,7 +96,7 @@ const SystemBodiesMap: FunctionComponent<Props> = ({
   }, []);
 
   function renderSystemBodies(map: SystemMap) {
-    function handleSelectedBodyChange(index: number) {
+    const handleSelectedBodyChange = (index: number) => {
       if (
         index < 0 ||
         typeof map.stars[index] === "undefined" ||
@@ -107,7 +107,7 @@ const SystemBodiesMap: FunctionComponent<Props> = ({
 
       setSelectedBody(map.stars[index]);
       setSelectedBodyIndex(index);
-    }
+    };
 
     return (
       <>

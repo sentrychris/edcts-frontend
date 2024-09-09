@@ -3,9 +3,10 @@
 import { type FunctionComponent, useEffect, useState } from "react";
 import type { System } from "@/core/interfaces/System";
 import { pluralizeTextFromArray } from "@/core/string-utils";
+import { SystemBodyType } from "@/core/constants/system";
 import { getResource } from "@/core/api";
-import SystemMap from "../../systems/lib/system-map";
 import Link from "next/link";
+import SystemMap from "../../systems/lib/system-map";
 import LoaderMini from "@/components/loader-mini";
 import Heading from "@/components/heading";
 
@@ -56,11 +57,16 @@ const LatestSystem: FunctionComponent<Props> = ({
               </div>
               <div>
                 <p className="whitespace-nowrap">
-                  <span className="me-1">{system.stars.length}</span>
-                  {pluralizeTextFromArray(system.stars, {
-                    singular: "star",
-                    plural: "stars",
-                  })}
+                  <span className="me-1">
+                    {system.stars.filter((s) => s.type !== SystemBodyType.Null).length}
+                  </span>
+                  {pluralizeTextFromArray(
+                    system.stars.filter((s) => s.type !== SystemBodyType.Null),
+                    {
+                      singular: "star",
+                      plural: "stars",
+                    },
+                  )}
                 </p>
                 <p className="whitespace-nowrap">
                   <span className="me-1">{system.planets.length}</span>
