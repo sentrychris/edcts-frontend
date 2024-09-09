@@ -155,7 +155,7 @@ const SystemBodiesMap: FunctionComponent<Props> = ({
         icon = "icarus-terminal-coriolis-starport";
       } else if (station.type === "Outpost") {
         icon = "icarus-terminal-outpost";
-      } else if (station.type === "Asteroid Base") {
+      } else if (station.type === "Asteroid base") {
         icon = "icarus-terminal-asteroid-base";
       } else if(station.type === "Ocellus Starport") {
         icon = "icarus-terminal-ocellus-starport";
