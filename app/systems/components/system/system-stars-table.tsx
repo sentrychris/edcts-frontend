@@ -2,13 +2,15 @@
 
 import { type FunctionComponent, useState } from "react";
 import type { SystemDispatcher } from "@/core/events/SystemDispatcher";
-import type { RawSystemBody, MappedSystemBody } from "@/core/interfaces/SystemBody";
+import type { MappedSystemBody } from "@/core/interfaces/SystemBody";
 import { formatDate, formatNumber } from "@/core/string-utils";
 import Link from "next/link";
 import Table from "@/components/table";
 
+type SystemStar = Required<MappedSystemBody>;
+
 interface Props {
-  stars: RawSystemBody[];
+  stars: SystemStar[];
   dispatcher: SystemDispatcher;
 }
 
@@ -18,13 +20,13 @@ const SystemStarsTable: FunctionComponent<Props> = ({ stars, dispatcher }) => {
   const columns = {
     name: {
       title: "Name",
-      render: (star: RawSystemBody) => {
+      render: (star: SystemStar) => {
         return (
           <span
             className="hover:text-glow__orange text-blue-200 hover:cursor-pointer hover:underline"
             onClick={() =>
               dispatcher.selectBody({
-                body: star as MappedSystemBody,
+                body: star,
                 type: "select-body",
               })
             }
@@ -37,19 +39,19 @@ const SystemStarsTable: FunctionComponent<Props> = ({ stars, dispatcher }) => {
     },
     type: {
       title: "Type",
-      render: (star: RawSystemBody) => {
+      render: (star: SystemStar) => {
         return star.sub_type.replace("Star", "");
       },
     },
     spectral_class: {
       title: "Class",
-      render: (star: RawSystemBody) => {
+      render: (star: SystemStar) => {
         return star.spectral_class ?? "No Data";
       },
     },
     main_star: {
       title: "Is Main",
-      render: (body: RawSystemBody) => {
+      render: (body: SystemStar) => {
         return body.is_main_star ? (
           <span className="text-green-300">Yes</span>
         ) : (
@@ -59,26 +61,25 @@ const SystemStarsTable: FunctionComponent<Props> = ({ stars, dispatcher }) => {
     },
     bodies: {
       title: "Bodies",
-      render: (body: RawSystemBody) => {
-        const orbital = body as MappedSystemBody;
+      render: (body: SystemStar) => {
         return (
           <span
             className="hover:text-glow__orange text-blue-200 hover:cursor-pointer hover:underline"
             onClick={() =>
               dispatcher.selectBody({
-                body: orbital,
+                body,
                 type: "select-body",
               })
             }
           >
-            {orbital._children?.length ?? 0}
+            {body._children?.length ?? 0}
           </span>
         );
       },
     },
     scoopable: {
       title: "Fuel",
-      render: (body: RawSystemBody) => {
+      render: (body: SystemStar) => {
         return body.is_scoopable ? (
           <span className="text-green-300">Yes</span>
         ) : (
@@ -88,31 +89,31 @@ const SystemStarsTable: FunctionComponent<Props> = ({ stars, dispatcher }) => {
     },
     surface_temp: {
       title: "Surface Temp",
-      render: (body: RawSystemBody) => {
-        return formatNumber(body.surface_temp) + " K";
+      render: (body: SystemStar) => {
+        return formatNumber(body.surface_temp ?? 0) + " K";
       },
     },
     solar_masses: {
       title: "Sol Mass",
-      render: (body: RawSystemBody) => {
+      render: (body: SystemStar) => {
         return (body.solar_masses as number).toFixed(4);
       },
     },
     solar_radius: {
       title: "Sol Radius",
-      render: (body: RawSystemBody) => {
+      render: (body: SystemStar) => {
         return (body.solar_radius as number).toFixed(4);
       },
     },
     magnitude: {
       title: "Magnitude",
-      render: (body: RawSystemBody) => {
+      render: (body: SystemStar) => {
         return (body.absolute_magnitude as number).toFixed(4);
       },
     },
     commander: {
       title: "Discovered By",
-      render: (body: RawSystemBody) => {
+      render: (body: SystemStar) => {
         const value = body.discovered_by ? body.discovered_by : "Unknown";
         return (
           <Link className="text-blue-200 hover:underline" href={"#"}>
@@ -123,7 +124,7 @@ const SystemStarsTable: FunctionComponent<Props> = ({ stars, dispatcher }) => {
     },
     discovered: {
       title: "Discovered On",
-      render: (body: RawSystemBody) => {
+      render: (body: SystemStar) => {
         return formatDate(body.discovered_at);
       },
     },
@@ -132,7 +133,7 @@ const SystemStarsTable: FunctionComponent<Props> = ({ stars, dispatcher }) => {
   return (
     <Table
       columns={columns}
-      data={rows.filter((s: RawSystemBody) => s.name !== "Additional Objects")}
+      data={rows.filter((s: SystemStar) => s.name !== "Additional Objects")}
     />
   );
 };

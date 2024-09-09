@@ -1,6 +1,5 @@
 import type { Metadata } from "next";
 import type { Galnet } from "@/core/interfaces/Galnet";
-import type { SessionUser } from "@/core/interfaces/Auth";
 import { SessionProvider } from "next-auth/react";
 import { Jura } from "next/font/google";
 import { getCollection } from "@/core/api";
@@ -9,9 +8,8 @@ import SvgFilters from "@/components/svg-filters";
 import MainBackground from "@/components/main-background";
 import MainNavigation from "@/components/main-navigation";
 import NewsTicker from "./galnet/components/galnet-ticker";
-import Link from "next/link";
-import "@/css/main.css";
 import Footer from "@/components/footer";
+import "@/css/main.css";
 
 const jura = Jura({ subsets: ["latin"] });
 

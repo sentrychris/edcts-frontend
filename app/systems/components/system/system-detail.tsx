@@ -2,7 +2,7 @@
 
 import type { FunctionComponent } from "react";
 import type { System } from "@/core/interfaces/System";
-import type { RawSystemBody, MappedSystemBody } from "@/core/interfaces/SystemBody";
+import type { MappedSystemBody } from "@/core/interfaces/SystemBody";
 import { useEffect, useState } from "react";
 import { systemDispatcher } from "@/core/events/SystemDispatcher";
 import { getResource } from "@/core/api";
@@ -60,8 +60,8 @@ const SystemDetail: FunctionComponent<Props> = ({ params }) => {
       {!isLoading && systemMap && (
         <SystemBodiesMap
           isLoading={isLoading}
-          systemMap={systemMap}
           system={system}
+          systemMap={systemMap}
           setIsPanelOpen={setIsPanelOpen}
           setSelectedBodyDisplayInfo={setSelectedBody}
         />
@@ -72,7 +72,7 @@ const SystemDetail: FunctionComponent<Props> = ({ params }) => {
           <Heading icon="icarus-terminal-star" title="Main Sequence Stars" className="gap-2 pb-5" />
           {!isLoading && systemMap && (
             <SystemStarsTable
-              stars={systemMap.stars as RawSystemBody[]}
+              stars={systemMap.stars as Required<MappedSystemBody>[]}
               dispatcher={systemDispatcher}
             />
           )}
@@ -85,7 +85,7 @@ const SystemDetail: FunctionComponent<Props> = ({ params }) => {
           />
           {!isLoading && systemMap && (
             <SystemBodiesTable
-              bodies={systemMap.planets as RawSystemBody[]}
+              bodies={systemMap.planets as Required<MappedSystemBody>[]}
               dispatcher={systemDispatcher}
             />
           )}

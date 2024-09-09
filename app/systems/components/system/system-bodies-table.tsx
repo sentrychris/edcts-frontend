@@ -1,22 +1,24 @@
 "use client";
 
 import { type FunctionComponent, useState } from "react";
-import type { RawSystemBody, MappedSystemBody } from "@/core/interfaces/SystemBody";
+import type { MappedSystemBody } from "@/core/interfaces/SystemBody";
 import type { SystemDispatcher } from "@/core/events/SystemDispatcher";
 import { SystemBodyType } from "@/core/constants/system";
 import { formatDate } from "@/core/string-utils";
 import Link from "next/link";
 import Table from "@/components/table";
 
+type SystemBody = Required<MappedSystemBody>;
+
 interface Props {
-  bodies: RawSystemBody[];
+  bodies: SystemBody[];
   dispatcher: SystemDispatcher;
 }
 
 const SystemBodiesTable: FunctionComponent<Props> = ({ bodies, dispatcher }) => {
   const [rows] = useState(bodies);
 
-  const isOrbitingPlanet = (body: RawSystemBody) => {
+  const isOrbitingPlanet = (body: SystemBody) => {
     return body.parents.find((parent) => {
       return (
         Object.prototype.hasOwnProperty.call(parent, SystemBodyType.Planet) &&
@@ -29,7 +31,7 @@ const SystemBodiesTable: FunctionComponent<Props> = ({ bodies, dispatcher }) => 
   const columns = {
     name: {
       title: "Name",
-      render: (body: RawSystemBody) => {
+      render: (body: SystemBody) => {
         const childClass = isOrbitingPlanet(body) ? "ms-5" : "";
         const iconClass =
           body.atmosphere_type !== null && body.atmosphere_type.toLowerCase() !== "no atmosphere"
@@ -43,7 +45,7 @@ const SystemBodiesTable: FunctionComponent<Props> = ({ bodies, dispatcher }) => 
             className={`${childClass} hover:text-glow__orange flex items-center text-blue-200 hover:cursor-pointer hover:underline`}
             onClick={() =>
               dispatcher.selectBody({
-                body: body as MappedSystemBody,
+                body,
                 type: "select-body",
               })
             }
@@ -56,14 +58,14 @@ const SystemBodiesTable: FunctionComponent<Props> = ({ bodies, dispatcher }) => 
     },
     sub_type: {
       title: "Type",
-      render: (body: RawSystemBody) => {
+      render: (body: SystemBody) => {
         const childClass = isOrbitingPlanet(body) ? orbitalMargin : "";
         return <span className={childClass}>{body.sub_type}</span>;
       },
     },
     landable: {
       title: "Landable",
-      render: (body: RawSystemBody) => {
+      render: (body: SystemBody) => {
         const childClass = isOrbitingPlanet(body) ? orbitalMargin : "";
         return body.is_landable ? (
           <span className={`${childClass} text-green-300`}>Yes</span>
@@ -74,7 +76,7 @@ const SystemBodiesTable: FunctionComponent<Props> = ({ bodies, dispatcher }) => 
     },
     atmosphere: {
       title: "Atmosphere",
-      render: (body: RawSystemBody) => {
+      render: (body: SystemBody) => {
         const childClass = isOrbitingPlanet(body) ? orbitalMargin : "";
         return body.atmosphere_type ? (
           <span className={childClass}>{body.atmosphere_type}</span>
@@ -85,7 +87,7 @@ const SystemBodiesTable: FunctionComponent<Props> = ({ bodies, dispatcher }) => 
     },
     volcanism: {
       title: "Volcanism",
-      render: (body: RawSystemBody) => {
+      render: (body: SystemBody) => {
         const childClass = isOrbitingPlanet(body) ? orbitalMargin : "";
         return body.volcanism_type ? (
           <span className={childClass}>{body.volcanism_type}</span>
@@ -96,7 +98,7 @@ const SystemBodiesTable: FunctionComponent<Props> = ({ bodies, dispatcher }) => 
     },
     terraforming: {
       title: "Terraforming",
-      render: (body: RawSystemBody) => {
+      render: (body: SystemBody) => {
         const childClass = isOrbitingPlanet(body) ? orbitalMargin : "";
         return body.terraforming_state && body.terraforming_state !== "" ? (
           <span className={childClass}>{body.terraforming_state}</span>
@@ -107,7 +109,7 @@ const SystemBodiesTable: FunctionComponent<Props> = ({ bodies, dispatcher }) => 
     },
     commander: {
       title: "Discovered By",
-      render: (body: RawSystemBody) => {
+      render: (body: SystemBody) => {
         const childClass = isOrbitingPlanet(body) ? orbitalMargin : "";
         const value = body.discovered_by ? body.discovered_by : "Unknown";
         return (
@@ -119,7 +121,7 @@ const SystemBodiesTable: FunctionComponent<Props> = ({ bodies, dispatcher }) => 
     },
     discovered: {
       title: "Discovered On",
-      render: (body: RawSystemBody) => {
+      render: (body: SystemBody) => {
         const childClass = isOrbitingPlanet(body) ? orbitalMargin : "";
         return <span className={childClass}>{formatDate(body.discovered_at)}</span>;
       },
