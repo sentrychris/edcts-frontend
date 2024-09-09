@@ -4,6 +4,7 @@ import { type FunctionComponent, useCallback, useEffect, useState } from "react"
 import type { ListenerEvent } from "@/core/interfaces/Dispatcher";
 import type { System } from "@/core/interfaces/System";
 import type { MappedSystemBody } from "@/core/interfaces/SystemBody";
+import type { Station } from "@/core/interfaces/Station";
 import type SystemMap from "../../lib/system-map";
 import { SystemBodyType } from "@/core/constants/system";
 import { systemDispatcher } from "@/core/events/SystemDispatcher";
@@ -137,7 +138,7 @@ const SystemBodiesMap: FunctionComponent<Props> = ({
                 className="system-body__children hidden w-full items-center overflow-x-auto hover:cursor-move md:flex"
                 ref={scrollableBodies}
               >
-                {renderSystemBodyChildren(selectedBody)}
+                {renderSystemBodyOrbitingBodies(selectedBody)}
               </div>
             </>
           )}
@@ -146,7 +147,31 @@ const SystemBodiesMap: FunctionComponent<Props> = ({
     );
   }
 
-  function renderSystemBodyChildren(body: MappedSystemBody) {
+  function renderSystemStations(stations: Station[]) {
+    return stations.map((station: Station) => {
+      console.log(station);
+      let icon = "icarus-terminal-orbis-starport";
+      if (station.type === "Coriolis Starport") {
+        icon = "icarus-terminal-coriolis-starport";
+      } else if (station.type === "Outpost") {
+        icon = "icarus-terminal-outpost";
+      }
+
+      return (
+        <>
+          <div key={station.slug} className="me-3 flex items-center text-xs">
+            <i className={`${icon} text-glow`}></i>
+            <div className="ms-3">
+              <span className="text-glow__orange uppercase">{station.name}</span>
+              <div className="text-xs text-neutral-300">{station.distance_to_arrival} ls</div>
+            </div>
+          </div>
+        </>
+      );
+    });
+  }
+
+  function renderSystemBodyOrbitingBodies(body: MappedSystemBody) {
     const bodies = body._children && body._children.length > 0 ? body._children : false;
 
     if (!bodies) {
@@ -188,6 +213,11 @@ const SystemBodiesMap: FunctionComponent<Props> = ({
       </div>
       {!isLoading && (
         <div className="grid grid-cols-12">
+          <div className="col-span-12">
+            <div className="system-body__children hidden w-full items-center overflow-x-auto py-2 hover:cursor-move md:flex">
+              {renderSystemStations(systemMap.stations)}
+            </div>
+          </div>
           <div className="col-span-12">
             {systemMap && systemMap.items.length > 0 ? (
               renderSystemBodies(systemMap)
