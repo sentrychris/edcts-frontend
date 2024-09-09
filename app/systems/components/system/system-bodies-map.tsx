@@ -159,7 +159,7 @@ const SystemBodiesMap: FunctionComponent<Props> = ({
 
       return (
         <>
-          <div key={station.slug} className="me-3 flex items-center text-xs">
+          <div key={station.slug} className="me-5 flex items-center text-xs">
             <i className={`${icon} text-glow`}></i>
             <div className="ms-3">
               <span className="text-glow__orange uppercase">{station.name}</span>
