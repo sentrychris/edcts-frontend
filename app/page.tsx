@@ -53,9 +53,16 @@ export default async function Home() {
             icon="icarus-terminal-location-filled text-glow__blue"
             largeIcon={true}
             title="Latest Updated System"
-            className="mb-8 gap-2 text-2xl"
+            className="gap-2 text-2xl"
           />
-          <LatestSystem className="border-b border-neutral-800 pb-8 text-sm" />
+          <small className="text-xs text-stone-300">
+            Updated every <span className="text-glow__blue">5 minutes</span>. (Source:{" "}
+            <a className="text-glow__orange" href="https://status.versyx.net/">
+              EDDN
+            </a>
+            ).
+          </small>
+          <LatestSystem className="mt-4 border-b border-neutral-800 pb-8 text-sm" />
 
           <Heading
             icon="icarus-terminal-notifications text-glow__orange"
