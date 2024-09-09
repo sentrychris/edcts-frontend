@@ -47,7 +47,7 @@ const SystemBodiesMap: FunctionComponent<Props> = ({
       setSelectedBodyDisplayInfo(event.message);
       setIsPanelOpen(true); // Open panel when body info is displayed
     });
-  }, []);
+  }, [setSelectedBodyDisplayInfo, setIsPanelOpen, systemMap.stars]);
 
   const scrollableBodies = useCallback((node: HTMLDivElement) => {
     let pos = { top: 0, left: 0, x: 0, y: 0 };
