@@ -20,7 +20,7 @@ const SystemsNavRoutes: FunctionComponent<Props> = ({ className = "", callInterv
   useEffect(() => {
     getResource<SystemsNavRoutes[]>("nav-routes", {
       params: {
-        limit: 20,
+        limit: 15,
       },
     })
       .then(({ data }) => {

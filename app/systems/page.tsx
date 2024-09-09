@@ -5,6 +5,7 @@ import Heading from "@/components/heading";
 import SystemsStatisticsBar from "./components/systems-statistics-bar";
 import SystemsTable from "./components/systems-table";
 import SystemsNavRoutes from "./components/systems-navroutes";
+import Link from "next/link";
 
 /**
  * Define the page properties.
@@ -78,10 +79,66 @@ export default async function Page() {
       <div className="mt-4 grid grid-cols-1 gap-10 md:grid-cols-12">
         <div className="order-last col-span-1 md:order-first md:col-span-4">
           <Heading
-            icon="icarus-terminal-route text-glow__orange"
+            icon="icarus-terminal-scan text-glow__orange"
             largeIcon={true}
-            title="Nav Routes"
+            title="Popular Systems"
             className="mt-4 gap-3 text-2xl"
+          />
+          <div className="my-5 p-1">
+            <Link className="flex items-center gap-x-2 hover:text-glow__orange" href="/systems/10477373803-sol">
+              <Heading
+                icon="icarus-terminal-location text-glow__blue"
+                title="Sol"
+                className="gap-2 text-xs"
+              />
+              <small className="text-xs">(Home sweet home)</small>
+            </Link>
+            <Link className="mt-5 flex items-center gap-x-2 hover:text-glow__orange" href="/systems/1178708478315-alpha-centauri">
+              <Heading
+                icon="icarus-terminal-location text-glow__blue"
+                title="Alpha Centauri"
+                className="gap-2 text-xs"
+              />
+              <small className="text-xs">(Free Anaconda)</small>
+            </Link>
+            <Link className="mt-5 flex items-center gap-x-2 hover:text-glow__orange" href="/systems/1184840454858-synuefe-nl-n-c23-4">
+              <Heading
+                icon="icarus-terminal-location text-glow__blue"
+                title="Synuefe NL-N c23-4"
+                className="gap-2 text-xs"
+              />
+              <small className="text-xs">(Closest Guardian ruins to bubble)</small>
+            </Link>
+            <Link className="mt-5 flex items-center gap-x-2 hover:text-glow__orange" href="/systems/3238296097059-colonia">
+              <Heading
+                icon="icarus-terminal-location text-glow__blue"
+                title="Colonia"
+                className="gap-2 text-xs"
+              />
+              <small className="text-xs">(Distant civilization 22,000 LY from Sol)</small>
+            </Link>
+            <Link className="mt-5 flex items-center gap-x-2 hover:text-glow__orange" href="/systems/20578934-sagittarius-a">
+              <Heading
+                icon="icarus-terminal-location text-glow__blue"
+                title="Sagittarius A*"
+                className="gap-2 text-xs"
+              />
+              <small className="text-xs">(Center of the Milky Way Galaxy)</small>
+            </Link>
+            <Link className="mt-5 flex items-center gap-x-2 hover:text-glow__orange" href="/systems/2468576471-skaude-aa-a-h294">
+              <Heading
+                icon="icarus-terminal-location text-glow__blue"
+                title="Skaude AA-A h294"
+                className="gap-2 text-xs"
+              />
+              <small className="text-xs">(The Collection of Wonders)</small>
+            </Link>
+          </div>
+          <Heading
+            icon="icarus-terminal-info text-glow__orange"
+            largeIcon={true}
+            title="Navigation Routes"
+            className="mt-10 gap-3 text-2xl"
           />
           <small className="text-xs text-stone-300">
             Updated every <span className="text-glow__blue">30 seconds</span>. (Source:{" "}
