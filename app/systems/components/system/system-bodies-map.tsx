@@ -6,10 +6,10 @@ import type { System } from "@/core/interfaces/System";
 import type { MappedSystemBody } from "@/core/interfaces/SystemBody";
 import type SystemMap from "../../lib/system-map";
 import { SystemBodyType } from "@/core/constants/system";
-import { pluralizeTextFromArray } from "@/core/string-utils";
 import { systemDispatcher } from "@/core/events/SystemDispatcher";
 import Heading from "@/components/heading";
 import SystemBodySVG from "./system-body-svg";
+import SystemMapStatistics from "./system-map-statistics";
 
 interface Props {
   systemMap: SystemMap;
@@ -184,49 +184,7 @@ const SystemBodiesMap: FunctionComponent<Props> = ({
     <div className="border-b border-neutral-800 bg-transparent py-5 backdrop-blur backdrop-filter">
       <div className="flex items-center justify-between">
         <Heading icon="icarus-terminal-system-bodies" title="System Map" className="mb-2 gap-2" />
-        {!isLoading && (
-          <div className="items-center gap-x-6 text-xs md:flex">
-            <h4 className="text-glow__orange font-bold uppercase">
-              {systemMap.stars.filter((s) => s.type !== SystemBodyType.Null).length}
-              <span className="ms-1">
-                {pluralizeTextFromArray(
-                  systemMap.stars.filter((s) => s.type !== SystemBodyType.Null),
-                  {
-                    singular: "star",
-                    plural: "stars",
-                  },
-                )}
-              </span>
-            </h4>
-            <h4 className="text-glow__orange font-bold uppercase">
-              {systemMap.planets.length}
-              <span className="ms-1">
-                {pluralizeTextFromArray(systemMap.planets, {
-                  singular: "body",
-                  plural: "bodies",
-                })}
-              </span>
-            </h4>
-            <h4 className="text-glow__orange font-bold uppercase">
-              {systemMap.stations.length}
-              <span className="ms-1">
-                {pluralizeTextFromArray(systemMap.stations, {
-                  singular: "station",
-                  plural: "stations",
-                })}
-              </span>
-            </h4>
-            <h4 className="text-glow__blue font-bold uppercase">
-              {systemMap.settlements.length}
-              <span className="ms-1">
-                {pluralizeTextFromArray(systemMap.settlements, {
-                  singular: "settlement",
-                  plural: "settlements",
-                })}
-              </span>
-            </h4>
-          </div>
-        )}
+        {!isLoading && <SystemMapStatistics system={systemMap} />}
       </div>
       {!isLoading && (
         <div className="grid grid-cols-12">
