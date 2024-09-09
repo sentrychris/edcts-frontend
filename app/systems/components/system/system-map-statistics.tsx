@@ -1,7 +1,7 @@
 import type { FunctionComponent } from "react";
+import type SystemMap from "../../lib/system-map";
 import { SystemBodyType } from "@/core/constants/system";
 import { pluralizeTextFromArray } from "@/core/string-utils";
-import SystemMap from "../../lib/system-map";
 
 interface Props {
   system: SystemMap;
