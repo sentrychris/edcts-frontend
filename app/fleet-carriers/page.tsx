@@ -1,5 +1,6 @@
 import type { Metadata, ResolvingMetadata } from "next";
 import type { Schedule } from "@/core/interfaces/Schedule";
+import { settings } from "@/core/config";
 import { getCollection } from "@/core/api";
 import Heading from "@/components/heading";
 import JourneyCard from "./components/journey-card";
@@ -48,7 +49,7 @@ export async function generateMetadata(
     title: `Fleet Carrier Journey Schedule | ${(await parent).title?.absolute}`,
     openGraph: {
       ...(await parent).openGraph,
-      url: `https://edcts.versyx.net/fleet-carriers`,
+      url: `${settings.app.url}/fleet-carriers`,
       title: `Fleet Carrier Journey Schedule | ${(await parent).title?.absolute}`,
       description: `Find fleet carrier scheduled journeys and hop on board.`,
     },

@@ -1,4 +1,5 @@
 import type { Metadata, ResolvingMetadata } from "next";
+import { settings } from "@/core/config";
 import Heading from "@/components/heading";
 import SystemDetail from "../components/system/system-detail";
 
@@ -26,7 +27,7 @@ export async function generateMetadata(
     title: `Star System Detail | ${(await parent).title?.absolute}`,
     openGraph: {
       ...(await parent).openGraph,
-      url: `https://edcts.versyx.net/systems/${params.slug}`,
+      url: `${settings.app.url}/systems/${params.slug}`,
       title: `Star System Detail | ${(await parent).title?.absolute}`,
       description: `Star system information including stars, orbital bodies, settlements, and more.`,
     },

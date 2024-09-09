@@ -1,5 +1,6 @@
 import type { Metadata, ResolvingMetadata } from "next";
 import type { Galnet } from "@/core/interfaces/Galnet";
+import { settings } from "@/core/config";
 import { getCollection, getResource } from "@/core/api";
 import dynamic from "next/dynamic";
 import Heading from "@/components/heading";
@@ -59,10 +60,10 @@ export async function generateMetadata(
       ...(await parent).openGraph,
       images: [
         {
-          url: `https://edcts.versyx.net${galnet.article.banner_image}`,
+          url: `${settings.app.url + galnet.article.banner_image}`,
         },
       ],
-      url: `https://edcts.versyx.net/galnet/news/${params.slug}`,
+      url: `${settings.app.url}/galnet/news/${params.slug}`,
       title: `${galnet.article.title} - ${galnet.article.uploaded_at} | Galnet News`,
       description: `${galnet.article.uploaded_at} - ${galnet.article.title}`,
     },

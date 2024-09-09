@@ -2,6 +2,7 @@ import type { Metadata } from "next";
 import type { Galnet } from "@/core/interfaces/Galnet";
 import { SessionProvider } from "next-auth/react";
 import { Jura } from "next/font/google";
+import { settings } from "@/core/config";
 import { getCollection } from "@/core/api";
 import { auth } from "@/core/auth";
 import SvgFilters from "@/components/svg-filters";
@@ -45,10 +46,10 @@ export const metadata: Metadata = {
     description,
     images: [
       {
-        url: "https://edcts.versyx.net/images/edcts.png",
+        url: `${settings.app.url}/images/edcts.png`,
       },
     ],
-    url: "https://edcts.versyx.net/",
+    url: settings.app.url,
   },
 };
 

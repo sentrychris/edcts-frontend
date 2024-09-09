@@ -1,5 +1,6 @@
 import type { Metadata, ResolvingMetadata } from "next";
 import type { Galnet } from "@/core/interfaces/Galnet";
+import { settings } from "@/core/config";
 import { getCollection } from "@/core/api";
 import Heading from "@/components/heading";
 import GalnetList from "./components/galnet-list";
@@ -40,7 +41,7 @@ export async function generateMetadata(
     title: `Galnet News | ${(await parent).title?.absolute}`,
     openGraph: {
       ...(await parent).openGraph,
-      url: `https://edcts.versyx.net/galnet`,
+      url: `${settings.app.url}/galnet`,
       title: `Galnet News | ${(await parent).title?.absolute}`,
       description: `Latest news from the Galaxy, with Vox Galactica and other independent affiliates.`,
     },

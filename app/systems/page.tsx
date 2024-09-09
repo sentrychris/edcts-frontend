@@ -1,6 +1,7 @@
 import type { Metadata, ResolvingMetadata } from "next";
 import type { System } from "@/core/interfaces/System";
-import { getCollection, getResource } from "@/core/api";
+import { settings } from "@/core/config";
+import { getCollection } from "@/core/api";
 import Heading from "@/components/heading";
 import SystemsStatisticsBar from "./components/systems-statistics-bar";
 import SystemsTable from "./components/systems-table";
@@ -49,7 +50,7 @@ export async function generateMetadata(
     title: `Star Systems Overview | ${(await parent).title?.absolute}`,
     openGraph: {
       ...(await parent).openGraph,
-      url: `https://edcts.versyx.net/systems`,
+      url: `${settings.app.url}/systems`,
       title: `Star Systems Overview | ${(await parent).title?.absolute}`,
       description: `Star systems information, find star systems, latest navigation routes and more.`,
     },
