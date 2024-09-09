@@ -22,7 +22,10 @@ const SystemStarsTable: FunctionComponent<Props> = ({ stars, dispatcher }) => {
         return (
           <span
             className="hover:text-glow__orange text-blue-200 hover:cursor-pointer hover:underline"
-            onClick={() => dispatcher.selectBody({ body: star as MappedSystemBody })}
+            onClick={() => dispatcher.selectBody({
+              body: star as MappedSystemBody,
+              type: "select-body"
+            })}
           >
             <i className={`icarus-terminal-star text-glow me-2 text-sm`}></i>
             {star.name}
@@ -59,7 +62,10 @@ const SystemStarsTable: FunctionComponent<Props> = ({ stars, dispatcher }) => {
         return (
           <span
             className="hover:text-glow__orange text-blue-200 hover:cursor-pointer hover:underline"
-            onClick={() => dispatcher.selectBody({ body: orbital })}
+            onClick={() => dispatcher.selectBody({
+              body: orbital,
+              type: "select-body"
+            })}
           >
             {orbital._children?.length ?? 0}
           </span>

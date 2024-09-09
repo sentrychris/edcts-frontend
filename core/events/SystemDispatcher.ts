@@ -3,16 +3,9 @@ import type { MappedSystemBody } from "../interfaces/SystemBody";
 import EventDispatcher from "./EventDispatcher";
 
 export class SystemDispatcher extends EventDispatcher {
-  message({ message }: { message: string }) {
+  selectBody({ body, type }: { body: MappedSystemBody, type: string }) {
     this.dispatchEvent({
-      type: "message",
-      message: message,
-    });
-  }
-
-  selectBody({ body }: { body: MappedSystemBody }) {
-    this.dispatchEvent({
-      type: "select-body",
+      type,
       message: body,
     });
   }
@@ -21,13 +14,6 @@ export class SystemDispatcher extends EventDispatcher {
     this.dispatchEvent({
       type: "select-system",
       message: system,
-    });
-  }
-
-  displayBodyInformationWidget({ body }: { body: MappedSystemBody }) {
-    this.dispatchEvent({
-      type: "display-body-info",
-      message: { body },
     });
   }
 

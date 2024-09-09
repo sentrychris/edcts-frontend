@@ -18,17 +18,14 @@ import SystemBodiesTable from "./system-bodies-table";
 import SystemBodiesMap from "./system-bodies-map";
 
 interface Props {
-  initSystem?: System;
   params: { slug: string };
 }
 
-const SystemDetail: FunctionComponent<Props> = ({ initSystem, params }) => {
-  const [system, setSystem] = useState<System>(initSystem !== undefined ? initSystem : systemState);
+const SystemDetail: FunctionComponent<Props> = ({ params }) => {
+  const [system, setSystem] = useState<System>(systemState);
   const [isLoading, setLoading] = useState<boolean>(true);
   const [systemMap, setSystemMap] = useState<SystemMap>();
-  const [selectedBodyDisplayInfo, setSelectedBodyDisplayInfo] = useState<{
-    body: MappedSystemBody | null;
-  } | null>(null);
+  const [selectedBody, setSelectedBody] = useState<MappedSystemBody | null>(null);
   const [isPanelOpen, setIsPanelOpen] = useState<boolean>(false);
   const { slug } = params;
 
@@ -66,7 +63,7 @@ const SystemDetail: FunctionComponent<Props> = ({ initSystem, params }) => {
           systemMap={systemMap}
           system={system}
           setIsPanelOpen={setIsPanelOpen}
-          setSelectedBodyDisplayInfo={setSelectedBodyDisplayInfo}
+          setSelectedBodyDisplayInfo={setSelectedBody}
         />
       )}
 
@@ -103,9 +100,9 @@ const SystemDetail: FunctionComponent<Props> = ({ initSystem, params }) => {
         <button className="absolute left-2 top-2 text-xl" onClick={() => setIsPanelOpen(false)}>
           &times;
         </button>
-        {selectedBodyDisplayInfo && systemMap && (
+        {selectedBody && systemMap && (
           <SystemBodyPopover
-            body={selectedBodyDisplayInfo.body}
+            body={selectedBody}
             system={systemMap}
             dispatcher={systemDispatcher}
             close={() => setIsPanelOpen(false)}

@@ -61,7 +61,10 @@ const SystemBodySVG: FunctionComponent<Props> = ({
     (node: SVGGElement) => {
       if (node) {
         node.addEventListener("click", () => {
-          dispatcher.displayBodyInformationWidget({ body });
+          dispatcher.selectBody({
+            body,
+            type: "display-body-info",
+          });
           setIconCoords(calculateIconCoords);
         });
       }
@@ -167,7 +170,7 @@ const SystemBodySVG: FunctionComponent<Props> = ({
                 ? "text-sm"
                 : "hover:text-glow__blue hover:scale-110 hover:cursor-grabbing")
             }
-            onClick={() => dispatcher.selectBody({ body })}
+            onClick={() => dispatcher.selectBody({ body, type: "select-body" })}
           >
             <i className="icarus-terminal-system-bodies text-label__small"></i>
             {orbiting} orbital bodies
@@ -183,7 +186,7 @@ const SystemBodySVG: FunctionComponent<Props> = ({
                     ? "text-sm"
                     : "hover:text-glow__orange hover:scale-110 hover:cursor-grabbing")
                 }
-                onClick={() => dispatcher.selectBody({ body })}
+                onClick={() => dispatcher.selectBody({ body, type: "select-body" })}
               >
                 <i className="icarus-terminal-settlement text-label__small"></i>
                 {body._planetary_bases.length}{" "}

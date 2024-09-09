@@ -53,7 +53,10 @@ const SystemBodyPopover: FunctionComponent<Props> = ({ body, system, dispatcher,
                   <p
                     className="text-glow__blue text-sm hover:cursor-pointer hover:underline"
                     onClick={() => {
-                      dispatcher.selectBody({ body });
+                      dispatcher.selectBody({
+                        body,
+                        type: "select-body",
+                      });
                       if (close) close();
                     }}
                   >
