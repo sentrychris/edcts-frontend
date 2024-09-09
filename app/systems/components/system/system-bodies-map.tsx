@@ -162,7 +162,7 @@ const SystemBodiesMap: FunctionComponent<Props> = ({
           <div key={station.slug} className="me-5 flex items-center text-xs">
             <i className={`${icon} text-glow`}></i>
             <div className="ms-3">
-              <span className="text-glow__orange uppercase">{station.name}</span>
+              <span className="text-glow__blue uppercase">{station.name}</span>
               <div className="text-xs text-neutral-300">{station.distance_to_arrival} ls</div>
             </div>
           </div>
