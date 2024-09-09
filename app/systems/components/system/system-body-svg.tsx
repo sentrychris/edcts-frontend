@@ -61,18 +61,12 @@ const SystemBodySVG: FunctionComponent<Props> = ({
     (node: SVGGElement) => {
       if (node) {
         node.addEventListener("click", () => {
-          const { top, left, right, bottom, width, height } = node.getBoundingClientRect();
-          dispatcher.displayBodyInformationWidget({
-            body,
-            closer: largeViewbox,
-            position: { top, left, right, bottom, width, height },
-          });
-
+          dispatcher.displayBodyInformationWidget({ body });
           setIconCoords(calculateIconCoords);
         });
       }
     },
-    [body, dispatcher, largeViewbox, calculateIconCoords],
+    [body, dispatcher, calculateIconCoords],
   );
 
   // TODO fix this properly, there is a bug in the system map resulting in the wrong

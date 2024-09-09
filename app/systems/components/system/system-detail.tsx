@@ -3,8 +3,7 @@
 import type { FunctionComponent } from "react";
 import type { System } from "@/core/interfaces/System";
 import type { RawSystemBody, MappedSystemBody } from "@/core/interfaces/SystemBody";
-import { useEffect, useState, useCallback } from "react";
-import { SystemBodyType } from "@/core/constants/system";
+import { useEffect, useState } from "react";
 import { systemDispatcher } from "@/core/events/SystemDispatcher";
 import { getResource } from "@/core/api";
 import { systemState } from "../../lib/state";
@@ -13,11 +12,10 @@ import Loader from "@/components/loader";
 import SystemMap from "../../lib/system-map";
 import SystemHeader from "./system-header";
 import SystemInformationBar from "./system-information-bar";
-import SystemBodySVG from "./system-body-svg";
 import SystemBodyPopover from "./system-body-popover";
 import SystemStarsTable from "./system-stars-table";
 import SystemBodiesTable from "./system-bodies-table";
-import { pluralizeTextFromArray } from "@/core/string-utils";
+import SystemBodiesMap from "./system-bodies-map";
 
 interface Props {
   initSystem?: System;
@@ -28,59 +26,11 @@ const SystemDetail: FunctionComponent<Props> = ({ initSystem, params }) => {
   const [system, setSystem] = useState<System>(initSystem !== undefined ? initSystem : systemState);
   const [isLoading, setLoading] = useState<boolean>(true);
   const [systemMap, setSystemMap] = useState<SystemMap>();
-  const [selectedBody, setSelectedBody] = useState<MappedSystemBody>();
-  const [selectedBodyIndex, setSelectedBodyIndex] = useState<number>(0);
   const [selectedBodyDisplayInfo, setSelectedBodyDisplayInfo] = useState<{
     body: MappedSystemBody | null;
-    closer: boolean;
-    position: {
-      top: number;
-      left: number;
-      right: number;
-      bottom: number;
-      width: number;
-      height: number;
-    };
   } | null>(null);
-
   const [isPanelOpen, setIsPanelOpen] = useState<boolean>(false);
-
   const { slug } = params;
-
-  const scrollableBodies = useCallback((node: HTMLDivElement) => {
-    let pos = { top: 0, left: 0, x: 0, y: 0 };
-    if (node) {
-      node.scrollLeft = 0;
-
-      node.addEventListener("mousedown", (e: MouseEvent) => {
-        pos = {
-          left: node.scrollLeft,
-          top: node.scrollTop,
-          x: e.clientX,
-          y: e.clientY,
-        };
-
-        node.addEventListener("mousemove", mouseMoveHandler);
-        node.addEventListener("mouseup", mouseUpHandler);
-      });
-
-      const mouseMoveHandler = (event: MouseEvent) => {
-        const dx = event.clientX - pos.x;
-        const dy = event.clientY - pos.y;
-
-        node.scrollTop = pos.top - dy;
-        node.scrollLeft = pos.left - dx;
-      };
-
-      const mouseUpHandler = () => {
-        node.removeEventListener("mousemove", mouseMoveHandler);
-        node.removeEventListener("mouseup", mouseUpHandler);
-
-        node.style.cursor = "grab";
-        node.style.removeProperty("user-select");
-      };
-    }
-  }, []);
 
   useEffect(() => {
     if (slug) {
@@ -95,119 +45,15 @@ const SystemDetail: FunctionComponent<Props> = ({ initSystem, params }) => {
       })
         .then((response) => {
           const { data: system } = response;
+
           setSystem(system);
-
-          const map = new SystemMap(system);
-          setSystemMap(map);
-
-          const star = map.stars.find((s) => s.is_main_star === 1);
-          setSelectedBody(star);
-
-          systemDispatcher.addEventListener("select-body", (event) => {
-            setSelectedBody(event.message as MappedSystemBody);
-          });
-
-          systemDispatcher.addEventListener("set-index", (event) => {
-            if ((event.message as number) === 0) {
-              setSelectedBody(star);
-            }
-          });
-
-          systemDispatcher.addEventListener("display-body-info", (event) => {
-            setSelectedBodyDisplayInfo(event.message);
-            setIsPanelOpen(true); // Open panel when body info is displayed
-          });
+          setSystemMap(new SystemMap(system));
         })
         .finally(() => {
           setLoading(false);
         });
     }
   }, [slug]);
-
-  function renderSystemBodies(map: SystemMap) {
-    function handleSelectedBodyChange(index: number) {
-      if (
-        index < 0 ||
-        typeof map.stars[index] === "undefined" ||
-        map.stars[index].type === SystemBodyType.Null
-      ) {
-        index = 0;
-      }
-
-      setSelectedBody(map.stars[index]);
-      setSelectedBodyIndex(index);
-    }
-
-    return (
-      <>
-        <div className="flex content-center items-center">
-          {selectedBody && (
-            <>
-              <div className="flex shrink-0 items-center md:rounded-full md:border-r md:border-neutral-700 md:pe-12">
-                {
-                  <div className={"text-glow__orange me-6 hidden flex-col md:flex"}>
-                    <i
-                      className={
-                        "icarus-terminal-chevron-up text-glow__orange hover:text-glow__blue hover:cursor-pointer"
-                      }
-                      onClick={() => handleSelectedBodyChange(selectedBodyIndex - 1)}
-                    ></i>
-                    <i
-                      className={
-                        "icarus-terminal-chevron-down text-glow__orange hover:text-glow__blue hover:cursor-pointer"
-                      }
-                      onClick={() => handleSelectedBodyChange(selectedBodyIndex + 1)}
-                    ></i>
-                  </div>
-                }
-                {renderSystemBody(selectedBody)}
-              </div>
-              <div
-                className="system-body__children hidden w-full items-center overflow-x-auto hover:cursor-move md:flex"
-                ref={scrollableBodies}
-              >
-                {renderSystemBodyChildren(selectedBody)}
-              </div>
-            </>
-          )}
-        </div>
-      </>
-    );
-  }
-
-  function renderSystemBody(body: MappedSystemBody) {
-    let classes = "text-glow__white text-sm";
-    if (body.is_main_star) {
-      classes += " w-main-star";
-    } else {
-      classes = " w-40";
-    }
-
-    return (
-      <SystemBodySVG
-        key={body.id64}
-        selected={selectedBody}
-        body={body}
-        orbiting={body._children ? body._children.length : 0}
-        dispatcher={systemDispatcher}
-        className={classes}
-      />
-    );
-  }
-
-  function renderSystemBodyChildren(body: MappedSystemBody) {
-    const bodies = body._children && body._children.length > 0 ? body._children : false;
-
-    if (!bodies) {
-      return (
-        <span className="text-glow__orange ms-4 uppercase">
-          {body.name} {body.type} has no direct orbiting celestial bodies
-        </span>
-      );
-    }
-
-    return bodies.map((body: MappedSystemBody) => renderSystemBody(body));
-  }
 
   return (
     <>
@@ -216,67 +62,15 @@ const SystemDetail: FunctionComponent<Props> = ({ initSystem, params }) => {
       <SystemHeader system={system} />
       <SystemInformationBar information={system.information} />
 
-      <div className="border-b border-neutral-800 bg-transparent py-5 backdrop-blur backdrop-filter">
-        <div className="flex items-center justify-between">
-          <Heading icon="icarus-terminal-system-bodies" title="System Map" className="mb-2 gap-2" />
-          {!isLoading && systemMap && (
-            <div className="items-center gap-x-6 text-xs md:flex">
-              <h4 className="text-glow__orange font-bold uppercase">
-                {systemMap.stars.filter((s) => s.type !== SystemBodyType.Null).length}
-                <span className="ms-1">
-                  {pluralizeTextFromArray(
-                    systemMap.stars.filter((s) => s.type !== SystemBodyType.Null),
-                    {
-                      singular: "star",
-                      plural: "stars",
-                    },
-                  )}
-                </span>
-              </h4>
-              <h4 className="text-glow__orange font-bold uppercase">
-                {systemMap.planets.length}
-                <span className="ms-1">
-                  {pluralizeTextFromArray(systemMap.planets, {
-                    singular: "body",
-                    plural: "bodies",
-                  })}
-                </span>
-              </h4>
-              <h4 className="text-glow__orange font-bold uppercase">
-                {systemMap.stations.length}
-                <span className="ms-1">
-                  {pluralizeTextFromArray(systemMap.stations, {
-                    singular: "station",
-                    plural: "stations",
-                  })}
-                </span>
-              </h4>
-              <h4 className="text-glow__blue font-bold uppercase">
-                {systemMap.settlements.length}
-                <span className="ms-1">
-                  {pluralizeTextFromArray(systemMap.settlements, {
-                    singular: "settlement",
-                    plural: "settlements",
-                  })}
-                </span>
-              </h4>
-            </div>
-          )}
-        </div>
-        {!isLoading && (
-          <div className="grid grid-cols-12">
-            <div className="col-span-12">
-              {systemMap && systemMap.items.length > 0 ? (
-                renderSystemBodies(systemMap)
-              ) : (
-                <div className="text-glow__orange mx-auto py-6 text-center text-lg font-bold uppercase">
-                  Telemetry data not found for {system.name}
-                </div>
-              )}
-            </div>
-          </div>
-        )}
-      </div>
+      {!isLoading && systemMap && (
+        <SystemBodiesMap
+          isLoading={isLoading}
+          systemMap={systemMap}
+          system={system}
+          setIsPanelOpen={setIsPanelOpen}
+          setSelectedBodyDisplayInfo={setSelectedBodyDisplayInfo}
+        />
+      )}
 
       <div className="grid grid-cols-1 gap-5 py-5 md:grid-cols-1">
         <div>
@@ -304,7 +98,9 @@ const SystemDetail: FunctionComponent<Props> = ({ initSystem, params }) => {
       </div>
 
       <div
-        className={`fixed right-0 top-0 h-full w-1/3 transform bg-white shadow-lg transition-transform ${isPanelOpen ? "translate-x-0" : "translate-x-full"}`}
+        className={`fixed right-0 top-0 h-full w-1/3 transform bg-white shadow-lg transition-transform ${
+          isPanelOpen ? "translate-x-0" : "translate-x-full"
+        }`}
       >
         <button className="absolute left-2 top-2 text-xl" onClick={() => setIsPanelOpen(false)}>
           &times;

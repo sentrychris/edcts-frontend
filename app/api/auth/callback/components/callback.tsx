@@ -47,7 +47,7 @@ const AuthCallback: FunctionComponent<{ csrf: string }> = ({ csrf }) => {
     };
 
     fetchUser();
-  }, [router]);
+  }, [router, csrf]);
 
   return <div>Loading...</div>;
 };

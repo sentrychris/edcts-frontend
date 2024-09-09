@@ -24,25 +24,10 @@ export class SystemDispatcher extends EventDispatcher {
     });
   }
 
-  displayBodyInformationWidget({
-    body,
-    closer,
-    position,
-  }: {
-    body: MappedSystemBody;
-    closer: boolean;
-    position: {
-      top: number;
-      left: number;
-      right: number;
-      bottom: number;
-      width: number;
-      height: number;
-    };
-  }) {
+  displayBodyInformationWidget({ body }: { body: MappedSystemBody }) {
     this.dispatchEvent({
       type: "display-body-info",
-      message: { body, closer, position },
+      message: { body },
     });
   }
 
