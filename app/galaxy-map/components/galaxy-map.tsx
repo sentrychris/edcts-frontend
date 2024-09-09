@@ -50,7 +50,6 @@ const GalaxyMap: FunctionComponent = () => {
       });
     };
 
-    setIsLoading(true);
     // Load scripts and initialize the map
     loadScript("https://code.jquery.com/jquery-2.1.4.min.js")
       .then(() => loadScript("https://cdnjs.cloudflare.com/ajax/libs/three.js/r75/three.min.js"))

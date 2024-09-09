@@ -34,8 +34,6 @@ const SystemDetail: FunctionComponent<Props> = ({ initSystem, params }) => {
 
   useEffect(() => {
     if (slug) {
-      setLoading(true);
-
       getResource<System>(`systems/${slug}`, {
         params: {
           withInformation: 1,
