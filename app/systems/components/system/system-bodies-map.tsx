@@ -1,6 +1,7 @@
 "use client";
 
 import { type FunctionComponent, useCallback, useEffect, useState } from "react";
+import type { ListenerEvent } from "@/core/interfaces/Dispatcher";
 import type { System } from "@/core/interfaces/System";
 import type { MappedSystemBody } from "@/core/interfaces/SystemBody";
 import type SystemMap from "../../lib/system-map";
@@ -32,21 +33,31 @@ const SystemBodiesMap: FunctionComponent<Props> = ({
     const star = systemMap.stars.find((s) => s.is_main_star === 1);
     setSelectedBody(star);
 
-    systemDispatcher.addEventListener("select-body", (event) => {
+    const selectBodyListener = (event: ListenerEvent) => {
       setSelectedBody(event.message as MappedSystemBody);
-    });
+    };
 
-    systemDispatcher.addEventListener("set-index", (event) => {
+    const setIndexListener = (event: ListenerEvent) => {
       if ((event.message as number) === 0) {
         setSelectedBody(star);
       }
-    });
+    };
 
-    systemDispatcher.addEventListener("display-body-panel", (event) => {
+    const displayBodyPanelListener = (event: ListenerEvent) => {
       console.log(event);
       setSelectedBodyDisplayInfo(event.message);
       setIsPanelOpen(true);
-    });
+    };
+
+    systemDispatcher.addEventListener("select-body", selectBodyListener);
+    systemDispatcher.addEventListener("set-index", setIndexListener);
+    systemDispatcher.addEventListener("display-body-panel", displayBodyPanelListener);
+
+    return () => {
+      systemDispatcher.removeEventListener("select-body", selectBodyListener);
+      systemDispatcher.removeEventListener("set-index", setIndexListener);
+      systemDispatcher.removeEventListener("display-body-panel", displayBodyPanelListener);
+    };
   }, [setSelectedBodyDisplayInfo, setIsPanelOpen, systemMap.stars]);
 
   const scrollableBodies = useCallback((node: HTMLDivElement) => {

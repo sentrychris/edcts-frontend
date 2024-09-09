@@ -41,10 +41,12 @@ const SystemBodiesTable: FunctionComponent<Props> = ({ bodies, dispatcher }) => 
         return (
           <span
             className={`${childClass} hover:text-glow__orange flex items-center text-blue-200 hover:cursor-pointer hover:underline`}
-            onClick={() => dispatcher.selectBody({
-              body: body as MappedSystemBody,
-              type: "select-body",
-            })}
+            onClick={() =>
+              dispatcher.selectBody({
+                body: body as MappedSystemBody,
+                type: "select-body",
+              })
+            }
           >
             <i className={`icarus-terminal-${iconClass} me-2 text-sm`}></i>
             {body.name}
