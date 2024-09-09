@@ -50,8 +50,7 @@ const SystemMapStatistics: FunctionComponent<Props> = ({ system }) => {
         </span>
       </h4>
     </div>
-  )
-}
-
+  );
+};
 
 export default SystemMapStatistics;

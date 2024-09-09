@@ -323,9 +323,9 @@ export default class SystemMap {
    * @returns the nearest star to the station or null
    */
   getNearestStarToStation(station: MappedStation): MappedSystemBody | null {
-    const doa = station.distance_to_arrival;
+    const dta = station.distance_to_arrival;
     const stars = this.items.filter((body) => body._type === SystemBodyType.Star);
-    if (!doa || stars.length === 0) {
+    if (!dta || stars.length === 0) {
       return null;
     }
 
@@ -334,10 +334,7 @@ export default class SystemMap {
     }
 
     return stars.reduce((a, b) => {
-      return Math.abs(doa - b?.distance_to_arrival ?? 0) <
-        Math.abs(doa - a?.distance_to_arrival ?? 0)
-        ? b
-        : a;
+      return Math.abs(dta - b.distance_to_arrival) < Math.abs(dta - a.distance_to_arrival) ? b : a;
     });
   }
 
@@ -348,15 +345,15 @@ export default class SystemMap {
    * @returns the nearest planet to the station or null
    */
   getNearestPlanetToStation(station: MappedStation) {
-    const doa = station.distance_to_arrival;
+    const dta = station.distance_to_arrival;
     const planets = this.items.filter((body) => body._type === SystemBodyType.Planet);
 
-    if (!doa || planets.length === 0) {
+    if (!dta || planets.length === 0) {
       return null;
     }
 
     return planets.reduce((a, b) => {
-      return Math.abs(doa - b.distance_to_arrival) < Math.abs(doa - a.distance_to_arrival) ? b : a;
+      return Math.abs(dta - b.distance_to_arrival) < Math.abs(dta - a.distance_to_arrival) ? b : a;
     });
   }
 
