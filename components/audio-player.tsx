@@ -128,10 +128,10 @@ const AudioPlayer: FunctionComponent<Props> = ({ files }) => {
         </audio>
       </div>
       <div>
-        <small style={{fontSize: '0.6rem'}}>
-          {isPlaying ? <span className="text-glow__blue">{files[currentIndex].title}</span>
-            : <span className="text-glow__orange font-bold">...</span>}
-        </small>
+      {isPlaying &&<span className="text-glow__orange flex items-center" style={{fontSize: '0.6rem'}}>
+        <i className="icarus-terminal-sound me-2"></i>
+        <span>{files[currentIndex].title}</span>
+      </span>}
       </div>
     </div>
   );
