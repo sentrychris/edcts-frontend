@@ -105,7 +105,14 @@ const NewsTicker: FunctionComponent<Props> = ({ articles }) => {
         <span className="ms-2 hidden sm:flex">
           {currentDate} {currentTime} UTC
         </span>
-        <AudioPlayer files={articles.map((article) => article.audio_file)} />
+        <AudioPlayer
+          files={articles.map((article) => {
+            return {
+              title: article.title,
+              file: article.audio_file,
+            };
+          })}
+        />
       </span>
       <div
         ref={tickerRef}
