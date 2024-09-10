@@ -149,7 +149,6 @@ const SystemBodiesMap: FunctionComponent<Props> = ({
 
   function renderSystemStations(stations: Station[]) {
     return stations.map((station: Station) => {
-      console.log(station);
       let icon = "icarus-terminal-orbis-starport";
       if (station.type === "Coriolis Starport") {
         icon = "icarus-terminal-coriolis-starport";
