@@ -79,7 +79,7 @@ const SystemDetail: FunctionComponent<Props> = ({ params }) => {
           )}
         </div>
         <div className="my-10">
-          <Heading icon="icarus-terminal-system-orbits" title="Stations" className="gap-2 pb-5" />
+          <Heading icon="icarus-terminal-outpost" title="System Stations" className="gap-2 pb-5" />
           {!isLoading && systemMap && (
             <SystemStationsTable stations={systemMap.stations} dispatcher={systemDispatcher} />
           )}

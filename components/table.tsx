@@ -59,7 +59,7 @@ function Table<T extends RequiredAttribute>({ columns, data, meta, links, page }
                 <td
                   key={`rowColumn_${item.id}_${key}`}
                   scope="row"
-                  className="whitespace-nowrap px-6 font-medium text-gray-200"
+                  className="whitespace-nowrap px-6 text-xs font-medium text-gray-200"
                 >
                   {renderContent(item, key)}
                 </td>
@@ -93,7 +93,7 @@ function Table<T extends RequiredAttribute>({ columns, data, meta, links, page }
 
   return (
     <>
-      <div className="relative overflow-x-auto border-b border-t border-neutral-800 bg-transparent pb-5 pt-2 backdrop-blur backdrop-filter">
+      <div className="relative overflow-x-auto border-b border-t border-neutral-800 bg-transparent pb-1 pt-2 backdrop-blur backdrop-filter">
         <table className="table--layout table--animated table--interactive w-full text-left text-sm text-gray-500">
           <thead className="uppercase border-b border-neutral-800">
             <tr>
@@ -101,7 +101,7 @@ function Table<T extends RequiredAttribute>({ columns, data, meta, links, page }
                 <th
                   key={`columnHeader_${key}`}
                   scope="col"
-                  className="px-6 font-bold tracking-wider text-glow__orange"
+                  className="px-6 text-xs font-bold tracking-wider text-glow__orange"
                 >
                   {"title" in columns[key] ? columns[key].title : key}
                 </th>
