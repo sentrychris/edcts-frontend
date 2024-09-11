@@ -156,7 +156,12 @@ const SystemBodiesMap: FunctionComponent<Props> = ({
           <div key={station.slug} className="me-5 flex items-center text-xs">
             <i className={`${stationIconByType(station.type)} text-glow`}></i>
             <div className="ms-3">
-              <Link className="uppercase text-glow__blue hover:text-glow__orange hover:underline" href={`/stations/${station.slug}`}>{station.name}</Link>
+              <Link
+                className="text-glow__blue hover:text-glow__orange uppercase hover:underline"
+                href={`/stations/${station.slug}`}
+              >
+                {station.name}
+              </Link>
               <div className="text-xs text-neutral-300">{station.distance_to_arrival} ls</div>
             </div>
           </div>
