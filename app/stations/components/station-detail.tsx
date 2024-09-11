@@ -8,7 +8,7 @@ import { stationState } from "../lib/state";
 import Loader from "@/components/loader";
 import Heading from "@/components/heading";
 import StationHeader from "./station-header";
-import { formatNumber } from "@/core/string-utils";
+import { formatDate, formatNumber } from "@/core/string-utils";
 import StationInformationBar from "./station-information-bar";
 import SystemBodySVG from "@/app/systems/components/system/system-body-svg";
 import { systemBodyState } from "@/app/systems/lib/state";
@@ -146,7 +146,15 @@ const StationDetail: FunctionComponent<Props> = ({ params }) => {
         </div>
       </div>
 
-      <Heading icon="icarus-terminal-credits" title="Latest Market Data" className="gap-2 py-5" />
+      <div className="flex items-center justify-between">
+        <Heading icon="icarus-terminal-credits" title="Market Information" className="gap-2 py-5" />
+        <div className="text-xs text-neutral-300">
+          <span>Market data for {station.name} <br />Last updated on: {marketData
+            ? <span className="text-glow__orange">{formatDate(marketData.last_updated)}</span>
+            : 'A long time ago...'}
+          </span>
+        </div>
+      </div>
       {marketData && (
         <div className="grid grid-cols-1 gap-5 md:grid-cols-12">
           {marketData.commodities &&
