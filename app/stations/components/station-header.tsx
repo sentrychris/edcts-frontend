@@ -15,9 +15,9 @@ const StationHeader: FunctionComponent<Props> = ({ station }) => {
         <div>
           <h2 className="text-3xl">{station.name}</h2>
           <h4 className="font-bold">
-            <span className="text-glow">{station.type}</span>
+            <span className="text-glow__orange">{station.type}</span>
             <Link
-              className="text-glow__orange hover:text-glow__blue ms-3"
+              className="text-glow hover:text-glow__orange ms-3"
               href={station.system ? `/systems/${station.system.slug}` : "#"}
             >
               {station.system ? station.system.name : "Cannot find linked"} system

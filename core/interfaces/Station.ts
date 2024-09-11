@@ -13,7 +13,7 @@ export interface Station {
   name: string;
   type: string;
   body: StationBody | null;
-  system?: System;
+  system: System;
   distance_to_arrival: number;
   controlling_faction: string;
   allegiance: string;
