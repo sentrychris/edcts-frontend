@@ -6,6 +6,7 @@ import type { Station } from "@/core/interfaces/Station";
 import { formatDate } from "@/core/string-utils";
 import { stationIconByType } from "../../lib/render-utils";
 import Table from "@/components/table";
+import Link from "next/link";
 
 interface Props {
   stations: Station[];
@@ -20,12 +21,13 @@ const SystemStationsTable: FunctionComponent<Props> = ({ stations, dispatcher })
       title: "Name",
       render: (station: Station) => {
         return (
-          <span
+          <Link
             className={`hover:text-glow__orange flex items-center text-blue-200 hover:cursor-pointer hover:underline`}
+            href={`/stations/${station.slug}`}
           >
             <i className={`${stationIconByType(station.type)} text-glow me-2 text-sm`}></i>
             {station.name}
-          </span>
+          </Link>
         );
       },
     },

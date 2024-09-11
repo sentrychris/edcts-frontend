@@ -24,7 +24,7 @@ interface Props {
 
 const SystemDetail: FunctionComponent<Props> = ({ params }) => {
   const [system, setSystem] = useState<System>(systemState);
-  const [isLoading, setLoading] = useState<boolean>(true);
+  const [isLoading, setIsLoading] = useState<boolean>(true);
   const [systemMap, setSystemMap] = useState<SystemMap>();
   const [selectedBody, setSelectedBody] = useState<MappedSystemBody | null>(null);
   const [isPanelOpen, setIsPanelOpen] = useState<boolean>(false);
@@ -46,7 +46,7 @@ const SystemDetail: FunctionComponent<Props> = ({ params }) => {
           setSystemMap(new SystemMap(system));
         })
         .finally(() => {
-          setLoading(false);
+          setIsLoading(false);
         });
     }
   }, [slug]);
