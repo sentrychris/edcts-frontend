@@ -88,7 +88,7 @@ const StationDetail: FunctionComponent<Props> = ({ params }) => {
           })}
         </div>
         <div className="col-span-5">
-          <div className="border-b border-neutral-800 pb-5 md:border-none md:pb-0">
+          <div className="mb-5 border-b border-neutral-800 pb-5 md:border-none md:pb-0">
             <h4 className="text-glow__orange mb-2">Service Overview</h4>
             <div className="grid grid-cols-2 gap-10">
               <StationServiceCard icon="atmosphere" title="Universal Cartographics">

@@ -38,8 +38,7 @@ const MarketCommodities: FunctionComponent<Props> = ({ station }) => {
         </div>
       </div>
       <div className="grid grid-cols-1 gap-5 md:grid-cols-12">
-        {market &&
-          market.commodities &&
+        {market && market.commodities ? (
           Object.keys(market.commodities)
             .slice(0, 12)
             .map((item) => (
@@ -81,7 +80,12 @@ const MarketCommodities: FunctionComponent<Props> = ({ station }) => {
                   </div>
                 </div>
               </div>
-            ))}
+            ))
+        ) : (
+          <h2 className="text-glow__orange col-span-12 py-10 text-center">
+            No Market Data for {station.name}
+          </h2>
+        )}
       </div>
     </>
   );
