@@ -3,6 +3,7 @@
 import { Fragment, type FunctionComponent } from "react";
 import type { AuthorizationServerInformation, SessionUser } from "@/core/interfaces/Auth";
 import { Disclosure, DisclosureButton, DisclosurePanel, Menu, MenuButton, MenuItem, MenuItems, Transition } from "@headlessui/react";
+import { usePathname } from "next/navigation";
 import { Bars3Icon, XMarkIcon } from "@heroicons/react/24/outline";
 import { useSession } from "next-auth/react";
 import { getResource } from "@/core/api";
@@ -10,11 +11,12 @@ import Link from "next/link";
 import Image from "next/image";
 
 const navigation = [
-  { name: "Home", href: "/", current: true },
-  { name: "Star Systems", href: "/systems", current: false },
-  { name: "Carrier Journeys", href: "/fleet-carriers", current: false },
-  { name: "Galnet News", href: "/galnet", current: false },
-  { name: "Galaxy Map [alpha]", href: "/galaxy-map", current: false },
+  { name: "Home", href: "/", key: "" },
+  { name: "Star Systems", href: "/systems", key: "systems" },
+  { name: "Stations", href: "/systems", key: "stations" },
+  { name: "Carrier Trips", href: "/fleet-carriers", key: "fleet-carriers" },
+  { name: "Galnet News", href: "/galnet", key: "galnet" },
+  { name: "Map [alpha]", href: "/galaxy-map", key: "galaxy-map" },
 ];
 
 function classNames(...classes: string[]) {
@@ -26,6 +28,8 @@ const MainNavigation: FunctionComponent = () => {
   const user = data && data?.user
     ? (data.user as SessionUser)
     : null;
+  
+  const currentPath = usePathname().split("/")[1];
 
   const makeFrontierSSOLoginRequest = async () => {
     const { data: authorizationDetails } =
@@ -61,10 +65,10 @@ const MainNavigation: FunctionComponent = () => {
                         key={item.name}
                         href={item.href}
                         className={classNames(
-                          item.current ? "font-bold text-white" : "text-gray-300 hover:text-white",
-                          "rounded-md px-3 py-2 text-sm",
+                          currentPath === item.key ? "font-bold text-glow__orange" : "text-gray-300 hover:text-white", // Set current based on the current URL
+                          "rounded-md px-3 py-2 text-sm"
                         )}
-                        aria-current={item.current ? "page" : undefined}
+                        aria-current={currentPath === item.key ? "page" : undefined}
                       >
                         {item.name}
                       </Link>
@@ -163,10 +167,10 @@ const MainNavigation: FunctionComponent = () => {
                   as="a"
                   href={item.href}
                   className={classNames(
-                    item.current ? "text-glow__orange" : "text-gray-300",
+                    currentPath === item.key ? "text-glow__orange" : "text-gray-300",
                     "block rounded-md px-3 py-2 text-base font-medium",
                   )}
-                  aria-current={item.current ? "page" : undefined}
+                  aria-current={currentPath === item.key ? "page" : undefined}
                 >
                   {item.name}
                 </DisclosureButton>
