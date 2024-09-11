@@ -65,8 +65,8 @@ const MainNavigation: FunctionComponent = () => {
                         key={item.name}
                         href={item.href}
                         className={classNames(
-                          currentPath === item.key ? "font-bold text-glow__orange" : "text-gray-300 hover:text-white", // Set current based on the current URL
-                          "rounded-md px-3 py-2 text-sm"
+                          currentPath === item.key ? "font-bold text-glow__orange" : "text-gray-300 hover:text-glow__blue", // Set current based on the current URL
+                          "rounded-md px-3 py-2 text-sm hover:text-glow__blue"
                         )}
                         aria-current={currentPath === item.key ? "page" : undefined}
                       >
