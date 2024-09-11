@@ -44,9 +44,9 @@ const MarketCommodities: FunctionComponent<Props> = ({ station }) => {
             .map((item) => (
               <div
                 key={item}
-                className="col-span-3 lg:col-span-2 rounded-xl border border-neutral-800 bg-transparent p-5 text-sm backdrop-blur backdrop-filter"
+                className="col-span-3 rounded-xl border border-neutral-800 bg-transparent p-5 text-sm backdrop-blur backdrop-filter"
               >
-                <h2 className="text-glow__blue text-lg">{market.commodities[item].name}</h2>
+                <h2 className="text-glow__blue text-lg uppercase">{market.commodities[item].name}</h2>
                 <div className="mt-3 grid grid-cols-2 gap-2">
                   <div>
                     <h3 className="text-glow__orange mb-2">Buy Price</h3>
