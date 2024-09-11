@@ -3,6 +3,7 @@ export interface MarketCommodity {
   demand: number;
   demandBracket: number;
   meanPrice: number;
+  name: string;
   sellPrice: number;
   stock: number;
   stockBracket: number;
