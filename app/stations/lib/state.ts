@@ -1,10 +1,12 @@
 import type { Station } from "@/core/interfaces/Station";
+import { systemState } from "@/app/systems/lib/state";
 
 export const stationState: Station = {
   id: 0,
   name: "...",
   type: "...",
   body: null,
+  system: systemState,
   distance_to_arrival: 0,
   controlling_faction: "...",
   allegiance: "...",
