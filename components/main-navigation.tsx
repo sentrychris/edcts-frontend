@@ -72,7 +72,7 @@ const MainNavigation: FunctionComponent = () => {
                   </div>
                 </div>
               </div>
-              <div className="absolute inset-y-0 right-0 flex items-center pr-2 sm:static sm:inset-auto sm:ml-6 sm:pr-0">
+              <div className="hidden absolute inset-y-0 right-0 md:flex items-center pr-2 sm:static sm:inset-auto sm:ml-6 sm:pr-0">
                 {!user ? (
                   <button
                     className="flex items-center gap-1 rounded-lg border border-neutral-900 bg-neutral-900 px-3 py-1 uppercase hover:scale-x-105"
