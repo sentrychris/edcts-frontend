@@ -11,8 +11,8 @@ const StationInformationBar: FunctionComponent<Props> = ({ information }) => {
   return (
     <div className="border-b border-neutral-800 bg-transparent py-5 text-sm tracking-wide backdrop-blur backdrop-filter">
       <div className="align-center flex flex-row justify-between uppercase">
-        <div className="flex flex-wrap items-center justify-between w-full">
-          <div className="flex flex-wrap mb-10 md:mb-0 items-center gap-10 lg:gap-x-20">
+        <div className="flex w-full flex-wrap items-center justify-between">
+          <div className="mb-10 flex flex-wrap items-center gap-10 md:mb-0 lg:gap-x-20">
             <div className="flex flex-col">
               <p className="mb-2 whitespace-nowrap">Governance:</p>
               <span className="text-glow__white flex items-center gap-2 py-1 font-bold uppercase">
@@ -53,36 +53,39 @@ const StationInformationBar: FunctionComponent<Props> = ({ information }) => {
               )}
             </div>
           </div>
-          <div className="flex flex-wrap items-center whitespace-nowrap gap-10 text-xs">
+          <div className="flex flex-wrap items-center gap-10 whitespace-nowrap text-xs">
             <div>
-              <p className="flex items-center mb-2">
-                <i className="icarus-terminal-economy me-2 text-glow__orange"></i>
+              <p className="mb-2 flex items-center">
+                <i className="icarus-terminal-economy text-glow__orange me-2"></i>
                 Market:
               </p>
-              {information && information.has_market
-                ? <span className="text-green-300">Available</span>
-                : <span className="text-red-300">Unavailable</span>
-              }
+              {information && information.has_market ? (
+                <span className="text-green-300">Available</span>
+              ) : (
+                <span className="text-red-300">Unavailable</span>
+              )}
             </div>
             <div>
-              <p className="flex items-center mb-2">
-                <i className="icarus-terminal-ship me-2 text-glow__orange"></i>
+              <p className="mb-2 flex items-center">
+                <i className="icarus-terminal-ship text-glow__orange me-2"></i>
                 Shipyard:
               </p>
-              {information.has_market
-                ? <span className="text-green-300">Available</span>
-                : <span className="text-red-300">Unavailable</span>
-              }
+              {information.has_market ? (
+                <span className="text-green-300">Available</span>
+              ) : (
+                <span className="text-red-300">Unavailable</span>
+              )}
             </div>
             <div>
-              <p className="flex items-center mb-2">
-                <i className="icarus-terminal-engineering me-2 text-glow__orange"></i>
+              <p className="mb-2 flex items-center">
+                <i className="icarus-terminal-engineering text-glow__orange me-2"></i>
                 Outfitting:
               </p>
-              {information.has_market
-                ? <span className="text-green-300">Available</span>
-                : <span className="text-red-300">Unavailable</span>
-              }
+              {information.has_market ? (
+                <span className="text-green-300">Available</span>
+              ) : (
+                <span className="text-red-300">Unavailable</span>
+              )}
             </div>
           </div>
         </div>

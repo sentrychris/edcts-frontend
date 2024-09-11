@@ -55,7 +55,10 @@ const StationDetail: FunctionComponent<Props> = ({ params }) => {
         <div className="grid grid-cols-1 gap-5 md:grid-cols-12">
           {marketData.commodities &&
             Object.keys(marketData.commodities).map((key) => (
-              <div className="col-span-2 rounded-xl border border-neutral-800 bg-transparent p-5 text-xs backdrop-blur backdrop-filter">
+              <div
+                key={key}
+                className="col-span-2 rounded-xl border border-neutral-800 bg-transparent p-5 text-xs backdrop-blur backdrop-filter"
+              >
                 <h2 className="text-glow__blue text-lg">{key}</h2>
                 <div className="mt-3 grid grid-cols-2 gap-2">
                   <div>

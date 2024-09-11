@@ -77,13 +77,13 @@ export default async function Page() {
         ).
       </small>
       <SystemsStatisticsBar className="fx-fade-in" callInterval={10000} flushCache={0} />
-      <div className="mt-4 grid grid-cols-1 md:gap-10 md:grid-cols-12">
+      <div className="mt-4 grid grid-cols-1 md:grid-cols-12 md:gap-10">
         <div className="order-last col-span-1 md:order-first md:col-span-4">
           <Heading
             icon="icarus-terminal-scan text-glow__orange"
             largeIcon={true}
             title="Popular Systems"
-            className="md:mt-4 md:gap-3 text-2xl"
+            className="text-2xl md:mt-4 md:gap-3"
           />
           <PopularSystems className="my-5 p-1" />
           <Heading
