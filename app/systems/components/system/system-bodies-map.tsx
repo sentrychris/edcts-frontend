@@ -12,6 +12,7 @@ import { stationIconByType } from "@/app/stations/lib/render-utils";
 import Heading from "@/components/heading";
 import SystemBodySVG from "./system-body-svg";
 import SystemMapStatistics from "./system-map-statistics";
+import Link from "next/link";
 
 interface Props {
   systemMap: SystemMap;
@@ -155,7 +156,7 @@ const SystemBodiesMap: FunctionComponent<Props> = ({
           <div key={station.slug} className="me-5 flex items-center text-xs">
             <i className={`${stationIconByType(station.type)} text-glow`}></i>
             <div className="ms-3">
-              <span className="text-glow__blue uppercase">{station.name}</span>
+              <Link className="uppercase text-glow__blue hover:text-glow__orange hover:underline" href={`/stations/${station.slug}`}>{station.name}</Link>
               <div className="text-xs text-neutral-300">{station.distance_to_arrival} ls</div>
             </div>
           </div>
