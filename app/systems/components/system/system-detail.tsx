@@ -16,6 +16,7 @@ import SystemBodyPopover from "./system-body-popover";
 import SystemStarsTable from "./system-stars-table";
 import SystemBodiesTable from "./system-bodies-table";
 import SystemBodiesMap from "./system-bodies-map";
+import SystemStationsTable from "./system-stations-table";
 
 interface Props {
   params: { slug: string };
@@ -75,6 +76,12 @@ const SystemDetail: FunctionComponent<Props> = ({ params }) => {
               stars={systemMap.stars as Required<MappedSystemBody>[]}
               dispatcher={systemDispatcher}
             />
+          )}
+        </div>
+        <div className="my-10">
+          <Heading icon="icarus-terminal-system-orbits" title="Stations" className="gap-2 pb-5" />
+          {!isLoading && systemMap && (
+            <SystemStationsTable stations={systemMap.stations} dispatcher={systemDispatcher} />
           )}
         </div>
         <div>

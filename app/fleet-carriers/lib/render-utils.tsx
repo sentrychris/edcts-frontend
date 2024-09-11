@@ -22,7 +22,7 @@ export const renderStatusText = (value: Schedule | string) => {
             ? "text-orange-300"
             : status === "CANCELLED"
               ? "text-red-300"
-              : "text-green-200"
+              : "text-green-300"
       }
     >
       {status}

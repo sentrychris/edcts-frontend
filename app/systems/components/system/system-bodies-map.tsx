@@ -11,6 +11,7 @@ import { systemDispatcher } from "@/core/events/SystemDispatcher";
 import Heading from "@/components/heading";
 import SystemBodySVG from "./system-body-svg";
 import SystemMapStatistics from "./system-map-statistics";
+import { stationIconByType } from "../../lib/render-utils";
 
 interface Props {
   systemMap: SystemMap;
@@ -149,23 +150,10 @@ const SystemBodiesMap: FunctionComponent<Props> = ({
 
   function renderSystemStations(stations: Station[]) {
     return stations.map((station: Station) => {
-      let icon = "icarus-terminal-orbis-starport";
-      if (station.type === "Coriolis Starport") {
-        icon = "icarus-terminal-coriolis-starport";
-      } else if (station.type === "Outpost") {
-        icon = "icarus-terminal-outpost";
-      } else if (station.type === "Asteroid base") {
-        icon = "icarus-terminal-asteroid-base";
-      } else if (station.type === "Ocellus Starport") {
-        icon = "icarus-terminal-ocellus-starport";
-      } else if (station.type === "Mega ship") {
-        icon = "icarus-terminal-megaship";
-      }
-
       return (
         <>
           <div key={station.slug} className="me-5 flex items-center text-xs">
-            <i className={`${icon} text-glow`}></i>
+            <i className={`${stationIconByType(station.type)} text-glow`}></i>
             <div className="ms-3">
               <span className="text-glow__blue uppercase">{station.name}</span>
               <div className="text-xs text-neutral-300">{station.distance_to_arrival} ls</div>
