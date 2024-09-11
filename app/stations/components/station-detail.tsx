@@ -6,6 +6,7 @@ import { getResource } from "@/core/api";
 import Loader from "@/components/loader";
 import StationHeader from "./station-header";
 import { stationState } from "../lib/state";
+import Heading from "@/components/heading";
 
 interface Props {
   params: {
@@ -40,6 +41,13 @@ const StationDetail: FunctionComponent<Props> = ({ params }) => {
       {isLoading && <Loader visible={isLoading} />}
 
       <StationHeader station={station} />
+
+      <Heading icon="icarus-terminal-credits" title="Latest Market Data" className="gap-2 py-5" />
+      <div className="grid grid-cols-1 gap-5 md:grid-cols-2">
+        <div className="border border-neutral-800 p-24"></div>
+        <div className="border border-neutral-800 p-24"></div>
+      </div>
+      
     </>
   );
 };

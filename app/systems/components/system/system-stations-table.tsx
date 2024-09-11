@@ -4,7 +4,7 @@ import { type FunctionComponent, useState } from "react";
 import type { SystemDispatcher } from "@/core/events/SystemDispatcher";
 import type { Station } from "@/core/interfaces/Station";
 import { formatDate } from "@/core/string-utils";
-import { stationIconByType } from "../../lib/render-utils";
+import { stationIconByType } from "@/app/stations/lib/render-utils";
 import Table from "@/components/table";
 import Link from "next/link";
 

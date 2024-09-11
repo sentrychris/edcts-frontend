@@ -8,10 +8,10 @@ import type { Station } from "@/core/interfaces/Station";
 import type SystemMap from "../../lib/system-map";
 import { SystemBodyType } from "@/core/constants/system";
 import { systemDispatcher } from "@/core/events/SystemDispatcher";
+import { stationIconByType } from "@/app/stations/lib/render-utils";
 import Heading from "@/components/heading";
 import SystemBodySVG from "./system-body-svg";
 import SystemMapStatistics from "./system-map-statistics";
-import { stationIconByType } from "../../lib/render-utils";
 
 interface Props {
   systemMap: SystemMap;

@@ -1,6 +1,6 @@
 import type { FunctionComponent } from "react";
 import type { Station } from "@/core/interfaces/Station";
-import { stationIconByType } from "@/app/systems/lib/render-utils";
+import { stationIconByType } from "@/app/stations/lib/render-utils";
 import Link from "next/link";
 
 interface Props {
@@ -13,13 +13,14 @@ const StationHeader: FunctionComponent<Props> = ({ station }) => {
       <div className="text-glow__white flex items-center gap-2">
         <i className={stationIconByType(station.type)} style={{ fontSize: "3rem" }}></i>
         <div>
-          <h2 className="text-3xl">
-            {station.name}
-          </h2>
-          <h4>
+          <h2 className="text-3xl">{station.name}</h2>
+          <h4 className="font-bold">
             <span className="text-glow">{station.type}</span>
-            <Link className="ms-3 text-glow__orange hover:text-glow__blue" href={station.system?.slug ?? '#'}>
-              {station.system?.name} system
+            <Link
+              className="text-glow__orange hover:text-glow__blue ms-3"
+              href={station.system ? `/systems/${station.system.slug}` : "#"}
+            >
+              {station.system ? station.system.name : "Cannot find linked"} system
             </Link>
           </h4>
         </div>
