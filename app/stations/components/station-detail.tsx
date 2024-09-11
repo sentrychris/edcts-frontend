@@ -103,7 +103,7 @@ const StationDetail: FunctionComponent<Props> = ({ params }) => {
                 Pioneer Supplies is a general store chain found at Concourses. They offer a wide
                 variety of purchasable handheld weapons, suits, and consumables for commanders.
               </StationServiceCard>
-              <StationServiceCard icon="credits" title="Apex Interstellar Transport">
+              <StationServiceCard icon="ship" title="Apex Interstellar Transport">
                 Apex Interstellar Transport is a shuttle service that allows commanders to travel
                 between most starports and settlements without the need to operate their own ship.
               </StationServiceCard>

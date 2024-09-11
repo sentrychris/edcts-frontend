@@ -1,4 +1,4 @@
-import { FunctionComponent, ReactNode } from "react";
+import type { FunctionComponent } from "react";
 
 interface Props {
   icon: string;
