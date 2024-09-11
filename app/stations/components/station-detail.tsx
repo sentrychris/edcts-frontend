@@ -149,9 +149,14 @@ const StationDetail: FunctionComponent<Props> = ({ params }) => {
       <div className="flex items-center justify-between">
         <Heading icon="icarus-terminal-credits" title="Market Information" className="gap-2 py-5" />
         <div className="text-xs text-neutral-300">
-          <span>Market data for {station.name} <br />Last updated on: {marketData
-            ? <span className="text-glow__orange">{formatDate(marketData.last_updated)}</span>
-            : 'A long time ago...'}
+          <span>
+            Market data for {station.name} <br />
+            Last updated on:{" "}
+            {marketData ? (
+              <span className="text-glow__orange">{formatDate(marketData.last_updated)}</span>
+            ) : (
+              "A long time ago..."
+            )}
           </span>
         </div>
       </div>
@@ -163,25 +168,39 @@ const StationDetail: FunctionComponent<Props> = ({ params }) => {
               .map((key) => (
                 <div
                   key={key}
-                  className="col-span-2 rounded-xl border border-neutral-800 bg-transparent p-5 text-xs backdrop-blur backdrop-filter"
+                  className="col-span-2 rounded-xl border border-neutral-800 bg-transparent p-5 text-sm backdrop-blur backdrop-filter"
                 >
                   <h2 className="text-glow__blue text-lg">{key}</h2>
                   <div className="mt-3 grid grid-cols-2 gap-2">
                     <div>
-                      <h3 className="text-glow__orange text-sm">Buy Price</h3>
-                      <p>{formatNumber(marketData.commodities[key].buyPrice)}</p>
+                      <h3 className="text-glow__orange mb-2">Buy Price</h3>
+                      <p className="flex items-center gap-2">
+                        <i className="icarus-terminal-credits text-glow"></i>
+                        {formatNumber(marketData.commodities[key].buyPrice)}
+                      </p>
                     </div>
                     <div>
-                      <h3 className="text-glow__orange text-sm">Stock</h3>
-                      <p>{formatNumber(marketData.commodities[key].stock)}</p>
+                      <h3 className="text-glow__orange mb-2">Stock</h3>
+                      <p className="flex items-center gap-2">
+                        <i className="icarus-terminal-inventory text-glow"></i>
+                        {formatNumber(marketData.commodities[key].stock)}
+                      </p>
                     </div>
                     <div>
-                      <h3 className="text-glow__orange text-sm">Sell Price</h3>
-                      <p>{formatNumber(marketData.commodities[key].sellPrice)}</p>
+                      <h3 className="text-glow__orange mb-2">Sell Price</h3>
+                      <p className="flex items-center gap-2">
+                        <i className="icarus-terminal-credits text-glow"></i>
+                        {formatNumber(marketData.commodities[key].sellPrice)}
+                      </p>
                     </div>
                     <div>
-                      <h3 className="text-glow__orange text-sm">Demand</h3>
-                      <p>{formatNumber(marketData.commodities[key].demand)}</p>
+                      <h3 className="text-glow__orange mb-2">Demand</h3>
+                      <p className="flex items-center gap-2">
+                        <i
+                          className={`icarus-terminal-chevron-${Math.random() > 0.5 ? "up text-green-300" : "down text-red-300"}`}
+                        ></i>
+                        {formatNumber(marketData.commodities[key].demand)}
+                      </p>
                     </div>
                   </div>
                 </div>
