@@ -9,14 +9,14 @@ export interface MarketCommodity {
   stockBracket: number;
 }
 
-interface Commodities {
+export interface MarketCommodities {
   [key: string]: MarketCommodity;
 }
 
 export interface MarketData {
   station: string;
   system: string;
-  commodities: Commodities;
+  commodities: MarketCommodities;
   prohibited: string[];
   last_updated: string;
 }
