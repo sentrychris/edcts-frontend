@@ -1,10 +1,16 @@
+import type { System } from "@/core/interfaces/System";
 import type { FunctionComponent } from "react";
+import { SystemBodyType } from "@/core/constants/system";
 
 interface Props {
-  system: string;
+  system: System;
 }
 
 const StationBodySVG: FunctionComponent<Props> = ({ system }) => {
+  const star = system.bodies.find((body) => {
+    return body.type === SystemBodyType.Star && body.is_main_star === 1;
+  });
+
   return (
     <svg
       viewBox="-2500 -2500 5000 5000"
@@ -15,7 +21,7 @@ const StationBodySVG: FunctionComponent<Props> = ({ system }) => {
         className="system-map__system-object"
         data-system-object-name={system}
         data-system-object-type="Star"
-        data-system-object-sub-type="G (White-Yellow) Star"
+        data-system-object-sub-type={star ? star.sub_type : "G (White-Yellow) Star"}
         data-system-object-landable="false"
         tabIndex={0}
       >

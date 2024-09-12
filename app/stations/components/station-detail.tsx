@@ -13,6 +13,7 @@ import StationInformationBar from "./station-information-bar";
 import StationBodySVG from "./station-body.svg";
 import MarketCommodities from "./market/market-commodities";
 import StationServiceCard from "./station-service-card";
+import StationSVG from "./station-svg";
 
 interface Props {
   params: {
@@ -40,7 +41,7 @@ const StationDetail: FunctionComponent<Props> = ({ params }) => {
           setIsLoading(false);
         });
     }
-  }, []);
+  }, [slug]);
 
   return (
     <>
@@ -52,7 +53,14 @@ const StationDetail: FunctionComponent<Props> = ({ params }) => {
       <Heading icon="icarus-terminal-info" title="Station Overview" className="gap-2 py-5" />
       <div className="grid grid-cols-1 gap-5 uppercase md:grid-cols-12">
         <div className="col-span-4 flex items-center">
-          {station.system && <StationBodySVG system={station.system.name} />}
+          <div className="flex items-center">
+            {station.system && (
+              <>
+                <StationBodySVG system={station.system} />
+                {/* <StationSVG type={station.type} /> */}
+              </>
+            )}
+          </div>
           <div className="ml-5 flex flex-col">
             <div className="flex items-center text-xl">
               <i

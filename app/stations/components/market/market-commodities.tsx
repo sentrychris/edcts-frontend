@@ -15,7 +15,7 @@ interface Props {
 const MarketCommodities: FunctionComponent<Props> = ({ station }) => {
   const [market, setMarket] = useState<MarketData>();
   const [commodities, setCommodities] = useState<MarketCommodities>();
-  const [allCommodities, setAllCommodities] = useState<MarketCommodities>(); // Store the unfiltered data here
+  const [unfilteredCommodities, setUnfilteredCommodities] = useState<MarketCommodities>();
   const [currentSlice, setCurrentSlice] = useState(0);
   const itemsPerSlice = 12;
 
@@ -31,41 +31,53 @@ const MarketCommodities: FunctionComponent<Props> = ({ station }) => {
     }
   };
 
-  const reduceCommodities = (filteredCommodities: string[]) => {
-    if (allCommodities) {
-      // Use allCommodities for filtering
-      return filteredCommodities.reduce((acc, key) => {
-        acc[key] = allCommodities[key];
+  const reduceCommodities = (filter: string[]) => {
+    if (unfilteredCommodities) {
+      return filter.reduce((acc, key) => {
+        acc[key] = unfilteredCommodities[key];
         return acc;
       }, {} as MarketCommodities);
     }
   };
 
   const searchByCommodity = async (text: string) => {
-    if (allCommodities) {
-      // If no text, reset to allCommodities
+    if (unfilteredCommodities) {
       if (text === "") {
-        setCommodities(allCommodities);
+        setCommodities(unfilteredCommodities);
       } else {
-        const filteredData = reduceCommodities(
-          Object.keys(allCommodities).filter((commodity) =>
-            commodity.toLowerCase().includes(text.toLowerCase()),
+        setCommodities(
+          reduceCommodities(
+            Object.keys(unfilteredCommodities).filter((commodity) =>
+              commodity.toLowerCase().includes(text.toLowerCase()),
+            ),
           ),
         );
-        setCommodities(filteredData);
       }
     }
   };
 
-  const searchByMinimumPrice = async (value: number, key: "sellPrice" | "buyPrice") => {
-    if (allCommodities) {
-      const filteredData = reduceCommodities(
-        Object.keys(allCommodities).filter(
-          (commodity) =>
-            (allCommodities[commodity][key as keyof MarketCommodity] as number) >= value,
+  const searchByStockLevel = async (value: number) => {
+    if (unfilteredCommodities) {
+      setCommodities(
+        reduceCommodities(
+          Object.keys(unfilteredCommodities).filter(
+            (commodity) => unfilteredCommodities[commodity].stock >= value,
+          ),
         ),
       );
-      setCommodities(filteredData);
+    }
+  };
+
+  const searchByMinimumPrice = async (value: number, key: "sellPrice" | "buyPrice") => {
+    if (unfilteredCommodities) {
+      setCommodities(
+        reduceCommodities(
+          Object.keys(unfilteredCommodities).filter(
+            (commodity) =>
+              (unfilteredCommodities[commodity][key as keyof MarketCommodity] as number) >= value,
+          ),
+        ),
+      );
     }
   };
 
@@ -77,23 +89,14 @@ const MarketCommodities: FunctionComponent<Props> = ({ station }) => {
     searchByMinimumPrice(value, "sellPrice");
   };
 
-  const searchByStockLevel = async (value: number) => {
-    if (allCommodities) {
-      const filteredData = reduceCommodities(
-        Object.keys(allCommodities).filter((commodity) => allCommodities[commodity].stock >= value),
-      );
-      setCommodities(filteredData);
-    }
-  };
-
   useEffect(() => {
     getResource<MarketData>(`station/${station.slug}/market`).then((response) => {
       const { data } = response;
       setMarket(data);
-      setAllCommodities(data.commodities); // Store unfiltered data
+      setUnfilteredCommodities(data.commodities); // Store unfiltered data
       setCommodities(data.commodities); // Set initial state for commodities
     });
-  }, []);
+  }, [station.slug]);
 
   return (
     <>
