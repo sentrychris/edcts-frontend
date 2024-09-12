@@ -19,19 +19,17 @@ const MarketCommodities: FunctionComponent<Props> = ({ station }) => {
   const itemsPerSlice = 12;
 
   const handleNextSlice = () => {
-    if (market
-        && market.commodities
-        && (currentSlice + 1) * itemsPerSlice < Object.keys(market.commodities).length
+    if (
+      market &&
+      market.commodities &&
+      (currentSlice + 1) * itemsPerSlice < Object.keys(market.commodities).length
     ) {
       setCurrentSlice((prev) => prev + 1);
     }
   };
 
   const handlePrevSlice = () => {
-    if (market
-      && market.commodities
-      && currentSlice > 0
-    ) {
+    if (market && market.commodities && currentSlice > 0) {
       setCurrentSlice((prev) => prev - 1);
     }
   };
@@ -46,7 +44,7 @@ const MarketCommodities: FunctionComponent<Props> = ({ station }) => {
 
   return (
     <>
-      <div className="border-t border-neutral-800 flex items-center justify-between mt-10 pt-5">
+      <div className="mt-10 flex items-center justify-between border-t border-neutral-800 pt-5">
         <Heading icon="icarus-terminal-credits" title="Market Information" className="gap-2 py-5" />
         <div className="text-xs text-neutral-300">
           <span>
@@ -60,7 +58,7 @@ const MarketCommodities: FunctionComponent<Props> = ({ station }) => {
           </span>
         </div>
       </div>
-      <div className="flex items-center justify-between pt-5 pb-10">
+      <div className="flex items-center justify-between pb-10 pt-5">
         <button
           onClick={handlePrevSlice}
           disabled={currentSlice === 0}
@@ -68,7 +66,7 @@ const MarketCommodities: FunctionComponent<Props> = ({ station }) => {
         >
           {"<<"} Prev
         </button>
-        <div className="w-11/12 flex flex-wrap md:flex-nowrap items-center gap-5">
+        <div className="flex w-11/12 flex-wrap items-center gap-5 md:flex-nowrap">
           <Filter handleInput={() => {}} placeholder="Filter by commodity..." />
           <Filter handleInput={() => {}} placeholder="Filter by buy price..." />
           <Filter handleInput={() => {}} placeholder="Filter by sell price..." />
@@ -76,7 +74,11 @@ const MarketCommodities: FunctionComponent<Props> = ({ station }) => {
         </div>
         <button
           onClick={handleNextSlice}
-          disabled={commodities ? (currentSlice + 1) * itemsPerSlice >= Object.keys(commodities).length : true}
+          disabled={
+            commodities
+              ? (currentSlice + 1) * itemsPerSlice >= Object.keys(commodities).length
+              : true
+          }
           className="text-glow__orange hover:text-glow__blue py-2 text-xs uppercase disabled:opacity-50"
         >
           Next {">>"}
@@ -85,7 +87,7 @@ const MarketCommodities: FunctionComponent<Props> = ({ station }) => {
       <div className="grid grid-cols-1 gap-5 md:grid-cols-12">
         {commodities ? (
           Object.keys(commodities)
-            .slice((currentSlice * itemsPerSlice), (currentSlice * itemsPerSlice) + itemsPerSlice)
+            .slice(currentSlice * itemsPerSlice, currentSlice * itemsPerSlice + itemsPerSlice)
             .map((item) => (
               <div
                 key={item}
