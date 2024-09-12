@@ -93,8 +93,8 @@ const MarketCommodities: FunctionComponent<Props> = ({ station }) => {
     getResource<MarketData>(`station/${station.slug}/market`).then((response) => {
       const { data } = response;
       setMarket(data);
-      setUnfilteredCommodities(data.commodities); // Store unfiltered data
-      setCommodities(data.commodities); // Set initial state for commodities
+      setUnfilteredCommodities(data.commodities);
+      setCommodities(data.commodities);
     });
   }, [station.slug]);
 
