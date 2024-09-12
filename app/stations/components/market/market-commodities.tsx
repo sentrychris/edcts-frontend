@@ -19,20 +19,60 @@ const MarketCommodities: FunctionComponent<Props> = ({ station }) => {
   const itemsPerSlice = 12;
 
   const handleNextSlice = () => {
-    if (
-      market &&
-      market.commodities &&
-      (currentSlice + 1) * itemsPerSlice < Object.keys(market.commodities).length
-    ) {
+    if (commodities && (currentSlice + 1) * itemsPerSlice < Object.keys(commodities).length) {
       setCurrentSlice((prev) => prev + 1);
     }
   };
 
   const handlePrevSlice = () => {
-    if (market && market.commodities && currentSlice > 0) {
+    if (commodities && currentSlice > 0) {
       setCurrentSlice((prev) => prev - 1);
     }
   };
+
+  const reduceCommodities = (filteredCommodities: string[]) => {
+    if (commodities) {
+      return filteredCommodities.reduce((acc, key) => {
+        acc[key] = commodities[key];
+        return acc;
+      }, {} as MarketCommodities);
+    }
+  }
+
+  const searchByCommodity = async (text: string) => {
+    if (commodities) {
+      const filteredData = reduceCommodities(Object.keys(commodities).filter((commodity) =>
+        commodity.toLowerCase().includes(text.toLowerCase())
+      ));
+      setCommodities(filteredData);
+    }
+  }
+
+  const searchByMinimumPrice = async (value: number, key: "sellPrice" | "buyPrice") => {
+    if (commodities) {
+      const filteredData = reduceCommodities(Object.keys(commodities).filter((commodity) =>
+        (commodities[commodity][key as keyof MarketCommodity] as number) >= value
+      ));
+      setCommodities(filteredData);
+    }
+  }
+
+  const searchByMinimumBuyPrice = async (value: number) => {
+    searchByMinimumPrice(value, "buyPrice");
+  }
+
+  const searchByMinimumSellPrice = async (value: number) => {
+    searchByMinimumPrice(value, "sellPrice");
+  }
+
+  const searchByStockLevel = async (value: number) => {
+    if (commodities) {
+      const filteredData = reduceCommodities(Object.keys(commodities).filter((commodity) =>
+        commodities[commodity].stock >= value
+      ));
+      setCommodities(filteredData);
+    }
+  }
 
   useEffect(() => {
     getResource<MarketData>(`station/${station.slug}/market`).then((response) => {
@@ -67,10 +107,10 @@ const MarketCommodities: FunctionComponent<Props> = ({ station }) => {
           {"<<"} Prev
         </button>
         <div className="flex w-11/12 flex-wrap items-center gap-5 md:flex-nowrap">
-          <Filter handleInput={() => {}} placeholder="Filter by commodity..." />
-          <Filter handleInput={() => {}} placeholder="Filter by buy price..." />
-          <Filter handleInput={() => {}} placeholder="Filter by sell price..." />
-          <Filter handleInput={() => {}} placeholder="Filter by stock..." />
+          <Filter handleInput={searchByCommodity} placeholder="Filter by commodity..." />
+          <Filter type="number" handleInput={searchByMinimumBuyPrice} placeholder="Filter by buy price..." />
+          <Filter type="number" handleInput={searchByMinimumSellPrice} placeholder="Filter by sell price..." />
+          <Filter type="number" handleInput={searchByStockLevel} placeholder="Filter by stock..." />
         </div>
         <button
           onClick={handleNextSlice}

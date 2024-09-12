@@ -10,7 +10,7 @@ interface Props {
   type?: string;
   placeholder?: string;
   displayClearButton?: boolean;
-  handleInput: (text: string) => void;
+  handleInput: (value: any) => void;
 }
 
 const Filter: FunctionComponent<Props> = ({
