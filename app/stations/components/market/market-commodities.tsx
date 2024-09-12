@@ -15,6 +15,7 @@ interface Props {
 const MarketCommodities: FunctionComponent<Props> = ({ station }) => {
   const [market, setMarket] = useState<MarketData>();
   const [commodities, setCommodities] = useState<MarketCommodities>();
+  const [allCommodities, setAllCommodities] = useState<MarketCommodities>(); // Store the unfiltered data here
   const [currentSlice, setCurrentSlice] = useState(0);
   const itemsPerSlice = 12;
 
@@ -31,54 +32,66 @@ const MarketCommodities: FunctionComponent<Props> = ({ station }) => {
   };
 
   const reduceCommodities = (filteredCommodities: string[]) => {
-    if (commodities) {
+    if (allCommodities) {
+      // Use allCommodities for filtering
       return filteredCommodities.reduce((acc, key) => {
-        acc[key] = commodities[key];
+        acc[key] = allCommodities[key];
         return acc;
       }, {} as MarketCommodities);
     }
-  }
+  };
 
   const searchByCommodity = async (text: string) => {
-    if (commodities) {
-      const filteredData = reduceCommodities(Object.keys(commodities).filter((commodity) =>
-        commodity.toLowerCase().includes(text.toLowerCase())
-      ));
-      setCommodities(filteredData);
+    if (allCommodities) {
+      // If no text, reset to allCommodities
+      if (text === "") {
+        setCommodities(allCommodities);
+      } else {
+        const filteredData = reduceCommodities(
+          Object.keys(allCommodities).filter((commodity) =>
+            commodity.toLowerCase().includes(text.toLowerCase()),
+          ),
+        );
+        setCommodities(filteredData);
+      }
     }
-  }
+  };
 
   const searchByMinimumPrice = async (value: number, key: "sellPrice" | "buyPrice") => {
-    if (commodities) {
-      const filteredData = reduceCommodities(Object.keys(commodities).filter((commodity) =>
-        (commodities[commodity][key as keyof MarketCommodity] as number) >= value
-      ));
+    if (allCommodities) {
+      const filteredData = reduceCommodities(
+        Object.keys(allCommodities).filter(
+          (commodity) =>
+            (allCommodities[commodity][key as keyof MarketCommodity] as number) >= value,
+        ),
+      );
       setCommodities(filteredData);
     }
-  }
+  };
 
   const searchByMinimumBuyPrice = async (value: number) => {
     searchByMinimumPrice(value, "buyPrice");
-  }
+  };
 
   const searchByMinimumSellPrice = async (value: number) => {
     searchByMinimumPrice(value, "sellPrice");
-  }
+  };
 
   const searchByStockLevel = async (value: number) => {
-    if (commodities) {
-      const filteredData = reduceCommodities(Object.keys(commodities).filter((commodity) =>
-        commodities[commodity].stock >= value
-      ));
+    if (allCommodities) {
+      const filteredData = reduceCommodities(
+        Object.keys(allCommodities).filter((commodity) => allCommodities[commodity].stock >= value),
+      );
       setCommodities(filteredData);
     }
-  }
+  };
 
   useEffect(() => {
     getResource<MarketData>(`station/${station.slug}/market`).then((response) => {
       const { data } = response;
       setMarket(data);
-      setCommodities(data.commodities);
+      setAllCommodities(data.commodities); // Store unfiltered data
+      setCommodities(data.commodities); // Set initial state for commodities
     });
   }, []);
 
@@ -108,8 +121,16 @@ const MarketCommodities: FunctionComponent<Props> = ({ station }) => {
         </button>
         <div className="flex w-11/12 flex-wrap items-center gap-5 md:flex-nowrap">
           <Filter handleInput={searchByCommodity} placeholder="Filter by commodity..." />
-          <Filter type="number" handleInput={searchByMinimumBuyPrice} placeholder="Filter by buy price..." />
-          <Filter type="number" handleInput={searchByMinimumSellPrice} placeholder="Filter by sell price..." />
+          <Filter
+            type="number"
+            handleInput={searchByMinimumBuyPrice}
+            placeholder="Filter by buy price..."
+          />
+          <Filter
+            type="number"
+            handleInput={searchByMinimumSellPrice}
+            placeholder="Filter by sell price..."
+          />
           <Filter type="number" handleInput={searchByStockLevel} placeholder="Filter by stock..." />
         </div>
         <button
