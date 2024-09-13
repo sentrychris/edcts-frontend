@@ -207,7 +207,13 @@ const SystemBodiesMap: FunctionComponent<Props> = ({
   return (
     <div className="border-b border-neutral-800 bg-transparent py-5 backdrop-blur backdrop-filter">
       <div className="flex items-center justify-between">
-        <Heading icon="icarus-terminal-system-bodies" title="System Map" className="mb-2 gap-2" />
+        <div className="flex items-center gap-2">
+          <Heading icon="icarus-terminal-system-bodies" title="System Map" className="gap-2" />
+          <small className="hidden text-xs text-neutral-300 md:flex">
+            {"("}Select a body or station to see information such as settlements, market data etc.
+            {")"}
+          </small>
+        </div>
         {!isLoading && <SystemMapStatistics system={systemMap} />}
       </div>
       {!isLoading && (

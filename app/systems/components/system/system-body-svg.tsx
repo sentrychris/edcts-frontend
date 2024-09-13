@@ -86,7 +86,7 @@ const SystemBodySVG: FunctionComponent<Props> = ({
         className={className}
       >
         <g
-          className="system-map__system-object hover:cursor-help"
+          className="system-map__system-object hover:cursor-crosshair"
           ref={selectedBodyGCircleElement}
           data-system-object-name={body.name}
           data-system-object-type={body._type ?? body.type}
