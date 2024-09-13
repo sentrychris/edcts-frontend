@@ -4,9 +4,10 @@ import { type FunctionComponent, useEffect, useState } from "react";
 import type { Station } from "@/core/interfaces/Station";
 import type { MarketCommodities, MarketCommodity, MarketData } from "@/core/interfaces/Market";
 import { getResource } from "@/core/api";
-import { formatDate, formatNumber } from "@/core/string-utils";
+import { formatDate } from "@/core/string-utils";
 import Heading from "@/components/heading";
 import Filter from "@/components/filter";
+import MarketCommodityCard from "./market-commodity-card";
 
 interface Props {
   station: Station;
@@ -157,41 +158,7 @@ const MarketCommodities: FunctionComponent<Props> = ({ station }) => {
             .slice(currentSlice * itemsPerSlice, currentSlice * itemsPerSlice + itemsPerSlice)
             .map((item) => (
               <div key={item} className="col-span-3 text-sm">
-                <div className="rounded-xl border border-neutral-800 bg-transparent p-5 backdrop-blur backdrop-filter">
-                  <h2 className="text-glow__blue uppercase">{commodities[item].name}</h2>
-                  <div className="mt-3 grid grid-cols-2 gap-2 text-xs">
-                    <div>
-                      <h3 className="text-glow__orange mb-2">Buy Price</h3>
-                      <p className="flex items-center gap-2">
-                        <i className="icarus-terminal-credits text-glow"></i>
-                        {formatNumber(commodities[item].buyPrice)}
-                      </p>
-                    </div>
-                    <div>
-                      <h3 className="text-glow__orange mb-2">Stock</h3>
-                      <p className="flex items-center gap-2">
-                        <i className="icarus-terminal-inventory text-glow"></i>
-                        {formatNumber(commodities[item].stock)}
-                      </p>
-                    </div>
-                    <div>
-                      <h3 className="text-glow__orange mb-2">Sell Price</h3>
-                      <p className="flex items-center gap-2">
-                        <i className="icarus-terminal-credits text-glow"></i>
-                        {formatNumber(commodities[item].sellPrice)}
-                      </p>
-                    </div>
-                    <div>
-                      <h3 className="text-glow__orange mb-2">Demand</h3>
-                      <p className="flex items-center gap-2">
-                        <i
-                          className={`icarus-terminal-chevron-${Math.random() > 0.5 ? "up text-green-300" : "down text-red-300"}`}
-                        ></i>
-                        {formatNumber(commodities[item].demand)}
-                      </p>
-                    </div>
-                  </div>
-                </div>
+                <MarketCommodityCard commodity={commodities[item]} />
               </div>
             ))
         ) : (
