@@ -1,85 +1,114 @@
-import type { Galnet } from "@/core/interfaces/Galnet";
-import type { Schedule } from "@/core/interfaces/Schedule";
+import type { Metadata, ResolvingMetadata } from "next";
+import type { System } from "@/core/interfaces/System";
+import { settings } from "@/core/config";
 import { getCollection } from "@/core/api";
 import Heading from "@/components/heading";
-import GalnetList from "./galnet/components/galnet-sidebar";
-import LatestSystem from "./systems/components/latest-system";
-import JourneyCard from "./fleet-carriers/components/journey-card";
-import JourneyTable from "./fleet-carriers/components/journey-table";
+import SystemsStatisticsBar from "./systems/components/systems-statistics-bar";
+import SystemsTable from "./systems/components/systems-table";
+import SystemsNavRoutes from "./systems/components/systems-navroutes";
+import PopularSystems from "./systems/components/popular-systems";
 
-export default async function Home() {
-  const news = await getCollection<Galnet>("galnet/news", {
+/**
+ * Define the page properties.
+ */
+interface Props {
+  params: {
+    slug: string;
+  };
+  searchParams: { [key: string]: string | string[] | undefined };
+}
+
+/**
+ * Get the page data.
+ *
+ * Note: Next automatically dedupes fetch calls on the server.
+ *
+ * @returns systems data
+ */
+const getPageData = async () => {
+  const systems = await getCollection<System>("systems", {
     params: {
-      limit: 100,
+      withInformation: 1,
     },
   });
 
-  const fleetCarrierJourneySchedule = await getCollection<Schedule>("fleet-carriers/schedule", {
-    params: {
-      withCarrierInformation: 1,
-      withSystemInformation: 1,
+  return systems;
+};
+
+/**
+ * Generate the page metadata.
+ *
+ * @param params
+ * @param parent
+ * @returns
+ */
+export async function generateMetadata(
+  { params }: Props,
+  parent: ResolvingMetadata,
+): Promise<Metadata> {
+  return {
+    title: `Star Systems Overview | ${(await parent).title?.absolute}`,
+    openGraph: {
+      ...(await parent).openGraph,
+      url: `${settings.app.url}/systems`,
+      title: `Star Systems Overview | ${(await parent).title?.absolute}`,
+      description: `Star systems information, find star systems, latest navigation routes and more.`,
     },
-  });
+    description: `Star systems information, find star systems, latest navigation routes and more.`,
+  };
+}
 
-  const fleetCarrierJourneyScheduleSize = fleetCarrierJourneySchedule.data.length;
-
-  const fleetCarrierJourneyScheduleBoardGrid =
-    "grid grid-cols-1 gap-6 border-b border-t border-neutral-800 " +
-    " lg:grid-cols-2 xl:grid-cols-4";
-
-  const contentGrid =
-    (fleetCarrierJourneyScheduleSize > 0 ? "mt-8" : "mt-4") +
-    " grid grid-cols-1 gap-x-10 md:grid-cols-2 lg:grid-cols-3";
+/**
+ * Create the page.
+ *
+ * @returns
+ */
+export default async function Page() {
+  const systems = await getPageData();
 
   return (
     <>
-      {fleetCarrierJourneyScheduleSize > 0 && (
-        <>
+      <Heading icon="icarus-terminal-info" title="System Statistics" className="mt-4 gap-2" />
+      <small className="mb-8 text-xs text-stone-300">
+        Updated every <span className="text-glow__blue">60 minutes</span>. (Source:{" "}
+        <a className="text-glow__orange" href="https://status.versyx.net/">
+          API
+        </a>
+        ).
+      </small>
+      <SystemsStatisticsBar className="fx-fade-in" callInterval={10000} flushCache={0} />
+      <div className="mt-4 grid grid-cols-1 md:grid-cols-12 md:gap-10">
+        <div className="order-last col-span-1 md:order-first md:col-span-4">
           <Heading
-            icon="icarus-terminal-route"
-            title="Departure Board"
-            className="mb-8 mt-4 gap-2"
-          />
-          <div className={fleetCarrierJourneyScheduleBoardGrid}>
-            {fleetCarrierJourneySchedule.data.slice(0, 4).map((journey) => {
-              return <JourneyCard key={journey.id} schedule={journey} />;
-            })}
-          </div>
-        </>
-      )}
-      <div className={contentGrid}>
-        <div className="col-span-1">
-          <Heading
-            icon="icarus-terminal-location-filled text-glow__blue"
+            icon="icarus-terminal-scan text-glow__orange"
             largeIcon={true}
-            title="Latest Updated System"
-            className="gap-2 text-2xl"
+            title="Popular Systems"
+            className="text-2xl md:mt-4 md:gap-3"
+          />
+          <PopularSystems className="my-5 p-1" />
+          <Heading
+            icon="icarus-terminal-info text-glow__orange"
+            largeIcon={true}
+            title="Navigation Routes"
+            className="mt-10 gap-3 text-2xl"
           />
           <small className="text-xs text-stone-300">
-            Updated every <span className="text-glow__blue">5 minutes</span>. (Source:{" "}
-            <a className="text-glow__orange" href="https://status.versyx.net/">
+            Updated every <span className="text-glow__blue">30 seconds</span>. (Source:{" "}
+            <a className="text-glow__orange" href="https://eddn.edcd.io/">
               EDDN
             </a>
             ).
           </small>
-          <LatestSystem className="mt-4 border-b border-neutral-800 pb-8 text-sm" />
-
-          <Heading
-            icon="icarus-terminal-notifications text-glow__orange"
-            largeIcon={true}
-            title="Latest Galnet News"
-            className="mb-4 mt-8 gap-3 text-2xl"
-          />
-          <GalnetList articles={news} />
+          <SystemsNavRoutes callInterval={30000} />
         </div>
-        <div className="col-span-1 hidden md:block lg:col-span-2">
+        <div className="order-first col-span-1 md:order-last md:col-span-8">
           <Heading
-            icon="icarus-terminal-route text-glow__orange"
+            icon="icarus-terminal-system-orbits text-glow__orange"
             largeIcon={true}
-            title="Scheduled Fleet Carrier Journeys"
-            className="mb-8 gap-3 text-2xl"
+            title="Systems Information"
+            className="mt-4 gap-3 text-2xl"
           />
-          <JourneyTable schedule={fleetCarrierJourneySchedule} />
+          <SystemsTable className="mt-5" systems={systems} />
         </div>
       </div>
     </>
