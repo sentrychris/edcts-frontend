@@ -1,11 +1,10 @@
 import type { Galnet } from "@/core/interfaces/Galnet";
-import type { Schedule } from "@/core/interfaces/Schedule";
+import type { System } from "@/core/interfaces/System";
 import { getCollection } from "@/core/api";
 import Heading from "@/components/heading";
 import GalnetList from "./galnet/components/galnet-sidebar";
 import LatestSystem from "./systems/components/latest-system";
-import JourneyCard from "./fleet-carriers/components/journey-card";
-import JourneyTable from "./fleet-carriers/components/journey-table";
+import SystemsTable from "./systems/components/systems-table";
 
 export default async function Home() {
   const news = await getCollection<Galnet>("galnet/news", {
@@ -14,39 +13,16 @@ export default async function Home() {
     },
   });
 
-  const fleetCarrierJourneySchedule = await getCollection<Schedule>("fleet-carriers/schedule", {
+  const systems = await getCollection<System>("systems", {
     params: {
-      withCarrierInformation: 1,
-      withSystemInformation: 1,
+      withInformation: 1,
     },
   });
 
-  const fleetCarrierJourneyScheduleSize = fleetCarrierJourneySchedule.data.length;
-
-  const fleetCarrierJourneyScheduleBoardGrid =
-    "grid grid-cols-1 gap-6 border-b border-t border-neutral-800 " +
-    " lg:grid-cols-2 xl:grid-cols-4";
-
-  const contentGrid =
-    (fleetCarrierJourneyScheduleSize > 0 ? "mt-8" : "mt-4") +
-    " grid grid-cols-1 gap-x-10 md:grid-cols-2 lg:grid-cols-3";
+  const contentGrid = "mt-4 grid grid-cols-1 gap-x-10 md:grid-cols-2 lg:grid-cols-3";
 
   return (
     <>
-      {fleetCarrierJourneyScheduleSize > 0 && (
-        <>
-          <Heading
-            icon="icarus-terminal-route"
-            title="Departure Board"
-            className="mb-8 mt-4 gap-2"
-          />
-          <div className={fleetCarrierJourneyScheduleBoardGrid}>
-            {fleetCarrierJourneySchedule.data.slice(0, 4).map((journey) => {
-              return <JourneyCard key={journey.id} schedule={journey} />;
-            })}
-          </div>
-        </>
-      )}
       <div className={contentGrid}>
         <div className="col-span-1">
           <Heading
@@ -57,7 +33,7 @@ export default async function Home() {
           />
           <small className="text-xs text-stone-300">
             Updated every <span className="text-glow__blue">5 minutes</span>. (Source:{" "}
-            <a className="text-glow__orange" href="https://status.versyx.net/">
+            <a className="text-glow__orange" href="https://eddn.edcd.io/">
               EDDN
             </a>
             ).
@@ -76,10 +52,10 @@ export default async function Home() {
           <Heading
             icon="icarus-terminal-route text-glow__orange"
             largeIcon={true}
-            title="Scheduled Fleet Carrier Journeys"
+            title="Universal Cartographics Data"
             className="mb-8 gap-3 text-2xl"
           />
-          <JourneyTable schedule={fleetCarrierJourneySchedule} />
+          <SystemsTable systems={systems} />
         </div>
       </div>
     </>

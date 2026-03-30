@@ -15,7 +15,7 @@ const Footer: FunctionComponent = () => {
         Developments plc. All rights reserved.
       </span>
       <span className="text-xs">
-        ED:CTS is neither affiliated with nor endorsed by Frontier Developments.
+        ED:CS is neither affiliated with nor endorsed by Frontier Developments.
       </span>
       <span className="text-xs">
         Made with <span className="text-glow__orange">♥</span> by{" "}

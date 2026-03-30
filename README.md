@@ -1,8 +1,4 @@
-# ED:CTS - Carrier Transport Services
-
-_Trainline, but for Elite Dangerous._
-
-This is mainly an arrival/departure information hub for fleet carrier journeys in Elite Dangerous, but it also includes general system information, latest galnet news, and various other data sourced from EDDN, EDSM, Spansh and other third-party services.
+# ED:CTS
 
 ![ED:CTS System Page](./public/images/edcts.png)
 

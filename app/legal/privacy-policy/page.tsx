@@ -14,7 +14,7 @@ export default async function Page() {
           <section className="introduction py-5">
             <h2 className="text-glow__orange mb-4 text-3xl">Introduction</h2>
             <p className="mb-2">
-              Welcome to <strong>ED:CTS</strong>, a fan site dedicated to the game Elite Dangerous.
+              Welcome to <strong>ED:CS</strong>, a fan site dedicated to the game Elite Dangerous.
               We are committed to protecting your privacy and ensuring that your personal
               information is handled with care.
             </p>

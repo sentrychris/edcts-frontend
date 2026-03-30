@@ -80,19 +80,7 @@ export const statisticsState = {
       stars: 0,
       orbiting: 0,
     },
-    carriers: 0,
     commanders: 0,
-    journeys: {
-      total: 0,
-      boarding: 0,
-      cancelled: 0,
-      leaving_in: {
-        two_days: 0,
-        one_week: 0,
-        one_month: 0,
-        six_months: 0,
-      },
-    },
   },
 };
 

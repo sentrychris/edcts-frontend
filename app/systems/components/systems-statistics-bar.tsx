@@ -82,12 +82,6 @@ const SystemsStatisticsBar: FunctionComponent<Props> = ({
               icon: "icarus-terminal-system-bodies text-2xl",
             })}
           </div>
-          <div className="hidden whitespace-nowrap md:inline">
-            <p className="mb-2">ED:CTS Carriers:</p>
-            {renderTextWithIcon(formatNumber(statistics.carriers), {
-              icon: "icarus-terminal-ship text-2xl",
-            })}
-          </div>
         </div>
         <div className="hidden items-center gap-4 whitespace-nowrap md:flex">
           <div>

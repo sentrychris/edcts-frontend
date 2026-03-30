@@ -14,9 +14,9 @@ import "@/css/main.css";
 
 const jura = Jura({ subsets: ["latin"] });
 
-const title = `ED:CTS`;
+const title = `ED:CS`;
 const description =
-  "All the latest news and updates from the Elite: Dangerous galaxy. Find scheduled flights, carrier services, and more.";
+  "All the latest news and updates from the Elite: Dangerous galaxy.";
 
 export const metadata: Metadata = {
   authors: [
@@ -38,8 +38,6 @@ export const metadata: Metadata = {
     "Galnet",
     "Milky Way",
     "Astronomy",
-    "Carrier Services",
-    "Fleet Carriers",
   ],
   openGraph: {
     title,
@@ -74,7 +72,7 @@ export default async function RootLayout({ children }: { children: React.ReactNo
           <NewsTicker articles={articles} />
           <main className="text-glow__white lg:px-18 mx-auto flex flex-col px-6 py-6 text-neutral-200 md:px-12">
             <h1 className="mb-5 text-4xl uppercase">
-              ED:CTS <span className="hidden md:inline">- Carrier Transport Services</span>
+              ED:CS <span className="hidden md:inline">- Cartographical Services</span>
             </h1>
             {children}
           </main>

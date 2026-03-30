@@ -1,5 +1,3 @@
-import type { Carrier } from "./Carrier";
-
 export interface CommanderApi {
   inara: string;
   edsm: string;
@@ -8,5 +6,4 @@ export interface CommanderApi {
 export interface Commander {
   name: string;
   api?: CommanderApi;
-  carriers?: Array<Carrier>;
 }

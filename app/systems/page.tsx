@@ -71,7 +71,7 @@ export default async function Page() {
       <Heading icon="icarus-terminal-info" title="System Statistics" className="mt-4 gap-2" />
       <small className="mb-8 text-xs text-stone-300">
         Updated every <span className="text-glow__blue">60 minutes</span>. (Source:{" "}
-        <a className="text-glow__orange" href="https://status.versyx.net/">
+        <a className="text-glow__orange" href="#">
           API
         </a>
         ).
