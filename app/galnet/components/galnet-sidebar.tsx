@@ -12,7 +12,7 @@ interface Props {
 
 const GalnetSidebar: FunctionComponent<Props> = ({ className, articles }) => {
   const [currentSlice, setCurrentSlice] = useState(0);
-  const itemsPerSlice = 3;
+  const itemsPerSlice = 4;
 
   const handleNextSlice = () => {
     if ((currentSlice + 1) * itemsPerSlice < articles.data.length) {
