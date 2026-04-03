@@ -31,6 +31,22 @@ const GalnetSidebar: FunctionComponent<Props> = ({ className, articles }) => {
 
   return (
     <div className={className}>
+      <div className="flex content-evenly items-center gap-5 py-2 border-b border-neutral-800">
+        <button
+          onClick={handlePrevSlice}
+          disabled={currentSlice === 0}
+          className="text-glow__orange hover:text-glow__blue py-2 text-xs uppercase disabled:opacity-50"
+        >
+          Prev
+        </button>
+        <button
+          onClick={handleNextSlice}
+          disabled={(currentSlice + 1) * itemsPerSlice >= articles.data.length}
+          className="text-glow__orange hover:text-glow__blue py-2 text-xs uppercase disabled:opacity-50"
+        >
+          Next
+        </button>
+      </div>
       {slicedArticles.map((article) => {
         return (
           <div key={article.id} className="relative">
@@ -44,22 +60,6 @@ const GalnetSidebar: FunctionComponent<Props> = ({ className, articles }) => {
           </div>
         );
       })}
-      <div className="flex justify-between pt-5">
-        <button
-          onClick={handlePrevSlice}
-          disabled={currentSlice === 0}
-          className="text-glow__orange hover:text-glow__blue py-2 text-xs uppercase disabled:opacity-50"
-        >
-          {"<<"} Prev
-        </button>
-        <button
-          onClick={handleNextSlice}
-          disabled={(currentSlice + 1) * itemsPerSlice >= articles.data.length}
-          className="text-glow__orange hover:text-glow__blue py-2 text-xs uppercase disabled:opacity-50"
-        >
-          Next {">>"}
-        </button>
-      </div>
     </div>
   );
 };

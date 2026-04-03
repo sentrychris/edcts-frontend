@@ -31,7 +31,7 @@ export default async function Home() {
             title="Latest Galnet News"
             className="pb-5 gap-3 text-2xl"
           />
-          <GalnetList className="border-b border-t border-neutral-800" articles={news} />
+          <GalnetList className="border-t border-neutral-800" articles={news} />
         </div>
         <div className="col-span-1 hidden md:block lg:col-span-2">
           <Heading
