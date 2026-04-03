@@ -71,9 +71,6 @@ export default async function RootLayout({ children }: { children: React.ReactNo
           <MainNavigation />
           <NewsTicker articles={articles} />
           <main className="text-glow__white lg:px-18 mx-auto flex flex-col px-6 py-6 text-neutral-200 md:px-12">
-            <h1 className="mb-5 text-4xl uppercase">
-              ED:CS <span className="hidden md:inline">- Cartographical Services</span>
-            </h1>
             {children}
           </main>
           <Footer />

@@ -5,8 +5,6 @@ import { getCollection } from "@/core/api";
 import Heading from "@/components/heading";
 import SystemsStatisticsBar from "./components/systems-statistics-bar";
 import SystemsTable from "./components/systems-table";
-import SystemsNavRoutes from "./components/systems-navroutes";
-import PopularSystems from "./components/popular-systems";
 
 /**
  * Define the page properties.
@@ -68,45 +66,13 @@ export default async function Page() {
 
   return (
     <>
-      <Heading icon="icarus-terminal-info" title="System Statistics" className="mt-4 gap-2" />
-      <small className="mb-8 text-xs text-stone-300">
-        Updated every <span className="text-glow__blue">60 minutes</span>. (Source:{" "}
-        <a className="text-glow__orange" href="#">
-          API
-        </a>
-        ).
-      </small>
-      <SystemsStatisticsBar className="fx-fade-in" callInterval={10000} flushCache={0} />
-      <div className="mt-4 grid grid-cols-1 gap-10 md:grid-cols-12">
-        <div className="order-last col-span-1 md:order-first md:col-span-4">
-          <Heading
-            icon="icarus-terminal-scan text-glow__orange"
-            largeIcon={true}
-            title="Popular Systems"
-            className="mt-4 gap-3 text-2xl"
-          />
-          <PopularSystems className="my-5 p-1" />
-          <Heading
-            icon="icarus-terminal-info text-glow__orange"
-            largeIcon={true}
-            title="Navigation Routes"
-            className="mt-10 gap-3 text-2xl"
-          />
-          <small className="text-xs text-stone-300">
-            Updated every <span className="text-glow__blue">30 seconds</span>. (Source:{" "}
-            <a className="text-glow__orange" href="https://eddn.edcd.io/">
-              EDDN
-            </a>
-            ).
-          </small>
-          <SystemsNavRoutes callInterval={30000} />
-        </div>
-        <div className="order-first col-span-1 md:order-last md:col-span-8">
+      <div className="grid grid-cols-1 gap-10 md:grid-cols-12">
+        <div className="order-first col-span-1 md:order-last md:col-span-12">
           <Heading
             icon="icarus-terminal-system-orbits text-glow__orange"
             largeIcon={true}
             title="Systems Information"
-            className="mt-4 gap-3 text-2xl"
+            className="gap-3 text-2xl"
           />
           <SystemsTable className="mt-5" systems={systems} />
         </div>

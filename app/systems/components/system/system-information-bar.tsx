@@ -14,7 +14,7 @@ const SystemInformationBar: FunctionComponent<Props> = ({ information }) => {
       <div className="align-center flex flex-row justify-between uppercase">
         <div className="flex flex-wrap items-center gap-10 lg:gap-x-20">
           <div className="flex flex-col">
-            <p className="mb-2 whitespace-nowrap">Governance:</p>
+            <p className="mb-2 whitespace-nowrap">Governance / Security:</p>
             <span className="text-glow__white flex items-center gap-2 py-1 font-bold uppercase">
               <i className="icarus-terminal-system-authority-solid text-glow__orange"></i>
               <p>
@@ -29,9 +29,8 @@ const SystemInformationBar: FunctionComponent<Props> = ({ information }) => {
                 <span className="ms-3">
                   {renderSecurityText(
                     !information || !information.security || information.security === "None"
-                      ? "No"
+                      ? "None"
                       : information.security,
-                    "security",
                   )}
                 </span>
               </p>

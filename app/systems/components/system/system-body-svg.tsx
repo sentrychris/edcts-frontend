@@ -173,7 +173,7 @@ const SystemBodySVG: FunctionComponent<Props> = ({
             onClick={() => dispatcher.selectBody({ body, type: "select-body" })}
           >
             <i className="icarus-terminal-system-bodies text-label__small"></i>
-            {orbiting} orbital bodies
+            {orbiting}
           </span>
 
           {!bodyIsSelectedUserFocus &&
@@ -189,8 +189,7 @@ const SystemBodySVG: FunctionComponent<Props> = ({
                 onClick={() => dispatcher.selectBody({ body, type: "select-body" })}
               >
                 <i className="icarus-terminal-settlement text-label__small"></i>
-                {body._planetary_bases.length}{" "}
-                {bodyIsSelectedUserFocus ? "planetary settlements found" : ""}
+                {body._planetary_bases.length}
               </span>
             )}
         </div>

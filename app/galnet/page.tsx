@@ -59,7 +59,7 @@ export default async function Page() {
 
   return (
     <>
-      <div className="mt-4 grid grid-cols-1">
+      <div className="grid grid-cols-1">
         <Heading
           icon="icarus-terminal-atmosphere"
           largeIcon={true}
