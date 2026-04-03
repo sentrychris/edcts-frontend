@@ -12,7 +12,7 @@ interface Props {
 
 const GalnetSidebar: FunctionComponent<Props> = ({ className, articles }) => {
   const [currentSlice, setCurrentSlice] = useState(0);
-  const itemsPerSlice = 6;
+  const itemsPerSlice = 10;
 
   const handleNextSlice = () => {
     if ((currentSlice + 1) * itemsPerSlice < articles.data.length) {
@@ -28,38 +28,57 @@ const GalnetSidebar: FunctionComponent<Props> = ({ className, articles }) => {
 
   const startIndex = currentSlice * itemsPerSlice;
   const slicedArticles = articles.data.slice(startIndex, startIndex + itemsPerSlice);
+  const totalSlices = Math.ceil(articles.data.length / itemsPerSlice);
 
   return (
     <div className={className}>
-      <div className="flex content-evenly items-center gap-5 py-2 border-b border-neutral-800">
+      {slicedArticles.map((article, i) => (
+        <div key={article.id} className="group relative border-b border-neutral-800 py-4">
+          {/* Transmission index */}
+          <div className="mb-2 flex items-center justify-between">
+            <span className="text-xs uppercase tracking-widest text-neutral-600">
+              TRANSMISSION {String(startIndex + i + 1).padStart(3, "0")}
+            </span>
+            <span className="text-xs uppercase tracking-widest text-neutral-600">
+              {article.uploaded_at}
+            </span>
+          </div>
+
+          {/* Title */}
+          <h3 className="mb-3 text-sm uppercase leading-snug tracking-wide text-neutral-200 group-hover:text-white">
+            {article.title}
+          </h3>
+
+          {/* Read more */}
+          <Link
+            href={`/galnet/news/${article.slug}`}
+            className="flex items-center gap-2 text-xs uppercase tracking-widest text-glow__orange font-bold transition-colors hover:text-orange-300"
+          >
+            Access Report <span>{">>"}</span>
+          </Link>
+        </div>
+      ))}
+
+      {/* Pagination */}
+      <div className="flex items-center justify-between pt-4 text-xs uppercase tracking-widest">
         <button
           onClick={handlePrevSlice}
           disabled={currentSlice === 0}
-          className="text-glow__orange hover:text-glow__blue py-2 text-xs uppercase disabled:opacity-50"
+          className="flex items-center gap-2 text-glow__orange uppercase transition-colors hover:text-glow__blue disabled:cursor-not-allowed disabled:opacity-30"
         >
           Prev
         </button>
+        <span className="text-neutral-600">
+          {currentSlice + 1} / {totalSlices}
+        </span>
         <button
           onClick={handleNextSlice}
           disabled={(currentSlice + 1) * itemsPerSlice >= articles.data.length}
-          className="text-glow__orange hover:text-glow__blue py-2 text-xs uppercase disabled:opacity-50"
+          className="flex items-center gap-2 text-glow__orange uppercase transition-colors hover:text-glow__blue disabled:cursor-not-allowed disabled:opacity-30"
         >
           Next
         </button>
       </div>
-      {slicedArticles.map((article) => {
-        return (
-          <div key={article.id} className="relative">
-            <div className="relative border-b border-neutral-800 py-5">
-              <h3 className="mb-2 text-lg">{article.title}</h3>
-              <p className="mb-2 text-xs">{article.uploaded_at}</p>
-              <Link href={`/galnet/news/${article.slug}`} className="text-glow__orange">
-                Read more...
-              </Link>
-            </div>
-          </div>
-        );
-      })}
     </div>
   );
 };

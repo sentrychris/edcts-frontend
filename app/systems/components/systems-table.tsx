@@ -122,101 +122,101 @@ const SystemsTable: FunctionComponent<Props> = ({ className = "", systems }) => 
 
   const columns = {
     name: {
-      title: "Name",
-      render: (system: System) => {
-        return (
-          <Link className="text-blue-200 hover:underline" href={`/systems/${system.slug}`}>
-            {system.name}
-          </Link>
-        );
-      },
+      title: "Designation",
+      render: (system: System) => (
+        <Link
+          className="text-glow__blue flex items-center gap-2 transition-colors hover:text-white"
+          href={`/systems/${system.slug}`}
+        >
+          <i className="icarus-terminal-system-orbits text-xs"></i>
+          {system.name}
+        </Link>
+      ),
     },
     government: {
       title: "Government",
-      render: (system: System) =>
-        system.information && system.information.government
-          ? system.information.government
-          : "None",
+      render: (system: System) => (
+        <span className="tracking-wide text-neutral-300">
+          {system.information?.government ?? "None"}
+        </span>
+      ),
     },
     allegiance: {
       title: "Allegiance",
       render: (system: System) =>
-        renderAllegianceText(
-          system.information && system.information.allegiance
-            ? system.information.allegiance
-            : "None",
-        ),
+        renderAllegianceText(system.information?.allegiance ?? "None"),
     },
     faction: {
-      title: "Faction",
-      render: (system: System) =>
-        system.information &&
-        system.information.controlling_faction &&
-        system.information.controlling_faction.name
-          ? system.information.controlling_faction.name
-          : "None",
+      title: "Ctrl. Faction",
+      render: (system: System) => (
+        <span className="tracking-wide text-neutral-300">
+          {system.information?.controlling_faction?.name ?? "None"}
+        </span>
+      ),
     },
     population: {
       title: "Population",
-      render: (system: System) =>
-        system.information && system.information.population
-          ? system.information.population.toLocaleString()
-          : "0",
+      render: (system: System) => (
+        <span className="tracking-wide text-neutral-300">
+          {system.information?.population ? system.information.population.toLocaleString() : "0"}
+        </span>
+      ),
     },
     economy: {
       title: "Economy",
-      render: (system: System) =>
-        system.information && system.information.economy ? system.information.economy : "None",
+      render: (system: System) => (
+        <span className="text-glow__orange tracking-wide">
+          {system.information?.economy ?? "None"}
+        </span>
+      ),
     },
     security: {
       title: "Security",
       render: (system: System) =>
-        renderSecurityText(
-          system.information && system.information.security ? system.information.security : "None",
-        ),
+        renderSecurityText(system.information?.security ?? "None"),
     },
   };
 
   return (
     <div className={className}>
-      <Filter placeholder="Search by system name..." handleInput={searchByName} className="mb-5" />
-      <div className="mb-5 grid grid-cols-1 gap-5 md:grid-cols-5 lg:grid-cols-11">
-        <Filter
-          displayClearButton={false}
-          type="number"
-          className="col-span-3 md:col-span-2"
-          placeholder="Population..."
-          handleInput={(input) => {
-            searchByInformation("population", input);
-          }}
-        />
-
-        <Filter
-          displayClearButton={false}
-          className="col-span-3"
-          placeholder="Government..."
-          handleInput={(input) => {
-            searchByInformation("government", input);
-          }}
-        />
-
-        <Filter
-          displayClearButton={false}
-          className="col-span-3 md:col-span-2 lg:col-span-3"
-          placeholder="Allegiance..."
-          handleInput={(input) => {
-            searchByInformation("allegiance", input);
-          }}
-        />
-
-        <Filter
-          displayClearButton={false}
-          className="col-span-3"
-          placeholder="Security..."
-          handleInput={(input) => {
-            searchByInformation("security", input);
-          }}
-        />
+      {/* Query panel */}
+      <div className="mb-6 border border-neutral-800">
+        <div className="flex items-center gap-3 border-b border-neutral-800 px-4 py-3">
+          <i className="icarus-terminal-route text-glow__orange text-sm"></i>
+          <span className="text-xs uppercase tracking-widest text-neutral-500">
+            Cartographic Query Parameters
+          </span>
+        </div>
+        <div className="p-4">
+          <Filter
+            placeholder="Search system designation..."
+            handleInput={searchByName}
+            className="mb-4"
+          />
+          <div className="grid grid-cols-1 gap-3 md:grid-cols-2 lg:grid-cols-4">
+            <Filter
+              displayClearButton={false}
+              type="number"
+              placeholder="Population..."
+              handleInput={(input) => searchByInformation("population", input)}
+            />
+            <Filter
+              displayClearButton={false}
+              placeholder="Government..."
+              handleInput={(input) => searchByInformation("government", input)}
+            />
+            <Filter
+              displayClearButton={false}
+              placeholder="Allegiance..."
+              handleInput={(input) => searchByInformation("allegiance", input)}
+            />
+            <Filter
+              displayClearButton={false}
+              placeholder="Security..."
+              handleInput={(input) => searchByInformation("security", input)}
+            />
+          </div>
+        </div>
       </div>
       <Table columns={columns} data={rows} meta={metadata} links={navigation} page={paginate} />
     </div>

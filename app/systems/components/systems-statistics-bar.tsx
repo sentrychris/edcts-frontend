@@ -4,11 +4,9 @@ import type { FunctionComponent } from "react";
 import type { AppStatistics } from "@/core/interfaces/Statistics";
 import { useEffect, useState } from "react";
 import { formatNumber } from "@/core/string-utils";
-import { renderTextWithIcon } from "@/core/render-utils";
 import { getResource } from "@/core/api";
 import { statisticsState } from "../lib/state";
 import LatestSystem from "./latest-system";
-import Heading from "@/components/heading";
 
 interface Props {
   callInterval?: number;
@@ -35,58 +33,58 @@ const SystemsStatisticsBar: FunctionComponent<Props> = ({
       });
     };
 
-    // First call to initialize statistics
     callStatistics(0);
 
-    // Clear any existing interval
     if (statisticsInterval) {
       clearInterval(statisticsInterval);
     }
 
-    // Set up a new interval to fetch statistics periodically
     const interval = setInterval(() => {
       callStatistics(flushCache);
     }, callInterval);
 
-    // setStatisticsInterval to the interval
     setStatisticsInterval(interval);
 
-    // Cleanup function to clear interval on unmount or when deps change
     return () => clearInterval(interval);
   }, [flushCache, callInterval]);
+
+  const stats = [
+    {
+      icon: "icarus-terminal-system-orbits",
+      label: "Systems Logged",
+      value: formatNumber(statistics.cartographical.systems),
+    },
+    {
+      icon: "icarus-terminal-star",
+      label: "Primary Stars",
+      value: formatNumber(statistics.cartographical.stars),
+    },
+    {
+      icon: "icarus-terminal-system-bodies",
+      label: "Orbital Bodies",
+      value: formatNumber(statistics.cartographical.bodies),
+    },
+  ];
 
   return (
     <div
       className={
-        "border-b border-t border-neutral-800 bg-transparent py-5 tracking-wide backdrop-blur backdrop-filter " +
-        className
+        "mb-6 border border-orange-900/30 bg-black/20 backdrop-blur backdrop-filter " + className
       }
     >
-      <div className="flex flex-row items-center justify-between uppercase">
-        <div className="flex flex-wrap items-center gap-10 lg:gap-20">
-          <div className="whitespace-nowrap">
-            <p className="mb-2">Systems Logged:</p>
-            {renderTextWithIcon(formatNumber(statistics.cartographical.systems), {
-              icon: "icarus-terminal-system-orbits text-2xl",
-            })}
+      <div className="flex items-stretch divide-x divide-orange-900/30">
+        {stats.map(({ icon, label, value }) => (
+          <div key={label} className="flex flex-1 flex-col gap-2 px-5 py-4">
+            <div className="flex items-center gap-2 text-xs uppercase tracking-widest text-neutral-500">
+              <i className={`${icon} text-orange-500/60`}></i>
+              {label}
+            </div>
+            <span className="text-glow__orange text-xl font-bold tracking-wide">{value}</span>
           </div>
-          <div className="whitespace-nowrap">
-            <p className="mb-2">Primary Stars:</p>
-            {renderTextWithIcon(formatNumber(statistics.cartographical.stars), {
-              icon: "icarus-terminal-star text-2xl",
-            })}
-          </div>
-          <div className="whitespace-nowrap">
-            <p className="mb-2">Orbital Bodies:</p>
-            {renderTextWithIcon(formatNumber(statistics.cartographical.bodies), {
-              icon: "icarus-terminal-system-bodies text-2xl",
-            })}
-          </div>
-        </div>
-        <div className="hidden items-center gap-4 whitespace-nowrap md:flex">
-          <div>
-            <LatestSystem className="text-xs" showIcon={true} showHeading={true} />
-          </div>
+        ))}
+
+        <div className="hidden flex-col justify-center px-5 py-4 md:flex">
+          <LatestSystem className="text-xs" />
         </div>
       </div>
     </div>

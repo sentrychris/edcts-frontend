@@ -1,7 +1,6 @@
 import type { Galnet } from "@/core/interfaces/Galnet";
 import type { System } from "@/core/interfaces/System";
 import { getCollection } from "@/core/api";
-import Heading from "@/components/heading";
 import GalnetList from "./galnet/components/galnet-sidebar";
 import SystemsTable from "./systems/components/systems-table";
 import SystemsStatisticsBar from "./systems/components/systems-statistics-bar";
@@ -19,27 +18,88 @@ export default async function Home() {
     },
   });
 
-  const contentGrid = "grid grid-cols-1 gap-x-10 md:grid-cols-2 lg:grid-cols-3";
-
   return (
     <>
-      <div className={contentGrid}>
+      {/* ── System Masthead ── */}
+      <div className="relative mb-10 border border-orange-900/40 px-8 py-8">
+        {/* Corner bracket accents */}
+        <span className="absolute -left-px -top-px h-5 w-5 border-l-2 border-t-2 border-orange-500" />
+        <span className="absolute -right-px -top-px h-5 w-5 border-r-2 border-t-2 border-orange-500" />
+        <span className="absolute -bottom-px -left-px h-5 w-5 border-b-2 border-l-2 border-orange-500" />
+        <span className="absolute -bottom-px -right-px h-5 w-5 border-b-2 border-r-2 border-orange-500" />
+
+        {/* Status row */}
+        <div className="mb-6 flex flex-wrap items-center justify-between gap-2 text-xs uppercase tracking-widest text-neutral-600">
+          <div className="flex items-center gap-4">
+            <span>SYS:EDCS-001</span>
+            <span className="text-neutral-800">■</span>
+            <span>SECTOR:CORE SYSTEMS</span>
+            <span className="text-neutral-800">■</span>
+            <span>CLASS:UNRESTRICTED</span>
+          </div>
+          <div className="flex items-center gap-2">
+            <span className="h-1.5 w-1.5 animate-pulse rounded-full bg-green-400"></span>
+            <span>NETWORK: OPERATIONAL</span>
+          </div>
+        </div>
+
+        {/* Main title */}
+        <div className="text-center">
+          <p className="mb-3 text-xs uppercase tracking-[0.5em] text-orange-900">
+            frontier developments ── universal cartographics
+          </p>
+          <h1 className="text-glow__orange mb-3 text-3xl font-bold uppercase tracking-[0.2em] md:text-5xl">
+            ED:CS Terminal
+          </h1>
+          <p className="text-xs uppercase tracking-[0.35em] text-neutral-500">
+            cartographic data ── galnet communications ── system intelligence
+          </p>
+        </div>
+
+        {/* Footer rule */}
+        <div className="mt-6 flex items-center gap-6 border-t border-neutral-800 pt-4 text-xs uppercase tracking-widest text-neutral-700">
+          <span className="h-px flex-1 bg-neutral-800"></span>
+          <span className="flex items-center gap-2">
+            <i className="icarus-terminal-commander"></i>
+            CMDR ACCESS VERIFIED
+          </span>
+          <span className="h-px flex-1 bg-neutral-800"></span>
+        </div>
+      </div>
+
+      {/* ── Content Grid ── */}
+      <div className="grid grid-cols-1 gap-x-10 md:grid-cols-2 lg:grid-cols-3">
+        {/* ── Galnet Panel ── */}
         <div className="col-span-1">
-          <Heading
-            icon="icarus-terminal-notifications text-glow__orange"
-            largeIcon={true}
-            title="Latest Galnet News"
-            className="pb-5 gap-3 text-2xl"
-          />
+          <div className="mb-5 flex items-center gap-3 border-b border-neutral-800 pb-4">
+            <i
+              className="icarus-terminal-notifications text-glow__orange"
+              style={{ fontSize: "1.5rem" }}
+            ></i>
+            <div className="flex-1">
+              <h2 className="text-glow font-bold uppercase tracking-wide">Galnet Comms</h2>
+              <p className="text-xs uppercase tracking-wider text-neutral-500">Uplink Channel</p>
+            </div>
+            <span className="flex items-center gap-1.5 text-xs uppercase tracking-wider text-orange-600">
+              <span className="h-1.5 w-1.5 animate-pulse rounded-full bg-orange-500"></span>
+              Live
+            </span>
+          </div>
           <GalnetList className="border-t border-neutral-800" articles={news} />
         </div>
+
+        {/* ── Systems Panel ── */}
         <div className="col-span-1 hidden md:block lg:col-span-2">
-          <Heading
-            icon="icarus-terminal-route text-glow__orange"
-            largeIcon={true}
-            title="Universal Cartographics Data"
-            className="pb-5 gap-3 text-2xl"
-          />
+          <div className="mb-5 flex items-center gap-3 border-b border-neutral-800 pb-4">
+            <i
+              className="icarus-terminal-route text-glow__orange"
+              style={{ fontSize: "1.5rem" }}
+            ></i>
+            <div className="flex-1">
+              <h2 className="text-glow font-bold uppercase tracking-wide">Cartographic Database</h2>
+              <p className="text-xs uppercase tracking-wider text-neutral-500">Systems Intelligence</p>
+            </div>
+          </div>
           <SystemsStatisticsBar className="fx-fade-in" callInterval={10000} flushCache={0} />
           <SystemsTable systems={systems} />
         </div>
