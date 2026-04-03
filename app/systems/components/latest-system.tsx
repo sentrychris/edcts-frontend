@@ -71,8 +71,8 @@ const LatestSystem: FunctionComponent<Props> = ({
                 <p className="whitespace-nowrap">
                   <span className="me-1">{system.planets.length}</span>
                   {pluralizeTextFromArray(system.planets, {
-                    singular: "planet",
-                    plural: "planets",
+                    singular: "body",
+                    plural: "bodies",
                   })}
                 </p>
               </div>
