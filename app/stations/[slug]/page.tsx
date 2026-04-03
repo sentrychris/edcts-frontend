@@ -2,6 +2,7 @@ import type { Metadata, ResolvingMetadata } from "next";
 import { settings } from "@/core/config";
 import Heading from "@/components/heading";
 import StationDetail from "../components/station/station-detail";
+import StationMarket from "../components/station/station-market";
 
 /**
  * Define the page properties.
@@ -45,6 +46,7 @@ export default async function Page({ params }: { params: { slug: string } }) {
     <>
       <Heading title="Station Information" className="mb-5 gap-2" />
       <StationDetail params={params} />
+      <StationMarket slug={params.slug} />
     </>
   );
 }

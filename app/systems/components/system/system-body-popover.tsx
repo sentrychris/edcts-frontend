@@ -39,19 +39,16 @@ const SystemBodyPopover: FunctionComponent<Props> = ({ body, system, dispatcher,
 
             <div className="px-3">
               <div className="mb-3 mt-4 grid grid-cols-1 text-lg md:grid-cols-1">
-                <p className="mb-1 flex items-center gap-x-2">
+                <p className="mb-1 flex items-center gap-x-2 border-b border-neutral-800 pb-2 text-glow">
                   <i className="icarus-terminal-system-bodies text-glow__orange"></i>
-                  <Link
-                    className="text-glow__orange"
-                    href={`/systems/system/${system.detail.slug}/body/${body.slug}`}
-                  >
+                  <Link href={`/systems/system/${system.detail.slug}/body/${body.slug}`} className="hover:underline">
                     {body.name}
                   </Link>
                 </p>
 
                 {body._children && (
                   <p
-                    className="text-glow__blue text-sm hover:cursor-pointer hover:underline"
+                    className="text-glow__orange text-sm hover:cursor-pointer hover:underline pt-2"
                     onClick={() => {
                       dispatcher.selectBody({
                         body,

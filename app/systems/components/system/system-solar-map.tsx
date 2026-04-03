@@ -310,20 +310,23 @@ const SystemSolarMap: FunctionComponent<Props> = ({ params }) => {
 
     const allBodies: MappedSystemBody[] = [
       ...systemMap.stars.filter((s) => s._type !== SystemBodyType.Null),
-      ...systemMap.planets,
+      ...systemMap.planets.filter((p) => p._orbits_star),
     ];
 
-    const maxAu = allBodies.reduce((max, b) => Math.max(max, b.semi_major_axis ?? 0), 0.1);
+    const maxAu = allBodies.reduce(
+      (max, b) => Math.max(max, (b.distance_to_arrival ?? 0) / 499, b.semi_major_axis ?? 0),
+      0.1,
+    );
 
     orbitalBodiesRef.current = allBodies.map((body) => {
       const isMainStar = body.is_main_star === 1 && body._type === SystemBodyType.Star;
       const isBlackHole = body.sub_type?.toLowerCase().includes("black hole") ?? false;
 
-      // Use semi_major_axis (AU) or fall back to distance_to_arrival (ls → AU)
-      const au =
-        body.semi_major_axis && body.semi_major_axis > 0
-          ? body.semi_major_axis
-          : (body.distance_to_arrival ?? 0) / 499;
+      // Use distance_to_arrival (ls → AU) as it is always measured from the primary star.
+      // semi_major_axis is relative to the body's direct parent (e.g. a barycenter),
+      // which makes it wrong for bodies like Pluto that orbit a null barycenter.
+      const dtaAu = (body.distance_to_arrival ?? 0) / 499;
+      const au = dtaAu > 0 ? dtaAu : (body.semi_major_axis ?? 0);
 
       const orbitPx = isMainStar ? 0 : scaleOrbitRadius(au, maxAu);
       const period = body.orbital_period && body.orbital_period > 0 ? body.orbital_period : 365;

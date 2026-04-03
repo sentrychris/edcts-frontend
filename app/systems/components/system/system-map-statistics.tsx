@@ -40,7 +40,7 @@ const SystemMapStatistics: FunctionComponent<Props> = ({ system }) => {
           })}
         </span>
       </h4>
-      <h4 className="text-glow__blue font-bold uppercase">
+      <h4 className="text-glow__orange font-bold uppercase">
         {system.settlements.length}
         <span className="ms-1">
           {pluralizeTextFromArray(system.settlements, {

@@ -47,7 +47,6 @@ const SystemBodiesMap: FunctionComponent<Props> = ({
     };
 
     const displayBodyPanelListener = (event: ListenerEvent) => {
-      console.log(event);
       setSelectedBodyDisplayInfo(event.message);
       setIsPanelOpen(true);
     };

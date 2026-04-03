@@ -82,7 +82,7 @@ const SystemBodySVG: FunctionComponent<Props> = ({
     <div className={"flex items-center " + (body.rings && " gap-3")}>
       <svg
         viewBox={largeViewbox ? "-4000 -4000 8000 8000" : "-2500 -2500 5000 5000"}
-        preserveAspectRatio="xMinYMid meet"
+        preserveAspectRatio="xMidYMid meet"
         className={className}
       >
         <g
@@ -158,8 +158,9 @@ const SystemBodySVG: FunctionComponent<Props> = ({
           </g>
         </g>
       </svg>
+      
       <div className="star_information text-sm uppercase tracking-wide">
-        <p className="text-glow">{displayName}</p>
+        <p className="text-glow whitespace-nowrap">{displayName}</p>
         <p className="text-glow whitespace-nowrap text-xs">{body.sub_type}</p>
 
         <div className="flex flex-row items-center gap-2 text-xs">
@@ -173,7 +174,7 @@ const SystemBodySVG: FunctionComponent<Props> = ({
             onClick={() => dispatcher.selectBody({ body, type: "select-body" })}
           >
             <i className="icarus-terminal-system-bodies text-label__small"></i>
-            {orbiting}
+            {orbiting} bodies
           </span>
 
           {!bodyIsSelectedUserFocus &&
@@ -189,7 +190,7 @@ const SystemBodySVG: FunctionComponent<Props> = ({
                 onClick={() => dispatcher.selectBody({ body, type: "select-body" })}
               >
                 <i className="icarus-terminal-settlement text-label__small"></i>
-                {body._planetary_bases.length}
+                {body._planetary_bases.length} settlements
               </span>
             )}
         </div>
