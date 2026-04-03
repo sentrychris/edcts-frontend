@@ -8,6 +8,7 @@ import type { Station } from "@/core/interfaces/Station";
 import type SystemMap from "../../lib/system-map";
 import { SystemBodyType } from "@/core/constants/system";
 import { systemDispatcher } from "@/core/events/SystemDispatcher";
+import Link from "next/link";
 import Heading from "@/components/heading";
 import SystemBodySVG from "./system-body-svg";
 import SystemMapStatistics from "./system-map-statistics";
@@ -202,7 +203,17 @@ const SystemBodiesMap: FunctionComponent<Props> = ({
     <div className="border-b border-neutral-800 bg-transparent py-5 backdrop-blur backdrop-filter">
       <div className="flex items-center justify-between">
         <Heading icon="icarus-terminal-system-bodies" title="System Map" className="mb-2 gap-2" />
-        {!isLoading && <SystemMapStatistics system={systemMap} />}
+        <div className="flex items-center gap-4">
+          {!isLoading && <SystemMapStatistics system={systemMap} />}
+          {!isLoading && (
+            <Link
+              href={`/systems/${system.slug}/solar-map`}
+              className="text-glow__orange border border-orange-900 px-3 py-1 text-xs uppercase tracking-wider transition-colors hover:border-orange-500"
+            >
+              View More
+            </Link>
+          )}
+        </div>
       </div>
       {!isLoading && (
         <div className="grid grid-cols-12">
