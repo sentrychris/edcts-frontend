@@ -29,16 +29,16 @@ export default async function Home() {
             icon="icarus-terminal-notifications text-glow__orange"
             largeIcon={true}
             title="Latest Galnet News"
-            className="mb-4 gap-3 text-2xl"
+            className="pb-5 gap-3 text-2xl"
           />
-          <GalnetList articles={news} />
+          <GalnetList className="border-b border-t border-neutral-800" articles={news} />
         </div>
         <div className="col-span-1 hidden md:block lg:col-span-2">
           <Heading
             icon="icarus-terminal-route text-glow__orange"
             largeIcon={true}
             title="Universal Cartographics Data"
-            className="mb-8 gap-3 text-2xl"
+            className="pb-5 gap-3 text-2xl"
           />
           <SystemsStatisticsBar className="fx-fade-in" callInterval={10000} flushCache={0} />
           <SystemsTable systems={systems} />

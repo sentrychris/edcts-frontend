@@ -61,10 +61,10 @@ export default async function Page() {
     <>
       <div className="grid grid-cols-1">
         <Heading
-          icon="icarus-terminal-atmosphere"
+          icon="icarus-terminal-notifications text-glow__orange"
           largeIcon={true}
           title="Galnet Network"
-          className="gap-3 border-b border-neutral-800 pb-3 text-2xl"
+          className="gap-3 border-b border-neutral-800 pb-5 text-2xl"
         />
 
         <GalnetList articles={articles} />

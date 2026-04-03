@@ -1,6 +1,6 @@
 "use client";
 
-import { type FunctionComponent, useCallback, useEffect, useState } from "react";
+import { type FunctionComponent, useCallback, useEffect, useRef, useState } from "react";
 import type { ListenerEvent } from "@/core/interfaces/Dispatcher";
 import type { System } from "@/core/interfaces/System";
 import type { MappedSystemBody } from "@/core/interfaces/SystemBody";
@@ -31,18 +31,38 @@ const SystemBodiesMap: FunctionComponent<Props> = ({
 }) => {
   const [selectedBody, setSelectedBody] = useState<MappedSystemBody>();
   const [selectedBodyIndex, setSelectedBodyIndex] = useState<number>(0);
+  const [bodyHistory, setBodyHistory] = useState<MappedSystemBody[]>([]);
+  const selectedBodyRef = useRef<MappedSystemBody | undefined>(undefined);
+
+  useEffect(() => {
+    selectedBodyRef.current = selectedBody;
+  }, [selectedBody]);
 
   useEffect(() => {
     const star = systemMap.stars.find((s) => s.is_main_star === 1);
     setSelectedBody(star);
 
     const selectBodyListener = (event: ListenerEvent) => {
+      setBodyHistory((prev) =>
+        selectedBodyRef.current ? [...prev, selectedBodyRef.current!] : prev,
+      );
       setSelectedBody(event.message as MappedSystemBody);
+    };
+
+    const goToParentListener = () => {
+      setBodyHistory((prev) => {
+        const parent = prev[prev.length - 1];
+        if (parent) {
+          setSelectedBody(parent);
+        }
+        return prev.slice(0, -1);
+      });
     };
 
     const setIndexListener = (event: ListenerEvent) => {
       if ((event.message as number) === 0) {
         setSelectedBody(star);
+        setBodyHistory([]);
       }
     };
 
@@ -52,11 +72,13 @@ const SystemBodiesMap: FunctionComponent<Props> = ({
     };
 
     systemDispatcher.addEventListener("select-body", selectBodyListener);
+    systemDispatcher.addEventListener("go-to-parent", goToParentListener);
     systemDispatcher.addEventListener("set-index", setIndexListener);
     systemDispatcher.addEventListener("display-body-panel", displayBodyPanelListener);
 
     return () => {
       systemDispatcher.removeEventListener("select-body", selectBodyListener);
+      systemDispatcher.removeEventListener("go-to-parent", goToParentListener);
       systemDispatcher.removeEventListener("set-index", setIndexListener);
       systemDispatcher.removeEventListener("display-body-panel", displayBodyPanelListener);
     };
@@ -109,6 +131,7 @@ const SystemBodiesMap: FunctionComponent<Props> = ({
 
       setSelectedBody(map.stars[index]);
       setSelectedBodyIndex(index);
+      setBodyHistory([]);
     };
 
     return (
@@ -133,7 +156,7 @@ const SystemBodiesMap: FunctionComponent<Props> = ({
                     ></i>
                   </div>
                 }
-                {renderSystemBody(selectedBody)}
+                {renderSystemBody(selectedBody, bodyHistory[bodyHistory.length - 1])}
               </div>
               <div
                 className="system-body__children hidden w-full items-center overflow-x-auto hover:cursor-move md:flex"
@@ -178,7 +201,7 @@ const SystemBodiesMap: FunctionComponent<Props> = ({
     return bodies.map((body: MappedSystemBody) => renderSystemBody(body));
   }
 
-  function renderSystemBody(body: MappedSystemBody) {
+  function renderSystemBody(body: MappedSystemBody, parent?: MappedSystemBody) {
     let classes = "text-glow__white text-sm";
     if (body.is_main_star) {
       classes += " w-main-star";
@@ -191,6 +214,7 @@ const SystemBodiesMap: FunctionComponent<Props> = ({
         key={body.id64}
         selected={selectedBody}
         body={body}
+        parent={parent}
         orbiting={body._children ? body._children.length : 0}
         dispatcher={systemDispatcher}
         className={classes}

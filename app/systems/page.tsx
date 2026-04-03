@@ -74,7 +74,7 @@ export default async function Page() {
             title="Systems Information"
             className="gap-3 text-2xl"
           />
-          <SystemsTable className="mt-5" systems={systems} />
+          <SystemsTable className="py-5" systems={systems} />
         </div>
       </div>
     </>

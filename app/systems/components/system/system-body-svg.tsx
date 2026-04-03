@@ -10,6 +10,7 @@ import Icons from "@/core/icons";
 interface Props {
   body: MappedSystemBody;
   selected?: MappedSystemBody;
+  parent?: MappedSystemBody;
   view?: "body" | "system";
   orbiting?: number;
   dispatcher: SystemDispatcher;
@@ -19,6 +20,7 @@ interface Props {
 const SystemBodySVG: FunctionComponent<Props> = ({
   body,
   selected,
+  parent,
   view,
   orbiting,
   dispatcher,
@@ -195,13 +197,13 @@ const SystemBodySVG: FunctionComponent<Props> = ({
             )}
         </div>
 
-        {bodyIsSelectedUserFocus && !body.is_main_star && (
+        {bodyIsSelectedUserFocus && parent && (
           <span
             className="text-label__small text-glow__blue flex items-center gap-2 hover:scale-105 hover:cursor-pointer"
-            onClick={() => dispatcher.setIndex(0)}
+            onClick={() => dispatcher.goToParent()}
           >
             <i className="icarus-terminal-chevron-up text-label__small"></i>
-            Go back to top
+            Back to {parent.name}
           </span>
         )}
       </div>

@@ -23,6 +23,13 @@ export class SystemDispatcher extends EventDispatcher {
       message: index,
     });
   }
+
+  goToParent() {
+    this.dispatchEvent({
+      type: "go-to-parent",
+      message: null,
+    });
+  }
 }
 
 export const systemDispatcher = new SystemDispatcher();
