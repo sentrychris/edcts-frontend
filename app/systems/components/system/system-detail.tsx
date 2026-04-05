@@ -70,7 +70,7 @@ const SystemDetail: FunctionComponent<Props> = ({ params }) => {
       <div className="flex flex-col gap-8 py-5">
         {/* ── Main Sequence Stars ── */}
         <div>
-          <div className="mb-4 flex items-center gap-3 border-b border-neutral-800 pb-4">
+          <div className="mb-4 flex items-center gap-3 border-b border-orange-900/20 pb-4">
             <i className="icarus-terminal-star text-glow__orange" style={{ fontSize: "1.5rem" }}></i>
             <div className="flex-1">
               <h2 className="text-glow__orange font-bold uppercase tracking-wide">Main Sequence Stars</h2>
@@ -87,7 +87,7 @@ const SystemDetail: FunctionComponent<Props> = ({ params }) => {
 
         {/* ── System Stations ── */}
         <div>
-          <div className="mb-4 flex items-center gap-3 border-b border-neutral-800 pb-4">
+          <div className="mb-4 flex items-center gap-3 border-b border-orange-900/20 pb-4">
             <i className="icarus-terminal-outpost text-glow__orange" style={{ fontSize: "1.5rem" }}></i>
             <div className="flex-1">
               <h2 className="text-glow__orange font-bold uppercase tracking-wide">System Stations</h2>
@@ -101,7 +101,7 @@ const SystemDetail: FunctionComponent<Props> = ({ params }) => {
 
         {/* ── Orbital Bodies ── */}
         <div>
-          <div className="mb-4 flex items-center gap-3 border-b border-neutral-800 pb-4">
+          <div className="mb-4 flex items-center gap-3 border-b border-orange-900/20 pb-4">
             <i className="icarus-terminal-system-orbits text-glow__orange" style={{ fontSize: "1.5rem" }}></i>
             <div className="flex-1">
               <h2 className="text-glow__orange font-bold uppercase tracking-wide">Orbital Bodies</h2>

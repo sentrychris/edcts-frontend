@@ -8,7 +8,7 @@ export default async function Page() {
           icon="icarus-terminal-shield"
           largeIcon={true}
           title="Privacy Policy"
-          className="gap-3 border-b border-neutral-800 pb-3 text-2xl"
+          className="gap-3 border-b border-orange-900/20 pb-3 text-2xl"
         />
         <div className="privacy-policy">
           <section className="introduction py-5">

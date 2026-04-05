@@ -510,7 +510,7 @@ const SystemSolarMap: FunctionComponent<Props> = ({ params }) => {
       />
 
       {/* Top bar */}
-      <div className="absolute left-0 right-0 top-0 z-10 flex items-center justify-between border-b border-neutral-800 bg-black/75 px-5 py-3 backdrop-blur">
+      <div className="absolute left-0 right-0 top-0 z-10 flex items-center justify-between border-b border-orange-900/20 bg-black/75 px-5 py-3 backdrop-blur">
         <div className="flex items-center gap-4">
           <Link
             href={`/systems/${slug}`}
@@ -543,7 +543,7 @@ const SystemSolarMap: FunctionComponent<Props> = ({ params }) => {
                 className={`border px-2 py-0.5 uppercase transition-colors ${
                   speed === s
                     ? "border-orange-500 text-orange-400"
-                    : "border-neutral-800 text-neutral-500 hover:border-neutral-600 hover:text-neutral-300"
+                    : "border-orange-900/20 text-neutral-500 hover:border-neutral-600 hover:text-neutral-300"
                 }`}
               >
                 {s}×
@@ -563,14 +563,14 @@ const SystemSolarMap: FunctionComponent<Props> = ({ params }) => {
           <div className="flex items-center gap-1">
             <button
               onClick={() => handleZoom(-0.2)}
-              className="border border-neutral-800 px-2 py-0.5 text-neutral-400 hover:border-neutral-600 hover:text-white"
+              className="border border-orange-900/20 px-2 py-0.5 text-neutral-400 hover:border-neutral-600 hover:text-white"
             >
               −
             </button>
             <span className="w-10 text-center text-neutral-400">{zoom.toFixed(1)}×</span>
             <button
               onClick={() => handleZoom(0.2)}
-              className="border border-neutral-800 px-2 py-0.5 text-neutral-400 hover:border-neutral-600 hover:text-white"
+              className="border border-orange-900/20 px-2 py-0.5 text-neutral-400 hover:border-neutral-600 hover:text-white"
             >
               +
             </button>
@@ -593,7 +593,7 @@ const SystemSolarMap: FunctionComponent<Props> = ({ params }) => {
 
       {/* Selected body info panel */}
       {selectedBody && (
-        <div className="absolute bottom-0 right-0 top-[3.25rem] z-10 w-72 overflow-y-auto border-l border-neutral-800 bg-black/85 p-5 backdrop-blur">
+        <div className="absolute bottom-0 right-0 top-[3.25rem] z-10 w-72 overflow-y-auto border-l border-orange-900/20 bg-black/85 p-5 backdrop-blur">
           <button
             onClick={() => setSelectedBody(null)}
             className="absolute right-4 top-4 text-lg text-neutral-600 hover:text-white"
@@ -668,7 +668,7 @@ const SystemSolarMap: FunctionComponent<Props> = ({ params }) => {
           )}
 
           {selectedBody.slug && (
-            <div className="mt-5 border-t border-neutral-800 pt-4">
+            <div className="mt-5 border-t border-orange-900/20 pt-4">
               <Link
                 href={`/bodies/${selectedBody.slug}`}
                 className="text-glow__orange text-xs uppercase tracking-wider hover:opacity-70"

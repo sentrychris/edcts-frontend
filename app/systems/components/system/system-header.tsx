@@ -39,7 +39,7 @@ const SystemHeader: FunctionComponent<Props> = ({ system, special }) => {
       </div>
 
       {/* Footer rule */}
-      <div className="mt-4 flex items-center gap-4 border-t border-neutral-800 pt-3 text-xs uppercase tracking-widest text-neutral-700">
+      <div className="mt-4 flex items-center gap-4 border-t border-orange-900/20 pt-3 text-xs uppercase tracking-widest text-neutral-700">
         <span className="h-px flex-1 bg-neutral-800"></span>
         <span className="flex items-center gap-2">
           <i className="icarus-terminal-route"></i>

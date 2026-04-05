@@ -4,7 +4,6 @@ import type { FunctionComponent } from "react";
 import type { Links, Meta } from "@/core/interfaces/Pagination";
 import { useEffect, useMemo, useState } from "react";
 import { getResource } from "@/core/api";
-import Heading from "@/components/heading";
 import Loader from "@/components/loader";
 import Filter from "@/components/filter";
 import Table from "@/components/table";
@@ -152,7 +151,7 @@ const StationMarket: FunctionComponent<Props> = ({ slug }) => {
         return (
           <span>
             {formatNumber(c.stock)}{" "}
-            <span className="text-neutral-400">({stockBracketLabel(c.stockBracket)})</span>
+            <span className="text-neutral-500">({stockBracketLabel(c.stockBracket)})</span>
           </span>
         );
       },
@@ -164,7 +163,7 @@ const StationMarket: FunctionComponent<Props> = ({ slug }) => {
         return (
           <span>
             {formatNumber(c.demand)}{" "}
-            <span className="text-neutral-400">({stockBracketLabel(c.demandBracket)})</span>
+            <span className="text-neutral-500">({stockBracketLabel(c.demandBracket)})</span>
           </span>
         );
       },
@@ -176,10 +175,10 @@ const StationMarket: FunctionComponent<Props> = ({ slug }) => {
   };
 
   const tabClass = (tab: MarketView) =>
-    "whitespace-nowrap px-3 py-2.5 text-xs uppercase tracking-wider border transition-colors " +
+    "whitespace-nowrap px-4 py-2.5 text-xs font-bold uppercase tracking-widest border transition-colors " +
     (view === tab
       ? "border-orange-500/60 text-glow__orange bg-orange-900/20"
-      : "border-neutral-700 text-neutral-400 hover:border-neutral-500 hover:text-neutral-200");
+      : "border-orange-900/20 text-neutral-500 hover:border-neutral-600 hover:text-neutral-300");
 
   return (
     <>
@@ -187,26 +186,34 @@ const StationMarket: FunctionComponent<Props> = ({ slug }) => {
 
       {!isLoading && market !== null && (
         <div className="mt-8">
-          <div className="mb-5 flex items-center justify-between border-b border-neutral-800 pb-4">
-            <Heading icon="icarus-terminal-cargo text-glow__orange" title="Market Data" className="gap-2 text-sm text-neutral-300" />
+          {/* ── Market Header ── */}
+          <div className="mb-5 flex items-center justify-between border-b border-orange-900/20 pb-4">
+            <div className="flex items-center gap-3">
+              <i className="icarus-terminal-cargo text-glow__orange" style={{ fontSize: "1.5rem" }}></i>
+              <div>
+                <h2 className="text-glow__orange font-bold uppercase tracking-widest">Market Data</h2>
+                <p className="text-xs uppercase tracking-wider text-neutral-500">Commodity Exchange</p>
+              </div>
+            </div>
             {market.last_updated && (
-              <span className="text-xs uppercase tracking-wider text-neutral-500">
+              <span className="text-xs uppercase tracking-widest text-neutral-600">
                 Updated {formatDate(market.last_updated)}
               </span>
             )}
           </div>
 
+          {/* ── Prohibited goods ── */}
           {market.prohibited.length > 0 && (
-            <div className="mb-5">
-              <p className="mb-2 flex items-center gap-x-2 text-xs uppercase tracking-wider">
+            <div className="mb-5 border border-red-900/40 p-4">
+              <div className="mb-3 flex items-center gap-2">
                 <i className="icarus-terminal-warning text-red-400"></i>
-                <span className="text-red-400">Prohibited Goods</span>
-              </p>
+                <span className="text-xs font-bold uppercase tracking-widest text-red-400">Prohibited Goods</span>
+              </div>
               <div className="flex flex-wrap gap-2">
                 {market.prohibited.map((item) => (
                   <span
                     key={item}
-                    className="border border-red-900/60 bg-red-900/20 px-2 py-0.5 text-xs uppercase tracking-wider text-red-300"
+                    className="border border-red-900/60 bg-red-900/10 px-2 py-1 text-xs uppercase tracking-widest text-red-300"
                   >
                     {prettifyName(item)}
                   </span>
@@ -215,6 +222,7 @@ const StationMarket: FunctionComponent<Props> = ({ slug }) => {
             </div>
           )}
 
+          {/* ── View tabs + filter ── */}
           <div className="mb-4 flex flex-col gap-3 sm:flex-row sm:items-center sm:justify-between">
             <div className="flex gap-2">
               {(["all", "for_sale", "in_demand"] as MarketView[]).map((tab) => (

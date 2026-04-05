@@ -39,7 +39,7 @@ const SystemBodyPopover: FunctionComponent<Props> = ({ body, system, dispatcher,
 
             <div className="px-3">
               <div className="mb-3 mt-4 grid grid-cols-1 text-lg md:grid-cols-1">
-                <p className="mb-1 flex items-center gap-x-2 border-b border-neutral-800 pb-2 text-glow">
+                <p className="mb-1 flex items-center gap-x-2 border-b border-orange-900/20 pb-2 text-glow">
                   <i className="icarus-terminal-system-bodies text-glow__orange"></i>
                   <Link href={`/systems/system/${system.detail.slug}/body/${body.slug}`} className="hover:underline">
                     {body.name}
@@ -62,7 +62,7 @@ const SystemBodyPopover: FunctionComponent<Props> = ({ body, system, dispatcher,
                 )}
               </div>
 
-              <p className="flex flex-col gap-x-2 border-b border-neutral-800 pb-5 text-sm">
+              <p className="flex flex-col gap-x-2 border-b border-orange-900/20 pb-5 text-sm">
                 <span className="mb-1">
                   Discovered by <span className="text-glow__orange">CMDR {body.discovered_by}</span>
                 </span>
@@ -83,7 +83,7 @@ const SystemBodyPopover: FunctionComponent<Props> = ({ body, system, dispatcher,
               </p>
 
               {body.type === SystemBodyType.Star && (
-                <div className="border-b border-neutral-800 pb-4 text-xs">
+                <div className="border-b border-orange-900/20 pb-4 text-xs">
                   <div className="flex items-center gap-2 pb-2.5">
                     <p>
                       Class: <span className="ms-1">{body.spectral_class}</span>
@@ -144,7 +144,7 @@ const SystemBodyPopover: FunctionComponent<Props> = ({ body, system, dispatcher,
                     <span>Volcanism:</span> <span>{body.volcanism_type ?? "No Data"}</span>
                   </p>
 
-                  <p className="border-b border-neutral-800 pb-5">
+                  <p className="border-b border-orange-900/20 pb-5">
                     <span
                       className={
                         body.terraforming_state === "Candidate for terraforming"
@@ -162,7 +162,7 @@ const SystemBodyPopover: FunctionComponent<Props> = ({ body, system, dispatcher,
                         <i className={"text-glow__orange icarus-terminal-settlement"}></i>
                         <span>Planetary Settlements</span>
                       </p>
-                      <div className="grid grid-cols-2 border-b border-neutral-800 pb-5">
+                      <div className="grid grid-cols-2 border-b border-orange-900/20 pb-5">
                         {body._planetary_bases.map((s, i) => {
                           return (
                             <div key={s.id} className={i > 1 ? "mt-5" : "mt-2.5"}>
@@ -201,7 +201,7 @@ const SystemBodyPopover: FunctionComponent<Props> = ({ body, system, dispatcher,
                 </>
               )}
 
-              <div className="my-4 grid grid-cols-2 gap-y-4 border-b border-neutral-800 pb-4">
+              <div className="my-4 grid grid-cols-2 gap-y-4 border-b border-orange-900/20 pb-4">
                 <div>
                   <p className="flex items-center gap-x-2 text-sm">
                     <i className="icarus-terminal-planet text-glow__orange"></i>
@@ -260,7 +260,7 @@ const SystemBodyPopover: FunctionComponent<Props> = ({ body, system, dispatcher,
               </div>
 
               {body.rings && body.rings.length > 0 && (
-                <div className="mt-2.5 flex items-center gap-x-20 border-b border-neutral-800 pb-2.5">
+                <div className="mt-2.5 flex items-center gap-x-20 border-b border-orange-900/20 pb-2.5">
                   <div>
                     <p className="flex items-center gap-x-2 text-sm">
                       <i className="icarus-terminal-planet-ringed text-glow__orange"></i>

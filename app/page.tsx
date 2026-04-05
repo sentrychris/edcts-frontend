@@ -57,7 +57,7 @@ export default async function Home() {
         </div>
 
         {/* Footer rule */}
-        <div className="mt-6 flex items-center gap-6 border-t border-neutral-800 pt-4 text-xs uppercase tracking-widest text-neutral-700">
+        <div className="mt-6 flex items-center gap-6 border-t border-orange-900/20  pt-4 text-xs uppercase tracking-widest text-neutral-700">
           <span className="h-px flex-1 bg-neutral-800"></span>
           <span className="flex items-center gap-2">
             <i className="icarus-terminal-commander"></i>
@@ -71,7 +71,7 @@ export default async function Home() {
       <div className="grid grid-cols-1 gap-x-10 md:grid-cols-2 lg:grid-cols-3">
         {/* ── Galnet Panel ── */}
         <div className="col-span-1">
-          <div className="mb-5 flex items-center gap-3 border-b border-neutral-800 pb-4">
+          <div className="mb-5 flex items-center gap-3 border-b border-orange-900/20 pb-4">
             <i
               className="icarus-terminal-notifications text-glow__orange"
               style={{ fontSize: "1.5rem" }}
@@ -85,12 +85,12 @@ export default async function Home() {
               Live
             </span>
           </div>
-          <GalnetList className="border-t border-neutral-800" articles={news} />
+          <GalnetList articles={news} />
         </div>
 
         {/* ── Systems Panel ── */}
         <div className="col-span-1 hidden md:block lg:col-span-2">
-          <div className="mb-5 flex items-center gap-3 border-b border-neutral-800 pb-4">
+          <div className="mb-5 flex items-center gap-3 border-b border-orange-900/20 pb-4">
             <i
               className="icarus-terminal-route text-glow__orange"
               style={{ fontSize: "1.5rem" }}

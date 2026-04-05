@@ -5,14 +5,15 @@ import type { AuthorizationServerInformation, SessionUser } from "@/core/interfa
 import { Disclosure, DisclosureButton, DisclosurePanel, Menu, MenuButton, MenuItem, MenuItems, Transition } from "@headlessui/react";
 import { Bars3Icon, XMarkIcon } from "@heroicons/react/24/outline";
 import { useSession } from "next-auth/react";
+import { usePathname } from "next/navigation";
 import { getResource } from "@/core/api";
 import Link from "next/link";
 import Image from "next/image";
 
-const navigation = [
-  { name: "Home", href: "/", current: true },
-  { name: "Star Systems", href: "/systems", current: false },
-  { name: "Galnet News", href: "/galnet", current: false },
+const navItems = [
+  { name: "Home", href: "/" },
+  { name: "Star Systems", href: "/systems" },
+  { name: "Galnet News", href: "/galnet" },
 ];
 
 function classNames(...classes: string[]) {
@@ -21,9 +22,13 @@ function classNames(...classes: string[]) {
 
 const MainNavigation: FunctionComponent = () => {
   const { data } = useSession();
+  const pathname = usePathname();
   const user = data && data?.user
     ? (data.user as SessionUser)
     : null;
+
+  const isActive = (href: string) =>
+    href === "/" ? pathname === "/" : pathname.startsWith(href);
 
   const makeFrontierSSOLoginRequest = async () => {
     const { data: authorizationDetails } =
@@ -54,15 +59,15 @@ const MainNavigation: FunctionComponent = () => {
                 </div>
                 <div className="hidden sm:ml-6 sm:block">
                   <div className="flex space-x-4">
-                    {navigation.map((item) => (
+                    {navItems.map((item) => (
                       <Link
                         key={item.name}
                         href={item.href}
                         className={classNames(
-                          item.current ? "font-bold text-glow__orange" : "text-neutral-400 hover:text-white",
-                          "rounded-md px-3 py-2 text-xs",
+                          isActive(item.href) ? "font-bold text-glow__orange" : "text-neutral-400 hover:text-white",
+                          "px-3 py-2 text-xs uppercase tracking-widest transition-colors",
                         )}
-                        aria-current={item.current ? "page" : undefined}
+                        aria-current={isActive(item.href) ? "page" : undefined}
                       >
                         {item.name}
                       </Link>
@@ -105,14 +110,19 @@ const MainNavigation: FunctionComponent = () => {
                     leaveFrom="transform opacity-100 scale-100"
                     leaveTo="transform opacity-0 scale-95"
                   >
-                    <MenuItems className="absolute right-0 z-10 mt-2 w-48 origin-top-right rounded-md bg-white py-1 shadow-lg ring-1 ring-black ring-opacity-5 focus:outline-none">
+                    <MenuItems className="absolute right-0 z-10 mt-2 w-52 origin-top-right border border-orange-900/40 bg-black/95 backdrop-blur focus:outline-none">
+                      {/* Corner bracket accents */}
+                      <div className="pointer-events-none absolute -left-px -top-px h-3 w-3 border-l-2 border-t-2 border-orange-500" />
+                      <div className="pointer-events-none absolute -right-px -top-px h-3 w-3 border-r-2 border-t-2 border-orange-500" />
+                      <div className="pointer-events-none absolute -bottom-px -left-px h-3 w-3 border-b-2 border-l-2 border-orange-500" />
+                      <div className="pointer-events-none absolute -bottom-px -right-px h-3 w-3 border-b-2 border-r-2 border-orange-500" />
                       <MenuItem>
                         {({ active }) => (
                           <Link
                             href="#"
                             className={classNames(
-                              active ? "bg-zinc-100" : "",
-                              "block px-4 py-2 text-xs text-gray-700",
+                              active ? "bg-orange-900/20 text-orange-300" : "text-neutral-400",
+                              "block border-b border-orange-900/20 px-4 py-2.5 text-xs uppercase tracking-widest transition-colors",
                             )}
                           >
                             Your Profile
@@ -124,8 +134,8 @@ const MainNavigation: FunctionComponent = () => {
                           <Link
                             href="#"
                             className={classNames(
-                              active ? "bg-zinc-100" : "",
-                              "block px-4 py-2 text-xs text-gray-700",
+                              active ? "bg-orange-900/20 text-orange-300" : "text-neutral-400",
+                              "block border-b border-orange-900/20 px-4 py-2.5 text-xs uppercase tracking-widest transition-colors",
                             )}
                           >
                             Settings
@@ -137,8 +147,8 @@ const MainNavigation: FunctionComponent = () => {
                           <Link
                             href="#"
                             className={classNames(
-                              active ? "bg-zinc-100" : "",
-                              "block px-4 py-2 text-xs text-gray-700",
+                              active ? "bg-orange-900/20 text-orange-300" : "text-neutral-400",
+                              "block px-4 py-2.5 text-xs uppercase tracking-widest transition-colors",
                             )}
                           >
                             Sign out
@@ -154,17 +164,17 @@ const MainNavigation: FunctionComponent = () => {
           </div>
 
           <DisclosurePanel className="sm:hidden">
-            <div className="space-y-1 bg-black/80 px-2 pb-3 pt-2">
-              {navigation.map((item) => (
+            <div className="space-y-1 border-b border-orange-900/20 bg-black/90 px-2 pb-3 pt-2 backdrop-blur">
+              {navItems.map((item) => (
                 <DisclosureButton
                   key={item.name}
                   as="a"
                   href={item.href}
                   className={classNames(
-                    item.current ? "text-glow__orange" : "text-gray-300",
-                    "block rounded-md px-3 py-2 text-base font-medium",
+                    isActive(item.href) ? "text-glow__orange font-bold" : "text-neutral-400",
+                    "block px-3 py-2 text-xs uppercase tracking-widest transition-colors",
                   )}
-                  aria-current={item.current ? "page" : undefined}
+                  aria-current={isActive(item.href) ? "page" : undefined}
                 >
                   {item.name}
                 </DisclosureButton>

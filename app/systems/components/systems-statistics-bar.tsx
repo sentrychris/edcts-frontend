@@ -67,15 +67,17 @@ const SystemsStatisticsBar: FunctionComponent<Props> = ({
   ];
 
   return (
-    <div
-      className={
-        "backdrop-blur backdrop-filter " + className
-      }
-    >
-      <div className="flex items-stretch divide-x divide-orange-900/30">
+    <div className={"relative mb-4 border border-orange-900/20 backdrop-blur backdrop-filter " + className}>
+      {/* Corner bracket accents */}
+      <span className="pointer-events-none absolute -left-px -top-px z-10 h-4 w-4 border-l-2 border-t-2 border-orange-500" />
+      <span className="pointer-events-none absolute -right-px -top-px z-10 h-4 w-4 border-r-2 border-t-2 border-orange-500" />
+      <span className="pointer-events-none absolute -bottom-px -left-px z-10 h-4 w-4 border-b-2 border-l-2 border-orange-500" />
+      <span className="pointer-events-none absolute -bottom-px -right-px z-10 h-4 w-4 border-b-2 border-r-2 border-orange-500" />
+
+      <div className="flex items-stretch divide-x divide-orange-900/20">
         {stats.map(({ icon, label, value }) => (
           <div key={label} className="flex flex-1 flex-col gap-2 px-5 py-4">
-            <div className="flex items-center gap-2 text-xs uppercase tracking-widest text-neutral-500">
+            <div className="flex items-center gap-2 text-xs uppercase tracking-widest text-neutral-600">
               <i className={`${icon} text-orange-500/60`}></i>
               {label}
             </div>

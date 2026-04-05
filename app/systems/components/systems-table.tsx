@@ -179,19 +179,30 @@ const SystemsTable: FunctionComponent<Props> = ({ className = "", systems }) => 
 
   return (
     <div className={className}>
-      {/* Query panel */}
-      <div>
-        <div className="flex items-center gap-3 border-b border-neutral-800 px-4 py-3">
-          <i className="icarus-terminal-route text-glow__orange text-sm"></i>
-          <span className="text-xs uppercase tracking-widest text-neutral-500">
-            Cartographic Query Parameters
-          </span>
+      {/* ── Query Panel ── */}
+      <div className="relative mb-4 border border-orange-900/20">
+        <span className="absolute -left-px -top-px h-4 w-4 border-l-2 border-t-2 border-orange-500" />
+        <span className="absolute -right-px -top-px h-4 w-4 border-r-2 border-t-2 border-orange-500" />
+        <span className="absolute -bottom-px -left-px h-4 w-4 border-b-2 border-l-2 border-orange-500" />
+        <span className="absolute -bottom-px -right-px h-4 w-4 border-b-2 border-r-2 border-orange-500" />
+
+        <div className="flex items-center gap-3 border-b border-orange-900/20 px-4 py-3">
+          <i className="icarus-terminal-route text-glow__orange" style={{ fontSize: "1.2rem" }}></i>
+          <div className="flex-1">
+            <h3 className="text-glow__orange font-bold uppercase tracking-widest">Query Parameters</h3>
+            <p className="text-xs uppercase tracking-wider text-neutral-500">Cartographic Database Filter</p>
+          </div>
+          <div className="flex items-center gap-2 text-xs uppercase tracking-widest text-neutral-600">
+            <span className="h-1.5 w-1.5 rounded-full bg-orange-500/60"></span>
+            <span>{rows.length} results</span>
+          </div>
         </div>
+
         <div className="p-4">
           <Filter
             placeholder="Search system designation..."
             handleInput={searchByName}
-            className="mb-4"
+            className="mb-3"
           />
           <div className="grid grid-cols-1 gap-3 md:grid-cols-2 lg:grid-cols-4">
             <Filter
@@ -218,6 +229,8 @@ const SystemsTable: FunctionComponent<Props> = ({ className = "", systems }) => 
           </div>
         </div>
       </div>
+
+      {/* ── Results Table ── */}
       <Table columns={columns} data={rows} meta={metadata} links={navigation} page={paginate} />
     </div>
   );

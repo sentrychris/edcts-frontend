@@ -2,12 +2,8 @@ import type { Metadata, ResolvingMetadata } from "next";
 import type { Galnet } from "@/core/interfaces/Galnet";
 import { settings } from "@/core/config";
 import { getCollection } from "@/core/api";
-import Heading from "@/components/heading";
 import GalnetList from "./components/galnet-list";
 
-/**
- * Define the page properties.
- */
 interface Props {
   params: {
     slug: string;
@@ -15,24 +11,10 @@ interface Props {
   searchParams: { [key: string]: string | string[] | undefined };
 }
 
-/**
- * Get the page data.
- *
- * Note: Next automatically dedupes fetch calls on the server.
- *
- * @returns systems data
- */
 const getPageData = async () => {
   return await getCollection<Galnet>("galnet/news");
 };
 
-/**
- * Generate the page metadata.
- *
- * @param params
- * @param parent
- * @returns
- */
 export async function generateMetadata(
   { params }: Props,
   parent: ResolvingMetadata,
@@ -49,24 +31,41 @@ export async function generateMetadata(
   };
 }
 
-/**
- * Create the page.
- *
- * @returns
- */
 export default async function Page() {
   const articles = await getPageData();
 
   return (
     <>
-      <div className="grid grid-cols-1">
-        <Heading
-          icon="icarus-terminal-notifications text-glow__orange"
-          largeIcon={true}
-          title="Galnet Network"
-          className="gap-3 border-b border-neutral-800 pb-5 text-2xl"
-        />
+      {/* ── Galnet Terminal ── */}
+      <div className="relative mb-5 border border-orange-900/40 px-6 py-4">
+        <span className="absolute -left-px -top-px h-4 w-4 border-l-2 border-t-2 border-orange-500" />
+        <span className="absolute -right-px -top-px h-4 w-4 border-r-2 border-t-2 border-orange-500" />
+        <span className="absolute -bottom-px -left-px h-4 w-4 border-b-2 border-l-2 border-orange-500" />
+        <span className="absolute -bottom-px -right-px h-4 w-4 border-b-2 border-r-2 border-orange-500" />
 
+        <div className="flex flex-wrap items-center justify-between gap-2 text-xs uppercase tracking-widest text-neutral-600">
+          <div className="flex items-center gap-4">
+            <span>MODULE:GALNET</span>
+            <span className="text-neutral-800">■</span>
+            <span>CHANNEL:VOX GALACTICA</span>
+            <span className="text-neutral-800">■</span>
+            <span>CLASS:UNRESTRICTED</span>
+          </div>
+          <div className="flex items-center gap-2">
+            <span className="h-1.5 w-1.5 animate-pulse rounded-full bg-orange-500"></span>
+            <span>UPLINK: ACTIVE</span>
+          </div>
+        </div>
+      </div>
+
+      <div className="grid grid-cols-1">
+        <div className="mb-5 flex items-center gap-3 border-b border-orange-900/20 pb-4">
+          <i className="icarus-terminal-notifications text-glow__orange" style={{ fontSize: "1.5rem" }}></i>
+          <div className="flex-1">
+            <h2 className="text-glow__orange font-bold uppercase tracking-widest">Galnet Network</h2>
+            <p className="text-xs uppercase tracking-wider text-neutral-500">Vox Galactica Transmissions</p>
+          </div>
+        </div>
         <GalnetList articles={articles} />
       </div>
     </>

@@ -92,16 +92,22 @@ function Table<T extends RequiredAttribute>({ columns, data, meta, links, page }
   };
 
   return (
-    <>
-      <div className="relative overflow-x-auto border-b border-t border-neutral-800 bg-transparent pb-1 pt-2 backdrop-blur backdrop-filter">
+    <div className="relative border border-orange-900/20 bg-transparent backdrop-blur backdrop-filter">
+      {/* Corner bracket accents */}
+      <span className="pointer-events-none absolute -left-px -top-px z-10 h-4 w-4 border-l-2 border-t-2 border-orange-500" />
+      <span className="pointer-events-none absolute -right-px -top-px z-10 h-4 w-4 border-r-2 border-t-2 border-orange-500" />
+      <span className="pointer-events-none absolute -bottom-px -left-px z-10 h-4 w-4 border-b-2 border-l-2 border-orange-500" />
+      <span className="pointer-events-none absolute -bottom-px -right-px z-10 h-4 w-4 border-b-2 border-r-2 border-orange-500" />
+
+      <div className="overflow-x-auto pb-1 pt-2">
         <table className="table--layout table--animated table--interactive w-full text-left text-sm text-gray-500">
-          <thead className="uppercase border-b border-neutral-800">
+          <thead className="border-b border-orange-900/20 uppercase">
             <tr>
               {Object.keys(columns).map((key) => (
                 <th
                   key={`columnHeader_${key}`}
                   scope="col"
-                  className="px-6 text-xs font-bold tracking-wider text-glow__orange"
+                  className="px-6 py-3 text-xs font-bold tracking-widest text-glow__orange"
                 >
                   {"title" in columns[key] ? columns[key].title : key}
                 </th>
@@ -112,7 +118,7 @@ function Table<T extends RequiredAttribute>({ columns, data, meta, links, page }
         </table>
       </div>
       {links && meta && <PaginationLinks metadata={meta} links={links} paginate={paginate} />}
-    </>
+    </div>
   );
 }
 

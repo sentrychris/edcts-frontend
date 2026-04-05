@@ -35,20 +35,20 @@ const Input: FunctionComponent<Props> = ({
   return (
     <div className="grow">
       {label && (
-        <label htmlFor={id} className="mb-1 block text-sm font-semibold text-gray-200">
+        <label htmlFor={id} className="mb-1 block text-xs font-bold uppercase tracking-widest text-neutral-400">
           {label}
         </label>
       )}
-      <div className="relative rounded-lg shadow-sm">
+      <div className="relative">
         <input
           ref={innerRef}
           id={id}
           type={type}
-          className={`h-[37px] pl-4 ${error ? "border-red-500" : "border-gray-300"} focus:ring-1 focus:ring-neutral-900 ${
+          className={`h-[37px] w-full border bg-transparent pl-4 text-xs uppercase tracking-wider text-neutral-200 placeholder-neutral-600 outline-none transition-colors focus:outline-none ${
             error
-              ? "focus:border-red-500 focus:ring-red-500"
-              : "focus:border-blue-500 focus:ring-blue-500"
-          } block w-full bg-transparent text-sm text-gray-200 placeholder-gray-300 focus:outline-none ${extraStyling}`}
+              ? "border-red-900/60 focus:border-red-500"
+              : "border-orange-900/30 focus:border-orange-500/60"
+          } ${extraStyling ?? ""}`}
           placeholder={placeholder ?? "Enter value"}
           value={value.toString()}
           onChange={onChange}
@@ -58,8 +58,8 @@ const Input: FunctionComponent<Props> = ({
       </div>
       {(subtitle || error) && (
         <div className="mt-1">
-          {error && <small className="text-red-500">{error}</small>}
-          {!error && subtitle && <small className="text-gray-500">{subtitle}</small>}
+          {error && <small className="text-xs uppercase tracking-widest text-red-400">{error}</small>}
+          {!error && subtitle && <small className="text-xs uppercase tracking-widest text-neutral-600">{subtitle}</small>}
         </div>
       )}
     </div>

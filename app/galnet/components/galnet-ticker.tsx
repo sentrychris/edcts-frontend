@@ -100,7 +100,7 @@ const NewsTicker: FunctionComponent<Props> = ({ articles }) => {
 
   return (
     <div className="relative flex items-center backdrop-blur">
-      <span className="text-glow__orange border-b border-orange-900/40 ticker-label lg:px-18 z-10 px-6 text-xs uppercase md:px-12">
+      <span className="text-glow__orange border-b border-orange-900/20  ticker-label lg:px-18 z-10 px-6 text-xs uppercase md:px-12">
         <span className="ms-2 hidden sm:flex">
           {currentDate} {currentTime} UTC
         </span>
@@ -115,7 +115,7 @@ const NewsTicker: FunctionComponent<Props> = ({ articles }) => {
       </span>
       <div
         ref={tickerRef}
-        className="ticker flex flex-1 items-center overflow-hidden whitespace-nowrap border-b border-orange-900/40 uppercase"
+        className="ticker flex flex-1 items-center overflow-hidden whitespace-nowrap border-b border-orange-900/20 uppercase"
       >
         <div
           ref={tickerContentRef}
