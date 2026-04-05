@@ -68,7 +68,7 @@ export default async function Home() {
       </div>
 
       {/* ── Content Grid ── */}
-      <div className="grid grid-cols-1 gap-x-10 md:grid-cols-2 lg:grid-cols-3">
+      <div className="grid grid-cols-1 gap-x-5 md:grid-cols-2 lg:grid-cols-3">
         {/* ── Galnet Panel ── */}
         <div className="col-span-1 pt-3">
           <GalnetList articles={news} />

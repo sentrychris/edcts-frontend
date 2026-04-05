@@ -173,15 +173,13 @@ const SystemBodiesMap: FunctionComponent<Props> = ({
   function renderSystemStations(stations: Station[]) {
     return stations.map((station: Station) => {
       return (
-        <>
-          <div key={station.slug} className="me-5 flex items-center text-xs">
-            <i className={`${stationIconByType(station.type)} text-glow`}></i>
-            <div className="ms-3">
-              <span className="text-glow__blue uppercase">{station.name}</span>
-              <div className="text-xs text-neutral-300">{station.distance_to_arrival} ls</div>
-            </div>
+        <Link key={station.slug} href={`/stations/${station.slug}`} className="me-5 flex items-center text-xs hover:opacity-80">
+          <i className={`${stationIconByType(station.type)} text-glow`}></i>
+          <div className="ms-3">
+            <span className="text-glow__blue uppercase hover:underline hover:text-glow__orange">{station.name}</span>
+            <div className="text-xs text-neutral-300">{station.distance_to_arrival} ls</div>
           </div>
-        </>
+        </Link>
       );
     });
   }

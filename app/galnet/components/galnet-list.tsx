@@ -31,18 +31,21 @@ const GalnetList: FunctionComponent<Props> = ({ articles }) => {
         {rows.map((article: Galnet, i: number) => (
           <div
             key={article.id}
-            className="group relative border-b border-orange-900/20 py-8 backdrop-blur backdrop-filter"
+            className="group border-b border-orange-900/20 py-6 last:border-b-0"
           >
             {/* Transmission header */}
             <div className="mb-3 flex items-center justify-between text-xs uppercase tracking-widest text-neutral-600">
-              <span>TRANSMISSION {String(i + 1).padStart(3, "0")}</span>
+              <span className="flex items-center gap-2">
+                <i className="icarus-terminal-notifications text-orange-500/30 text-xs"></i>
+                TRANSMISSION {String(i + 1).padStart(3, "0")}
+              </span>
               <span>{article.uploaded_at}</span>
             </div>
 
             {/* Title */}
-            <h1 className="text-glow__white mb-4 text-2xl font-bold uppercase tracking-wide leading-snug group-hover:text-orange-200 transition-colors">
+            <h3 className="text-glow__white mb-4 text-xl font-bold uppercase leading-snug tracking-wide transition-colors group-hover:text-orange-200">
               {article.title}
-            </h1>
+            </h3>
 
             {/* Access link */}
             <Link
@@ -54,7 +57,8 @@ const GalnetList: FunctionComponent<Props> = ({ articles }) => {
           </div>
         ))}
       </div>
-      <div className="pt-4">
+
+      <div className="py-4">
         <PaginationLinks metadata={metadata} links={navigation} paginate={paginate} />
       </div>
     </>

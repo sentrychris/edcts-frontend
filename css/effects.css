@@ -380,3 +380,31 @@ button.text-glow__orange:hover {
 .fx-number-tick {
   animation: fx-number-tick 0.3s ease-out forwards;
 }
+
+/* ── Galnet article body content ── */
+.galnet-article-content p {
+  margin-bottom: 1rem;
+  line-height: 1.8;
+}
+
+.galnet-article-content p:last-child {
+  margin-bottom: 0;
+}
+
+.galnet-article-content a {
+  color: rgb(251 146 60 / 0.9);
+  text-decoration: underline;
+  text-underline-offset: 3px;
+  transition: color 0.15s, text-shadow 0.15s;
+}
+
+.galnet-article-content a:hover {
+  color: rgb(251 146 60 / 1);
+  text-shadow: 0 0 10px rgb(251 146 60 / 0.6);
+}
+
+.galnet-article-content strong,
+.galnet-article-content b {
+  color: rgb(229 229 229 / 1);
+  font-weight: 600;
+}

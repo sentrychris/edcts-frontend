@@ -226,22 +226,6 @@ const StationDetail: FunctionComponent<Props> = ({ params }) => {
               )}
             </div>
           </Panel>
-
-          {/* ── Last Updated ── */}
-          <Panel icon="icarus-terminal-sync" title="Last EDDN Update" subtitle="Data Freshness">
-            <div className="grid grid-cols-2 gap-y-1 md:grid-cols-4">
-              {[
-                { label: "Information", value: station.last_updated.information },
-                { label: "Market", value: station.last_updated.market },
-                { label: "Shipyard", value: station.last_updated.shipyard },
-                { label: "Outfitting", value: station.last_updated.outfitting },
-              ].map(({ label, value }) => (
-                <StatRow key={label} label={label}>
-                  {formatDate(value ?? undefined)}
-                </StatRow>
-              ))}
-            </div>
-          </Panel>
         </div>
       )}
     </>

@@ -58,7 +58,7 @@ export default async function Page({ params }: { params: { slug: string } }) {
 
   return (
     <>
-      {/* ── Galnet Terminal ── */}
+      {/* ── Galnet Terminal status bar ── */}
       <div className="relative mb-5 border border-orange-900/40 bg-black/50 backdrop-blur backdrop-filter px-6 py-4">
         <span className="absolute -left-px -top-px h-4 w-4 border-l-2 border-t-2 border-orange-500" />
         <span className="absolute -right-px -top-px h-4 w-4 border-r-2 border-t-2 border-orange-500" />
@@ -80,24 +80,15 @@ export default async function Page({ params }: { params: { slug: string } }) {
         </div>
       </div>
 
-      <div className="bg-transparent backdrop-blur backdrop-filter">
-        <div className="grid grid-cols-12 gap-x-8">
-          {/* Sidebar */}
-          <div className="order-last col-span-12 border-t border-orange-900/20 pt-8 md:order-first md:col-span-3 md:border-r md:border-t-0 md:pe-8 md:pt-0">
-            <div className="mb-4 flex items-center gap-3 border-b border-orange-900/20 pb-4">
-              <i className="icarus-terminal-notifications text-glow__orange" style={{ fontSize: "1.2rem" }}></i>
-              <div>
-                <h2 className="text-glow__orange font-bold uppercase tracking-widest">Latest</h2>
-                <p className="text-xs uppercase tracking-wider text-neutral-500">Transmissions</p>
-              </div>
-            </div>
-            <GalnetSidebar articles={galnet.articles} />
-          </div>
+      <div className="grid grid-cols-12 gap-5">
+        {/* ── Sidebar ── */}
+        <div className="order-last col-span-12 md:order-first md:col-span-3">
+          <GalnetSidebar articles={galnet.articles} />
+        </div>
 
-          {/* Article */}
-          <div className="order-first col-span-12 md:order-last md:col-span-9">
-            <GalnetArticle article={galnet.article} />
-          </div>
+        {/* ── Article ── */}
+        <div className="order-first col-span-12 md:order-last md:col-span-9">
+          <GalnetArticle article={galnet.article} />
         </div>
       </div>
     </>

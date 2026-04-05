@@ -36,7 +36,7 @@ export default async function Page() {
 
   return (
     <>
-      {/* ── Galnet Terminal ── */}
+      {/* ── Galnet Terminal status bar ── */}
       <div className="relative mb-5 border border-orange-900/40 bg-black/50 backdrop-blur backdrop-filter px-6 py-4">
         <span className="absolute -left-px -top-px h-4 w-4 border-l-2 border-t-2 border-orange-500" />
         <span className="absolute -right-px -top-px h-4 w-4 border-r-2 border-t-2 border-orange-500" />
@@ -58,15 +58,28 @@ export default async function Page() {
         </div>
       </div>
 
-      <div className="grid grid-cols-1">
-        <div className="mb-5 flex items-center gap-3 border-b border-orange-900/20 pb-4">
-          <i className="icarus-terminal-notifications text-glow__orange" style={{ fontSize: "1.5rem" }}></i>
-          <div className="flex-1">
-            <h2 className="text-glow__orange font-bold uppercase tracking-widest">Galnet Network</h2>
+      {/* ── Article list ── */}
+      <div className="relative border border-orange-900/40 bg-black/50 backdrop-blur backdrop-filter">
+        <span className="pointer-events-none absolute -left-px -top-px h-4 w-4 border-l-2 border-t-2 border-orange-500" />
+        <span className="pointer-events-none absolute -right-px -top-px h-4 w-4 border-r-2 border-t-2 border-orange-500" />
+        <span className="pointer-events-none absolute -bottom-px -left-px h-4 w-4 border-b-2 border-l-2 border-orange-500" />
+        <span className="pointer-events-none absolute -bottom-px -right-px h-4 w-4 border-b-2 border-r-2 border-orange-500" />
+
+        <div className="flex items-center gap-3 border-b border-orange-900/20 px-5 py-4">
+          <i className="icarus-terminal-notifications text-glow__orange" style={{ fontSize: "1.25rem" }}></i>
+          <div>
+            <h2 className="text-glow__orange font-bold uppercase tracking-wide">Galnet Network</h2>
             <p className="text-xs uppercase tracking-wider text-neutral-500">Vox Galactica Transmissions</p>
           </div>
+          <span className="ml-auto flex items-center gap-1.5 text-xs uppercase tracking-widest text-neutral-500">
+            <span className="fx-dot-orange h-1.5 w-1.5"></span>
+            Live
+          </span>
         </div>
-        <GalnetList articles={articles} />
+
+        <div className="px-5">
+          <GalnetList articles={articles} />
+        </div>
       </div>
     </>
   );
