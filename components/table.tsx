@@ -24,9 +24,10 @@ interface Props<T extends RequiredAttribute> {
   meta?: Meta;
   links?: Links;
   page?: (link: string) => void;
+  header?: JSX.Element;
 }
 
-function Table<T extends RequiredAttribute>({ columns, data, meta, links, page }: Props<T>) {
+function Table<T extends RequiredAttribute>({ columns, data, meta, links, page, header }: Props<T>) {
   type Mode = { accessor?: string; render?: RenderColumn<T> };
   const isRender = (ctx: Mode): ctx is Required<Mode> => !!ctx.render;
   const isAccessor = (ctx: Mode): ctx is Required<Mode> => !!ctx.accessor;
@@ -99,6 +100,7 @@ function Table<T extends RequiredAttribute>({ columns, data, meta, links, page }
       <span className="pointer-events-none absolute -bottom-px -left-px z-10 h-4 w-4 border-b-2 border-l-2 border-orange-500" />
       <span className="pointer-events-none absolute -bottom-px -right-px z-10 h-4 w-4 border-b-2 border-r-2 border-orange-500" />
 
+      {header}
       <div className="overflow-x-auto pb-1 pt-2">
         <table className="table--layout table--animated table--interactive w-full text-left text-sm text-gray-500">
           <thead className="border-b border-orange-900/20 uppercase">

@@ -72,53 +72,21 @@ const SystemDetail: FunctionComponent<Props> = ({ params }) => {
       )}
 
       <div className="flex flex-col gap-8 py-5">
-        {/* ── Main Sequence Stars ── */}
-        <div>
-          <div className="mb-4 flex items-center gap-3 border-b border-orange-900/20 pb-4">
-            <i className="icarus-terminal-star text-glow__orange" style={{ fontSize: "1.5rem" }}></i>
-            <div className="flex-1">
-              <h2 className="text-glow__orange font-bold uppercase tracking-wide">Main Sequence Stars</h2>
-              <p className="text-xs uppercase tracking-wider text-neutral-500">Stellar Classification Data</p>
-            </div>
-          </div>
-          {!isLoading && systemMap && (
-            <SystemStarsTable
-              stars={systemMap.stars as Required<MappedSystemBody>[]}
-              dispatcher={systemDispatcher}
-            />
-          )}
-        </div>
-
-        {/* ── System Stations ── */}
-        <div>
-          <div className="mb-4 flex items-center gap-3 border-b border-orange-900/20 pb-4">
-            <i className="icarus-terminal-outpost text-glow__orange" style={{ fontSize: "1.5rem" }}></i>
-            <div className="flex-1">
-              <h2 className="text-glow__orange font-bold uppercase tracking-wide">System Stations</h2>
-              <p className="text-xs uppercase tracking-wider text-neutral-500">Docking & Logistics Network</p>
-            </div>
-          </div>
-          {!isLoading && systemMap && (
-            <SystemStationsTable stations={systemMap.stations} dispatcher={systemDispatcher} />
-          )}
-        </div>
-
-        {/* ── Orbital Bodies ── */}
-        <div>
-          <div className="mb-4 flex items-center gap-3 border-b border-orange-900/20 pb-4">
-            <i className="icarus-terminal-system-orbits text-glow__orange" style={{ fontSize: "1.5rem" }}></i>
-            <div className="flex-1">
-              <h2 className="text-glow__orange font-bold uppercase tracking-wide">Orbital Bodies</h2>
-              <p className="text-xs uppercase tracking-wider text-neutral-500">Planetary Survey Records</p>
-            </div>
-          </div>
-          {!isLoading && systemMap && (
-            <SystemBodiesTable
-              bodies={systemMap.planets as Required<MappedSystemBody>[]}
-              dispatcher={systemDispatcher}
-            />
-          )}
-        </div>
+        {!isLoading && systemMap && (
+          <SystemStarsTable
+            stars={systemMap.stars as Required<MappedSystemBody>[]}
+            dispatcher={systemDispatcher}
+          />
+        )}
+        {!isLoading && systemMap && (
+          <SystemStationsTable stations={systemMap.stations} dispatcher={systemDispatcher} />
+        )}
+        {!isLoading && systemMap && (
+          <SystemBodiesTable
+            bodies={systemMap.planets as Required<MappedSystemBody>[]}
+            dispatcher={systemDispatcher}
+          />
+        )}
       </div>
 
       {/* ── Body Detail Popout ── */}

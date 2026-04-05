@@ -39,6 +39,19 @@ const GalnetSidebar: FunctionComponent<Props> = ({ className, articles }) => {
       <span className="pointer-events-none absolute -bottom-px -right-px z-10 h-4 w-4 border-b-2 border-r-2 border-orange-500" />
 
       <div className="p-4">
+        {/* Section header */}
+        <div className="mb-4 flex items-center gap-3 border-b border-orange-900/20 pb-4">
+          <i className="icarus-terminal-notifications text-glow__orange" style={{ fontSize: "1.25rem" }}></i>
+          <div className="flex-1">
+            <h2 className="text-glow__orange font-bold uppercase tracking-wide">Galnet Comms</h2>
+            <p className="text-xs uppercase tracking-wider text-neutral-500">Uplink Channel</p>
+          </div>
+          <span className="flex items-center gap-1.5 text-xs uppercase tracking-wider text-neutral-500">
+            <span className="fx-dot-orange h-1.5 w-1.5"></span>
+            Live
+          </span>
+        </div>
+
       {slicedArticles.map((article, i) => (
         <div key={article.id} className="group relative border-b border-orange-900/20 py-4">
           {/* Transmission index */}

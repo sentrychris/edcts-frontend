@@ -44,6 +44,37 @@ const coreServices = [
   { label: "Outfitting", key: "has_outfitting" as const },
 ];
 
+interface PanelProps {
+  icon: string;
+  title: string;
+  subtitle?: string;
+  children: React.ReactNode;
+}
+
+const Panel = ({ icon, title, subtitle, children }: PanelProps) => (
+  <div className="relative border border-orange-900/40 bg-black/50 backdrop-blur backdrop-filter">
+    <span className="pointer-events-none absolute -left-px -top-px h-4 w-4 border-l-2 border-t-2 border-orange-500" />
+    <span className="pointer-events-none absolute -right-px -top-px h-4 w-4 border-r-2 border-t-2 border-orange-500" />
+    <span className="pointer-events-none absolute -bottom-px -left-px h-4 w-4 border-b-2 border-l-2 border-orange-500" />
+    <span className="pointer-events-none absolute -bottom-px -right-px h-4 w-4 border-b-2 border-r-2 border-orange-500" />
+    <div className="flex items-center gap-3 border-b border-orange-900/20 px-5 py-4">
+      <i className={`${icon} text-glow__orange`} style={{ fontSize: "1.25rem" }}></i>
+      <div>
+        <h3 className="text-glow__orange font-bold uppercase tracking-wide">{title}</h3>
+        {subtitle && <p className="text-xs uppercase tracking-wider text-neutral-500">{subtitle}</p>}
+      </div>
+    </div>
+    <div className="px-5 py-4">{children}</div>
+  </div>
+);
+
+const StatRow = ({ label, children }: { label: string; children: React.ReactNode }) => (
+  <div className="flex items-center justify-between border-b border-neutral-900 py-1.5 text-xs uppercase tracking-wider">
+    <span className="text-neutral-600">{label}</span>
+    <span className="text-right text-neutral-300">{children}</span>
+  </div>
+);
+
 const StationDetail: FunctionComponent<Props> = ({ params }) => {
   const [station, setStation] = useState<Station>(stationState);
   const [isLoading, setLoading] = useState<boolean>(true);
@@ -68,9 +99,9 @@ const StationDetail: FunctionComponent<Props> = ({ params }) => {
       {isLoading && <Loader visible={isLoading} />}
 
       {!isLoading && (
-        <div className="text-xs uppercase tracking-wider">
+        <div className="space-y-5 text-xs uppercase tracking-wider">
           {/* ── Station Masthead ── */}
-          <div className="relative mb-5 border border-orange-900/40 bg-black/50 backdrop-blur backdrop-filter px-6 py-6">
+          <div className="relative border border-orange-900/40 bg-black/50 backdrop-blur backdrop-filter px-6 py-6">
             <span className="absolute -left-px -top-px h-5 w-5 border-l-2 border-t-2 border-orange-500" />
             <span className="absolute -right-px -top-px h-5 w-5 border-r-2 border-t-2 border-orange-500" />
             <span className="absolute -bottom-px -left-px h-5 w-5 border-b-2 border-l-2 border-orange-500" />
@@ -107,84 +138,62 @@ const StationDetail: FunctionComponent<Props> = ({ params }) => {
             </div>
           </div>
 
-          {/* ── Station Details + Faction ── */}
-          <div className="grid grid-cols-1 gap-5 border-b border-orange-900/20 py-5 md:grid-cols-2">
-            <div>
-              <div className="mb-4 flex items-center gap-3">
-                <i className={`${stationIconByType(station.type)} text-glow__orange`}></i>
-                <h3 className="text-glow__orange font-bold uppercase tracking-widest">Station Details</h3>
-              </div>
-              <div className="space-y-2 text-neutral-400">
-                <p>
-                  <span className="text-neutral-600">Type</span>
-                  <span className="ms-3 text-glow__blue">{station.type}</span>
-                </p>
-                {station.body && (
-                  <p>
-                    <span className="text-neutral-600">Orbiting</span>
-                    <span className="ms-3 text-neutral-200">{station.body.name}</span>
-                  </p>
-                )}
-                {station.distance_to_arrival > 0 && (
-                  <p>
-                    <span className="text-neutral-600">Dist. to Arrival</span>
-                    <span className="ms-3 text-neutral-200">{formatNumber(station.distance_to_arrival)} LS</span>
-                  </p>
-                )}
-              </div>
-            </div>
+          {/* ── Station Details + Controlling Faction ── */}
+          <div className="grid grid-cols-1 gap-5 md:grid-cols-2">
+            <Panel
+              icon={stationIconByType(station.type)}
+              title="Station Details"
+              subtitle="Docking & Navigation"
+            >
+              <StatRow label="Type">
+                <span className="text-glow__blue">{station.type || "—"}</span>
+              </StatRow>
+              {station.body && (
+                <StatRow label="Orbiting">{station.body.name}</StatRow>
+              )}
+              {station.distance_to_arrival > 0 && (
+                <StatRow label="Dist. to Arrival">
+                  {formatNumber(station.distance_to_arrival)} LS
+                </StatRow>
+              )}
+            </Panel>
 
-            <div>
-              <div className="mb-4 flex items-center gap-3">
-                <i className="icarus-terminal-system-authority-solid text-glow__orange"></i>
-                <h3 className="text-glow__orange font-bold uppercase tracking-widest">Controlling Faction</h3>
-              </div>
-              <div className="space-y-2 text-neutral-400">
-                <p>
-                  <span className="text-neutral-600">Faction</span>
-                  <span className="ms-3 text-glow__white font-bold">
-                    {station.controlling_faction || "Unknown"}
-                  </span>
-                </p>
-                <p>
-                  <span className="text-neutral-600">Allegiance</span>
-                  <span className="ms-3">{renderAllegianceText(station.allegiance)}</span>
-                </p>
-                <p>
-                  <span className="text-neutral-600">Government</span>
-                  <span className="ms-3 text-neutral-200">{station.government || "Unknown"}</span>
-                </p>
-              </div>
-            </div>
+            <Panel
+              icon="icarus-terminal-system-authority-solid"
+              title="Controlling Faction"
+              subtitle="Political Authority"
+            >
+              <StatRow label="Faction">
+                <span className="text-glow__white font-bold">
+                  {station.controlling_faction || "Unknown"}
+                </span>
+              </StatRow>
+              <StatRow label="Allegiance">
+                {renderAllegianceText(station.allegiance)}
+              </StatRow>
+              <StatRow label="Government">
+                {station.government || "Unknown"}
+              </StatRow>
+            </Panel>
           </div>
 
           {/* ── Economy ── */}
-          <div className="border-b border-orange-900/20 py-5">
-            <div className="mb-4 flex items-center gap-3">
-              <i className="icarus-terminal-economy text-glow__orange"></i>
-              <h3 className="text-glow__orange font-bold uppercase tracking-widest">Economy</h3>
-            </div>
-            <div className="grid grid-cols-1 gap-4 md:grid-cols-2">
-              <p>
-                <span className="text-neutral-600">Primary</span>
-                <span className="ms-3 text-neutral-200">{station.economy || "None"}</span>
-              </p>
+          <Panel icon="icarus-terminal-economy" title="Economy" subtitle="Trade & Commerce">
+            <div className="grid grid-cols-1 gap-x-8 md:grid-cols-2">
+              <StatRow label="Primary Economy">
+                {station.economy || "None"}
+              </StatRow>
               {station.second_economy && (
-                <p>
-                  <span className="text-neutral-600">Secondary</span>
-                  <span className="ms-3 text-neutral-200">{station.second_economy}</span>
-                </p>
+                <StatRow label="Secondary Economy">
+                  {station.second_economy}
+                </StatRow>
               )}
             </div>
-          </div>
+          </Panel>
 
           {/* ── Services ── */}
-          <div className="border-b border-orange-900/20 py-5">
-            <div className="mb-4 flex items-center gap-3">
-              <i className="icarus-terminal-outpost text-glow__orange"></i>
-              <h3 className="text-glow__orange font-bold uppercase tracking-widest">Services</h3>
-            </div>
-            <div className="space-y-4">
+          <Panel icon="icarus-terminal-outpost" title="Services" subtitle="Available Facilities">
+            <div className="space-y-5">
               <div>
                 <p className="mb-3 text-xs uppercase tracking-widest text-neutral-600">Core Services</p>
                 <div className="flex flex-wrap gap-x-6 gap-y-2">
@@ -216,28 +225,23 @@ const StationDetail: FunctionComponent<Props> = ({ params }) => {
                 </div>
               )}
             </div>
-          </div>
+          </Panel>
 
           {/* ── Last Updated ── */}
-          <div className="py-5">
-            <div className="mb-4 flex items-center gap-3">
-              <i className="icarus-terminal-sync text-glow__orange"></i>
-              <h3 className="text-glow__orange font-bold uppercase tracking-widest">Last EDDN Update</h3>
-            </div>
-            <div className="grid grid-cols-2 gap-y-4 md:grid-cols-4">
+          <Panel icon="icarus-terminal-sync" title="Last EDDN Update" subtitle="Data Freshness">
+            <div className="grid grid-cols-2 gap-y-1 md:grid-cols-4">
               {[
                 { label: "Information", value: station.last_updated.information },
                 { label: "Market", value: station.last_updated.market },
                 { label: "Shipyard", value: station.last_updated.shipyard },
                 { label: "Outfitting", value: station.last_updated.outfitting },
               ].map(({ label, value }) => (
-                <div key={label}>
-                  <p className="mb-1 text-xs tracking-widest text-neutral-600">{label}</p>
-                  <p className="text-neutral-200">{formatDate(value ?? undefined)}</p>
-                </div>
+                <StatRow key={label} label={label}>
+                  {formatDate(value ?? undefined)}
+                </StatRow>
               ))}
             </div>
-          </div>
+          </Panel>
         </div>
       )}
     </>

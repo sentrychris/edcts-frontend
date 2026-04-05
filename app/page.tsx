@@ -70,36 +70,12 @@ export default async function Home() {
       {/* ── Content Grid ── */}
       <div className="grid grid-cols-1 gap-x-10 md:grid-cols-2 lg:grid-cols-3">
         {/* ── Galnet Panel ── */}
-        <div className="col-span-1">
-          <div className="mb-5 flex items-center gap-3 pt-3">
-            <i
-              className="icarus-terminal-notifications text-glow__orange"
-              style={{ fontSize: "1.5rem" }}
-            ></i>
-            <div className="flex-1">
-              <h2 className="text-glow__orange font-bold uppercase tracking-wide">Galnet Comms</h2>
-              <p className="text-xs uppercase tracking-wider text-neutral-500">Uplink Channel</p>
-            </div>
-            <span className="flex items-center gap-1.5 text-xs uppercase tracking-wider text-green-300">
-              <span className="fx-dot-orange h-1.5 w-1.5"></span>
-              Live
-            </span>
-          </div>
+        <div className="col-span-1 pt-3">
           <GalnetList articles={news} />
         </div>
 
         {/* ── Systems Panel ── */}
-        <div className="col-span-1 hidden md:block lg:col-span-2">
-          <div className="mb-5 flex items-center gap-3 pt-3">
-            <i
-              className="icarus-terminal-route text-glow__orange"
-              style={{ fontSize: "1.5rem" }}
-            ></i>
-            <div className="flex-1">
-              <h2 className="text-glow__orange font-bold uppercase tracking-wide">Cartographic Database</h2>
-              <p className="text-xs uppercase tracking-wider text-neutral-500">Systems Intelligence</p>
-            </div>
-          </div>
+        <div className="col-span-1 hidden pt-3 md:block lg:col-span-2">
           <SystemsStatisticsBar className="fx-fade-in" callInterval={10000} flushCache={0} />
           <SystemsTable systems={systems} />
         </div>

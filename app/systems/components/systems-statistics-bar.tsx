@@ -74,6 +74,15 @@ const SystemsStatisticsBar: FunctionComponent<Props> = ({
       <span className="pointer-events-none absolute -bottom-px -left-px z-10 h-4 w-4 border-b-2 border-l-2 border-orange-500" />
       <span className="pointer-events-none absolute -bottom-px -right-px z-10 h-4 w-4 border-b-2 border-r-2 border-orange-500" />
 
+      {/* Section header */}
+      <div className="flex items-center gap-3 border-b border-orange-900/20 px-5 py-4">
+        <i className="icarus-terminal-route text-glow__orange" style={{ fontSize: "1.25rem" }}></i>
+        <div className="flex-1">
+          <h2 className="text-glow__orange font-bold uppercase tracking-wide">Cartographic Database</h2>
+          <p className="text-xs uppercase tracking-wider text-neutral-500">Systems Intelligence</p>
+        </div>
+      </div>
+
       <div className="flex items-stretch divide-x divide-orange-900/20">
         {stats.map(({ icon, label, value }) => (
           <div key={label} className="flex flex-1 flex-col gap-2 px-5 py-4">

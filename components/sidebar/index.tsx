@@ -10,7 +10,7 @@ interface Props {
 
 const Sidebar: FunctionComponent<Props> = ({ articles }) => {
   return (
-    <aside className="hidden w-64 shrink-0 flex-col overflow-y-auto border-r border-orange-900/40 bg-black/50 backdrop-blur lg:flex xl:w-72">
+    <aside className="hidden w-64 shrink-0 flex-col overflow-y-auto border-r border-orange-900/40 bg-black/50 backdrop-blur lg:flex xl:w-80 overflow-hidden">
 
       {/* ── Header ── */}
       <div className="flex items-center gap-3 border-b border-orange-900/40 px-4 py-4">

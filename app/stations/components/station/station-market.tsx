@@ -180,28 +180,29 @@ const StationMarket: FunctionComponent<Props> = ({ slug }) => {
       ? "border-orange-500/60 text-glow__orange bg-orange-900/20"
       : "border-orange-900/20 text-neutral-500 hover:border-neutral-600 hover:text-neutral-300");
 
+  const marketHeader = (
+    <div className="flex items-center justify-between gap-3 border-b border-orange-900/20 px-5 py-4">
+      <div className="flex items-center gap-3">
+        <i className="icarus-terminal-cargo text-glow__orange" style={{ fontSize: "1.25rem" }}></i>
+        <div>
+          <h2 className="text-glow__orange font-bold uppercase tracking-wide">Market Data</h2>
+          <p className="text-xs uppercase tracking-wider text-neutral-500">Commodity Exchange</p>
+        </div>
+      </div>
+      {market?.last_updated && (
+        <span className="text-xs uppercase tracking-widest text-neutral-600">
+          Updated {formatDate(market.last_updated)}
+        </span>
+      )}
+    </div>
+  );
+
   return (
     <>
       {isLoading && <Loader visible={isLoading} />}
 
       {!isLoading && market !== null && (
-        <div className="mt-8">
-          {/* ── Market Header ── */}
-          <div className="mb-5 flex items-center justify-between border-b border-orange-900/20 pb-4">
-            <div className="flex items-center gap-3">
-              <i className="icarus-terminal-cargo text-glow__orange" style={{ fontSize: "1.5rem" }}></i>
-              <div>
-                <h2 className="text-glow__orange font-bold uppercase tracking-widest">Market Data</h2>
-                <p className="text-xs uppercase tracking-wider text-neutral-500">Commodity Exchange</p>
-              </div>
-            </div>
-            {market.last_updated && (
-              <span className="text-xs uppercase tracking-widest text-neutral-600">
-                Updated {formatDate(market.last_updated)}
-              </span>
-            )}
-          </div>
-
+        <div className="mt-5">
           {/* ── Prohibited goods ── */}
           {market.prohibited.length > 0 && (
             <div className="mb-5 border border-red-900/40 p-4">
@@ -235,6 +236,7 @@ const StationMarket: FunctionComponent<Props> = ({ slug }) => {
           </div>
 
           <Table
+            header={marketHeader}
             columns={columns}
             data={paginatedCommodities}
             meta={paginationMeta}

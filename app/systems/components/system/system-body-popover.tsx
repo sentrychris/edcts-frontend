@@ -38,18 +38,27 @@ const SectionHeader = ({ icon, title }: { icon: string; title: string }) => (
   </div>
 );
 
-const PANE_WIDTH = 320;
+const MIN_WIDTH = 260;
+const MIN_HEIGHT = 200;
+const DEFAULT_WIDTH = 320;
 
 const SystemBodyPopover: FunctionComponent<Props> = ({ body, system, dispatcher, close }) => {
   const [position, setPosition] = useState(() => ({
-    x: typeof window !== "undefined" ? Math.max(0, window.innerWidth - PANE_WIDTH - 24) : 0,
+    x: typeof window !== "undefined" ? Math.max(0, window.innerWidth - DEFAULT_WIDTH - 24) : 0,
     y: 80,
   }));
+  const [size, setSize] = useState(() => ({
+    width: DEFAULT_WIDTH,
+    height: typeof window !== "undefined" ? Math.min(Math.round(window.innerHeight * 0.8), 560) : 560,
+  }));
+
   const [isDragging, setIsDragging] = useState(false);
   const dragStart = useRef<{ mouseX: number; mouseY: number; elemX: number; elemY: number } | null>(null);
 
+  const [isResizing, setIsResizing] = useState(false);
+  const resizeStart = useRef<{ mouseX: number; mouseY: number; width: number; height: number } | null>(null);
+
   const onDragHandleMouseDown = (e: React.MouseEvent) => {
-    // Don't start drag on buttons
     if ((e.target as HTMLElement).closest("button")) return;
     e.preventDefault();
     setIsDragging(true);
@@ -61,6 +70,18 @@ const SystemBodyPopover: FunctionComponent<Props> = ({ body, system, dispatcher,
     };
   };
 
+  const onResizeMouseDown = (e: React.MouseEvent) => {
+    e.preventDefault();
+    e.stopPropagation();
+    setIsResizing(true);
+    resizeStart.current = {
+      mouseX: e.clientX,
+      mouseY: e.clientY,
+      width: size.width,
+      height: size.height,
+    };
+  };
+
   useEffect(() => {
     if (!isDragging) return;
 
@@ -69,7 +90,7 @@ const SystemBodyPopover: FunctionComponent<Props> = ({ body, system, dispatcher,
       const dx = e.clientX - dragStart.current.mouseX;
       const dy = e.clientY - dragStart.current.mouseY;
       setPosition({
-        x: Math.max(0, Math.min(window.innerWidth - PANE_WIDTH, dragStart.current.elemX + dx)),
+        x: Math.max(0, Math.min(window.innerWidth - size.width, dragStart.current.elemX + dx)),
         y: Math.max(0, Math.min(window.innerHeight - 60, dragStart.current.elemY + dy)),
       });
     };
@@ -85,7 +106,32 @@ const SystemBodyPopover: FunctionComponent<Props> = ({ body, system, dispatcher,
       document.removeEventListener("mousemove", onMouseMove);
       document.removeEventListener("mouseup", onMouseUp);
     };
-  }, [isDragging]);
+  }, [isDragging, size.width]);
+
+  useEffect(() => {
+    if (!isResizing) return;
+
+    const onMouseMove = (e: MouseEvent) => {
+      if (!resizeStart.current) return;
+      const dx = e.clientX - resizeStart.current.mouseX;
+      const dy = e.clientY - resizeStart.current.mouseY;
+      const newWidth = Math.max(MIN_WIDTH, Math.min(window.innerWidth - position.x, resizeStart.current.width + dx));
+      const newHeight = Math.max(MIN_HEIGHT, Math.min(window.innerHeight - position.y, resizeStart.current.height + dy));
+      setSize({ width: newWidth, height: newHeight });
+    };
+
+    const onMouseUp = () => {
+      setIsResizing(false);
+      resizeStart.current = null;
+    };
+
+    document.addEventListener("mousemove", onMouseMove);
+    document.addEventListener("mouseup", onMouseUp);
+    return () => {
+      document.removeEventListener("mousemove", onMouseMove);
+      document.removeEventListener("mouseup", onMouseUp);
+    };
+  }, [isResizing, position.x, position.y]);
 
   if (!body) return null;
 
@@ -94,10 +140,10 @@ const SystemBodyPopover: FunctionComponent<Props> = ({ body, system, dispatcher,
 
   return (
     <div
-      className={`fixed z-50 flex max-h-[85vh] flex-col border border-orange-900/40 bg-black/70 shadow-2xl shadow-black/60 backdrop-blur ${
+      className={`fixed z-50 flex flex-col border border-orange-900/40 bg-black/70 shadow-2xl shadow-black/60 backdrop-blur ${
         isDragging ? "select-none shadow-orange-900/30" : ""
-      }`}
-      style={{ left: position.x, top: position.y }}
+      } ${isResizing ? "select-none" : ""}`}
+      style={{ left: position.x, top: position.y, width: size.width, height: size.height }}
     >
       {/* ── Drag Handle / Header ── */}
       <div
@@ -314,6 +360,25 @@ const SystemBodyPopover: FunctionComponent<Props> = ({ body, system, dispatcher,
           </Link>
         </div>
 
+      </div>
+
+      {/* ── Resize Handle ── */}
+      <div
+        className="absolute bottom-0 right-0 h-5 w-5 cursor-se-resize"
+        onMouseDown={onResizeMouseDown}
+      >
+        {/* Visual grip lines */}
+        <svg
+          className="absolute bottom-1 right-1 opacity-30"
+          width="10"
+          height="10"
+          viewBox="0 0 10 10"
+          fill="none"
+        >
+          <line x1="10" y1="3" x2="3" y2="10" stroke="rgb(251 146 60)" strokeWidth="1" />
+          <line x1="10" y1="6" x2="6" y2="10" stroke="rgb(251 146 60)" strokeWidth="1" />
+          <line x1="10" y1="9" x2="9" y2="10" stroke="rgb(251 146 60)" strokeWidth="1" />
+        </svg>
       </div>
     </div>
   );

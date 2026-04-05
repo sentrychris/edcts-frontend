@@ -166,7 +166,17 @@ const SystemBodiesTable: FunctionComponent<Props> = ({ bodies, dispatcher }) => 
     },
   };
 
-  return <Table columns={columns} data={rows} meta={meta} links={links} page={handlePage} />;
+  const header = (
+    <div className="flex items-center gap-3 border-b border-orange-900/20 px-5 py-4">
+      <i className="icarus-terminal-system-orbits text-glow__orange" style={{ fontSize: "1.25rem" }}></i>
+      <div>
+        <h2 className="text-glow__orange font-bold uppercase tracking-wide">Orbital Bodies</h2>
+        <p className="text-xs uppercase tracking-wider text-neutral-500">Planetary Survey Records</p>
+      </div>
+    </div>
+  );
+
+  return <Table header={header} columns={columns} data={rows} meta={meta} links={links} page={handlePage} />;
 };
 
 export default SystemBodiesTable;
