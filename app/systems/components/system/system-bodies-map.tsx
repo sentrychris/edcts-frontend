@@ -9,7 +9,6 @@ import type SystemMap from "../../lib/system-map";
 import { SystemBodyType } from "@/core/constants/system";
 import { systemDispatcher } from "@/core/events/SystemDispatcher";
 import Link from "next/link";
-import Heading from "@/components/heading";
 import SystemBodySVG from "./system-body-svg";
 import SystemMapStatistics from "./system-map-statistics";
 import { stationIconByType } from "../../lib/render-utils";
@@ -193,7 +192,7 @@ const SystemBodiesMap: FunctionComponent<Props> = ({
     if (!bodies) {
       return (
         <span className="text-glow__orange ms-4 uppercase">
-          {body.name} {body.type} has no direct orbiting celestial bodies
+          {body.name} has no direct orbiting celestial bodies
         </span>
       );
     }
@@ -223,9 +222,15 @@ const SystemBodiesMap: FunctionComponent<Props> = ({
   }
 
   return (
-    <div className="border-b border-neutral-800 bg-transparent py-5 backdrop-blur backdrop-filter">
-      <div className="flex items-center justify-between">
-        <Heading icon="icarus-terminal-system-bodies" title="System Map" className="mb-2 gap-2" />
+    <div className="mb-5 border border-orange-900/20 bg-transparent backdrop-blur backdrop-filter">
+      <div className="flex items-center justify-between border-b border-neutral-800 px-4 py-3">
+        <div className="flex items-center gap-3">
+          <i className="icarus-terminal-system-bodies text-glow__orange" style={{ fontSize: "1.5rem" }}></i>
+          <div>
+            <h2 className="text-glow__orange font-bold uppercase tracking-wide">System Map</h2>
+            <p className="text-xs uppercase tracking-wider text-neutral-500">Orbital Telemetry</p>
+          </div>
+        </div>
         <div className="flex items-center gap-4">
           {!isLoading && <SystemMapStatistics system={systemMap} />}
           {!isLoading && (
@@ -239,7 +244,7 @@ const SystemBodiesMap: FunctionComponent<Props> = ({
         </div>
       </div>
       {!isLoading && (
-        <div className="grid grid-cols-12">
+        <div className="grid grid-cols-12 px-4 py-3">
           <div className="col-span-12">
             <div className="system-body__children hidden w-full items-center overflow-x-auto py-2 hover:cursor-move md:flex">
               {renderSystemStations(systemMap.stations)}

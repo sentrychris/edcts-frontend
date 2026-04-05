@@ -52,7 +52,7 @@ const AudioPlayer: FunctionComponent<Props> = ({ files }) => {
       <div className="flex items-center">
         <button
           onClick={playPrev}
-          className="ml-2 flex items-center justify-center rounded-full bg-black/60 p-2"
+          className="ml-2 flex items-center justify-center rounded-full p-2"
           aria-label="Previous"
         >
           <svg
@@ -70,7 +70,7 @@ const AudioPlayer: FunctionComponent<Props> = ({ files }) => {
         </button>
         <button
           onClick={togglePlayPause}
-          className="ml-2 flex items-center justify-center rounded-full bg-black/60 p-2"
+          className="ml-2 flex items-center justify-center rounded-full p-2"
           aria-label={isPlaying ? "Pause" : "Play"}
         >
           <svg
@@ -100,7 +100,7 @@ const AudioPlayer: FunctionComponent<Props> = ({ files }) => {
         </button>
         <button
           onClick={playNext}
-          className="ml-2 flex items-center justify-center rounded-full bg-black/60 p-2"
+          className="ml-2 flex items-center justify-center rounded-full p-2"
           aria-label="Next"
         >
           <svg

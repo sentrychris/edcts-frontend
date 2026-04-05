@@ -1,6 +1,5 @@
 import type { Metadata, ResolvingMetadata } from "next";
 import { settings } from "@/core/config";
-import Heading from "@/components/heading";
 import SystemDetail from "../components/system/system-detail";
 
 /**
@@ -43,7 +42,28 @@ export async function generateMetadata(
 export default async function Page({ params }: { params: { slug: string } }) {
   return (
     <>
-      <Heading title="System Information" className="mb-5 gap-2" />
+      {/* ── System Intelligence Terminal ── */}
+      <div className="relative mb-5 border border-orange-900/40 px-6 py-4">
+        <span className="absolute -left-px -top-px h-4 w-4 border-l-2 border-t-2 border-orange-500" />
+        <span className="absolute -right-px -top-px h-4 w-4 border-r-2 border-t-2 border-orange-500" />
+        <span className="absolute -bottom-px -left-px h-4 w-4 border-b-2 border-l-2 border-orange-500" />
+        <span className="absolute -bottom-px -right-px h-4 w-4 border-b-2 border-r-2 border-orange-500" />
+
+        <div className="flex flex-wrap items-center justify-between gap-2 text-xs uppercase tracking-widest text-neutral-600">
+          <div className="flex items-center gap-4">
+            <span>MODULE:CARTOGRAPHIC</span>
+            <span className="text-neutral-800">■</span>
+            <span>DATABASE:STELLAR</span>
+            <span className="text-neutral-800">■</span>
+            <span>CLASS:UNRESTRICTED</span>
+          </div>
+          <div className="flex items-center gap-2">
+            <span className="h-1.5 w-1.5 animate-pulse rounded-full bg-orange-500"></span>
+            <span>TELEMETRY: ACTIVE</span>
+          </div>
+        </div>
+      </div>
+
       <SystemDetail params={params} />
     </>
   );

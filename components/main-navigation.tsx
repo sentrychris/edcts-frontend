@@ -35,7 +35,7 @@ const MainNavigation: FunctionComponent = () => {
     <Disclosure as="nav" className="main-nav__nav">
       {({ open }) => (
         <>
-          <div className="main-nav__menu lg:px-18 border-b border-neutral-900 px-6 uppercase md:px-12">
+          <div className="main-nav__menu lg:px-18 backdrop-blur border-b border-orange-900/40 px-6 uppercase md:px-12">
             <div className="relative flex h-10 items-center justify-between">
               <div className="absolute inset-y-0 left-0 flex items-center sm:hidden">
                 {/* Mobile menu button*/}
@@ -50,7 +50,7 @@ const MainNavigation: FunctionComponent = () => {
               </div>
               <div className="flex flex-1 items-center justify-center sm:justify-start">
                 <div className="flex items-center gap-3">
-                  <i className="icarus-terminal-logo text-5xl"></i>
+                  <i className="icarus-terminal-logo text-glow__orange text-3xl"></i>
                 </div>
                 <div className="hidden sm:ml-6 sm:block">
                   <div className="flex space-x-4">
@@ -59,8 +59,8 @@ const MainNavigation: FunctionComponent = () => {
                         key={item.name}
                         href={item.href}
                         className={classNames(
-                          item.current ? "font-bold text-white" : "text-gray-300 hover:text-white",
-                          "rounded-md px-3 py-2 text-sm",
+                          item.current ? "font-bold text-glow__orange" : "text-neutral-400 hover:text-white",
+                          "rounded-md px-3 py-2 text-xs",
                         )}
                         aria-current={item.current ? "page" : undefined}
                       >
@@ -73,16 +73,16 @@ const MainNavigation: FunctionComponent = () => {
               <div className="absolute inset-y-0 right-0 flex items-center pr-2 sm:static sm:inset-auto sm:ml-6 sm:pr-0">
                 {!user ? (
                   <button
-                    className="flex items-center gap-1 rounded-lg border border-neutral-900 bg-neutral-900 px-3 py-1 uppercase hover:scale-x-105"
+                    className="hidden flex items-center gap-1 rounded-lg border border-neutral-900 bg-neutral-900 px-3 py-1 uppercase hover:scale-x-105"
                     onClick={makeFrontierSSOLoginRequest}
                   >
                     <i className="icarus-terminal-planet text-lg"></i>
-                    <span className="text-glow text-sm">Login with frontier</span>
+                    <span className="text-glow text-xs">Login with frontier</span>
                   </button>
                 ) : (
                   <Menu as="div" className="relative ml-3">
                   <div className="flex items-center gap-3">
-                    <MenuButton className="align-items flex items-center gap-3 text-sm focus:outline-none">
+                    <MenuButton className="align-items flex items-center gap-3 text-xs focus:outline-none">
                       <span className="text-glow__orange text-xs[ hidden md:flex">
                         CMDR {user.commander.name}
                       </span>
@@ -112,7 +112,7 @@ const MainNavigation: FunctionComponent = () => {
                             href="#"
                             className={classNames(
                               active ? "bg-zinc-100" : "",
-                              "block px-4 py-2 text-sm text-gray-700",
+                              "block px-4 py-2 text-xs text-gray-700",
                             )}
                           >
                             Your Profile
@@ -125,7 +125,7 @@ const MainNavigation: FunctionComponent = () => {
                             href="#"
                             className={classNames(
                               active ? "bg-zinc-100" : "",
-                              "block px-4 py-2 text-sm text-gray-700",
+                              "block px-4 py-2 text-xs text-gray-700",
                             )}
                           >
                             Settings
@@ -138,7 +138,7 @@ const MainNavigation: FunctionComponent = () => {
                             href="#"
                             className={classNames(
                               active ? "bg-zinc-100" : "",
-                              "block px-4 py-2 text-sm text-gray-700",
+                              "block px-4 py-2 text-xs text-gray-700",
                             )}
                           >
                             Sign out

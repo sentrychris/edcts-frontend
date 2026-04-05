@@ -11,7 +11,7 @@ interface Props {
 const GalnetArticle: FunctionComponent<Props> = ({ article }) => {
   return (
     <>
-      <div className="galnet-article relative py-10">
+      <div className="galnet-article relative py-10 text-neutral-300">
         <h1 className="text-4xl">{article.title}</h1>
         <small>{article.uploaded_at}</small>
         <div className="mt-4 h-20 md:h-40">

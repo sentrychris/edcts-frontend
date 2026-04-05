@@ -43,7 +43,7 @@ const LatestSystem: FunctionComponent<Props> = ({ className }) => {
 
   return (
     <div className={`${className} uppercase`}>
-      <div className="mb-2 flex items-center gap-2 text-xs tracking-widest text-neutral-500">
+      <div className="mb-2 flex items-center gap-2 text-xs tracking-wide uppercase text-neutral-500">
         <i className="icarus-terminal-location-filled text-orange-500/60"></i>
         Last Telemetry Uplink
       </div>

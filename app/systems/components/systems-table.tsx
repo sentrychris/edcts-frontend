@@ -180,7 +180,7 @@ const SystemsTable: FunctionComponent<Props> = ({ className = "", systems }) => 
   return (
     <div className={className}>
       {/* Query panel */}
-      <div className="mb-6 border border-neutral-800">
+      <div>
         <div className="flex items-center gap-3 border-b border-neutral-800 px-4 py-3">
           <i className="icarus-terminal-route text-glow__orange text-sm"></i>
           <span className="text-xs uppercase tracking-widest text-neutral-500">

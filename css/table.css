@@ -87,7 +87,6 @@ table:not(.table--inline).table--interactive
   td {
   border-color: var(--color-primary-dark) !important;
   color: var(--color-primary);
-  background: #030303;
   transition: all 0.1s ease;
 }
 

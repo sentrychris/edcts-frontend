@@ -188,7 +188,7 @@ const StationMarket: FunctionComponent<Props> = ({ slug }) => {
       {!isLoading && market !== null && (
         <div className="mt-8">
           <div className="mb-5 flex items-center justify-between border-b border-neutral-800 pb-4">
-            <Heading icon="icarus-terminal-cargo" title="Market" className="gap-2" />
+            <Heading icon="icarus-terminal-cargo text-glow__orange" title="Market Data" className="gap-2 text-sm text-neutral-300" />
             {market.last_updated && (
               <span className="text-xs uppercase tracking-wider text-neutral-500">
                 Updated {formatDate(market.last_updated)}

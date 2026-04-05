@@ -7,7 +7,6 @@ import { useEffect, useState } from "react";
 import { systemDispatcher } from "@/core/events/SystemDispatcher";
 import { getResource } from "@/core/api";
 import { systemState } from "../../lib/state";
-import Heading from "@/components/heading";
 import Loader from "@/components/loader";
 import SystemMap from "../../lib/system-map";
 import SystemHeader from "./system-header";
@@ -68,9 +67,16 @@ const SystemDetail: FunctionComponent<Props> = ({ params }) => {
         />
       )}
 
-      <div className="grid grid-cols-1 gap-5 py-5 md:grid-cols-1">
+      <div className="flex flex-col gap-8 py-5">
+        {/* ── Main Sequence Stars ── */}
         <div>
-          <Heading icon="icarus-terminal-star" title="Main Sequence Stars" className="gap-2 pb-5" />
+          <div className="mb-4 flex items-center gap-3 border-b border-neutral-800 pb-4">
+            <i className="icarus-terminal-star text-glow__orange" style={{ fontSize: "1.5rem" }}></i>
+            <div className="flex-1">
+              <h2 className="text-glow__orange font-bold uppercase tracking-wide">Main Sequence Stars</h2>
+              <p className="text-xs uppercase tracking-wider text-neutral-500">Stellar Classification Data</p>
+            </div>
+          </div>
           {!isLoading && systemMap && (
             <SystemStarsTable
               stars={systemMap.stars as Required<MappedSystemBody>[]}
@@ -78,18 +84,30 @@ const SystemDetail: FunctionComponent<Props> = ({ params }) => {
             />
           )}
         </div>
-        <div className="my-10">
-          <Heading icon="icarus-terminal-outpost" title="System Stations" className="gap-2 pb-5" />
+
+        {/* ── System Stations ── */}
+        <div>
+          <div className="mb-4 flex items-center gap-3 border-b border-neutral-800 pb-4">
+            <i className="icarus-terminal-outpost text-glow__orange" style={{ fontSize: "1.5rem" }}></i>
+            <div className="flex-1">
+              <h2 className="text-glow__orange font-bold uppercase tracking-wide">System Stations</h2>
+              <p className="text-xs uppercase tracking-wider text-neutral-500">Docking & Logistics Network</p>
+            </div>
+          </div>
           {!isLoading && systemMap && (
             <SystemStationsTable stations={systemMap.stations} dispatcher={systemDispatcher} />
           )}
         </div>
+
+        {/* ── Orbital Bodies ── */}
         <div>
-          <Heading
-            icon="icarus-terminal-system-orbits"
-            title="Orbital Bodies"
-            className="gap-2 pb-5"
-          />
+          <div className="mb-4 flex items-center gap-3 border-b border-neutral-800 pb-4">
+            <i className="icarus-terminal-system-orbits text-glow__orange" style={{ fontSize: "1.5rem" }}></i>
+            <div className="flex-1">
+              <h2 className="text-glow__orange font-bold uppercase tracking-wide">Orbital Bodies</h2>
+              <p className="text-xs uppercase tracking-wider text-neutral-500">Planetary Survey Records</p>
+            </div>
+          </div>
           {!isLoading && systemMap && (
             <SystemBodiesTable
               bodies={systemMap.planets as Required<MappedSystemBody>[]}
@@ -99,14 +117,12 @@ const SystemDetail: FunctionComponent<Props> = ({ params }) => {
         </div>
       </div>
 
+      {/* ── Body Detail Panel ── */}
       <div
-        className={`fixed right-0 top-0 h-full w-1/3 transform bg-white shadow-lg transition-transform ${
+        className={`fixed right-0 top-0 h-full w-80 transform border-l border-orange-900/40 bg-black/95 shadow-2xl shadow-orange-900/10 backdrop-blur transition-transform lg:w-96 ${
           isPanelOpen ? "translate-x-0" : "translate-x-full"
         }`}
       >
-        <button className="absolute left-2 top-2 text-xl" onClick={() => setIsPanelOpen(false)}>
-          &times;
-        </button>
         {selectedBody && systemMap && (
           <SystemBodyPopover
             body={selectedBody}

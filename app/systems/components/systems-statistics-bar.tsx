@@ -69,7 +69,7 @@ const SystemsStatisticsBar: FunctionComponent<Props> = ({
   return (
     <div
       className={
-        "mb-6 border border-orange-900/30 bg-black/20 backdrop-blur backdrop-filter " + className
+        "backdrop-blur backdrop-filter " + className
       }
     >
       <div className="flex items-stretch divide-x divide-orange-900/30">

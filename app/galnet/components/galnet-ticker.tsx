@@ -99,9 +99,8 @@ const NewsTicker: FunctionComponent<Props> = ({ articles }) => {
   const currentDate = getCurrentEliteDate();
 
   return (
-    <div className="relative flex items-center">
-      <span className="text-glow__orange border-b-glow__orange ticker-label lg:px-18 z-10 bg-black/60 px-6 text-sm text-xs uppercase md:px-12">
-        <span>Galnet</span>
+    <div className="relative flex items-center backdrop-blur">
+      <span className="text-glow__orange border-b border-orange-900/40 ticker-label lg:px-18 z-10 px-6 text-xs uppercase md:px-12">
         <span className="ms-2 hidden sm:flex">
           {currentDate} {currentTime} UTC
         </span>
@@ -116,7 +115,7 @@ const NewsTicker: FunctionComponent<Props> = ({ articles }) => {
       </span>
       <div
         ref={tickerRef}
-        className="ticker flex flex-1 items-center overflow-hidden whitespace-nowrap border-b border-neutral-900 bg-black/60 uppercase"
+        className="ticker flex flex-1 items-center overflow-hidden whitespace-nowrap border-b border-orange-900/40 uppercase"
       >
         <div
           ref={tickerContentRef}
@@ -124,7 +123,7 @@ const NewsTicker: FunctionComponent<Props> = ({ articles }) => {
         >
           <Link
             href={`/galnet/news/${articles[currentArticleIndex].slug}`}
-            className="hover:underline"
+            className="hover:underline text-xs"
           >
             {articles[currentArticleIndex].uploaded_at} - {articles[currentArticleIndex].title}
           </Link>

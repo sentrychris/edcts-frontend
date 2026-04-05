@@ -86,13 +86,13 @@ export default async function Page({ params }: { params: { slug: string } }) {
           icon="icarus-terminal-atmosphere"
           largeIcon={true}
           title="Galnet Network"
-          className="gap-3 border-b border-neutral-800 pb-3 text-2xl"
+          className="gap-3 border-b border-neutral-800 pb-3 text-2xl text-neutral-300"
         />
 
         <div className="grid grid-cols-12">
           <div className="order-last col-span-12 border-neutral-900 md:order-first md:col-span-3 md:border-r md:pe-10">
             <div className="pt-10">
-              <h1 className="text-glow flex items-center gap-x-2 text-xl uppercase">
+              <h1 className="text-neutral-300 flex items-center gap-x-2 text-xl uppercase">
                 <i className="icarus-terminal-notifications text-glow__orange text-2xl"></i>
                 Latest News
               </h1>

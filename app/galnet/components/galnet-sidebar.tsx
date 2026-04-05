@@ -45,7 +45,7 @@ const GalnetSidebar: FunctionComponent<Props> = ({ className, articles }) => {
           </div>
 
           {/* Title */}
-          <h3 className="mb-3 text-sm uppercase leading-snug tracking-wide text-neutral-200 group-hover:text-white">
+          <h3 className="mb-3 text-sm uppercase leading-snug tracking-wide text-neutral-400 group-hover:text-neutral-300">
             {article.title}
           </h3>
 
