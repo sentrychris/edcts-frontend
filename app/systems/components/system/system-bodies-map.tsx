@@ -222,7 +222,7 @@ const SystemBodiesMap: FunctionComponent<Props> = ({
   }
 
   return (
-    <div className="mb-5 border border-orange-900/20 bg-transparent backdrop-blur backdrop-filter">
+    <div className="mb-5 border border-orange-900/20 bg-black/50 backdrop-blur backdrop-filter">
       <div className="flex items-center justify-between border-b border-orange-900/20 px-4 py-3">
         <div className="flex items-center gap-3">
           <i className="icarus-terminal-system-bodies text-glow__orange" style={{ fontSize: "1.5rem" }}></i>

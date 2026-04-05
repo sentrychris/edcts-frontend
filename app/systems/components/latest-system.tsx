@@ -48,7 +48,7 @@ const LatestSystem: FunctionComponent<Props> = ({ className }) => {
         Last Telemetry Uplink
       </div>
       <Link
-        className="text-glow__blue mb-3 block text-sm font-bold tracking-wide transition-colors hover:text-white"
+        className="hover:text-glow__orange text-blue-200 mb-3 block text-sm font-bold tracking-wide transition-colors hover:text-white"
         href={`systems/${system.detail.slug}`}
       >
         {system.name}

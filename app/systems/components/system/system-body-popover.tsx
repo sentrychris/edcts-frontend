@@ -94,7 +94,7 @@ const SystemBodyPopover: FunctionComponent<Props> = ({ body, system, dispatcher,
 
   return (
     <div
-      className={`fixed z-50 flex w-80 max-h-[85vh] flex-col border border-orange-900/40 bg-black/95 shadow-2xl shadow-black/60 backdrop-blur ${
+      className={`fixed z-50 flex max-h-[85vh] flex-col border border-orange-900/40 bg-black/70 shadow-2xl shadow-black/60 backdrop-blur ${
         isDragging ? "select-none shadow-orange-900/30" : ""
       }`}
       style={{ left: position.x, top: position.y }}

@@ -9,7 +9,7 @@ interface Props {
 
 const SystemInformationBar: FunctionComponent<Props> = ({ information }) => {
   return (
-    <div className="mb-5 border border-orange-900/20 bg-transparent backdrop-blur backdrop-filter">
+    <div className="mb-5 border border-orange-900/20 bg-black/50 backdrop-blur backdrop-filter">
       <div className="grid grid-cols-2 divide-x divide-neutral-800 text-xs uppercase tracking-wide md:grid-cols-3 lg:grid-cols-5">
         <div className="flex flex-col gap-1 px-4 py-3">
           <span className="mb-1 text-xs tracking-widest text-neutral-600">Allegiance / Security</span>

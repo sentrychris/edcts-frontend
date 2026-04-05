@@ -12,7 +12,7 @@ const statusReadouts = [
 
 const Footer: FunctionComponent = () => {
   return (
-    <footer className="border-t border-orange-900/20 bg-transparent backdrop-blur backdrop-filter">
+    <footer className="border-t border-orange-900/20 bg-transparent backdrop-blur backdrop-filter mt-6">
 
       {/* ── Ship Status Readouts ── */}
       <div className="scrollbar-hide lg:px-18 flex items-center gap-6 overflow-x-auto border-b border-orange-900/20 px-6 py-2 md:px-12">

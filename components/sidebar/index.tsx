@@ -10,13 +10,10 @@ interface Props {
 
 const Sidebar: FunctionComponent<Props> = ({ articles }) => {
   return (
-    <aside className="sticky top-0 hidden h-screen w-64 shrink-0 flex-col overflow-y-auto border-r border-orange-900/40 bg-black/50 backdrop-blur lg:flex xl:w-72">
+    <aside className="hidden w-64 shrink-0 flex-col overflow-y-auto border-r border-orange-900/40 bg-black/50 backdrop-blur lg:flex xl:w-72">
 
       {/* ── Header ── */}
-      <div className="relative flex items-center gap-3 border-b border-orange-900/40 px-4 py-4">
-        {/* Corner bracket accents */}
-        <span className="pointer-events-none absolute -left-px -top-px h-4 w-4 border-l-2 border-t-2 border-orange-500" />
-        <span className="pointer-events-none absolute -right-px -top-px h-4 w-4 border-r-2 border-t-2 border-orange-500" />
+      <div className="flex items-center gap-3 border-b border-orange-900/40 px-4 py-4">
 
         <i className="icarus-terminal-logo text-glow__orange text-2xl"></i>
         <div className="min-w-0">

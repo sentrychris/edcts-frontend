@@ -68,14 +68,16 @@ export default async function RootLayout({ children }: { children: React.ReactNo
         <SessionProvider session={session} refetchInterval={5 * 60} refetchOnWindowFocus={true}>
           <SvgFilters />
           <MainBackground />
-          <NewsTicker articles={articles} />
-          <div className="flex items-start">
-            <Sidebar articles={articles} />
-            <main className="min-w-0 flex-1 px-6 py-6 text-neutral-200 text-glow__white md:px-10">
-              {children}
-            </main>
+          <div className="flex h-screen flex-col overflow-hidden">
+            <NewsTicker articles={articles} />
+            <div className="flex min-h-0 flex-1">
+              <Sidebar articles={articles} />
+              <main className="min-w-0 flex-1 overflow-y-auto px-6 py-6 text-neutral-200 text-glow__white md:px-10">
+                {children}
+                <Footer />
+              </main>
+            </div>
           </div>
-          <Footer />
         </SessionProvider>
       </body>
     </html>

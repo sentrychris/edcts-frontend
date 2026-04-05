@@ -21,7 +21,7 @@ export default async function Home() {
   return (
     <>
       {/* ── System Masthead ── */}
-      <div className="fx-border-breathe relative mb-3 border border-orange-900/40 backdrop-blur backdrop-filter px-8 py-8">
+      <div className="fx-border-breathe relative mb-3 border border-orange-900/40 bg-black/50 backdrop-blur backdrop-filter px-8 py-8">
         {/* Corner bracket accents */}
         <span className="absolute -left-px -top-px h-5 w-5 border-l-2 border-t-2 border-orange-500" />
         <span className="absolute -right-px -top-px h-5 w-5 border-r-2 border-t-2 border-orange-500" />
@@ -71,7 +71,7 @@ export default async function Home() {
       <div className="grid grid-cols-1 gap-x-10 md:grid-cols-2 lg:grid-cols-3">
         {/* ── Galnet Panel ── */}
         <div className="col-span-1">
-          <div className="mb-5 flex items-center gap-3 border-b border-orange-900/20 pb-4">
+          <div className="mb-5 flex items-center gap-3 pt-3">
             <i
               className="icarus-terminal-notifications text-glow__orange"
               style={{ fontSize: "1.5rem" }}
@@ -90,7 +90,7 @@ export default async function Home() {
 
         {/* ── Systems Panel ── */}
         <div className="col-span-1 hidden md:block lg:col-span-2">
-          <div className="mb-5 flex items-center gap-3 border-b border-orange-900/20 pb-4">
+          <div className="mb-5 flex items-center gap-3 pt-3">
             <i
               className="icarus-terminal-route text-glow__orange"
               style={{ fontSize: "1.5rem" }}
