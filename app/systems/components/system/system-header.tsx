@@ -8,7 +8,7 @@ interface Props {
 
 const SystemHeader: FunctionComponent<Props> = ({ system, special }) => {
   return (
-    <div className="relative mb-5 border border-orange-900/40 px-6 py-6">
+    <div className="fx-border-breathe fx-panel-scan relative mb-5 border border-orange-900/40 backdrop-blur backdrop-filter px-6 py-6">
       {/* Corner bracket accents */}
       <span className="absolute -left-px -top-px h-5 w-5 border-l-2 border-t-2 border-orange-500" />
       <span className="absolute -right-px -top-px h-5 w-5 border-r-2 border-t-2 border-orange-500" />
@@ -20,7 +20,7 @@ const SystemHeader: FunctionComponent<Props> = ({ system, special }) => {
           <i className="icarus-terminal-system-orbits text-glow__orange" style={{ fontSize: "2.5rem" }}></i>
           <div>
             <p className="mb-1 text-xs uppercase tracking-[0.4em] text-neutral-500">star system</p>
-            <h2 className="text-glow__white text-2xl font-bold tracking-wide md:text-3xl">
+            <h2 className="fx-glitch text-glow__white text-2xl font-bold tracking-wide md:text-3xl">
               {system.name}
               {special && <span className="ml-2 text-xs text-neutral-400">{special}</span>}
             </h2>

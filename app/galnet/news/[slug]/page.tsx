@@ -59,7 +59,7 @@ export default async function Page({ params }: { params: { slug: string } }) {
   return (
     <>
       {/* ── Galnet Terminal ── */}
-      <div className="relative mb-5 border border-orange-900/40 px-6 py-4">
+      <div className="relative mb-5 border border-orange-900/40 backdrop-blur backdrop-filter px-6 py-4">
         <span className="absolute -left-px -top-px h-4 w-4 border-l-2 border-t-2 border-orange-500" />
         <span className="absolute -right-px -top-px h-4 w-4 border-r-2 border-t-2 border-orange-500" />
         <span className="absolute -bottom-px -left-px h-4 w-4 border-b-2 border-l-2 border-orange-500" />
@@ -74,7 +74,7 @@ export default async function Page({ params }: { params: { slug: string } }) {
             <span>CLASS:UNRESTRICTED</span>
           </div>
           <div className="flex items-center gap-2">
-            <span className="h-1.5 w-1.5 animate-pulse rounded-full bg-orange-500"></span>
+            <span className="fx-dot-orange h-1.5 w-1.5"></span>
             <span>UPLINK: ACTIVE</span>
           </div>
         </div>

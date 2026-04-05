@@ -8,6 +8,7 @@ import { systemDispatcher } from "@/core/events/SystemDispatcher";
 import { getResource } from "@/core/api";
 import { systemState } from "../../lib/state";
 import Loader from "@/components/loader";
+import TrackSystemVisit from "@/components/sidebar/track-system-visit";
 import SystemMap from "../../lib/system-map";
 import SystemHeader from "./system-header";
 import SystemInformationBar from "./system-information-bar";
@@ -53,6 +54,9 @@ const SystemDetail: FunctionComponent<Props> = ({ params }) => {
   return (
     <>
       {isLoading && <Loader visible={isLoading} />}
+      {!isLoading && system.slug && (
+        <TrackSystemVisit name={system.name} slug={system.slug} />
+      )}
 
       <SystemHeader system={system} />
       <SystemInformationBar information={system.information} />
@@ -117,21 +121,15 @@ const SystemDetail: FunctionComponent<Props> = ({ params }) => {
         </div>
       </div>
 
-      {/* ── Body Detail Panel ── */}
-      <div
-        className={`fixed right-0 top-0 h-full w-80 transform border-l border-orange-900/40 bg-black/95 shadow-2xl shadow-orange-900/10 backdrop-blur transition-transform lg:w-96 ${
-          isPanelOpen ? "translate-x-0" : "translate-x-full"
-        }`}
-      >
-        {selectedBody && systemMap && (
-          <SystemBodyPopover
-            body={selectedBody}
-            system={systemMap}
-            dispatcher={systemDispatcher}
-            close={() => setIsPanelOpen(false)}
-          />
-        )}
-      </div>
+      {/* ── Body Detail Popout ── */}
+      {isPanelOpen && selectedBody && systemMap && (
+        <SystemBodyPopover
+          body={selectedBody}
+          system={systemMap}
+          dispatcher={systemDispatcher}
+          close={() => setIsPanelOpen(false)}
+        />
+      )}
     </>
   );
 };

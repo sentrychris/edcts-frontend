@@ -26,19 +26,19 @@ const Button: FunctionComponent<Props> = ({
 
   switch (theme) {
     case "light":
-      themeClasses = "border border-neutral-600 bg-neutral-800 text-neutral-200 hover:border-neutral-400 hover:text-white";
+      themeClasses = "fx-btn-sweep border border-neutral-600 bg-neutral-800 text-neutral-200 hover:border-neutral-400 hover:text-white";
       spinnerClasses = "fill-white text-gray-400";
       break;
     case "danger":
-      themeClasses = "border border-red-900 bg-red-900/20 text-red-300 hover:border-red-500 hover:text-red-200";
+      themeClasses = "fx-btn-sweep fx-btn-sweep--danger border border-red-900 bg-red-900/20 text-red-300 hover:border-red-500 hover:text-red-200";
       spinnerClasses = "fill-red-600 text-white";
       break;
     case "elite":
-      themeClasses = "border border-orange-900/60 bg-transparent text-glow__orange hover:border-orange-500 hover:text-orange-300";
+      themeClasses = "fx-btn-sweep fx-btn-sweep--elite border border-orange-900/60 bg-transparent text-glow__orange hover:border-orange-500 hover:text-orange-300";
       spinnerClasses = "fill-orange-500 text-neutral-700";
       break;
     default:
-      themeClasses = "border border-orange-900/20 bg-neutral-900 text-neutral-200 hover:border-neutral-600 hover:text-white";
+      themeClasses = "fx-btn-sweep border border-orange-900/20 bg-neutral-900 text-neutral-200 hover:border-neutral-600 hover:text-white";
       spinnerClasses = "fill-neutral-500 text-neutral-300";
   }
 

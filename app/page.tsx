@@ -21,7 +21,7 @@ export default async function Home() {
   return (
     <>
       {/* ── System Masthead ── */}
-      <div className="relative mb-3 border border-orange-900/40 px-8 py-8">
+      <div className="fx-border-breathe relative mb-3 border border-orange-900/40 backdrop-blur backdrop-filter px-8 py-8">
         {/* Corner bracket accents */}
         <span className="absolute -left-px -top-px h-5 w-5 border-l-2 border-t-2 border-orange-500" />
         <span className="absolute -right-px -top-px h-5 w-5 border-r-2 border-t-2 border-orange-500" />
@@ -38,7 +38,7 @@ export default async function Home() {
             <span>CLASS:UNRESTRICTED</span>
           </div>
           <div className="flex items-center gap-2">
-            <span className="h-1.5 w-1.5 animate-pulse rounded-full bg-green-400"></span>
+            <span className="fx-dot-green h-1.5 w-1.5"></span>
             <span>NETWORK: OPERATIONAL</span>
           </div>
         </div>
@@ -48,7 +48,7 @@ export default async function Home() {
           <p className="mb-3 text-xs uppercase tracking-[0.5em] text-neutral-500">
             frontier developments ── universal cartographics
           </p>
-          <h1 className="text-glow__orange mb-3 text-3xl font-bold uppercase tracking-[0.2em] md:text-5xl">
+          <h1 className="text-glow__orange fx-glitch fx-holo-heading mb-3 text-3xl font-bold uppercase tracking-[0.2em] md:text-5xl">
             ED:CS Terminal
           </h1>
           <p className="text-xs uppercase tracking-[0.35em] text-neutral-500">
@@ -81,7 +81,7 @@ export default async function Home() {
               <p className="text-xs uppercase tracking-wider text-neutral-500">Uplink Channel</p>
             </div>
             <span className="flex items-center gap-1.5 text-xs uppercase tracking-wider text-green-300">
-              <span className="h-1.5 w-1.5 animate-pulse rounded-full bg-orange-500"></span>
+              <span className="fx-dot-orange h-1.5 w-1.5"></span>
               Live
             </span>
           </div>

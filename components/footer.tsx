@@ -16,9 +16,9 @@ const Footer: FunctionComponent = () => {
 
       {/* ── Ship Status Readouts ── */}
       <div className="scrollbar-hide lg:px-18 flex items-center gap-6 overflow-x-auto border-b border-orange-900/20 px-6 py-2 md:px-12">
-        {statusReadouts.map(({ icon, label, color, pulse }) => (
+        {statusReadouts.map(({ icon, label, color }) => (
           <div key={label} className="flex shrink-0 items-center gap-2 text-xs uppercase tracking-widest text-neutral-500">
-            <span className={`h-1.5 w-1.5 rounded-full ${color} ${pulse ? "animate-pulse" : ""}`}></span>
+            <span className={`h-1.5 w-1.5 ${color === "bg-orange-500" ? "fx-dot-orange" : "fx-dot-green"}`}></span>
             <i className={`${icon} text-neutral-600`}></i>
             <span>{label}</span>
           </div>

@@ -1,0 +1,382 @@
+/* ════════════════════════════════════════════════════════
+   SCI-FI VISUAL EFFECTS — Elite Dangerous / Star Trek HUD
+   ════════════════════════════════════════════════════════ */
+
+/* ── Button sweep fill on hover ── */
+.fx-btn-sweep {
+  position: relative;
+  overflow: hidden;
+}
+.fx-btn-sweep::before {
+  content: '';
+  position: absolute;
+  inset: 0;
+  background: linear-gradient(
+    90deg,
+    transparent 0%,
+    rgba(251, 146, 60, 0.08) 40%,
+    rgba(251, 146, 60, 0.15) 50%,
+    rgba(251, 146, 60, 0.08) 60%,
+    transparent 100%
+  );
+  transform: translateX(-110%);
+  transition: transform 0.5s ease;
+  pointer-events: none;
+}
+.fx-btn-sweep:hover::before {
+  transform: translateX(110%);
+}
+/* Elite (orange glow) variant */
+.fx-btn-sweep--elite::before {
+  background: linear-gradient(
+    90deg,
+    transparent 0%,
+    rgba(251, 146, 60, 0.12) 30%,
+    rgba(255, 210, 120, 0.25) 50%,
+    rgba(251, 146, 60, 0.12) 70%,
+    transparent 100%
+  );
+}
+/* Danger variant */
+.fx-btn-sweep--danger::before {
+  background: linear-gradient(
+    90deg,
+    transparent 0%,
+    rgba(252, 72, 72, 0.12) 40%,
+    rgba(252, 72, 72, 0.2) 50%,
+    rgba(252, 72, 72, 0.12) 60%,
+    transparent 100%
+  );
+}
+
+/* ── Panel scan line ─────────────────────────────────────
+   A slow-moving horizontal line sweeping the panel height.
+   Apply to a `relative` parent that already has `overflow: hidden`
+   on an inner wrapper, or use .fx-panel-scan on an inner container.
+   ────────────────────────────────────────────────────── */
+@keyframes fx-scan-line {
+  0% {
+    top: 0;
+    opacity: 0;
+  }
+  4% {
+    opacity: 0;
+  }
+  96% {
+    opacity: 0.0;
+  }
+  100% {
+    top: calc(100% - 1px);
+    opacity: 0;
+  }
+}
+
+.fx-panel-scan {
+  position: relative;
+}
+.fx-panel-scan::after {
+  content: '';
+  position: absolute;
+  left: 0;
+  right: 0;
+  height: 1px;
+  background: linear-gradient(
+    90deg,
+    transparent 0%,
+    rgba(251, 146, 60, 0.3) 15%,
+    rgba(251, 146, 60, 0.8) 50%,
+    rgba(251, 146, 60, 0.3) 85%,
+    transparent 100%
+  );
+  animation: fx-scan-line 10s linear infinite;
+  pointer-events: none;
+  z-index: 5;
+}
+
+/* ── Corner bracket glow pulse ─────────────────────────── */
+@keyframes fx-bracket-glow {
+  0%, 100% {
+    opacity: 0.7;
+    filter: none;
+  }
+  50% {
+    opacity: 1;
+    filter: drop-shadow(0 0 6px rgba(251, 146, 60, 0.9));
+  }
+}
+
+/* Target corner bracket spans inside a .fx-bracketed container */
+.fx-bracketed > span:first-child,
+.fx-bracketed > span:nth-child(2),
+.fx-bracketed > span:nth-child(3),
+.fx-bracketed > span:nth-child(4) {
+  animation: fx-bracket-glow 4s ease-in-out infinite;
+}
+.fx-bracketed > span:nth-child(2) { animation-delay: 1s; }
+.fx-bracketed > span:nth-child(3) { animation-delay: 2s; }
+.fx-bracketed > span:nth-child(4) { animation-delay: 3s; }
+
+/* ── Ambient border breathe ──────────────────────────────
+   Subtle inward glow pulse on panel borders.
+   ────────────────────────────────────────────────────── */
+@keyframes fx-border-breathe {
+  0%, 100% {
+    box-shadow: none;
+  }
+  50% {
+    box-shadow:
+      0 0 18px rgba(251, 146, 60, 0.06) inset,
+      0 0 8px rgba(251, 146, 60, 0.03);
+  }
+}
+
+.fx-border-breathe {
+  animation: fx-border-breathe 8s ease-in-out infinite;
+}
+
+/* ── Terminal cursor blink ───────────────────────────────
+   Append a blinking underscore cursor after the element.
+   ────────────────────────────────────────────────────── */
+@keyframes fx-cursor-blink {
+  0%, 100% { opacity: 1; }
+  50% { opacity: 0; }
+}
+
+.fx-cursor::after {
+  content: '_';
+  color: rgb(251 146 60);
+  text-shadow: 0 0 10px rgb(251 146 60);
+  animation: fx-cursor-blink 1.2s step-end infinite;
+  margin-left: 2px;
+  font-weight: 300;
+}
+
+/* ── Glitch flicker ──────────────────────────────────────
+   Occasional glitch effect for key headings / titles.
+   ────────────────────────────────────────────────────── */
+@keyframes fx-glitch {
+  0%, 92%, 100% {
+    transform: translateX(0);
+    text-shadow: 0 0 20px rgb(251 146 60 / 1);
+    opacity: 1;
+  }
+  93% {
+    transform: translateX(-3px) skewX(-2deg);
+    text-shadow:
+      3px 0 0 rgba(0, 255, 200, 0.6),
+      -3px 0 0 rgba(255, 50, 50, 0.6),
+      0 0 20px rgb(251 146 60 / 0.5);
+    opacity: 0.85;
+  }
+  94% {
+    transform: translateX(3px) skewX(1deg);
+    text-shadow:
+      -2px 0 0 rgba(0, 255, 200, 0.4),
+      2px 0 0 rgba(255, 50, 50, 0.4),
+      0 0 30px rgb(251 146 60 / 0.8);
+    opacity: 0.9;
+  }
+  95% {
+    transform: translateX(-1px);
+    opacity: 0.7;
+  }
+  96% {
+    transform: translateX(0);
+    opacity: 1;
+    text-shadow: 0 0 30px rgb(251 146 60 / 1), 0 0 60px rgb(251 146 60 / 0.4);
+  }
+}
+
+.fx-glitch {
+  animation: fx-glitch 12s ease-in-out infinite;
+}
+
+/* ── Enhanced status dot pulses ──────────────────────────
+   Replaces Tailwind's generic animate-pulse with themed variants.
+   ────────────────────────────────────────────────────── */
+@keyframes fx-dot-pulse-green {
+  0%, 100% {
+    background-color: rgb(74 222 128 / 1);
+    box-shadow: 0 0 4px rgb(74 222 128 / 0.5);
+  }
+  50% {
+    background-color: rgb(74 222 128 / 0.6);
+    box-shadow: 0 0 10px rgb(74 222 128 / 0.8), 0 0 20px rgb(74 222 128 / 0.3);
+  }
+}
+
+@keyframes fx-dot-pulse-orange {
+  0%, 100% {
+    background-color: rgb(249 115 22 / 1);
+    box-shadow: 0 0 4px rgb(249 115 22 / 0.5);
+  }
+  50% {
+    background-color: rgb(249 115 22 / 0.6);
+    box-shadow: 0 0 10px rgb(249 115 22 / 0.8), 0 0 20px rgb(249 115 22 / 0.3);
+  }
+}
+
+.fx-dot-green {
+  border-radius: 9999px;
+  animation: fx-dot-pulse-green 2s ease-in-out infinite;
+}
+
+.fx-dot-orange {
+  border-radius: 9999px;
+  animation: fx-dot-pulse-orange 2s ease-in-out infinite;
+}
+
+/* ── Text glow intensify on hover ────────────────────────
+   Applied globally to .text-glow__orange elements.
+   ────────────────────────────────────────────────────── */
+.text-glow__orange {
+  transition: text-shadow 0.3s ease, color 0.3s ease;
+}
+.text-glow__orange:hover {
+  color: rgb(255 175 80 / 1);
+  text-shadow: 0 0 30px rgb(251 146 60 / 1), 0 0 60px rgb(251 146 60 / 0.5);
+}
+
+/* But don't intensify text inside buttons (handled by sweep) */
+button .text-glow__orange:hover,
+button.text-glow__orange:hover {
+  color: rgb(251 146 60 / 1);
+  text-shadow: 0 0 20px rgb(251 146 60 / 1);
+}
+
+/* ── Data readout flicker (re-triggered by re-mount) ─────
+   Stagger with .fx-data-flicker[data-fx-order="N"]
+   ────────────────────────────────────────────────────── */
+@keyframes fx-data-flicker {
+  0% {
+    opacity: 0.1;
+    filter: brightness(3) blur(1px);
+  }
+  10% {
+    opacity: 1;
+    filter: brightness(1.8);
+  }
+  20% {
+    opacity: 0.5;
+    filter: brightness(1);
+  }
+  30% {
+    opacity: 1;
+    filter: brightness(1.4);
+  }
+  45% {
+    opacity: 0.8;
+    filter: brightness(1.1);
+  }
+  60% {
+    opacity: 1;
+    filter: none;
+  }
+  100% {
+    opacity: 1;
+    filter: none;
+  }
+}
+
+.fx-data-flicker {
+  animation: fx-data-flicker 0.8s ease forwards;
+}
+
+/* ── Horizontal rule sweep entry ─────────────────────────
+   For decorative horizontal lines and dividers.
+   ────────────────────────────────────────────────────── */
+@keyframes fx-rule-sweep {
+  from {
+    transform: scaleX(0);
+    transform-origin: left;
+    opacity: 0;
+  }
+  to {
+    transform: scaleX(1);
+    transform-origin: left;
+    opacity: 1;
+  }
+}
+
+.fx-rule-sweep {
+  animation: fx-rule-sweep 0.8s ease-out forwards;
+}
+
+/* ── Holographic shimmer on headings ─────────────────────
+   Very slow colour shift to suggest a glass display.
+   ────────────────────────────────────────────────────── */
+@keyframes fx-holo-shift {
+  0%, 100% {
+    filter: hue-rotate(0deg) brightness(1);
+  }
+  30% {
+    filter: hue-rotate(-8deg) brightness(1.08);
+  }
+  70% {
+    filter: hue-rotate(8deg) brightness(0.96);
+  }
+}
+
+.fx-holo-heading {
+  animation: fx-holo-shift 10s ease-in-out infinite;
+}
+
+/* ── Panel entry from left (wipe in) ─────────────────────
+   For drawers, side panels, slide-in content.
+   ────────────────────────────────────────────────────── */
+@keyframes fx-wipe-in-right {
+  from {
+    clip-path: inset(0 100% 0 0);
+    opacity: 0.5;
+  }
+  to {
+    clip-path: inset(0 0% 0 0);
+    opacity: 1;
+  }
+}
+
+.fx-wipe-in {
+  animation: fx-wipe-in-right 0.4s ease-out forwards;
+}
+
+/* ── Navigation link hover underline sweep ───────────────
+   Animated underline that sweeps in left→right on hover.
+   ────────────────────────────────────────────────────── */
+.fx-nav-link {
+  position: relative;
+}
+.fx-nav-link::after {
+  content: '';
+  position: absolute;
+  bottom: 4px;
+  left: 12px;
+  right: 12px;
+  height: 1px;
+  background: rgb(251 146 60);
+  box-shadow: 0 0 6px rgb(251 146 60 / 0.8);
+  transform: scaleX(0);
+  transform-origin: left;
+  transition: transform 0.25s ease;
+}
+.fx-nav-link:hover::after,
+.fx-nav-link.active::after {
+  transform: scaleX(1);
+}
+
+/* ── Number ticker (for stat value changes) ──────────────
+   Combine with JS class toggling to re-trigger.
+   ────────────────────────────────────────────────────── */
+@keyframes fx-number-tick {
+  0% {
+    transform: translateY(-8px);
+    opacity: 0;
+  }
+  100% {
+    transform: translateY(0);
+    opacity: 1;
+  }
+}
+
+.fx-number-tick {
+  animation: fx-number-tick 0.3s ease-out forwards;
+}

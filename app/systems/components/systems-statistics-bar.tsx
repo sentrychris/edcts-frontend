@@ -67,7 +67,7 @@ const SystemsStatisticsBar: FunctionComponent<Props> = ({
   ];
 
   return (
-    <div className={"relative mb-4 border border-orange-900/20 backdrop-blur backdrop-filter " + className}>
+    <div className={"fx-panel-scan fx-border-breathe relative mb-4 border border-orange-900/20 backdrop-blur backdrop-filter " + className}>
       {/* Corner bracket accents */}
       <span className="pointer-events-none absolute -left-px -top-px z-10 h-4 w-4 border-l-2 border-t-2 border-orange-500" />
       <span className="pointer-events-none absolute -right-px -top-px z-10 h-4 w-4 border-r-2 border-t-2 border-orange-500" />
@@ -81,7 +81,7 @@ const SystemsStatisticsBar: FunctionComponent<Props> = ({
               <i className={`${icon} text-orange-500/60`}></i>
               {label}
             </div>
-            <span className="text-glow__orange text-xl font-bold tracking-wide">{value}</span>
+            <span className="fx-data-flicker text-glow__orange text-xl font-bold tracking-wide">{value}</span>
           </div>
         ))}
 

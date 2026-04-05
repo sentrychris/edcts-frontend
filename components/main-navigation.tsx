@@ -57,15 +57,15 @@ const MainNavigation: FunctionComponent = () => {
                 <div className="flex items-center gap-3">
                   <i className="icarus-terminal-logo text-glow__orange text-3xl"></i>
                 </div>
-                <div className="hidden sm:ml-6 sm:block">
+                <div className="hidden sm:ml-6 sm:block lg:hidden">
                   <div className="flex space-x-4">
                     {navItems.map((item) => (
                       <Link
                         key={item.name}
                         href={item.href}
                         className={classNames(
-                          isActive(item.href) ? "font-bold text-glow__orange" : "text-neutral-400 hover:text-white",
-                          "px-3 py-2 text-xs uppercase tracking-widest transition-colors",
+                          isActive(item.href) ? "font-bold text-glow__orange active" : "text-neutral-400 hover:text-white",
+                          "fx-nav-link px-3 py-2 text-xs uppercase tracking-widest transition-colors",
                         )}
                         aria-current={isActive(item.href) ? "page" : undefined}
                       >
