@@ -2,6 +2,90 @@
    SCI-FI VISUAL EFFECTS — Elite Dangerous / Star Trek HUD
    ════════════════════════════════════════════════════════ */
 
+/* ════════════════════════════════════════════════════════════════════
+   HOLOGRAPHIC GLASS DISPLAY SYSTEM
+   3D backlit panel rendering — applied globally to all .backdrop-blur
+   elements so every panel reads as a physical illuminated glass surface.
+
+   Layers (bottom → top):
+     1. Deep Z-depth drop shadows        — physical depth illusion
+     2. Outer backlight glow             — amber light emanating from behind
+     3. Inner border shimmer (inset)     — illuminated border edge
+     4. Top-edge refraction (inset)      — glass catching overhead light
+     5. Diagonal light sheen (bg-image)  — surface reflection
+     6. Apex warm tint (bg-image)        — source-light bleed from above
+   ════════════════════════════════════════════════════════════════════ */
+
+:root {
+  --holo-backlight-near:   rgba(220, 100,  20, 0.22);
+  --holo-backlight-mid:    rgba(200,  75,   5, 0.10);
+  --holo-backlight-far:    rgba(180,  60,   0, 0.04);
+  --holo-edge-refract:     rgba(255, 175,  85, 0.28);
+  --holo-border-shimmer:   rgba(200, 100,  30, 0.38);
+  --holo-inner-ambient:    rgba(220,  90,  15, 0.045);
+  --holo-depth-soft:       rgba(  0,   0,   0, 0.70);
+  --holo-depth-hard:       rgba(  0,   0,   0, 0.92);
+  --holo-bg-apex:          rgba(251, 130,  30, 0.055);
+  --holo-bg-sheen:         rgba(251, 100,  20, 0.025);
+
+  /* Breathe-state (amplified for the glow pulse) */
+  --holo-breathe-near:     rgba(235, 115,  25, 0.32);
+  --holo-breathe-mid:      rgba(215,  90,  10, 0.16);
+  --holo-breathe-far:      rgba(195,  70,   0, 0.07);
+  --holo-breathe-edge:     rgba(255, 190,  95, 0.40);
+  --holo-breathe-shimmer:  rgba(210, 115,  40, 0.52);
+}
+
+/* ── Base glass panel surface ───────────────────────────
+   Targets every panel, card, status bar, ticker, sidebar,
+   and popover that carries Tailwind's backdrop-blur class.
+   ──────────────────────────────────────────────────────── */
+.backdrop-blur {
+  background-image:
+    /* Apex warm bleed — light source above the panel */
+    linear-gradient(
+      180deg,
+      var(--holo-bg-apex)  0px,
+      rgba(251, 110, 20, 0.012) 90px,
+      transparent 180px
+    ),
+    /* Diagonal sheen — angled surface reflection */
+    linear-gradient(
+      135deg,
+      var(--holo-bg-sheen) 0%,
+      transparent          32%,
+      transparent          68%,
+      var(--holo-bg-sheen) 100%
+    );
+
+  box-shadow:
+    /* Outer backlight — ambient glow from behind the panel */
+    0   0  18px var(--holo-backlight-near),
+    0   0  55px var(--holo-backlight-mid),
+    0   0 110px var(--holo-backlight-far),
+    /* Illuminated border edge (inner 1px overlay) */
+    inset 0 0 0 1px var(--holo-border-shimmer),
+    /* Top-edge refraction — brightest highlight line */
+    inset 0 1px 0   var(--holo-edge-refract),
+    /* Ambient inner surface glow */
+    inset 0 0 28px  var(--holo-inner-ambient),
+    /* Z-depth drop shadows */
+    0  10px 35px var(--holo-depth-soft),
+    0   2px  6px var(--holo-depth-hard);
+}
+
+/* ── Corner bracket luminescence ────────────────────────
+   The absolute pointer-events-none spans used as corner
+   bracket accents get a strong drop-shadow glow so they
+   read as actively lit circuit traces.
+   ──────────────────────────────────────────────────────── */
+span.absolute.pointer-events-none {
+  filter:
+    drop-shadow(0 0  4px rgba(251, 146, 60, 0.95))
+    drop-shadow(0 0 10px rgba(251, 100, 20, 0.55))
+    drop-shadow(0 0 18px rgba(240,  90, 10, 0.25));
+}
+
 /* ── Button sweep fill on hover ── */
 .fx-btn-sweep {
   position: relative;
@@ -117,21 +201,37 @@
 .fx-bracketed > span:nth-child(4) { animation-delay: 3s; }
 
 /* ── Ambient border breathe ──────────────────────────────
-   Subtle inward glow pulse on panel borders.
+   Pulses the full glass shadow stack between resting and
+   amplified states — the panel appears to breathe with the
+   light source behind it.
    ────────────────────────────────────────────────────── */
 @keyframes fx-border-breathe {
   0%, 100% {
-    box-shadow: none;
+    box-shadow:
+      0   0  18px var(--holo-backlight-near),
+      0   0  55px var(--holo-backlight-mid),
+      0   0 110px var(--holo-backlight-far),
+      inset 0 0 0 1px var(--holo-border-shimmer),
+      inset 0 1px 0   var(--holo-edge-refract),
+      inset 0 0 28px  var(--holo-inner-ambient),
+      0  10px 35px var(--holo-depth-soft),
+      0   2px  6px var(--holo-depth-hard);
   }
   50% {
     box-shadow:
-      0 0 18px rgba(251, 146, 60, 0.06) inset,
-      0 0 8px rgba(251, 146, 60, 0.03);
+      0   0  28px var(--holo-breathe-near),
+      0   0  70px var(--holo-breathe-mid),
+      0   0 130px var(--holo-breathe-far),
+      inset 0 0 0 1px var(--holo-breathe-shimmer),
+      inset 0 1px 0   var(--holo-breathe-edge),
+      inset 0 0 38px  rgba(230, 100, 20, 0.065),
+      0  12px 40px var(--holo-depth-soft),
+      0   2px  6px var(--holo-depth-hard);
   }
 }
 
 .fx-border-breathe {
-  animation: fx-border-breathe 8s ease-in-out infinite;
+  animation: fx-border-breathe 6s ease-in-out infinite;
 }
 
 /* ── Terminal cursor blink ───────────────────────────────
