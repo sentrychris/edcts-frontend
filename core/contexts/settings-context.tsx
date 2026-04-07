@@ -10,7 +10,8 @@ export type ThemeId =
   | "combat"
   | "imperial"
   | "thargoid"
-  | "ghost";
+  | "ghost"
+  | "pioneer";
 
 export interface Theme {
   id: ThemeId;
@@ -21,6 +22,7 @@ export interface Theme {
   saturate: number;
   brightness: number;
   contrast: number;
+  crtMode?: boolean;
 }
 
 export const THEMES: Theme[] = [
@@ -32,6 +34,7 @@ export const THEMES: Theme[] = [
   { id: "imperial",   label: "Imperial",   description: "Blue — Imperial Navy cold",       preview: "rgb(30,100,245)",   hue: 220, saturate: 0.75, brightness: 0.95, contrast: 1.1  },
   { id: "thargoid",   label: "Thargoid",   description: "Bio — alien bioluminescent",      preview: "rgb(85,245,22)",    hue: 90,  saturate: 1.55, brightness: 0.88, contrast: 1.2  },
   { id: "ghost",      label: "Ghost",      description: "Mono — surveillance minimal",     preview: "rgb(125,140,152)",  hue: 200, saturate: 0.1,  brightness: 1.25, contrast: 1.0  },
+  { id: "pioneer",    label: "Pioneer",    description: "Amber — cinematic vintage CRT",   preview: "rgb(249,115,22)",   hue: 0,   saturate: 0.75, brightness: 1.5,  contrast: 0.95, crtMode: true  },
 ];
 
 export interface Settings {
@@ -60,13 +63,13 @@ interface SettingsContextValue {
 const STORAGE_KEY = "edcts_ui_settings";
 
 export const DEFAULT_SETTINGS: Settings = {
-  themeId: "commander",
+  themeId: "pioneer",
   hue: 0,
-  saturate: 1.0,
-  brightness: 1.0,
-  contrast: 1.0,
+  saturate: 0.75,
+  brightness: 1.5,
+  contrast: 0.95,
   greyscale: false,
-  crtMode: false,
+  crtMode: true,
 };
 
 const SettingsContext = createContext<SettingsContextValue | null>(null);
@@ -88,7 +91,15 @@ export const SettingsProvider: FunctionComponent<{ children: ReactNode }> = ({ c
 
   const setTheme = (id: ThemeId) => {
     const t = THEMES.find((th) => th.id === id) ?? THEMES[0];
-    persist({ ...settings, themeId: id, hue: t.hue, saturate: t.saturate, brightness: t.brightness, contrast: t.contrast });
+    persist({
+      ...settings,
+      themeId: id,
+      hue: t.hue,
+      saturate: t.saturate,
+      brightness: t.brightness,
+      contrast: t.contrast,
+      ...(t.crtMode !== undefined && { crtMode: t.crtMode }),
+    });
   };
 
   const setHue        = (v: number)  => persist({ ...settings, hue:        Math.round(((v % 360) + 360) % 360) });
