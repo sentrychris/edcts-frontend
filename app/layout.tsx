@@ -1,5 +1,6 @@
 import type { Metadata } from "next";
 import type { Galnet } from "@/core/interfaces/Galnet";
+import type { SessionUser } from "@/core/interfaces/Auth";
 import { SessionProvider } from "next-auth/react";
 import { Jura } from "next/font/google";
 import { settings } from "@/core/config";
@@ -75,7 +76,7 @@ export default async function RootLayout({ children }: { children: React.ReactNo
               <div className="relative z-10 flex h-screen flex-col overflow-hidden">
                 <NewsTicker articles={articles} />
                 <div className="flex min-h-0 flex-1">
-                  <Sidebar articles={articles} user={session?.user ?? null} />
+                  <Sidebar articles={articles} user={(session?.user as SessionUser) ?? null} />
                   <main className="main-content min-w-0 flex-1 overflow-y-auto px-6 py-6 text-neutral-200 text-glow__white md:px-5">
                     {children}
                     <Footer />
