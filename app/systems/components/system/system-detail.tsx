@@ -20,15 +20,17 @@ import SystemStationsTable from "./system-stations-table";
 
 interface Props {
   params: { slug: string };
+  initialData?: System | null;
 }
 
-const SystemDetail: FunctionComponent<Props> = ({ params }) => {
+const SystemDetail: FunctionComponent<Props> = ({ params, initialData = null }) => {
   const { slug } = params;
-  const { data, isLoading } = useResource<System>(`systems/${slug}`, {
-    withInformation: 1,
-    withBodies: 1,
-    withStations: 1,
-  });
+  const { data: fetchedData, isLoading } = useResource<System>(
+    initialData ? null : `systems/${slug}`,
+    { withInformation: 1, withBodies: 1, withStations: 1 },
+  );
+  const data = initialData ?? fetchedData;
+  const loading = initialData ? false : isLoading;
   const system = data ?? systemState;
   const systemMap = useMemo(() => (data ? new SystemMap(data) : undefined), [data]);
   const [selectedBody, setSelectedBody] = useState<MappedSystemBody | null>(null);
@@ -36,15 +38,15 @@ const SystemDetail: FunctionComponent<Props> = ({ params }) => {
 
   return (
     <>
-      {isLoading && <Loader visible={isLoading} />}
-      {!isLoading && system.slug && (
+      {loading && <Loader visible={loading} />}
+      {!loading && system.slug && (
         <TrackSystemVisit name={system.name} slug={system.slug} />
       )}
 
       <SystemHeader system={system} />
       <SystemInformationBar information={system.information} />
 
-      {!isLoading && systemMap && (
+      {!loading && systemMap && (
         <SystemBodiesMap
           isLoading={isLoading}
           system={system}
@@ -55,16 +57,16 @@ const SystemDetail: FunctionComponent<Props> = ({ params }) => {
       )}
 
       <div className="flex flex-col gap-8 py-5">
-        {!isLoading && systemMap && (
+        {!loading && systemMap && (
           <SystemStarsTable
             stars={systemMap.stars as Required<MappedSystemBody>[]}
             dispatcher={systemDispatcher}
           />
         )}
-        {!isLoading && systemMap && (
+        {!loading && systemMap && (
           <SystemStationsTable stations={systemMap.stations} dispatcher={systemDispatcher} />
         )}
-        {!isLoading && systemMap && (
+        {!loading && systemMap && (
           <SystemBodiesTable
             bodies={systemMap.planets as Required<MappedSystemBody>[]}
             systemSlug={slug}
