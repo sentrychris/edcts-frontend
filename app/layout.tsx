@@ -7,7 +7,7 @@ import { getCollection } from "@/core/api";
 import { auth } from "@/core/auth";
 import SvgFilters from "@/components/svg-filters";
 import MainBackground from "@/components/main-background";
-import MainNavigation from "@/components/main-navigation";
+import Sidebar from "@/components/sidebar";
 import NewsTicker from "./galnet/components/galnet-ticker";
 import Footer from "@/components/footer";
 import "@/css/main.css";
@@ -68,15 +68,16 @@ export default async function RootLayout({ children }: { children: React.ReactNo
         <SessionProvider session={session} refetchInterval={5 * 60} refetchOnWindowFocus={true}>
           <SvgFilters />
           <MainBackground />
-          <MainNavigation />
-          <NewsTicker articles={articles} />
-          <main className="text-glow__white lg:px-18 mx-auto flex flex-col px-6 py-6 text-neutral-200 md:px-12">
-            <h1 className="mb-5 text-4xl uppercase">
-              ED:CS <span className="hidden md:inline">- Cartographical Services</span>
-            </h1>
-            {children}
-          </main>
-          <Footer />
+          <div className="relative z-10 flex h-screen flex-col overflow-hidden">
+            <NewsTicker articles={articles} />
+            <div className="flex min-h-0 flex-1">
+              <Sidebar articles={articles} />
+              <main className="main-content min-w-0 flex-1 overflow-y-auto px-6 py-6 text-neutral-200 text-glow__white md:px-5">
+                {children}
+                <Footer />
+              </main>
+            </div>
+          </div>
         </SessionProvider>
       </body>
     </html>

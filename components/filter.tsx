@@ -2,8 +2,6 @@
 
 import type { FormEvent, FunctionComponent } from "react";
 import { memo, useState } from "react";
-import Input from "./input";
-import Button from "./button";
 
 interface Props {
   className?: string;
@@ -22,13 +20,13 @@ const Filter: FunctionComponent<Props> = ({
 }) => {
   const [filterInputState, setFilterInputState] = useState<string>("");
 
-  async function handleFilterStringChange(e: FormEvent) {
+  function handleFilterStringChange(e: FormEvent) {
     const { value } = e.target as HTMLInputElement;
     setFilterInputState(value);
     handleInput(value);
   }
 
-  async function clearFilter() {
+  function clearFilter() {
     setFilterInputState("");
     handleInput("");
   }
@@ -36,40 +34,32 @@ const Filter: FunctionComponent<Props> = ({
   return (
     <div
       className={
-        "relative w-full border border-neutral-800 bg-transparent backdrop-blur backdrop-filter " +
+        "relative w-full border border-orange-900/30 bg-black/20 backdrop-blur backdrop-filter " +
         className
       }
     >
-      <form className="flex flex-row items-center gap-4">
-        {type === "text" ? (
-          <Input
-            type="text"
-            placeholder={placeholder}
-            value={filterInputState}
-            onChange={handleFilterStringChange}
-            extraStyling="w-[400px]"
-          />
-        ) : (
-          <Input
-            type="number"
-            placeholder={placeholder}
-            value={filterInputState}
-            onChange={handleFilterStringChange}
-          />
-        )}
-
+      <form className="flex items-center">
+        <span className="flex shrink-0 items-center border-r border-orange-900/30 px-3 py-2.5">
+          <i className="icarus-terminal-route text-xs text-orange-500/50"></i>
+        </span>
+        <input
+          type={type}
+          placeholder={placeholder}
+          value={filterInputState}
+          onChange={handleFilterStringChange}
+          className="h-10 min-w-0 flex-1 bg-transparent px-3 text-xs uppercase tracking-wider text-neutral-200 placeholder-neutral-600 outline-none focus:placeholder-neutral-700"
+        />
         {displayClearButton && (
-          <Button
+          <button
             type="submit"
-            theme="elite"
-            disabled={false}
-            onClick={async (e: FormEvent) => {
+            onClick={(e: FormEvent) => {
               e.preventDefault();
               clearFilter();
             }}
+            className="shrink-0 border-l border-orange-900/30 px-3 text-xs uppercase tracking-widest text-orange-500/60 transition-colors hover:text-orange-400"
           >
-            Clear
-          </Button>
+            CLR
+          </button>
         )}
       </form>
     </div>

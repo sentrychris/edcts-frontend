@@ -28,25 +28,37 @@ const GalnetList: FunctionComponent<Props> = ({ articles }) => {
   return (
     <>
       <div>
-        {rows.map((article: Galnet) => {
-          return (
-            <div
-              key={article.id}
-              className="relative border-b border-neutral-800 bg-transparent py-12 backdrop-blur backdrop-filter"
-            >
-              <h1 className="mb-2 text-4xl">{article.title}</h1>
-              <p className="mb-6 text-xs">{article.uploaded_at}</p>
-              <Link
-                href={`/galnet/news/${article.slug}`}
-                className="text-glow__orange py-2 font-bold"
-              >
-                Read more...
-              </Link>
+        {rows.map((article: Galnet, i: number) => (
+          <div
+            key={article.id}
+            className="group border-b border-orange-900/20 py-6 last:border-b-0"
+          >
+            {/* Transmission header */}
+            <div className="mb-3 flex items-center justify-between text-xs uppercase tracking-widest text-neutral-600">
+              <span className="flex items-center gap-2">
+                <i className="icarus-terminal-notifications text-orange-500/30 text-xs"></i>
+                TRANSMISSION {String(i + 1).padStart(3, "0")}
+              </span>
+              <span>{article.uploaded_at}</span>
             </div>
-          );
-        })}
+
+            {/* Title */}
+            <h3 className="text-glow__white mb-4 text-xl font-bold uppercase leading-snug tracking-wide transition-colors group-hover:text-orange-200">
+              {article.title}
+            </h3>
+
+            {/* Access link */}
+            <Link
+              href={`/galnet/news/${article.slug}`}
+              className="flex items-center gap-2 text-xs font-bold uppercase tracking-widest text-glow__orange transition-colors hover:text-orange-300"
+            >
+              Access Report <span>{">>"}</span>
+            </Link>
+          </div>
+        ))}
       </div>
-      <div>
+
+      <div className="py-4">
         <PaginationLinks metadata={metadata} links={navigation} paginate={paginate} />
       </div>
     </>

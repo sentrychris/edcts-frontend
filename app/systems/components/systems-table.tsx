@@ -122,102 +122,115 @@ const SystemsTable: FunctionComponent<Props> = ({ className = "", systems }) => 
 
   const columns = {
     name: {
-      title: "Name",
-      render: (system: System) => {
-        return (
-          <Link className="text-blue-200 hover:underline" href={`/systems/${system.slug}`}>
-            {system.name}
-          </Link>
-        );
-      },
+      title: "Designation",
+      render: (system: System) => (
+        <Link
+          className="hover:text-glow__orange text-blue-200 flex items-center gap-2"
+          href={`/systems/${system.slug}`}
+        >
+          <i className="icarus-terminal-system-orbits text-xs"></i>
+          {system.name}
+        </Link>
+      ),
     },
     government: {
       title: "Government",
-      render: (system: System) =>
-        system.information && system.information.government
-          ? system.information.government
-          : "None",
+      render: (system: System) => (
+        <span className="tracking-wide text-neutral-300">
+          {system.information?.government ?? "None"}
+        </span>
+      ),
     },
     allegiance: {
       title: "Allegiance",
       render: (system: System) =>
-        renderAllegianceText(
-          system.information && system.information.allegiance
-            ? system.information.allegiance
-            : "None",
-        ),
+        renderAllegianceText(system.information?.allegiance ?? "None"),
     },
     faction: {
-      title: "Faction",
-      render: (system: System) =>
-        system.information &&
-        system.information.controlling_faction &&
-        system.information.controlling_faction.name
-          ? system.information.controlling_faction.name
-          : "None",
+      title: "Ctrl. Faction",
+      render: (system: System) => (
+        <span className="tracking-wide text-neutral-300">
+          {system.information?.controlling_faction?.name ?? "None"}
+        </span>
+      ),
     },
     population: {
       title: "Population",
-      render: (system: System) =>
-        system.information && system.information.population
-          ? system.information.population.toLocaleString()
-          : "0",
+      render: (system: System) => (
+        <span className="tracking-wide text-neutral-300">
+          {system.information?.population ? system.information.population.toLocaleString() : "0"}
+        </span>
+      ),
     },
     economy: {
       title: "Economy",
-      render: (system: System) =>
-        system.information && system.information.economy ? system.information.economy : "None",
+      render: (system: System) => (
+        <span className="text-glow__orange tracking-wide">
+          {system.information?.economy ?? "None"}
+        </span>
+      ),
     },
     security: {
       title: "Security",
       render: (system: System) =>
-        renderSecurityText(
-          system.information && system.information.security ? system.information.security : "None",
-        ),
+        renderSecurityText(system.information?.security ?? "None"),
     },
   };
 
   return (
     <div className={className}>
-      <Filter placeholder="Search by system name..." handleInput={searchByName} className="mb-5" />
-      <div className="mb-5 grid grid-cols-1 gap-5 md:grid-cols-5 lg:grid-cols-11">
-        <Filter
-          displayClearButton={false}
-          type="number"
-          className="col-span-3 md:col-span-2"
-          placeholder="Population..."
-          handleInput={(input) => {
-            searchByInformation("population", input);
-          }}
-        />
+      {/* ── Query Panel ── */}
+      <div className="relative mb-4 border border-orange-900/20 bg-black/50 backdrop-blur backdrop-filter">
+        <span className="absolute -left-px -top-px h-4 w-4 border-l-2 border-t-2 border-orange-500" />
+        <span className="absolute -right-px -top-px h-4 w-4 border-r-2 border-t-2 border-orange-500" />
+        <span className="absolute -bottom-px -left-px h-4 w-4 border-b-2 border-l-2 border-orange-500" />
+        <span className="absolute -bottom-px -right-px h-4 w-4 border-b-2 border-r-2 border-orange-500" />
 
-        <Filter
-          displayClearButton={false}
-          className="col-span-3"
-          placeholder="Government..."
-          handleInput={(input) => {
-            searchByInformation("government", input);
-          }}
-        />
+        <div className="flex items-center gap-3 border-b border-orange-900/20 px-4 py-3">
+          <i className="icarus-terminal-route text-glow__orange" style={{ fontSize: "1.2rem" }}></i>
+          <div className="flex-1">
+            <h3 className="text-glow__orange font-bold uppercase tracking-widest">Query Parameters</h3>
+            <p className="text-xs uppercase tracking-wider text-neutral-500">Cartographic Database Filter</p>
+          </div>
+          <div className="flex items-center gap-2 text-xs uppercase tracking-widest text-neutral-600">
+            <span className="h-1.5 w-1.5 rounded-full bg-orange-500/60"></span>
+            <span>{rows.length} results</span>
+          </div>
+        </div>
 
-        <Filter
-          displayClearButton={false}
-          className="col-span-3 md:col-span-2 lg:col-span-3"
-          placeholder="Allegiance..."
-          handleInput={(input) => {
-            searchByInformation("allegiance", input);
-          }}
-        />
-
-        <Filter
-          displayClearButton={false}
-          className="col-span-3"
-          placeholder="Security..."
-          handleInput={(input) => {
-            searchByInformation("security", input);
-          }}
-        />
+        <div className="p-4">
+          <Filter
+            placeholder="Search system designation..."
+            handleInput={searchByName}
+            className="mb-3"
+          />
+          <div className="grid grid-cols-1 gap-3 md:grid-cols-2 lg:grid-cols-4">
+            <Filter
+              displayClearButton={false}
+              type="number"
+              placeholder="Population..."
+              handleInput={(input) => searchByInformation("population", input)}
+            />
+            <Filter
+              displayClearButton={false}
+              placeholder="Government..."
+              handleInput={(input) => searchByInformation("government", input)}
+            />
+            <Filter
+              displayClearButton={false}
+              placeholder="Allegiance..."
+              handleInput={(input) => searchByInformation("allegiance", input)}
+            />
+            <Filter
+              displayClearButton={false}
+              placeholder="Security..."
+              handleInput={(input) => searchByInformation("security", input)}
+            />
+          </div>
+        </div>
       </div>
+
+      {/* ── Results Table ── */}
       <Table columns={columns} data={rows} meta={metadata} links={navigation} page={paginate} />
     </div>
   );

@@ -12,7 +12,7 @@ interface Props {
 
 const GalnetSidebar: FunctionComponent<Props> = ({ className, articles }) => {
   const [currentSlice, setCurrentSlice] = useState(0);
-  const itemsPerSlice = 4;
+  const itemsPerSlice = 5;
 
   const handleNextSlice = () => {
     if ((currentSlice + 1) * itemsPerSlice < articles.data.length) {
@@ -28,38 +28,78 @@ const GalnetSidebar: FunctionComponent<Props> = ({ className, articles }) => {
 
   const startIndex = currentSlice * itemsPerSlice;
   const slicedArticles = articles.data.slice(startIndex, startIndex + itemsPerSlice);
+  const totalSlices = Math.ceil(articles.data.length / itemsPerSlice);
 
   return (
-    <div className={className}>
-      <div className="flex justify-between pt-5">
+    <div className={"fx-border-breathe relative border border-orange-900/20 bg-black/50 backdrop-blur backdrop-filter" + (className ?? "")}>
+      {/* Corner bracket accents */}
+      <span className="pointer-events-none absolute -left-px -top-px z-10 h-4 w-4 border-l-2 border-t-2 border-orange-500" />
+      <span className="pointer-events-none absolute -right-px -top-px z-10 h-4 w-4 border-r-2 border-t-2 border-orange-500" />
+      <span className="pointer-events-none absolute -bottom-px -left-px z-10 h-4 w-4 border-b-2 border-l-2 border-orange-500" />
+      <span className="pointer-events-none absolute -bottom-px -right-px z-10 h-4 w-4 border-b-2 border-r-2 border-orange-500" />
+
+      <div className="p-4">
+        {/* Section header */}
+        <div className="mb-4 flex items-center gap-3 border-b border-orange-900/20 pb-4">
+          <i className="icarus-terminal-notifications text-glow__orange" style={{ fontSize: "1.25rem" }}></i>
+          <div className="flex-1">
+            <h2 className="text-glow__orange font-bold uppercase tracking-wide">Galnet Comms</h2>
+            <p className="text-xs uppercase tracking-wider text-neutral-500">Uplink Channel</p>
+          </div>
+          <span className="flex items-center gap-1.5 text-xs uppercase tracking-wider text-neutral-500">
+            <span className="fx-dot-orange h-1.5 w-1.5"></span>
+            Live
+          </span>
+        </div>
+
+      {slicedArticles.map((article, i) => (
+        <div key={article.id} className="group relative border-b border-orange-900/20 py-4">
+          {/* Transmission index */}
+          <div className="mb-2 flex items-center justify-between">
+            <span className="text-xs uppercase tracking-widest text-neutral-600">
+              TRANSMISSION {String(startIndex + i + 1).padStart(3, "0")}
+            </span>
+            <span className="text-xs uppercase tracking-widest text-neutral-600">
+              {article.uploaded_at}
+            </span>
+          </div>
+
+          {/* Title */}
+          <h3 className="mb-3 text-sm uppercase leading-snug tracking-wide text-neutral-400 group-hover:text-neutral-300">
+            {article.title}
+          </h3>
+
+          {/* Read more */}
+          <Link
+            href={`/galnet/news/${article.slug}`}
+            className="flex items-center gap-2 text-xs uppercase tracking-widest text-glow__orange font-bold transition-colors hover:text-orange-300"
+          >
+            Access Report <span>{">>"}</span>
+          </Link>
+        </div>
+      ))}
+
+      {/* Pagination */}
+      <div className="flex items-center justify-between pt-4 text-xs uppercase tracking-widest">
         <button
           onClick={handlePrevSlice}
           disabled={currentSlice === 0}
-          className="text-glow__orange hover:text-glow__blue py-2 text-xs uppercase disabled:opacity-50"
+          className="flex items-center gap-2 text-glow__orange uppercase transition-colors hover:text-glow__blue disabled:cursor-not-allowed disabled:opacity-30"
         >
-          {"<<"} Prev
+          Prev
         </button>
+        <span className="text-neutral-600">
+          {currentSlice + 1} / {totalSlices}
+        </span>
         <button
           onClick={handleNextSlice}
           disabled={(currentSlice + 1) * itemsPerSlice >= articles.data.length}
-          className="text-glow__orange hover:text-glow__blue py-2 text-xs uppercase disabled:opacity-50"
+          className="flex items-center gap-2 text-glow__orange uppercase transition-colors hover:text-glow__blue disabled:cursor-not-allowed disabled:opacity-30"
         >
-          Next {">>"}
+          Next
         </button>
       </div>
-      {slicedArticles.map((article) => {
-        return (
-          <div key={article.id} className="relative">
-            <div className="relative border-b border-neutral-800 py-5">
-              <h3 className="mb-2 text-lg">{article.title}</h3>
-              <p className="mb-2 text-xs">{article.uploaded_at}</p>
-              <Link href={`/galnet/news/${article.slug}`} className="text-glow__orange">
-                Read more...
-              </Link>
-            </div>
-          </div>
-        );
-      })}
+      </div>
     </div>
   );
 };

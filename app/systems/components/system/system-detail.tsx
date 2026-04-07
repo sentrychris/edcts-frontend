@@ -7,8 +7,8 @@ import { useEffect, useState } from "react";
 import { systemDispatcher } from "@/core/events/SystemDispatcher";
 import { getResource } from "@/core/api";
 import { systemState } from "../../lib/state";
-import Heading from "@/components/heading";
 import Loader from "@/components/loader";
+import TrackSystemVisit from "@/components/sidebar/track-system-visit";
 import SystemMap from "../../lib/system-map";
 import SystemHeader from "./system-header";
 import SystemInformationBar from "./system-information-bar";
@@ -54,6 +54,9 @@ const SystemDetail: FunctionComponent<Props> = ({ params }) => {
   return (
     <>
       {isLoading && <Loader visible={isLoading} />}
+      {!isLoading && system.slug && (
+        <TrackSystemVisit name={system.name} slug={system.slug} />
+      )}
 
       <SystemHeader system={system} />
       <SystemInformationBar information={system.information} />
@@ -68,54 +71,33 @@ const SystemDetail: FunctionComponent<Props> = ({ params }) => {
         />
       )}
 
-      <div className="grid grid-cols-1 gap-5 py-5 md:grid-cols-1">
-        <div>
-          <Heading icon="icarus-terminal-star" title="Main Sequence Stars" className="gap-2 pb-5" />
-          {!isLoading && systemMap && (
-            <SystemStarsTable
-              stars={systemMap.stars as Required<MappedSystemBody>[]}
-              dispatcher={systemDispatcher}
-            />
-          )}
-        </div>
-        <div className="my-10">
-          <Heading icon="icarus-terminal-outpost" title="System Stations" className="gap-2 pb-5" />
-          {!isLoading && systemMap && (
-            <SystemStationsTable stations={systemMap.stations} dispatcher={systemDispatcher} />
-          )}
-        </div>
-        <div>
-          <Heading
-            icon="icarus-terminal-system-orbits"
-            title="Orbital Bodies"
-            className="gap-2 pb-5"
-          />
-          {!isLoading && systemMap && (
-            <SystemBodiesTable
-              bodies={systemMap.planets as Required<MappedSystemBody>[]}
-              dispatcher={systemDispatcher}
-            />
-          )}
-        </div>
-      </div>
-
-      <div
-        className={`fixed right-0 top-0 h-full w-1/3 transform bg-white shadow-lg transition-transform ${
-          isPanelOpen ? "translate-x-0" : "translate-x-full"
-        }`}
-      >
-        <button className="absolute left-2 top-2 text-xl" onClick={() => setIsPanelOpen(false)}>
-          &times;
-        </button>
-        {selectedBody && systemMap && (
-          <SystemBodyPopover
-            body={selectedBody}
-            system={systemMap}
+      <div className="flex flex-col gap-8 py-5">
+        {!isLoading && systemMap && (
+          <SystemStarsTable
+            stars={systemMap.stars as Required<MappedSystemBody>[]}
             dispatcher={systemDispatcher}
-            close={() => setIsPanelOpen(false)}
+          />
+        )}
+        {!isLoading && systemMap && (
+          <SystemStationsTable stations={systemMap.stations} dispatcher={systemDispatcher} />
+        )}
+        {!isLoading && systemMap && (
+          <SystemBodiesTable
+            bodies={systemMap.planets as Required<MappedSystemBody>[]}
+            dispatcher={systemDispatcher}
           />
         )}
       </div>
+
+      {/* ── Body Detail Popout ── */}
+      {isPanelOpen && selectedBody && systemMap && (
+        <SystemBodyPopover
+          body={selectedBody}
+          system={systemMap}
+          dispatcher={systemDispatcher}
+          close={() => setIsPanelOpen(false)}
+        />
+      )}
     </>
   );
 };

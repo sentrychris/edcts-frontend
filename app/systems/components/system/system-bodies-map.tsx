@@ -1,6 +1,6 @@
 "use client";
 
-import { type FunctionComponent, useCallback, useEffect, useState } from "react";
+import { type FunctionComponent, useCallback, useEffect, useRef, useState } from "react";
 import type { ListenerEvent } from "@/core/interfaces/Dispatcher";
 import type { System } from "@/core/interfaces/System";
 import type { MappedSystemBody } from "@/core/interfaces/SystemBody";
@@ -8,7 +8,7 @@ import type { Station } from "@/core/interfaces/Station";
 import type SystemMap from "../../lib/system-map";
 import { SystemBodyType } from "@/core/constants/system";
 import { systemDispatcher } from "@/core/events/SystemDispatcher";
-import Heading from "@/components/heading";
+import Link from "next/link";
 import SystemBodySVG from "./system-body-svg";
 import SystemMapStatistics from "./system-map-statistics";
 import { stationIconByType } from "../../lib/render-utils";
@@ -30,33 +30,54 @@ const SystemBodiesMap: FunctionComponent<Props> = ({
 }) => {
   const [selectedBody, setSelectedBody] = useState<MappedSystemBody>();
   const [selectedBodyIndex, setSelectedBodyIndex] = useState<number>(0);
+  const [bodyHistory, setBodyHistory] = useState<MappedSystemBody[]>([]);
+  const selectedBodyRef = useRef<MappedSystemBody | undefined>(undefined);
+
+  useEffect(() => {
+    selectedBodyRef.current = selectedBody;
+  }, [selectedBody]);
 
   useEffect(() => {
     const star = systemMap.stars.find((s) => s.is_main_star === 1);
     setSelectedBody(star);
 
     const selectBodyListener = (event: ListenerEvent) => {
+      setBodyHistory((prev) =>
+        selectedBodyRef.current ? [...prev, selectedBodyRef.current!] : prev,
+      );
       setSelectedBody(event.message as MappedSystemBody);
+    };
+
+    const goToParentListener = () => {
+      setBodyHistory((prev) => {
+        const parent = prev[prev.length - 1];
+        if (parent) {
+          setSelectedBody(parent);
+        }
+        return prev.slice(0, -1);
+      });
     };
 
     const setIndexListener = (event: ListenerEvent) => {
       if ((event.message as number) === 0) {
         setSelectedBody(star);
+        setBodyHistory([]);
       }
     };
 
     const displayBodyPanelListener = (event: ListenerEvent) => {
-      console.log(event);
       setSelectedBodyDisplayInfo(event.message);
       setIsPanelOpen(true);
     };
 
     systemDispatcher.addEventListener("select-body", selectBodyListener);
+    systemDispatcher.addEventListener("go-to-parent", goToParentListener);
     systemDispatcher.addEventListener("set-index", setIndexListener);
     systemDispatcher.addEventListener("display-body-panel", displayBodyPanelListener);
 
     return () => {
       systemDispatcher.removeEventListener("select-body", selectBodyListener);
+      systemDispatcher.removeEventListener("go-to-parent", goToParentListener);
       systemDispatcher.removeEventListener("set-index", setIndexListener);
       systemDispatcher.removeEventListener("display-body-panel", displayBodyPanelListener);
     };
@@ -109,6 +130,7 @@ const SystemBodiesMap: FunctionComponent<Props> = ({
 
       setSelectedBody(map.stars[index]);
       setSelectedBodyIndex(index);
+      setBodyHistory([]);
     };
 
     return (
@@ -133,7 +155,7 @@ const SystemBodiesMap: FunctionComponent<Props> = ({
                     ></i>
                   </div>
                 }
-                {renderSystemBody(selectedBody)}
+                {renderSystemBody(selectedBody, bodyHistory[bodyHistory.length - 1])}
               </div>
               <div
                 className="system-body__children hidden w-full items-center overflow-x-auto hover:cursor-move md:flex"
@@ -151,15 +173,13 @@ const SystemBodiesMap: FunctionComponent<Props> = ({
   function renderSystemStations(stations: Station[]) {
     return stations.map((station: Station) => {
       return (
-        <>
-          <div key={station.slug} className="me-5 flex items-center text-xs">
-            <i className={`${stationIconByType(station.type)} text-glow`}></i>
-            <div className="ms-3">
-              <span className="text-glow__blue uppercase">{station.name}</span>
-              <div className="text-xs text-neutral-300">{station.distance_to_arrival} ls</div>
-            </div>
+        <Link key={station.slug} href={`/stations/${station.slug}`} className="me-5 flex items-center text-xs hover:opacity-80">
+          <i className={`${stationIconByType(station.type)} text-glow`}></i>
+          <div className="ms-3">
+            <span className="text-glow__blue uppercase hover:underline hover:text-glow__orange">{station.name}</span>
+            <div className="text-xs text-neutral-300">{station.distance_to_arrival} ls</div>
           </div>
-        </>
+        </Link>
       );
     });
   }
@@ -170,7 +190,7 @@ const SystemBodiesMap: FunctionComponent<Props> = ({
     if (!bodies) {
       return (
         <span className="text-glow__orange ms-4 uppercase">
-          {body.name} {body.type} has no direct orbiting celestial bodies
+          {body.name} has no direct orbiting celestial bodies
         </span>
       );
     }
@@ -178,7 +198,7 @@ const SystemBodiesMap: FunctionComponent<Props> = ({
     return bodies.map((body: MappedSystemBody) => renderSystemBody(body));
   }
 
-  function renderSystemBody(body: MappedSystemBody) {
+  function renderSystemBody(body: MappedSystemBody, parent?: MappedSystemBody) {
     let classes = "text-glow__white text-sm";
     if (body.is_main_star) {
       classes += " w-main-star";
@@ -191,6 +211,7 @@ const SystemBodiesMap: FunctionComponent<Props> = ({
         key={body.id64}
         selected={selectedBody}
         body={body}
+        parent={parent}
         orbiting={body._children ? body._children.length : 0}
         dispatcher={systemDispatcher}
         className={classes}
@@ -199,13 +220,29 @@ const SystemBodiesMap: FunctionComponent<Props> = ({
   }
 
   return (
-    <div className="border-b border-neutral-800 bg-transparent py-5 backdrop-blur backdrop-filter">
-      <div className="flex items-center justify-between">
-        <Heading icon="icarus-terminal-system-bodies" title="System Map" className="mb-2 gap-2" />
-        {!isLoading && <SystemMapStatistics system={systemMap} />}
+    <div className="mb-5 border border-orange-900/20 bg-black/50 backdrop-blur backdrop-filter">
+      <div className="flex items-center justify-between border-b border-orange-900/20 px-4 py-3">
+        <div className="flex items-center gap-3">
+          <i className="icarus-terminal-system-bodies text-glow__orange" style={{ fontSize: "1.5rem" }}></i>
+          <div>
+            <h2 className="text-glow__orange font-bold uppercase tracking-wide">System Map</h2>
+            <p className="text-xs uppercase tracking-wider text-neutral-500">Orbital Telemetry</p>
+          </div>
+        </div>
+        <div className="flex items-center gap-4">
+          {!isLoading && <SystemMapStatistics system={systemMap} />}
+          {!isLoading && (
+            <Link
+              href={`/systems/${system.slug}/solar-map`}
+              className="text-glow__orange border border-orange-900 px-3 py-1 text-xs uppercase tracking-wider transition-colors hover:border-orange-500"
+            >
+              View More
+            </Link>
+          )}
+        </div>
       </div>
       {!isLoading && (
-        <div className="grid grid-cols-12">
+        <div className="grid grid-cols-12 px-4 py-3">
           <div className="col-span-12">
             <div className="system-body__children hidden w-full items-center overflow-x-auto py-2 hover:cursor-move md:flex">
               {renderSystemStations(systemMap.stations)}

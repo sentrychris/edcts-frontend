@@ -1,0 +1,510 @@
+/* ════════════════════════════════════════════════════════
+   SCI-FI VISUAL EFFECTS — Elite Dangerous / Star Trek HUD
+   ════════════════════════════════════════════════════════ */
+
+/* ════════════════════════════════════════════════════════════════════
+   HOLOGRAPHIC GLASS DISPLAY SYSTEM
+   3D backlit panel rendering — applied globally to all .backdrop-blur
+   elements so every panel reads as a physical illuminated glass surface.
+
+   Layers (bottom → top):
+     1. Deep Z-depth drop shadows        — physical depth illusion
+     2. Outer backlight glow             — amber light emanating from behind
+     3. Inner border shimmer (inset)     — illuminated border edge
+     4. Top-edge refraction (inset)      — glass catching overhead light
+     5. Diagonal light sheen (bg-image)  — surface reflection
+     6. Apex warm tint (bg-image)        — source-light bleed from above
+   ════════════════════════════════════════════════════════════════════ */
+
+:root {
+  --holo-backlight-near:   rgba(220, 100,  20, 0.22);
+  --holo-backlight-mid:    rgba(200,  75,   5, 0.10);
+  --holo-backlight-far:    rgba(180,  60,   0, 0.04);
+  --holo-edge-refract:     rgba(255, 175,  85, 0.28);
+  --holo-border-shimmer:   rgba(200, 100,  30, 0.38);
+  --holo-inner-ambient:    rgba(220,  90,  15, 0.045);
+  --holo-depth-soft:       rgba(  0,   0,   0, 0.70);
+  --holo-depth-hard:       rgba(  0,   0,   0, 0.92);
+  --holo-bg-apex:          rgba(251, 130,  30, 0.055);
+  --holo-bg-sheen:         rgba(251, 100,  20, 0.025);
+
+  /* Breathe-state (amplified for the glow pulse) */
+  --holo-breathe-near:     rgba(235, 115,  25, 0.32);
+  --holo-breathe-mid:      rgba(215,  90,  10, 0.16);
+  --holo-breathe-far:      rgba(195,  70,   0, 0.07);
+  --holo-breathe-edge:     rgba(255, 190,  95, 0.40);
+  --holo-breathe-shimmer:  rgba(210, 115,  40, 0.52);
+}
+
+/* ── Base glass panel surface ───────────────────────────
+   Targets every panel, card, status bar, ticker, sidebar,
+   and popover that carries Tailwind's backdrop-blur class.
+   ──────────────────────────────────────────────────────── */
+.backdrop-blur {
+  background-image:
+    /* Apex warm bleed — light source above the panel */
+    linear-gradient(
+      180deg,
+      var(--holo-bg-apex)  0px,
+      rgba(251, 110, 20, 0.012) 90px,
+      transparent 180px
+    ),
+    /* Diagonal sheen — angled surface reflection */
+    linear-gradient(
+      135deg,
+      var(--holo-bg-sheen) 0%,
+      transparent          32%,
+      transparent          68%,
+      var(--holo-bg-sheen) 100%
+    );
+
+  box-shadow:
+    /* Outer backlight — ambient glow from behind the panel */
+    0   0  18px var(--holo-backlight-near),
+    0   0  55px var(--holo-backlight-mid),
+    0   0 110px var(--holo-backlight-far),
+    /* Illuminated border edge (inner 1px overlay) */
+    inset 0 0 0 1px var(--holo-border-shimmer),
+    /* Top-edge refraction — brightest highlight line */
+    inset 0 1px 0   var(--holo-edge-refract),
+    /* Ambient inner surface glow */
+    inset 0 0 28px  var(--holo-inner-ambient),
+    /* Z-depth drop shadows */
+    0  10px 35px var(--holo-depth-soft),
+    0   2px  6px var(--holo-depth-hard);
+}
+
+/* ── Corner bracket luminescence ────────────────────────
+   The absolute pointer-events-none spans used as corner
+   bracket accents get a strong drop-shadow glow so they
+   read as actively lit circuit traces.
+   ──────────────────────────────────────────────────────── */
+span.absolute.pointer-events-none {
+  filter:
+    drop-shadow(0 0  4px rgba(251, 146, 60, 0.95))
+    drop-shadow(0 0 10px rgba(251, 100, 20, 0.55))
+    drop-shadow(0 0 18px rgba(240,  90, 10, 0.25));
+}
+
+/* ── Button sweep fill on hover ── */
+.fx-btn-sweep {
+  position: relative;
+  overflow: hidden;
+}
+.fx-btn-sweep::before {
+  content: '';
+  position: absolute;
+  inset: 0;
+  background: linear-gradient(
+    90deg,
+    transparent 0%,
+    rgba(251, 146, 60, 0.08) 40%,
+    rgba(251, 146, 60, 0.15) 50%,
+    rgba(251, 146, 60, 0.08) 60%,
+    transparent 100%
+  );
+  transform: translateX(-110%);
+  transition: transform 0.5s ease;
+  pointer-events: none;
+}
+.fx-btn-sweep:hover::before {
+  transform: translateX(110%);
+}
+/* Elite (orange glow) variant */
+.fx-btn-sweep--elite::before {
+  background: linear-gradient(
+    90deg,
+    transparent 0%,
+    rgba(251, 146, 60, 0.12) 30%,
+    rgba(255, 210, 120, 0.25) 50%,
+    rgba(251, 146, 60, 0.12) 70%,
+    transparent 100%
+  );
+}
+/* Danger variant */
+.fx-btn-sweep--danger::before {
+  background: linear-gradient(
+    90deg,
+    transparent 0%,
+    rgba(252, 72, 72, 0.12) 40%,
+    rgba(252, 72, 72, 0.2) 50%,
+    rgba(252, 72, 72, 0.12) 60%,
+    transparent 100%
+  );
+}
+
+/* ── Panel scan line ─────────────────────────────────────
+   A slow-moving horizontal line sweeping the panel height.
+   Apply to a `relative` parent that already has `overflow: hidden`
+   on an inner wrapper, or use .fx-panel-scan on an inner container.
+   ────────────────────────────────────────────────────── */
+@keyframes fx-scan-line {
+  0% {
+    top: 0;
+    opacity: 0;
+  }
+  4% {
+    opacity: 0;
+  }
+  96% {
+    opacity: 0.0;
+  }
+  100% {
+    top: calc(100% - 1px);
+    opacity: 0;
+  }
+}
+
+.fx-panel-scan {
+  position: relative;
+}
+.fx-panel-scan::after {
+  content: '';
+  position: absolute;
+  left: 0;
+  right: 0;
+  height: 1px;
+  background: linear-gradient(
+    90deg,
+    transparent 0%,
+    rgba(251, 146, 60, 0.3) 15%,
+    rgba(251, 146, 60, 0.8) 50%,
+    rgba(251, 146, 60, 0.3) 85%,
+    transparent 100%
+  );
+  animation: fx-scan-line 10s linear infinite;
+  pointer-events: none;
+  z-index: 5;
+}
+
+/* ── Corner bracket glow pulse ─────────────────────────── */
+@keyframes fx-bracket-glow {
+  0%, 100% {
+    opacity: 0.7;
+    filter: none;
+  }
+  50% {
+    opacity: 1;
+    filter: drop-shadow(0 0 6px rgba(251, 146, 60, 0.9));
+  }
+}
+
+/* Target corner bracket spans inside a .fx-bracketed container */
+.fx-bracketed > span:first-child,
+.fx-bracketed > span:nth-child(2),
+.fx-bracketed > span:nth-child(3),
+.fx-bracketed > span:nth-child(4) {
+  animation: fx-bracket-glow 4s ease-in-out infinite;
+}
+.fx-bracketed > span:nth-child(2) { animation-delay: 1s; }
+.fx-bracketed > span:nth-child(3) { animation-delay: 2s; }
+.fx-bracketed > span:nth-child(4) { animation-delay: 3s; }
+
+/* ── Ambient border breathe ──────────────────────────────
+   Pulses the full glass shadow stack between resting and
+   amplified states — the panel appears to breathe with the
+   light source behind it.
+   ────────────────────────────────────────────────────── */
+@keyframes fx-border-breathe {
+  0%, 100% {
+    box-shadow:
+      0   0  18px var(--holo-backlight-near),
+      0   0  55px var(--holo-backlight-mid),
+      0   0 110px var(--holo-backlight-far),
+      inset 0 0 0 1px var(--holo-border-shimmer),
+      inset 0 1px 0   var(--holo-edge-refract),
+      inset 0 0 28px  var(--holo-inner-ambient),
+      0  10px 35px var(--holo-depth-soft),
+      0   2px  6px var(--holo-depth-hard);
+  }
+  50% {
+    box-shadow:
+      0   0  28px var(--holo-breathe-near),
+      0   0  70px var(--holo-breathe-mid),
+      0   0 130px var(--holo-breathe-far),
+      inset 0 0 0 1px var(--holo-breathe-shimmer),
+      inset 0 1px 0   var(--holo-breathe-edge),
+      inset 0 0 38px  rgba(230, 100, 20, 0.065),
+      0  12px 40px var(--holo-depth-soft),
+      0   2px  6px var(--holo-depth-hard);
+  }
+}
+
+.fx-border-breathe {
+  animation: fx-border-breathe 6s ease-in-out infinite;
+}
+
+/* ── Terminal cursor blink ───────────────────────────────
+   Append a blinking underscore cursor after the element.
+   ────────────────────────────────────────────────────── */
+@keyframes fx-cursor-blink {
+  0%, 100% { opacity: 1; }
+  50% { opacity: 0; }
+}
+
+.fx-cursor::after {
+  content: '_';
+  color: rgb(251 146 60);
+  text-shadow: 0 0 10px rgb(251 146 60);
+  animation: fx-cursor-blink 1.2s step-end infinite;
+  margin-left: 2px;
+  font-weight: 300;
+}
+
+/* ── Glitch flicker ──────────────────────────────────────
+   Occasional glitch effect for key headings / titles.
+   ────────────────────────────────────────────────────── */
+@keyframes fx-glitch {
+  0%, 92%, 100% {
+    transform: translateX(0);
+    text-shadow: 0 0 20px rgb(251 146 60 / 1);
+    opacity: 1;
+  }
+  93% {
+    transform: translateX(-3px) skewX(-2deg);
+    text-shadow:
+      3px 0 0 rgba(0, 255, 200, 0.6),
+      -3px 0 0 rgba(255, 50, 50, 0.6),
+      0 0 20px rgb(251 146 60 / 0.5);
+    opacity: 0.85;
+  }
+  94% {
+    transform: translateX(3px) skewX(1deg);
+    text-shadow:
+      -2px 0 0 rgba(0, 255, 200, 0.4),
+      2px 0 0 rgba(255, 50, 50, 0.4),
+      0 0 30px rgb(251 146 60 / 0.8);
+    opacity: 0.9;
+  }
+  95% {
+    transform: translateX(-1px);
+    opacity: 0.7;
+  }
+  96% {
+    transform: translateX(0);
+    opacity: 1;
+    text-shadow: 0 0 30px rgb(251 146 60 / 1), 0 0 60px rgb(251 146 60 / 0.4);
+  }
+}
+
+.fx-glitch {
+  animation: fx-glitch 12s ease-in-out infinite;
+}
+
+/* ── Enhanced status dot pulses ──────────────────────────
+   Replaces Tailwind's generic animate-pulse with themed variants.
+   ────────────────────────────────────────────────────── */
+@keyframes fx-dot-pulse-green {
+  0%, 100% {
+    background-color: rgb(74 222 128 / 1);
+    box-shadow: 0 0 4px rgb(74 222 128 / 0.5);
+  }
+  50% {
+    background-color: rgb(74 222 128 / 0.6);
+    box-shadow: 0 0 10px rgb(74 222 128 / 0.8), 0 0 20px rgb(74 222 128 / 0.3);
+  }
+}
+
+@keyframes fx-dot-pulse-orange {
+  0%, 100% {
+    background-color: rgb(249 115 22 / 1);
+    box-shadow: 0 0 4px rgb(249 115 22 / 0.5);
+  }
+  50% {
+    background-color: rgb(249 115 22 / 0.6);
+    box-shadow: 0 0 10px rgb(249 115 22 / 0.8), 0 0 20px rgb(249 115 22 / 0.3);
+  }
+}
+
+.fx-dot-green {
+  border-radius: 9999px;
+  animation: fx-dot-pulse-green 2s ease-in-out infinite;
+}
+
+.fx-dot-orange {
+  border-radius: 9999px;
+  animation: fx-dot-pulse-orange 2s ease-in-out infinite;
+}
+
+/* ── Text glow intensify on hover ────────────────────────
+   Applied globally to .text-glow__orange elements.
+   ────────────────────────────────────────────────────── */
+.text-glow__orange {
+  transition: text-shadow 0.3s ease, color 0.3s ease;
+}
+.text-glow__orange:hover {
+  color: rgb(255 175 80 / 1);
+  text-shadow: 0 0 30px rgb(251 146 60 / 1), 0 0 60px rgb(251 146 60 / 0.5);
+}
+
+/* But don't intensify text inside buttons (handled by sweep) */
+button .text-glow__orange:hover,
+button.text-glow__orange:hover {
+  color: rgb(251 146 60 / 1);
+  text-shadow: 0 0 20px rgb(251 146 60 / 1);
+}
+
+/* ── Data readout flicker (re-triggered by re-mount) ─────
+   Stagger with .fx-data-flicker[data-fx-order="N"]
+   ────────────────────────────────────────────────────── */
+@keyframes fx-data-flicker {
+  0% {
+    opacity: 0.1;
+    filter: brightness(3) blur(1px);
+  }
+  10% {
+    opacity: 1;
+    filter: brightness(1.8);
+  }
+  20% {
+    opacity: 0.5;
+    filter: brightness(1);
+  }
+  30% {
+    opacity: 1;
+    filter: brightness(1.4);
+  }
+  45% {
+    opacity: 0.8;
+    filter: brightness(1.1);
+  }
+  60% {
+    opacity: 1;
+    filter: none;
+  }
+  100% {
+    opacity: 1;
+    filter: none;
+  }
+}
+
+.fx-data-flicker {
+  animation: fx-data-flicker 0.8s ease forwards;
+}
+
+/* ── Horizontal rule sweep entry ─────────────────────────
+   For decorative horizontal lines and dividers.
+   ────────────────────────────────────────────────────── */
+@keyframes fx-rule-sweep {
+  from {
+    transform: scaleX(0);
+    transform-origin: left;
+    opacity: 0;
+  }
+  to {
+    transform: scaleX(1);
+    transform-origin: left;
+    opacity: 1;
+  }
+}
+
+.fx-rule-sweep {
+  animation: fx-rule-sweep 0.8s ease-out forwards;
+}
+
+/* ── Holographic shimmer on headings ─────────────────────
+   Very slow colour shift to suggest a glass display.
+   ────────────────────────────────────────────────────── */
+@keyframes fx-holo-shift {
+  0%, 100% {
+    filter: hue-rotate(0deg) brightness(1);
+  }
+  30% {
+    filter: hue-rotate(-8deg) brightness(1.08);
+  }
+  70% {
+    filter: hue-rotate(8deg) brightness(0.96);
+  }
+}
+
+.fx-holo-heading {
+  animation: fx-holo-shift 10s ease-in-out infinite;
+}
+
+/* ── Panel entry from left (wipe in) ─────────────────────
+   For drawers, side panels, slide-in content.
+   ────────────────────────────────────────────────────── */
+@keyframes fx-wipe-in-right {
+  from {
+    clip-path: inset(0 100% 0 0);
+    opacity: 0.5;
+  }
+  to {
+    clip-path: inset(0 0% 0 0);
+    opacity: 1;
+  }
+}
+
+.fx-wipe-in {
+  animation: fx-wipe-in-right 0.4s ease-out forwards;
+}
+
+/* ── Navigation link hover underline sweep ───────────────
+   Animated underline that sweeps in left→right on hover.
+   ────────────────────────────────────────────────────── */
+.fx-nav-link {
+  position: relative;
+}
+.fx-nav-link::after {
+  content: '';
+  position: absolute;
+  bottom: 4px;
+  left: 12px;
+  right: 12px;
+  height: 1px;
+  background: rgb(251 146 60);
+  box-shadow: 0 0 6px rgb(251 146 60 / 0.8);
+  transform: scaleX(0);
+  transform-origin: left;
+  transition: transform 0.25s ease;
+}
+.fx-nav-link:hover::after,
+.fx-nav-link.active::after {
+  transform: scaleX(1);
+}
+
+/* ── Number ticker (for stat value changes) ──────────────
+   Combine with JS class toggling to re-trigger.
+   ────────────────────────────────────────────────────── */
+@keyframes fx-number-tick {
+  0% {
+    transform: translateY(-8px);
+    opacity: 0;
+  }
+  100% {
+    transform: translateY(0);
+    opacity: 1;
+  }
+}
+
+.fx-number-tick {
+  animation: fx-number-tick 0.3s ease-out forwards;
+}
+
+/* ── Galnet article body content ── */
+.galnet-article-content p {
+  margin-bottom: 1rem;
+  line-height: 1.8;
+}
+
+.galnet-article-content p:last-child {
+  margin-bottom: 0;
+}
+
+.galnet-article-content a {
+  color: rgb(251 146 60 / 0.9);
+  text-decoration: underline;
+  text-underline-offset: 3px;
+  transition: color 0.15s, text-shadow 0.15s;
+}
+
+.galnet-article-content a:hover {
+  color: rgb(251 146 60 / 1);
+  text-shadow: 0 0 10px rgb(251 146 60 / 0.6);
+}
+
+.galnet-article-content strong,
+.galnet-article-content b {
+  color: rgb(229 229 229 / 1);
+  font-weight: 600;
+}

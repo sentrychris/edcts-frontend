@@ -3,29 +3,18 @@ import type { Galnet } from "@/core/interfaces/Galnet";
 import { settings } from "@/core/config";
 import { getCollection, getResource } from "@/core/api";
 import dynamic from "next/dynamic";
-import Heading from "@/components/heading";
 import GalnetSidebar from "../../components/galnet-sidebar";
 
 const GalnetArticle = dynamic(() => import("../../components/galnet-article"), {
   ssr: false,
 });
 
-/**
- * Define the page properties.
- */
 interface Props {
   params: {
     slug: string;
   };
 }
 
-/**
- * Get the page data.
- *
- * Note: Next automatically dedupes fetch calls on the server.
- *
- * @returns systems data
- */
 const getPageData = async ({ params }: Props) => {
   const articles = await getCollection<Galnet>("galnet/news", {
     params: {
@@ -41,13 +30,6 @@ const getPageData = async ({ params }: Props) => {
   };
 };
 
-/**
- * Generate the page metadata.
- *
- * @param params
- * @param parent
- * @returns
- */
 export async function generateMetadata(
   { params }: Props,
   parent: ResolvingMetadata,
@@ -71,37 +53,42 @@ export async function generateMetadata(
   };
 }
 
-/**
- * Create the page.
- *
- * @returns
- */
 export default async function Page({ params }: { params: { slug: string } }) {
   const galnet = await getPageData({ params });
 
   return (
     <>
-      <div className="mt-4 grid grid-cols-1 bg-transparent backdrop-blur backdrop-filter">
-        <Heading
-          icon="icarus-terminal-atmosphere"
-          largeIcon={true}
-          title="Galnet Network"
-          className="gap-3 border-b border-neutral-800 pb-3 text-2xl"
-        />
+      {/* ── Galnet Terminal status bar ── */}
+      <div className="relative mb-5 border border-orange-900/40 bg-black/50 backdrop-blur backdrop-filter px-6 py-4">
+        <span className="absolute -left-px -top-px h-4 w-4 border-l-2 border-t-2 border-orange-500" />
+        <span className="absolute -right-px -top-px h-4 w-4 border-r-2 border-t-2 border-orange-500" />
+        <span className="absolute -bottom-px -left-px h-4 w-4 border-b-2 border-l-2 border-orange-500" />
+        <span className="absolute -bottom-px -right-px h-4 w-4 border-b-2 border-r-2 border-orange-500" />
 
-        <div className="grid grid-cols-12">
-          <div className="order-last col-span-12 border-neutral-900 md:order-first md:col-span-3 md:border-r md:pe-10">
-            <div className="pt-10">
-              <h1 className="text-glow flex items-center gap-x-2 text-xl uppercase">
-                <i className="icarus-terminal-notifications text-glow__orange text-2xl"></i>
-                Latest News
-              </h1>
-              <GalnetSidebar articles={galnet.articles} />
-            </div>
+        <div className="flex flex-wrap items-center justify-between gap-2 text-xs uppercase tracking-widest text-neutral-600">
+          <div className="flex items-center gap-4">
+            <span>MODULE:GALNET</span>
+            <span className="text-neutral-800">■</span>
+            <span>CHANNEL:VOX GALACTICA</span>
+            <span className="text-neutral-800">■</span>
+            <span>CLASS:UNRESTRICTED</span>
           </div>
-          <div className="order-first col-span-12 md:order-last md:col-span-9 md:ps-10">
-            <GalnetArticle article={galnet.article} />
+          <div className="flex items-center gap-2">
+            <span className="fx-dot-orange h-1.5 w-1.5"></span>
+            <span>UPLINK: ACTIVE</span>
           </div>
+        </div>
+      </div>
+
+      <div className="grid grid-cols-12 gap-5">
+        {/* ── Sidebar ── */}
+        <div className="order-last col-span-12 md:order-first md:col-span-3">
+          <GalnetSidebar articles={galnet.articles} />
+        </div>
+
+        {/* ── Article ── */}
+        <div className="order-first col-span-12 md:order-last md:col-span-9">
+          <GalnetArticle article={galnet.article} />
         </div>
       </div>
     </>

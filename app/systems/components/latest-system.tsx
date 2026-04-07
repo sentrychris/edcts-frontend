@@ -8,19 +8,12 @@ import { getResource } from "@/core/api";
 import Link from "next/link";
 import SystemMap from "../../systems/lib/system-map";
 import LoaderMini from "@/components/loader-mini";
-import Heading from "@/components/heading";
 
 interface Props {
   className?: string;
-  showIcon?: boolean;
-  showHeading?: boolean;
 }
 
-const LatestSystem: FunctionComponent<Props> = ({
-  className,
-  showIcon = false,
-  showHeading = false,
-}) => {
+const LatestSystem: FunctionComponent<Props> = ({ className }) => {
   const [isLoading, setIsLoading] = useState(true);
   const [system, setLastUpdatedSystem] = useState<SystemMap>();
 
@@ -34,56 +27,49 @@ const LatestSystem: FunctionComponent<Props> = ({
       });
   }, []);
 
+  if (isLoading) {
+    return (
+      <div className={`${className} flex items-center`}>
+        <LoaderMini visible={isLoading} message="Awaiting telemetry..." />
+      </div>
+    );
+  }
+
+  if (!system) {
+    return null;
+  }
+
+  const starCount = system.stars.filter((s) => s.type !== SystemBodyType.Null).length;
+
   return (
     <div className={`${className} uppercase`}>
-      {system && !isLoading ? (
-        <div className="flex items-center gap-x-3">
-          {showIcon && <i className="icarus-terminal-location-filled text-glow__blue text-3xl"></i>}
-          <div>
-            {showHeading && <Heading title="Latest Updated System" className="text-xs" />}
-            <Link
-              className="text-glow__blue text-lg font-bold hover:underline"
-              href={`systems/${system.detail.slug}`}
-            >
-              {system.name}
-            </Link>
-            <div className="mt-3 flex gap-x-10">
-              <div>
-                <p>
-                  {system.detail.coords.x.toFixed(2)}, {system.detail.coords.y.toFixed(2)},{" "}
-                  {system.detail.coords.z.toFixed(2)}
-                </p>
-                <p>Population: {system.detail.information?.population ?? 0}</p>
-              </div>
-              <div>
-                <p className="whitespace-nowrap">
-                  <span className="me-1">
-                    {system.stars.filter((s) => s.type !== SystemBodyType.Null).length}
-                  </span>
-                  {pluralizeTextFromArray(
-                    system.stars.filter((s) => s.type !== SystemBodyType.Null),
-                    {
-                      singular: "star",
-                      plural: "stars",
-                    },
-                  )}
-                </p>
-                <p className="whitespace-nowrap">
-                  <span className="me-1">{system.planets.length}</span>
-                  {pluralizeTextFromArray(system.planets, {
-                    singular: "planet",
-                    plural: "planets",
-                  })}
-                </p>
-              </div>
-            </div>
-          </div>
-        </div>
-      ) : (
-        <div className="flex items-center justify-center">
-          <LoaderMini visible={isLoading} message="Loading latest updated system..." />
-        </div>
-      )}
+      <div className="mb-2 flex items-center gap-2 text-xs tracking-wide uppercase text-neutral-500">
+        <i className="icarus-terminal-location-filled text-orange-500/60"></i>
+        Last Telemetry Uplink
+      </div>
+      <Link
+        className="hover:text-glow__orange text-blue-200 mb-3 block text-sm font-bold tracking-wide transition-colors hover:text-white"
+        href={`systems/${system.detail.slug}`}
+      >
+        {system.name}
+      </Link>
+      <div className="space-y-1 text-xs tracking-wider text-neutral-500">
+        <p>
+          {system.detail.coords.x.toFixed(2)} /{" "}
+          {system.detail.coords.y.toFixed(2)} /{" "}
+          {system.detail.coords.z.toFixed(2)}
+        </p>
+        <p>
+          {starCount}{" "}
+          {pluralizeTextFromArray(
+            system.stars.filter((s) => s.type !== SystemBodyType.Null),
+            { singular: "star", plural: "stars" },
+          )}{" "}
+          ·{" "}
+          {system.planets.length}{" "}
+          {pluralizeTextFromArray(system.planets, { singular: "body", plural: "bodies" })}
+        </p>
+      </div>
     </div>
   );
 };

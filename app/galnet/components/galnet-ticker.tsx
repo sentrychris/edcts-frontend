@@ -3,7 +3,6 @@
 import { type FunctionComponent, useEffect, useRef, useState, memo } from "react";
 import type { Galnet } from "@/core/interfaces/Galnet";
 import { getCurrentEliteDate } from "@/core/string-utils";
-import AudioPlayer from "@/components/audio-player";
 import Link from "next/link";
 
 interface Props {
@@ -99,24 +98,15 @@ const NewsTicker: FunctionComponent<Props> = ({ articles }) => {
   const currentDate = getCurrentEliteDate();
 
   return (
-    <div className="relative flex items-center">
-      <span className="text-glow__orange border-b-glow__orange ticker-label lg:px-18 z-10 bg-black/60 px-6 text-sm text-xs uppercase md:px-12">
-        <span>Galnet</span>
+    <div className="relative flex items-center bg-black/50 backdrop-filter backdrop-blur">
+      <span className="text-glow__orange border-b border-orange-900/20 ticker-label lg:px-18 z-10 text-xs uppercase">
         <span className="ms-2 hidden sm:flex">
           {currentDate} {currentTime} UTC
         </span>
-        <AudioPlayer
-          files={articles.map((article) => {
-            return {
-              title: article.title,
-              file: article.audio_file,
-            };
-          })}
-        />
       </span>
       <div
         ref={tickerRef}
-        className="ticker flex flex-1 items-center overflow-hidden whitespace-nowrap border-b border-neutral-900 bg-black/60 uppercase"
+        className="ticker flex flex-1 items-center overflow-hidden whitespace-nowrap border-b border-orange-900/20 uppercase"
       >
         <div
           ref={tickerContentRef}
@@ -124,7 +114,7 @@ const NewsTicker: FunctionComponent<Props> = ({ articles }) => {
         >
           <Link
             href={`/galnet/news/${articles[currentArticleIndex].slug}`}
-            className="hover:underline"
+            className="hover:underline text-xs"
           >
             {articles[currentArticleIndex].uploaded_at} - {articles[currentArticleIndex].title}
           </Link>

@@ -1,6 +1,6 @@
 "use client";
 
-import type { FunctionComponent } from "react";
+import { type FunctionComponent, useEffect, useRef, useState } from "react";
 import type { SystemDispatcher } from "@/core/events/SystemDispatcher";
 import type { SystemBodyRing, MappedSystemBody } from "@/core/interfaces/SystemBody";
 import type SystemMap from "../../lib/system-map";
@@ -16,277 +16,370 @@ interface Props {
   close?: () => void;
 }
 
+interface StatRowProps {
+  label: string;
+  value: React.ReactNode;
+}
+
+const StatRow = ({ label, value }: StatRowProps) => (
+  <div className="flex items-center justify-between border-b border-neutral-900 py-1.5">
+    <span className="text-neutral-600">{label}</span>
+    <span className="text-right text-neutral-300">{value}</span>
+  </div>
+);
+
+const Yes = () => <span className="text-green-400">Yes</span>;
+const No = () => <span className="text-red-400/80">No</span>;
+
+const SectionHeader = ({ icon, title }: { icon: string; title: string }) => (
+  <div className="mb-3 flex items-center gap-2 border-b border-orange-900/20 pb-2.5 text-xs uppercase tracking-widest text-neutral-600">
+    <i className={`${icon} text-orange-500/50`}></i>
+    <span>{title}</span>
+  </div>
+);
+
+const MIN_WIDTH = 260;
+const MIN_HEIGHT = 200;
+const DEFAULT_WIDTH = 320;
+
 const SystemBodyPopover: FunctionComponent<Props> = ({ body, system, dispatcher, close }) => {
+  const [position, setPosition] = useState(() => ({
+    x: typeof window !== "undefined" ? Math.max(0, window.innerWidth - DEFAULT_WIDTH - 24) : 0,
+    y: 80,
+  }));
+  const [size, setSize] = useState(() => ({
+    width: DEFAULT_WIDTH,
+    height: typeof window !== "undefined" ? Math.min(Math.round(window.innerHeight * 0.8), 560) : 560,
+  }));
+
+  const [isDragging, setIsDragging] = useState(false);
+  const dragStart = useRef<{ mouseX: number; mouseY: number; elemX: number; elemY: number } | null>(null);
+
+  const [isResizing, setIsResizing] = useState(false);
+  const resizeStart = useRef<{ mouseX: number; mouseY: number; width: number; height: number } | null>(null);
+
+  const onDragHandleMouseDown = (e: React.MouseEvent) => {
+    if ((e.target as HTMLElement).closest("button")) return;
+    e.preventDefault();
+    setIsDragging(true);
+    dragStart.current = {
+      mouseX: e.clientX,
+      mouseY: e.clientY,
+      elemX: position.x,
+      elemY: position.y,
+    };
+  };
+
+  const onResizeMouseDown = (e: React.MouseEvent) => {
+    e.preventDefault();
+    e.stopPropagation();
+    setIsResizing(true);
+    resizeStart.current = {
+      mouseX: e.clientX,
+      mouseY: e.clientY,
+      width: size.width,
+      height: size.height,
+    };
+  };
+
+  useEffect(() => {
+    if (!isDragging) return;
+
+    const onMouseMove = (e: MouseEvent) => {
+      if (!dragStart.current) return;
+      const dx = e.clientX - dragStart.current.mouseX;
+      const dy = e.clientY - dragStart.current.mouseY;
+      setPosition({
+        x: Math.max(0, Math.min(window.innerWidth - size.width, dragStart.current.elemX + dx)),
+        y: Math.max(0, Math.min(window.innerHeight - 60, dragStart.current.elemY + dy)),
+      });
+    };
+
+    const onMouseUp = () => {
+      setIsDragging(false);
+      dragStart.current = null;
+    };
+
+    document.addEventListener("mousemove", onMouseMove);
+    document.addEventListener("mouseup", onMouseUp);
+    return () => {
+      document.removeEventListener("mousemove", onMouseMove);
+      document.removeEventListener("mouseup", onMouseUp);
+    };
+  }, [isDragging, size.width]);
+
+  useEffect(() => {
+    if (!isResizing) return;
+
+    const onMouseMove = (e: MouseEvent) => {
+      if (!resizeStart.current) return;
+      const dx = e.clientX - resizeStart.current.mouseX;
+      const dy = e.clientY - resizeStart.current.mouseY;
+      const newWidth = Math.max(MIN_WIDTH, Math.min(window.innerWidth - position.x, resizeStart.current.width + dx));
+      const newHeight = Math.max(MIN_HEIGHT, Math.min(window.innerHeight - position.y, resizeStart.current.height + dy));
+      setSize({ width: newWidth, height: newHeight });
+    };
+
+    const onMouseUp = () => {
+      setIsResizing(false);
+      resizeStart.current = null;
+    };
+
+    document.addEventListener("mousemove", onMouseMove);
+    document.addEventListener("mouseup", onMouseUp);
+    return () => {
+      document.removeEventListener("mousemove", onMouseMove);
+      document.removeEventListener("mouseup", onMouseUp);
+    };
+  }, [isResizing, position.x, position.y]);
+
+  if (!body) return null;
+
+  const isStarType = body.type === SystemBodyType.Star;
+  const bodyIcon = isStarType ? "icarus-terminal-star" : "icarus-terminal-planet";
+
   return (
     <div
-      className="system-body-information__container galaxy-background fx-animated-text h-full max-h-screen w-full border-l border-orange-500/60 text-xs uppercase tracking-wider"
-      style={{
-        paddingTop: "60px",
-      }}
+      className={`fixed z-50 flex flex-col border border-orange-900/40 bg-black/70 shadow-2xl shadow-black/60 backdrop-blur ${
+        isDragging ? "select-none shadow-orange-900/30" : ""
+      } ${isResizing ? "select-none" : ""}`}
+      style={{ left: position.x, top: position.y, width: size.width, height: size.height }}
     >
-      {body && (
-        <>
-          <div className="h-full w-full overflow-y-auto bg-gradient-to-br from-sky-900/50 via-black/20 to-black/20 backdrop-blur backdrop-filter">
-            <div className="system-body-information__container--header px-3 py-2.5 text-sm font-bold">
-              <h2 className="text mt-1">Cartographical Data</h2>
-              <XMarkIcon
-                className="hover:text-glow__orange hover:scale-125 hover:cursor-pointer"
-                onClick={close}
-                height={20}
-                width={20}
-              />
-            </div>
+      {/* ── Drag Handle / Header ── */}
+      <div
+        className={`relative shrink-0 border-b border-orange-900/40 px-4 py-4 ${
+          isDragging ? "cursor-grabbing" : "cursor-grab"
+        }`}
+        onMouseDown={onDragHandleMouseDown}
+      >
+        {/* Corner bracket accents */}
+        <span className="pointer-events-none absolute -left-px -top-px h-4 w-4 border-l-2 border-t-2 border-orange-500" />
+        <span className="pointer-events-none absolute -right-px -top-px h-4 w-4 border-r-2 border-t-2 border-orange-500" />
 
-            <div className="px-3">
-              <div className="mb-3 mt-4 grid grid-cols-1 text-lg md:grid-cols-1">
-                <p className="mb-1 flex items-center gap-x-2">
-                  <i className="icarus-terminal-system-bodies text-glow__orange"></i>
-                  <Link
-                    className="text-glow__orange"
-                    href={`/systems/system/${system.detail.slug}/body/${body.slug}`}
-                  >
-                    {body.name}
-                  </Link>
-                </p>
-
-                {body._children && (
-                  <p
-                    className="text-glow__blue text-sm hover:cursor-pointer hover:underline"
-                    onClick={() => {
-                      dispatcher.selectBody({
-                        body,
-                        type: "select-body",
-                      });
-                      if (close) close();
-                    }}
-                  >
-                    {body._children.length} orbital bodies
-                  </p>
+        <div className="flex items-start justify-between gap-3">
+          <div className="flex min-w-0 items-center gap-3">
+            <i className={`${bodyIcon} text-glow__orange shrink-0`} style={{ fontSize: "1.5rem" }}></i>
+            <div className="min-w-0">
+              <p className="truncate text-xs font-bold uppercase tracking-widest text-glow__orange">{body.name}</p>
+              <p className="mt-0.5 text-xs uppercase tracking-wider text-neutral-600">
+                {body.type}
+                {body.sub_type && body.sub_type !== body.type && (
+                  <span className="text-neutral-700"> — {body.sub_type}</span>
                 )}
-              </div>
-
-              <p className="flex flex-col gap-x-2 border-b border-neutral-800 pb-5 text-sm">
-                <span className="mb-1">
-                  Discovered by <span className="text-glow__orange">CMDR {body.discovered_by}</span>
-                </span>
-                <span className="text-xs">on {formatDate(body.discovered_at)}</span>
               </p>
-
-              <p className="my-4 flex items-center gap-x-2 text-sm">
-                <i
-                  className={
-                    "text-glow__orange icarus-terminal-" +
-                    (body.type === SystemBodyType.Star ? "star" : "planet")
-                  }
-                ></i>
-                <span>Body Information</span>
-              </p>
-              <p className={"mb-1 flex items-center gap-x-2"}>
-                <span>{body.type}</span> - <span>{body.sub_type}</span>
-              </p>
-
-              {body.type === SystemBodyType.Star && (
-                <div className="border-b border-neutral-800 pb-4 text-xs">
-                  <div className="flex items-center gap-2 pb-2.5">
-                    <p>
-                      Class: <span className="ms-1">{body.spectral_class}</span>
-                    </p>
-                    <p>({body.luminosity} luminosity)</p>
-                  </div>
-                  <p className="mb-1">
-                    Is Main Star:{" "}
-                    {body.is_main_star ? (
-                      <span className="ms-1 text-green-300">Yes</span>
-                    ) : (
-                      <span className="ms-1 text-red-300">No</span>
-                    )}
-                  </p>
-                  <p className="mb-2.5">
-                    Is scoopable:{" "}
-                    {body.is_scoopable ? (
-                      <span className="ms-1 text-green-300">Yes</span>
-                    ) : (
-                      <span className="ms-1 text-red-300">No</span>
-                    )}
-                  </p>
-                  <p className="mb-1">Solar masses: {body.solar_masses}</p>
-                  <p>Solar radius: {body.solar_radius?.toFixed(6)}</p>
-                </div>
-              )}
-
-              {body.type === SystemBodyType.Planet && (
-                <>
-                  <p className="pb-2.5">
-                    Distance to Main Star:{" "}
-                    <span className="ms-1">
-                      {formatNumber(body.distance_to_arrival as number)} LS
-                    </span>
-                  </p>
-                  <p className={"mb-1 flex items-center gap-x-2 text-xs"}>
-                    <span>Is Landable:</span>{" "}
-                    <span>
-                      {body.is_landable ? (
-                        <span className="text-green-300">Yes</span>
-                      ) : (
-                        <span className="text-red-300">No</span>
-                      )}
-                    </span>
-                  </p>
-                  <p className={"mb-1 flex items-center gap-x-2 text-xs"}>
-                    <span>Gravity:</span> <span>{body.gravity?.toFixed(2)}</span>
-                  </p>
-                  <p className={"mb-2.5 flex items-center gap-x-2 text-xs"}>
-                    <span>Surface temp:</span>{" "}
-                    <span>{`${formatNumber(body.surface_temp as number)} K`}</span>
-                  </p>
-
-                  <p className={"mb-1 flex items-center gap-x-2 text-xs"}>
-                    <span>Atmosphere:</span> <span>{body.atmosphere_type ?? "No Data"}</span>
-                  </p>
-                  <p className={"mb-2.5 flex items-center gap-x-2 text-xs"}>
-                    <span>Volcanism:</span> <span>{body.volcanism_type ?? "No Data"}</span>
-                  </p>
-
-                  <p className="border-b border-neutral-800 pb-5">
-                    <span
-                      className={
-                        body.terraforming_state === "Candidate for terraforming"
-                          ? "text-green-300"
-                          : "text-red-300"
-                      }
-                    >
-                      {body.terraforming_state}
-                    </span>
-                  </p>
-
-                  {body._planetary_bases && body._planetary_bases.length > 0 && (
-                    <>
-                      <p className="mb-2 mt-4 flex items-center gap-x-2 text-sm">
-                        <i className={"text-glow__orange icarus-terminal-settlement"}></i>
-                        <span>Planetary Settlements</span>
-                      </p>
-                      <div className="grid grid-cols-2 border-b border-neutral-800 pb-5">
-                        {body._planetary_bases.map((s, i) => {
-                          return (
-                            <div key={s.id} className={i > 1 ? "mt-5" : "mt-2.5"}>
-                              <p className="text-glow__blue">{s.name}</p>
-                              <div className="text-label__small mt-1">
-                                <p>{s.economy} economy</p>
-                              </div>
-                              <div className="mt-1 flex flex-row flex-wrap gap-x-2">
-                                {s.has_market && (
-                                  <div className="flex items-center gap-x-1">
-                                    <CheckIcon className="text-glow__orange w-3" />
-                                    <label className="text-label__small">Market</label>
-                                  </div>
-                                )}
-
-                                {s.has_outfitting && (
-                                  <div className="flex items-center gap-x-1">
-                                    <CheckIcon className="text-glow__orange w-3" />
-                                    <label className="text-label__small">Outfitting</label>
-                                  </div>
-                                )}
-
-                                {s.has_shipyard && (
-                                  <div className="flex items-center gap-x-1">
-                                    <CheckIcon className="text-glow__orange w-3" />
-                                    <label className="text-label__small">Shipyard</label>
-                                  </div>
-                                )}
-                              </div>
-                            </div>
-                          );
-                        })}
-                      </div>
-                    </>
-                  )}
-                </>
-              )}
-
-              <div className="my-4 grid grid-cols-2 gap-y-4 border-b border-neutral-800 pb-4">
-                <div>
-                  <p className="flex items-center gap-x-2 text-sm">
-                    <i className="icarus-terminal-planet text-glow__orange"></i>
-                    <span>Orbital Information</span>
-                  </p>
-                  <div className="mt-4">
-                    <p className="mb-1">
-                      Period:{" "}
-                      <span className="ms-1">{body.orbital_period?.toFixed(6) ?? "No Data"}</span>
-                    </p>
-                    <p className="mb-1">
-                      Inclination:{" "}
-                      <span className="ms-1">
-                        {body.orbital_inclination?.toFixed(6) ?? "No Data"}
-                      </span>
-                    </p>
-                    <p>
-                      Eccentricity:{" "}
-                      <span className="ms-1">
-                        {body.orbital_eccentricity?.toFixed(6) ?? "No Data"}
-                      </span>
-                    </p>
-                  </div>
-                </div>
-                <div>
-                  <p className="flex items-center gap-x-2 text-sm">
-                    <i className="icarus-terminal-planet text-glow__orange"></i>
-                    <span>Axial Information</span>
-                  </p>
-                  <div className="mt-4">
-                    <p className="mb-1">
-                      Axial tilt: <span className="ms-1">{body.axial_tilt?.toFixed(6) ?? 0}</span>
-                    </p>
-                    <p className="mb-1">
-                      Semi-major axis:{" "}
-                      <span className="ms-1">{body.semi_major_axis?.toFixed(6) ?? 0}</span>
-                    </p>
-                    <p>
-                      Arg of periapsis:{" "}
-                      <span className="ms-1">{body.arg_of_periapsis?.toFixed(6) ?? 0}</span>
-                    </p>
-                    {body.type === SystemBodyType.Planet && (
-                      <p className="mt-1">
-                        Tidally locked:{" "}
-                        <span>
-                          {body.is_tidally_locked ? (
-                            <span className="ms-1 text-green-300">Yes</span>
-                          ) : (
-                            <span className="ms-1 text-red-300">No</span>
-                          )}
-                        </span>
-                      </p>
-                    )}
-                  </div>
-                </div>
-              </div>
-
-              {body.rings && body.rings.length > 0 && (
-                <div className="mt-2.5 flex items-center gap-x-20 border-b border-neutral-800 pb-2.5">
-                  <div>
-                    <p className="flex items-center gap-x-2 text-sm">
-                      <i className="icarus-terminal-planet-ringed text-glow__orange"></i>
-                      <span>Ring Information</span>
-                    </p>
-                    <div className="mt-2">
-                      {body.rings.map((ring: SystemBodyRing) => {
-                        return (
-                          <div key={ring.mass} className="my-4">
-                            <p className="text-glow__orange mb-1">{ring.name}</p>
-                            <p>Type: {ring.type}</p>
-                            <p>Mass: {formatNumber(ring.mass)} KG</p>
-                          </div>
-                        );
-                      })}
-                    </div>
-                  </div>
-                </div>
-              )}
             </div>
           </div>
-        </>
-      )}
+
+          {/* Drag grip + close */}
+          <div className="flex shrink-0 items-center gap-2">
+            {/* Drag indicator dots */}
+            <div className="grid grid-cols-2 gap-0.5 opacity-25 pointer-events-none">
+              {Array.from({ length: 6 }).map((_, i) => (
+                <div key={i} className="h-1 w-1 rounded-full bg-neutral-400" />
+              ))}
+            </div>
+            <button
+              onClick={close}
+              className="text-neutral-700 transition-colors hover:text-glow__orange"
+              aria-label="Close"
+            >
+              <XMarkIcon height={14} width={14} />
+            </button>
+          </div>
+        </div>
+
+        {/* Orbital children link */}
+        {body._children && body._children.length > 0 && (
+          <button
+            className="mt-3 flex items-center gap-1.5 text-xs uppercase tracking-widest text-neutral-500 transition-colors hover:text-orange-400"
+            onClick={() => {
+              dispatcher.selectBody({ body, type: "select-body" });
+              if (close) close();
+            }}
+          >
+            <i className="icarus-terminal-system-orbits text-sm text-orange-500/40"></i>
+            <span>{body._children.length} orbital bodies</span>
+          </button>
+        )}
+
+        {/* Status bar */}
+        <div className="mt-3 flex items-center gap-3 border-t border-orange-900/20 pt-3 text-xs uppercase tracking-widest text-neutral-700">
+          <span>MODULE:SURVEY</span>
+          <span className="text-neutral-800">■</span>
+          <span>CLASS:{isStarType ? "STELLAR" : "PLANETARY"}</span>
+          <span className="ml-auto flex items-center gap-1.5">
+            <span className="fx-dot-green h-1.5 w-1.5"></span>
+            <span>DATA LOCKED</span>
+          </span>
+        </div>
+      </div>
+
+      {/* ── Scrollable body ── */}
+      <div className="flex-1 space-y-5 overflow-y-auto px-4 py-4 text-xs uppercase tracking-wider">
+
+        {/* Discovery */}
+        <section>
+          <SectionHeader icon="icarus-terminal-commander" title="Discovery Record" />
+          <StatRow
+            label="Discovered By"
+            value={<span className="text-glow__orange">CMDR {body.discovered_by ?? "Unknown"}</span>}
+          />
+          <StatRow label="Discovery Date" value={formatDate(body.discovered_at)} />
+        </section>
+
+        {/* Star data */}
+        {isStarType && (
+          <section>
+            <SectionHeader icon="icarus-terminal-star" title="Stellar Data" />
+            <StatRow label="Spectral Class" value={body.spectral_class ?? "—"} />
+            <StatRow label="Luminosity" value={body.luminosity ?? "—"} />
+            <StatRow label="Solar Masses" value={body.solar_masses ?? "—"} />
+            <StatRow label="Solar Radius" value={body.solar_radius?.toFixed(4) ?? "—"} />
+            <StatRow label="Main Star" value={body.is_main_star ? <Yes /> : <No />} />
+            <StatRow label="Scoopable" value={body.is_scoopable ? <Yes /> : <No />} />
+          </section>
+        )}
+
+        {/* Planet data */}
+        {body.type === SystemBodyType.Planet && (
+          <>
+            <section>
+              <SectionHeader icon="icarus-terminal-planet" title="Surface Data" />
+              <StatRow
+                label="Dist. to Arrival"
+                value={body.distance_to_arrival ? `${formatNumber(body.distance_to_arrival)} LS` : "—"}
+              />
+              <StatRow label="Landable" value={body.is_landable ? <Yes /> : <No />} />
+              <StatRow label="Gravity" value={body.gravity ? `${body.gravity.toFixed(2)} G` : "—"} />
+              <StatRow
+                label="Surface Temp"
+                value={body.surface_temp ? `${formatNumber(body.surface_temp)} K` : "—"}
+              />
+              <StatRow label="Atmosphere" value={body.atmosphere_type ?? "None"} />
+              <StatRow label="Volcanism" value={body.volcanism_type ?? "None"} />
+              <StatRow
+                label="Terraforming"
+                value={
+                  body.terraforming_state === "Candidate for terraforming" ? (
+                    <span className="text-green-400">{body.terraforming_state}</span>
+                  ) : (
+                    <span className="text-neutral-500">{body.terraforming_state ?? "Not Applicable"}</span>
+                  )
+                }
+              />
+            </section>
+
+            {body._planetary_bases && body._planetary_bases.length > 0 && (
+              <section>
+                <SectionHeader icon="icarus-terminal-settlement" title="Planetary Settlements" />
+                <div className="space-y-3">
+                  {body._planetary_bases.map((s) => (
+                    <div key={s.id} className="relative border border-orange-900/20 p-3">
+                      <span className="pointer-events-none absolute -left-px -top-px h-2.5 w-2.5 border-l border-t border-orange-500/60" />
+                      <span className="pointer-events-none absolute -right-px -top-px h-2.5 w-2.5 border-r border-t border-orange-500/60" />
+                      <span className="pointer-events-none absolute -bottom-px -left-px h-2.5 w-2.5 border-b border-l border-orange-500/60" />
+                      <span className="pointer-events-none absolute -bottom-px -right-px h-2.5 w-2.5 border-b border-r border-orange-500/60" />
+                      <p className="text-glow__blue mb-1.5 font-bold">{s.name}</p>
+                      <p className="mb-2 text-neutral-600">{s.economy} Economy</p>
+                      <div className="flex flex-wrap gap-x-4 gap-y-1">
+                        {s.has_market && (
+                          <div className="flex items-center gap-1 text-neutral-500">
+                            <CheckIcon className="h-3 w-3 text-orange-500/60" />
+                            <span>Market</span>
+                          </div>
+                        )}
+                        {s.has_outfitting && (
+                          <div className="flex items-center gap-1 text-neutral-500">
+                            <CheckIcon className="h-3 w-3 text-orange-500/60" />
+                            <span>Outfitting</span>
+                          </div>
+                        )}
+                        {s.has_shipyard && (
+                          <div className="flex items-center gap-1 text-neutral-500">
+                            <CheckIcon className="h-3 w-3 text-orange-500/60" />
+                            <span>Shipyard</span>
+                          </div>
+                        )}
+                      </div>
+                    </div>
+                  ))}
+                </div>
+              </section>
+            )}
+          </>
+        )}
+
+        {/* Orbital data */}
+        <section>
+          <SectionHeader icon="icarus-terminal-system-orbits" title="Orbital Mechanics" />
+          <StatRow
+            label="Orbital Period"
+            value={body.orbital_period ? `${body.orbital_period.toFixed(4)} D` : "—"}
+          />
+          <StatRow
+            label="Inclination"
+            value={body.orbital_inclination ? `${body.orbital_inclination.toFixed(4)}°` : "—"}
+          />
+          <StatRow label="Eccentricity" value={body.orbital_eccentricity?.toFixed(6) ?? "—"} />
+          <StatRow label="Semi-Major Axis" value={body.semi_major_axis?.toFixed(6) ?? "—"} />
+          <StatRow
+            label="Axial Tilt"
+            value={body.axial_tilt ? `${body.axial_tilt.toFixed(4)}°` : "—"}
+          />
+          <StatRow label="Arg of Periapsis" value={body.arg_of_periapsis?.toFixed(4) ?? "—"} />
+          {body.type === SystemBodyType.Planet && (
+            <StatRow label="Tidally Locked" value={body.is_tidally_locked ? <Yes /> : <No />} />
+          )}
+        </section>
+
+        {/* Ring data */}
+        {body.rings && body.rings.length > 0 && (
+          <section>
+            <SectionHeader icon="icarus-terminal-planet-ringed" title="Ring System" />
+            <div className="space-y-3">
+              {body.rings.map((ring: SystemBodyRing) => (
+                <div key={ring.mass} className="border-b border-neutral-900 pb-3">
+                  <p className="text-glow__orange mb-1.5">{ring.name}</p>
+                  <StatRow label="Type" value={ring.type} />
+                  <StatRow label="Mass" value={`${formatNumber(ring.mass)} KG`} />
+                </div>
+              ))}
+            </div>
+          </section>
+        )}
+
+        {/* Footer — link to full body page */}
+        <div className="border-t border-orange-900/20 pb-1 pt-3">
+          <Link
+            href={`/systems/system/${system.detail.slug}/body/${body.slug}`}
+            className="flex items-center gap-2 text-neutral-600 transition-colors hover:text-orange-400"
+          >
+            <i className="icarus-terminal-scan text-orange-500/40"></i>
+            <span>Full Survey Report</span>
+            <span className="ml-auto">→</span>
+          </Link>
+        </div>
+
+      </div>
+
+      {/* ── Resize Handle ── */}
+      <div
+        className="absolute bottom-0 right-0 h-5 w-5 cursor-se-resize"
+        onMouseDown={onResizeMouseDown}
+      >
+        {/* Visual grip lines */}
+        <svg
+          className="absolute bottom-1 right-1 opacity-30"
+          width="10"
+          height="10"
+          viewBox="0 0 10 10"
+          fill="none"
+        >
+          <line x1="10" y1="3" x2="3" y2="10" stroke="rgb(251 146 60)" strokeWidth="1" />
+          <line x1="10" y1="6" x2="6" y2="10" stroke="rgb(251 146 60)" strokeWidth="1" />
+          <line x1="10" y1="9" x2="9" y2="10" stroke="rgb(251 146 60)" strokeWidth="1" />
+        </svg>
+      </div>
     </div>
   );
 };
