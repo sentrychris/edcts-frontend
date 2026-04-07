@@ -26,6 +26,7 @@ export const authOptions: NextAuthConfig = {
             email: user.email,
             commander: user.commander,
             frontier_user: user.frontier_user,
+            accessToken: credentials.token as string,
           };
         }
         return null;
@@ -35,8 +36,9 @@ export const authOptions: NextAuthConfig = {
   callbacks: {
     async session({ session, token }: { session: any , token: any }) {
       if (token && session.user) {
-        session.user.name = token.commander.name
+        session.user.name = token.commander.name;
         session.user.commander = token.commander;
+        session.user.accessToken = token.accessToken;
       }
 
       return session as AuthSession;
@@ -44,6 +46,7 @@ export const authOptions: NextAuthConfig = {
     async jwt({ token, user }: { token: any, user: any }) {
       if (user) {
         token.commander = user.commander;
+        token.accessToken = user.accessToken;
       }
 
       return token;
