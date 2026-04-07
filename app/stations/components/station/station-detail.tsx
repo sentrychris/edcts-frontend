@@ -13,6 +13,7 @@ import Heading from "@/components/heading";
 
 interface Props {
   params: { slug: string };
+  initialData?: Station | null;
 }
 
 const coreServices = [
@@ -42,15 +43,20 @@ const StatRow = ({ label, children }: { label: string; children: React.ReactNode
   </div>
 );
 
-const StationDetail: FunctionComponent<Props> = ({ params }) => {
+const StationDetail: FunctionComponent<Props> = ({ params, initialData = null }) => {
   const { slug } = params;
-  const { data: station, isLoading } = useResource<Station>(`stations/${slug}`, { withSystem: 1 });
+  const { data: fetchedData, isLoading } = useResource<Station>(
+    initialData ? null : `stations/${slug}`,
+    { withSystem: 1 },
+  );
+  const station = initialData ?? fetchedData;
+  const loading = initialData ? false : isLoading;
 
   return (
     <>
-      {isLoading && <Loader visible={isLoading} />}
+      {loading && <Loader visible={loading} />}
 
-      {!isLoading && station && (
+      {!loading && station && (
         <div className="space-y-5 text-xs uppercase tracking-wider">
           {/* ── Station Masthead ── */}
           <Panel className="px-6 py-6" corners="lg">
