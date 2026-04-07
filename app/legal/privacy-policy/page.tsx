@@ -6,7 +6,7 @@ export default async function Page() {
       <div className="mt-4 grid grid-cols-1 bg-transparent backdrop-blur backdrop-filter">
         <Heading
           icon="icarus-terminal-shield"
-          largeIcon={true}
+          iconSize="1.5rem"
           title="Privacy Policy"
           className="gap-3 border-b border-orange-900/20 pb-3 text-2xl"
         />
