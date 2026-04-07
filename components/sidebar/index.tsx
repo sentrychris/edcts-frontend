@@ -1,6 +1,7 @@
 "use client";
 
 import { type FunctionComponent, useEffect, useState } from "react";
+import { createPortal } from "react-dom";
 import type { Galnet } from "@/core/interfaces/Galnet";
 import SidebarNav from "./sidebar-nav";
 import SidebarAudio from "./sidebar-audio";
@@ -44,7 +45,7 @@ const Sidebar: FunctionComponent<Props> = ({ articles }) => {
           <>
             <div className="min-w-0 flex-1">
               <p className="text-glow__orange text-xs font-bold uppercase tracking-widest">ED:CS Terminal</p>
-              <p className="truncate text-xs uppercase tracking-wider text-neutral-600">Cartographic Intelligence</p>
+              <p className="truncate text-xs uppercase tracking-wider text-neutral-600">Made by Chris Korovin</p>
             </div>
             <div className="ml-auto flex shrink-0 items-center gap-1.5 text-neutral-700" style={{ fontSize: "0.6rem" }}>
               <span className="fx-dot-green h-1.5 w-1.5"></span>
@@ -114,7 +115,10 @@ const Sidebar: FunctionComponent<Props> = ({ articles }) => {
         )}
       </div>
 
-      {settingsOpen && <SettingsModal onClose={() => setSettingsOpen(false)} />}
+      {settingsOpen && createPortal(
+        <SettingsModal onClose={() => setSettingsOpen(false)} />,
+        document.body,
+      )}
     </aside>
   );
 };

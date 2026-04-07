@@ -40,7 +40,7 @@ const SectionHeader = ({ icon, title }: { icon: string; title: string }) => (
 
 const MIN_WIDTH = 260;
 const MIN_HEIGHT = 200;
-const DEFAULT_WIDTH = 320;
+const DEFAULT_WIDTH = 420;
 
 const SystemBodyPopover: FunctionComponent<Props> = ({ body, system, dispatcher, close }) => {
   const [position, setPosition] = useState(() => ({
@@ -351,7 +351,7 @@ const SystemBodyPopover: FunctionComponent<Props> = ({ body, system, dispatcher,
         {/* Footer — link to full body page */}
         <div className="border-t border-orange-900/20 pb-1 pt-3">
           <Link
-            href={`/systems/system/${system.detail.slug}/body/${body.slug}`}
+            href={`/systems/${system.detail.slug}/body/${body.slug}`}
             className="flex items-center gap-2 text-neutral-600 transition-colors hover:text-orange-400"
           >
             <i className="icarus-terminal-scan text-orange-500/40"></i>

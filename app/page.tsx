@@ -49,7 +49,7 @@ export default async function Home() {
           <p className="mb-3 text-xs uppercase tracking-[0.5em] text-neutral-500">
             frontier developments ── universal cartographics
           </p>
-          <h1 className="text-glow__orange fx-glitch fx-holo-heading mb-3 text-3xl font-bold uppercase tracking-[0.2em] md:text-5xl">
+          <h1 className="text-glow__orange fx-glitch fx-holo-heading mb-3 text-3xl font-bold uppercase tracking-[0.2em] md:text-4xl">
             ED:CS Terminal
           </h1>
           <p className="text-xs uppercase tracking-[0.35em] text-neutral-500">

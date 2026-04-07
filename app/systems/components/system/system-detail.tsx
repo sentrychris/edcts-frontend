@@ -84,7 +84,7 @@ const SystemDetail: FunctionComponent<Props> = ({ params }) => {
         {!isLoading && systemMap && (
           <SystemBodiesTable
             bodies={systemMap.planets as Required<MappedSystemBody>[]}
-            dispatcher={systemDispatcher}
+            systemSlug={slug}
           />
         )}
       </div>

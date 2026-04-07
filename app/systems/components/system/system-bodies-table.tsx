@@ -2,7 +2,6 @@
 
 import { type FunctionComponent, useState } from "react";
 import type { MappedSystemBody } from "@/core/interfaces/SystemBody";
-import type { SystemDispatcher } from "@/core/events/SystemDispatcher";
 import { SystemBodyType } from "@/core/constants/system";
 import { formatDate } from "@/core/string-utils";
 import Link from "next/link";
@@ -13,7 +12,7 @@ type SystemBody = Required<MappedSystemBody>;
 
 interface Props {
   bodies: SystemBody[];
-  dispatcher: SystemDispatcher;
+  systemSlug: string;
 }
 
 const PER_PAGE = 10;
@@ -45,7 +44,7 @@ const buildPaginationProps = (
   return { rows: allBodies.slice(from, to), meta, links };
 };
 
-const SystemBodiesTable: FunctionComponent<Props> = ({ bodies, dispatcher }) => {
+const SystemBodiesTable: FunctionComponent<Props> = ({ bodies, systemSlug }) => {
   const [currentPage, setCurrentPage] = useState(1);
 
   const { rows, meta, links } = buildPaginationProps(bodies, currentPage);
@@ -79,18 +78,13 @@ const SystemBodiesTable: FunctionComponent<Props> = ({ bodies, dispatcher }) => 
               : "planet text-glow__orange";
 
         return (
-          <span
-            className={`${childClass} hover:text-glow__orange flex items-center text-blue-200 hover:cursor-pointer hover:underline`}
-            onClick={() =>
-              dispatcher.selectBody({
-                body,
-                type: "select-body",
-              })
-            }
+          <Link
+            href={`/systems/${systemSlug}/body/${body.slug}`}
+            className={`${childClass} hover:text-glow__orange flex items-center text-blue-200 hover:underline`}
           >
             <i className={`icarus-terminal-${iconClass} me-2 text-sm`}></i>
             {body.name}
-          </span>
+          </Link>
         );
       },
     },
