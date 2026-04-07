@@ -530,3 +530,41 @@ button.text-glow__orange:hover {
   color: rgb(229 229 229 / 1);
   font-weight: 600;
 }
+
+/* ════════════════════════════════════════════════════════
+   CRT OVERLAY — scanlines + vignette + phosphor flicker
+   ════════════════════════════════════════════════════════ */
+
+.crt-overlay {
+  position: fixed;
+  inset: 0;
+  z-index: 9999;
+  pointer-events: none;
+
+  /* Scanlines */
+  background:
+    repeating-linear-gradient(
+      to bottom,
+      transparent 0px,
+      transparent 3px,
+      rgba(0, 0, 0, 0.18) 3px,
+      rgba(0, 0, 0, 0.18) 4px
+    ),
+    /* Vignette */
+    radial-gradient(
+      ellipse at center,
+      transparent 55%,
+      rgba(0, 0, 0, 0.55) 100%
+    );
+
+  animation: crt-flicker 0.12s steps(1) infinite;
+}
+
+@keyframes crt-flicker {
+  0%   { opacity: 1; }
+  92%  { opacity: 1; }
+  93%  { opacity: 0.96; }
+  94%  { opacity: 1; }
+  96%  { opacity: 0.98; }
+  100% { opacity: 1; }
+}

@@ -10,6 +10,8 @@ import MainBackground from "@/components/main-background";
 import Sidebar from "@/components/sidebar";
 import NewsTicker from "./galnet/components/galnet-ticker";
 import Footer from "@/components/footer";
+import { SettingsProvider } from "@/core/contexts/settings-context";
+import ThemeWrapper from "@/components/theme-wrapper";
 import "@/css/main.css";
 
 const jura = Jura({ subsets: ["latin"] });
@@ -66,18 +68,22 @@ export default async function RootLayout({ children }: { children: React.ReactNo
     <html lang="en" data-fx-crt-text="true" className="scroll-smooth">
       <body className={jura.className + " overlay text-glow relative antialiased"}>
         <SessionProvider session={session} refetchInterval={5 * 60} refetchOnWindowFocus={true}>
-          <SvgFilters />
-          <MainBackground />
-          <div className="relative z-10 flex h-screen flex-col overflow-hidden">
-            <NewsTicker articles={articles} />
-            <div className="flex min-h-0 flex-1">
-              <Sidebar articles={articles} />
-              <main className="main-content min-w-0 flex-1 overflow-y-auto px-6 py-6 text-neutral-200 text-glow__white md:px-5">
-                {children}
-                <Footer />
-              </main>
-            </div>
-          </div>
+          <SettingsProvider>
+            <ThemeWrapper>
+              <SvgFilters />
+              <MainBackground />
+              <div className="relative z-10 flex h-screen flex-col overflow-hidden">
+                <NewsTicker articles={articles} />
+                <div className="flex min-h-0 flex-1">
+                  <Sidebar articles={articles} />
+                  <main className="main-content min-w-0 flex-1 overflow-y-auto px-6 py-6 text-neutral-200 text-glow__white md:px-5">
+                    {children}
+                    <Footer />
+                  </main>
+                </div>
+              </div>
+            </ThemeWrapper>
+          </SettingsProvider>
         </SessionProvider>
       </body>
     </html>

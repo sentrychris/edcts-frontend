@@ -5,6 +5,7 @@ import type { Galnet } from "@/core/interfaces/Galnet";
 import SidebarNav from "./sidebar-nav";
 import SidebarAudio from "./sidebar-audio";
 import SidebarRecentSystems from "./sidebar-recent-systems";
+import SettingsModal from "@/components/settings-modal";
 
 interface Props {
   articles: Pick<Galnet, "title" | "slug" | "audio_file">[];
@@ -14,6 +15,7 @@ const STORAGE_KEY = "edcts_sidebar_collapsed";
 
 const Sidebar: FunctionComponent<Props> = ({ articles }) => {
   const [collapsed, setCollapsed] = useState(false);
+  const [settingsOpen, setSettingsOpen] = useState(false);
 
   useEffect(() => {
     if (localStorage.getItem(STORAGE_KEY) === "true") {
@@ -66,31 +68,53 @@ const Sidebar: FunctionComponent<Props> = ({ articles }) => {
       {/* ── Footer / collapse toggle ── */}
       <div className="mt-auto shrink-0 border-t border-orange-900/20 px-3 py-3">
         {collapsed ? (
-          <button
-            onClick={toggle}
-            className="flex w-full items-center justify-center py-1 text-neutral-700 transition-colors hover:text-orange-400"
-            aria-label="Expand sidebar"
-            title="Expand sidebar"
-          >
-            <i className="icarus-terminal-chevron-right text-sm"></i>
-          </button>
+          <div className="flex flex-col items-center gap-2">
+            <button
+              onClick={() => setSettingsOpen(true)}
+              className="flex w-full items-center justify-center py-1 text-neutral-700 transition-colors hover:text-orange-400"
+              aria-label="Open settings"
+              title="Settings"
+            >
+              <i className="icarus-terminal-settings text-sm"></i>
+            </button>
+            <button
+              onClick={toggle}
+              className="flex w-full items-center justify-center py-1 text-neutral-700 transition-colors hover:text-orange-400"
+              aria-label="Expand sidebar"
+              title="Expand sidebar"
+            >
+              <i className="icarus-terminal-chevron-right text-sm"></i>
+            </button>
+          </div>
         ) : (
           <div className="flex items-center justify-between">
             <div className="flex items-center gap-2 text-neutral-800" style={{ fontSize: "0.6rem" }}>
               <i className="icarus-terminal-route text-orange-500/20"></i>
               <span className="uppercase tracking-widest">SYS:EDCS-001 ■ BUILD:STABLE</span>
             </div>
-            <button
-              onClick={toggle}
-              className="ml-3 shrink-0 text-neutral-700 transition-colors hover:text-orange-400"
-              aria-label="Collapse sidebar"
-              title="Collapse sidebar"
-            >
-              <i className="icarus-terminal-chevron-left text-sm"></i>
-            </button>
+            <div className="ml-3 flex shrink-0 items-center gap-2">
+              <button
+                onClick={() => setSettingsOpen(true)}
+                className="text-neutral-700 transition-colors hover:text-orange-400"
+                aria-label="Open settings"
+                title="Settings"
+              >
+                <i className="icarus-terminal-settings text-sm"></i>
+              </button>
+              <button
+                onClick={toggle}
+                className="text-neutral-700 transition-colors hover:text-orange-400"
+                aria-label="Collapse sidebar"
+                title="Collapse sidebar"
+              >
+                <i className="icarus-terminal-chevron-left text-sm"></i>
+              </button>
+            </div>
           </div>
         )}
       </div>
+
+      {settingsOpen && <SettingsModal onClose={() => setSettingsOpen(false)} />}
     </aside>
   );
 };
