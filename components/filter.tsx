@@ -2,6 +2,7 @@
 
 import type { FormEvent, FunctionComponent } from "react";
 import { memo, useState } from "react";
+import { cn } from "@/core/cn";
 
 interface Props {
   className?: string;
@@ -33,13 +34,10 @@ const Filter: FunctionComponent<Props> = ({
 
   return (
     <div
-      className={
-        "relative w-full border border-orange-900/30 bg-black/20 backdrop-blur backdrop-filter " +
-        className
-      }
+      className={cn("relative w-full border border-orange-900/20 bg-black/20 backdrop-blur backdrop-filter", className)}
     >
       <form className="flex items-center">
-        <span className="flex shrink-0 items-center border-r border-orange-900/30 px-3 py-2.5">
+        <span className="flex shrink-0 items-center border-r border-orange-900/20 px-3 py-2.5">
           <i className="icarus-terminal-route text-xs text-orange-500/50"></i>
         </span>
         <input
@@ -56,7 +54,7 @@ const Filter: FunctionComponent<Props> = ({
               e.preventDefault();
               clearFilter();
             }}
-            className="shrink-0 border-l border-orange-900/30 px-3 text-xs uppercase tracking-widest text-orange-500/60 transition-colors hover:text-orange-400"
+            className="shrink-0 border-l border-orange-900/20 px-3 text-xs uppercase tracking-widest text-orange-500/60 transition-colors hover:text-orange-400"
           >
             CLR
           </button>

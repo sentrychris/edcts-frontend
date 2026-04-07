@@ -1,6 +1,6 @@
 import type { FunctionComponent } from "react";
 import type { System } from "@/core/interfaces/System";
-import PanelCorners from "@/components/panel-corners";
+import Panel from "@/components/panel";
 
 interface Props {
   system: System;
@@ -9,8 +9,7 @@ interface Props {
 
 const SystemHeader: FunctionComponent<Props> = ({ system, special }) => {
   return (
-    <div className="fx-border-breathe fx-panel-scan relative mb-5 border border-orange-900/40 bg-black/50 backdrop-blur backdrop-filter px-6 py-6">
-      <PanelCorners size="lg" />
+    <Panel className="fx-border-breathe fx-panel-scan mb-5 px-6 py-6" corners="lg">
 
       <div className="flex items-center justify-between uppercase">
         <div className="flex items-center gap-4">
@@ -44,7 +43,7 @@ const SystemHeader: FunctionComponent<Props> = ({ system, special }) => {
         </span>
         <span className="h-px flex-1 bg-neutral-800"></span>
       </div>
-    </div>
+    </Panel>
   );
 };
 

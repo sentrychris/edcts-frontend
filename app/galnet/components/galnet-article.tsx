@@ -3,7 +3,7 @@
 import type { FunctionComponent } from "react";
 import type { Galnet } from "@/core/interfaces/Galnet";
 import Image from "next/image";
-import PanelCorners from "@/components/panel-corners";
+import Panel from "@/components/panel";
 
 interface Props {
   article: Galnet;
@@ -11,9 +11,7 @@ interface Props {
 
 const GalnetArticle: FunctionComponent<Props> = ({ article }) => {
   return (
-    <div className="relative border border-orange-900/40 bg-black/50 backdrop-blur backdrop-filter">
-      {/* Corner brackets */}
-      <PanelCorners />
+    <Panel>
 
       {/* ── Article header ── */}
       <div className="border-b border-orange-900/20 px-6 py-5">
@@ -51,7 +49,7 @@ const GalnetArticle: FunctionComponent<Props> = ({ article }) => {
           dangerouslySetInnerHTML={{ __html: article.content }}
         />
       </div>
-    </div>
+    </Panel>
   );
 };
 

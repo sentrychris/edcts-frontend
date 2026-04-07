@@ -1,10 +1,10 @@
 "use client";
 
-import { type FunctionComponent, useEffect, useState } from "react";
+import { type FunctionComponent, useMemo } from "react";
 import type { System } from "@/core/interfaces/System";
 import { pluralizeTextFromArray } from "@/core/string-utils";
 import { SystemBodyType } from "@/core/constants/system";
-import { getResource } from "@/core/api";
+import { useResource } from "@/core/hooks/resource";
 import Link from "next/link";
 import SystemMap from "../../systems/lib/system-map";
 import LoaderMini from "@/components/loader-mini";
@@ -14,18 +14,8 @@ interface Props {
 }
 
 const LatestSystem: FunctionComponent<Props> = ({ className }) => {
-  const [isLoading, setIsLoading] = useState(true);
-  const [system, setLastUpdatedSystem] = useState<SystemMap>();
-
-  useEffect(() => {
-    getResource<System>("system/last-updated")
-      .then((response) => {
-        setLastUpdatedSystem(new SystemMap(response.data));
-      })
-      .finally(() => {
-        setIsLoading(false);
-      });
-  }, []);
+  const { data, isLoading } = useResource<System>("system/last-updated");
+  const system = useMemo(() => (data ? new SystemMap(data) : undefined), [data]);
 
   if (isLoading) {
     return (

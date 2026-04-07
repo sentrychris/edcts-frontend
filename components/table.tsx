@@ -3,7 +3,7 @@ import type { Meta, Links } from "@/core/interfaces/Pagination";
 import { useEffect } from "react";
 import { useAnimateTable } from "@/core/hooks/animate";
 import PaginationLinks from "./pagination-links";
-import PanelCorners from "./panel-corners";
+import Panel from "./panel";
 
 type RenderColumn<T> = (item: T) => string | JSX.Element;
 
@@ -94,8 +94,7 @@ function Table<T extends RequiredAttribute>({ columns, data, meta, links, page, 
   };
 
   return (
-    <div className="relative border border-orange-900/20 bg-black/50 backdrop-blur backdrop-filter">
-      <PanelCorners className="z-10" />
+    <Panel variant="muted" cornerClassName="z-10">
 
       {header}
       <div className="overflow-x-auto pb-1 pt-2">
@@ -117,7 +116,7 @@ function Table<T extends RequiredAttribute>({ columns, data, meta, links, page, 
         </table>
       </div>
       {links && meta && <PaginationLinks metadata={meta} links={links} paginate={paginate} />}
-    </div>
+    </Panel>
   );
 }
 

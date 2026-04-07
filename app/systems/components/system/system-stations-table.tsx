@@ -5,9 +5,10 @@ import type { SystemDispatcher } from "@/core/events/SystemDispatcher";
 import type { Station } from "@/core/interfaces/Station";
 import type { Links, Meta } from "@/core/interfaces/Pagination";
 import { formatDate } from "@/core/string-utils";
-import { stationIconByType } from "../../lib/render-utils";
+import { stationIconByType } from "@/core/render-utils";
 import Table from "@/components/table";
 import Link from "next/link";
+import Heading from "@/components/heading";
 
 interface Props {
   stations: Station[];
@@ -142,13 +143,7 @@ const SystemStationsTable: FunctionComponent<Props> = ({ stations, dispatcher })
   };
 
   const header = (
-    <div className="flex items-center gap-3 border-b border-orange-900/20 px-5 py-4">
-      <i className="icarus-terminal-outpost text-glow__orange" style={{ fontSize: "1.25rem" }}></i>
-      <div>
-        <h2 className="text-glow__orange font-bold uppercase tracking-wide">System Stations</h2>
-        <p className="text-xs uppercase tracking-wider text-neutral-500">Docking & Logistics Network</p>
-      </div>
-    </div>
+    <Heading bordered icon="icarus-terminal-outpost" title="System Stations" subtitle="Docking & Logistics Network" className="px-5 py-4" />
   );
 
   return <Table header={header} columns={columns} data={rows} meta={meta} links={links} page={handlePage} />;

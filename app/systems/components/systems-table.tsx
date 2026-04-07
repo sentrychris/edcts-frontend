@@ -1,16 +1,18 @@
 "use client";
 
 import type { FunctionComponent } from "react";
-import type { Links, Meta, Pagination } from "@/core/interfaces/Pagination";
+import type { Pagination } from "@/core/interfaces/Pagination";
 import type { System } from "@/core/interfaces/System";
 import { useState } from "react";
 import { getCollection } from "@/core/api";
 import { useDebounce } from "@/core/hooks/debounce";
-import { renderAllegianceText, renderSecurityText } from "../lib/render-utils";
+import { usePaginatedCollection } from "@/core/hooks/paginated-collection";
+import { renderAllegianceText, renderSecurityText } from "@/core/render-utils";
 import Link from "next/link";
-import PanelCorners from "@/components/panel-corners";
+import Panel from "@/components/panel";
 import Filter from "@/components/filter";
 import Table from "@/components/table";
+import Heading from "@/components/heading";
 
 interface Props {
   className?: string;
@@ -18,10 +20,7 @@ interface Props {
 }
 
 const SystemsTable: FunctionComponent<Props> = ({ className = "", systems }) => {
-  const { data, meta, links } = systems;
-  const [rows, setRows] = useState(data);
-  const [metadata, setMetadata] = useState(meta);
-  const [navigation, setNavigation] = useState(links);
+  const { rows, meta, links, setPage, paginate } = usePaginatedCollection<System>(systems);
 
   const [nameQuery, setNameQuery] = useState("");
   const [informationQuery, setInformationQuery] = useState({
@@ -33,12 +32,6 @@ const SystemsTable: FunctionComponent<Props> = ({ className = "", systems }) => 
 
   const debouncedNameQuery = useDebounce(nameQuery, 200);
   const debouncedInformationQuery = useDebounce(informationQuery, 200);
-
-  const setState = async (data: System[], meta: Meta, links: Links) => {
-    setRows(data);
-    setMetadata(meta);
-    setNavigation(links);
-  };
 
   const searchByName = async (value: string) => {
     setNameQuery(value);
@@ -63,41 +56,25 @@ const SystemsTable: FunctionComponent<Props> = ({ className = "", systems }) => 
     }
 
     if (response) {
-      const { data, meta, links } = response;
-      await setState(data, meta, links);
+      setPage(response);
     }
   };
 
-  /**
-   * Construct the search query for the information fields.
-   *
-   * Used to search by population, government, allegiance, and security.
-   *
-   * @param field - the field we are searching by
-   * @param value - the value we are searching for
-   */
   const searchByInformation = async (field: string, value: string) => {
-    // Update the query state object
     setInformationQuery((prev) => ({ ...prev, [field]: value }));
 
-    // Construct default query params
     const params: Record<string, string | number> = {
       withInformation: 1,
     };
 
-    // Check if the value is empty
     if (value.length === 0) {
-      // Loop through the query object and add the values to the params object
-      // if the field is not the current field and the value is not empty
       for (const [key, val] of Object.entries(informationQuery)) {
         if (field !== key && val.length > 0) {
           params[key] = val;
         }
       }
     } else {
-      // Check if the debounced query object has a length greater than 1
       if (debouncedInformationQuery[field]?.length > 1) {
-        // Loop through the query object and add the values to the params object
         for (const [key, val] of Object.entries(informationQuery)) {
           if (val.length > 0) {
             params[key] = val;
@@ -106,19 +83,11 @@ const SystemsTable: FunctionComponent<Props> = ({ className = "", systems }) => 
       }
     }
 
-    const response = await getCollection<System>("system/search/information", {
-      params,
-    });
+    const response = await getCollection<System>("system/search/information", { params });
 
     if (response) {
-      const { data, meta, links } = response;
-      await setState(data, meta, links);
+      setPage(response);
     }
-  };
-
-  const paginate = async (link: string) => {
-    const { data, meta, links } = await getCollection<System>(link);
-    await setState(data, meta, links);
   };
 
   const columns = {
@@ -181,20 +150,14 @@ const SystemsTable: FunctionComponent<Props> = ({ className = "", systems }) => 
   return (
     <div className={className}>
       {/* ── Query Panel ── */}
-      <div className="relative mb-4 border border-orange-900/20 bg-black/50 backdrop-blur backdrop-filter">
-        <PanelCorners />
+      <Panel variant="muted" className="mb-4">
 
-        <div className="flex items-center gap-3 border-b border-orange-900/20 px-4 py-3">
-          <i className="icarus-terminal-route text-glow__orange" style={{ fontSize: "1.2rem" }}></i>
-          <div className="flex-1">
-            <h3 className="text-glow__orange font-bold uppercase tracking-widest">Query Parameters</h3>
-            <p className="text-xs uppercase tracking-wider text-neutral-500">Cartographic Database Filter</p>
-          </div>
+        <Heading bordered icon="icarus-terminal-route" title="Query Parameters" subtitle="Cartographic Database Filter" iconSize="1.2rem" className="px-4 py-3">
           <div className="flex items-center gap-2 text-xs uppercase tracking-widest text-neutral-600">
             <span className="h-1.5 w-1.5 rounded-full bg-orange-500/60"></span>
             <span>{rows.length} results</span>
           </div>
-        </div>
+        </Heading>
 
         <div className="p-4">
           <Filter
@@ -226,10 +189,10 @@ const SystemsTable: FunctionComponent<Props> = ({ className = "", systems }) => 
             />
           </div>
         </div>
-      </div>
+      </Panel>
 
       {/* ── Results Table ── */}
-      <Table columns={columns} data={rows} meta={metadata} links={navigation} page={paginate} />
+      <Table columns={columns} data={rows} meta={meta} links={links} page={paginate} />
     </div>
   );
 };

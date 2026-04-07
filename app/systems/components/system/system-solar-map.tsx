@@ -928,9 +928,9 @@ const SystemSolarMap: FunctionComponent<Props> = ({ params }) => {
       {/* ══════════════════════════════════════════════════════
           TOP HUD BAR
       ══════════════════════════════════════════════════════ */}
-      <div className="absolute left-0 right-0 top-0 z-20 border-b border-orange-900/30 bg-black/88 backdrop-blur backdrop-filter">
+      <div className="absolute left-0 right-0 top-0 z-20 border-b border-orange-900/20 bg-black/88 backdrop-blur backdrop-filter">
         {/* Row 1 — navigation & system identity */}
-        <div className="flex items-center justify-between border-b border-orange-900/15 px-5 py-2.5">
+        <div className="flex items-center justify-between border-b border-orange-900/20 px-5 py-2.5">
           <div className="flex items-center gap-3">
             {/* Back link */}
             <Link
@@ -1023,7 +1023,7 @@ const SystemSolarMap: FunctionComponent<Props> = ({ params }) => {
               className={`flex items-center gap-1.5 border px-3 py-0.5 text-xs uppercase tracking-wider transition-all ${
                 isPaused
                   ? "border-green-600/50 bg-green-900/15 text-green-400"
-                  : "border-orange-900/30 bg-orange-900/10 text-orange-400 hover:border-orange-500/50 hover:bg-orange-900/20"
+                  : "border-orange-900/20 bg-orange-900/10 text-orange-400 hover:border-orange-500/50 hover:bg-orange-900/20"
               }`}
             >
               {isPaused ? "▶ Resume" : "⏸ Pause"}
@@ -1083,7 +1083,7 @@ const SystemSolarMap: FunctionComponent<Props> = ({ params }) => {
       ══════════════════════════════════════════════════════ */}
       {!isLoading && (hasInfo || systemMap) && (
         <div
-          className="absolute left-4 z-20 w-52 border border-orange-900/25 bg-black/82 backdrop-blur backdrop-filter"
+          className="absolute left-4 z-20 w-52 border border-orange-900/20 bg-black/82 backdrop-blur backdrop-filter"
           style={{ bottom: "42px" }}
         >
           {/* Corner brackets */}
@@ -1135,7 +1135,7 @@ const SystemSolarMap: FunctionComponent<Props> = ({ params }) => {
             {/* Body counts */}
             {systemMap && (
               <div
-                className={`space-y-1.5 text-xs ${hasInfo ? "border-t border-orange-900/15 pt-2.5" : ""}`}
+                className={`space-y-1.5 text-xs ${hasInfo ? "border-t border-orange-900/20 pt-2.5" : ""}`}
               >
                 {starCount > 0 && <SysRow label="Stars" value={String(starCount)} />}
                 {planetCount > 0 && <SysRow label="Planets" value={String(planetCount)} />}
@@ -1151,7 +1151,7 @@ const SystemSolarMap: FunctionComponent<Props> = ({ params }) => {
       ══════════════════════════════════════════════════════ */}
       {selectedBody && (
         <div
-          className="fx-wipe-in absolute right-0 z-20 w-72 overflow-y-auto border-l border-orange-900/25 bg-black/88 backdrop-blur backdrop-filter"
+          className="fx-wipe-in absolute right-0 z-20 w-72 overflow-y-auto border-l border-orange-900/20 bg-black/88 backdrop-blur backdrop-filter"
           style={{ top: "82px", bottom: "42px" }}
         >
           {/* Corner brackets — uses top-0/bottom-0 (not -px) because this panel has overflow-y-auto */}
@@ -1344,7 +1344,7 @@ const SystemSolarMap: FunctionComponent<Props> = ({ params }) => {
       ══════════════════════════════════════════════════════ */}
       {!isLoading && systemMap && systemMap.items.length === 0 && (
         <div className="absolute inset-0 flex items-center justify-center">
-          <div className="relative border border-orange-900/30 bg-black/80 p-8 backdrop-blur backdrop-filter">
+          <div className="relative border border-orange-900/20 bg-black/80 p-8 backdrop-blur backdrop-filter">
             <PanelCorners />
             <div className="text-glow__orange mb-2 text-center text-sm font-bold uppercase tracking-widest">
               No Telemetry Available
@@ -1382,7 +1382,7 @@ function SysRow({
 /** Data row for the selected body detail panel */
 function BodyRow({ label, value }: { label: string; value: string }) {
   return (
-    <div className="flex items-baseline justify-between gap-2 border-b border-orange-900/10 py-1.5">
+    <div className="flex items-baseline justify-between gap-2 border-b border-orange-900/20 py-1.5">
       <span className="shrink-0 uppercase tracking-wider text-neutral-600">{label}</span>
       <span
         className="truncate text-right font-mono"

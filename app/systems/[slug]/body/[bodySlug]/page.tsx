@@ -5,7 +5,9 @@ import { getResource } from "@/core/api";
 import { formatDate, formatNumber } from "@/core/string-utils";
 import { SystemBodyType } from "@/core/constants/system";
 import Link from "next/link";
+import Panel from "@/components/panel";
 import BodySvg from "./components/body-svg";
+import SectionHeader from "@/components/section-header";
 
 interface Props {
   params: { slug: string; bodySlug: string };
@@ -37,12 +39,6 @@ const StatRow = ({ label, value }: { label: string; value: React.ReactNode }) =>
 const Yes = () => <span className="text-green-400">Yes</span>;
 const No  = () => <span className="text-red-400/80">No</span>;
 
-const SectionHeader = ({ icon, title }: { icon: string; title: string }) => (
-  <div className="mb-3 flex items-center gap-2 border-b border-orange-900/20 pb-2 text-xs uppercase tracking-widest text-neutral-600">
-    <i className={`${icon} text-orange-500/50`} />
-    <span>{title}</span>
-  </div>
-);
 
 /* ── Page ──────────────────────────────────────────────── */
 
@@ -159,15 +155,15 @@ export default async function Page({ params }: Props) {
         <div className="space-y-5">
 
           {/* Discovery */}
-          <div className="fx-chamfer relative border border-orange-900/20 bg-black/50 backdrop-blur backdrop-filter p-5">
+          <Panel variant="muted" className="fx-chamfer p-5">
             <SectionHeader icon="icarus-terminal-commander" title="Discovery Record" />
             <StatRow label="Discovered By" value={<span className="text-glow__orange">CMDR {body.discovery?.commander ?? "Unknown"}</span>} />
             <StatRow label="Discovery Date" value={formatDate(body.discovery?.date)} />
-          </div>
+          </Panel>
 
           {/* Star data */}
           {isStar && (
-            <div className="fx-chamfer relative border border-orange-900/20 bg-black/50 backdrop-blur backdrop-filter p-5">
+            <Panel variant="muted" className="fx-chamfer p-5">
               <SectionHeader icon="icarus-terminal-star" title="Stellar Data" />
               <StatRow label="Spectral Class"  value={body.spectral_class  ?? "—"} />
               <StatRow label="Luminosity"      value={body.luminosity      ?? "—"} />
@@ -175,12 +171,12 @@ export default async function Page({ params }: Props) {
               <StatRow label="Solar Radius"    value={body.solar_radius != null ? body.solar_radius.toFixed(4) : "—"} />
               <StatRow label="Main Star"       value={body.is_main_star  ? <Yes /> : <No />} />
               <StatRow label="Scoopable"       value={body.is_scoopable  ? <Yes /> : <No />} />
-            </div>
+            </Panel>
           )}
 
           {/* Surface data */}
           {!isStar && (
-            <div className="fx-chamfer relative border border-orange-900/20 bg-black/50 backdrop-blur backdrop-filter p-5">
+            <Panel variant="muted" className="fx-chamfer p-5">
               <SectionHeader icon="icarus-terminal-planet" title="Surface Data" />
               <StatRow label="Atmosphere"    value={body.atmosphere_type  || "None"} />
               <StatRow label="Volcanism"     value={body.volcanism_type   || "None"} />
@@ -191,7 +187,7 @@ export default async function Page({ params }: Props) {
               } />
               <StatRow label="Landable"      value={body.is_landable ? <Yes /> : <No />} />
               <StatRow label="Radius"        value={body.radius != null ? `${formatNumber(body.radius)} KM` : "—"} />
-            </div>
+            </Panel>
           )}
         </div>
 
@@ -199,7 +195,7 @@ export default async function Page({ params }: Props) {
         <div className="space-y-5">
 
           {/* Orbital mechanics */}
-          <div className="fx-chamfer relative border border-orange-900/20 bg-black/50 backdrop-blur backdrop-filter p-5">
+          <Panel variant="muted" className="fx-chamfer p-5">
             <SectionHeader icon="icarus-terminal-system-orbits" title="Orbital Mechanics" />
             <StatRow label="Orbital Period"    value={body.orbital?.orbital_period     != null ? `${body.orbital.orbital_period.toFixed(4)} D`     : "—"} />
             <StatRow label="Inclination"       value={body.orbital?.orbital_inclination != null ? `${body.orbital.orbital_inclination.toFixed(4)}°` : "—"} />
@@ -210,11 +206,11 @@ export default async function Page({ params }: Props) {
             {!isStar && (
               <StatRow label="Tidally Locked"  value={body.axial?.is_tidally_locked ? <Yes /> : <No />} />
             )}
-          </div>
+          </Panel>
 
           {/* Ring system */}
           {body.rings && body.rings.length > 0 && (
-            <div className="fx-chamfer relative border border-orange-900/20 bg-black/50 backdrop-blur backdrop-filter p-5">
+            <Panel variant="muted" className="fx-chamfer p-5">
               <SectionHeader icon="icarus-terminal-planet-ringed" title="Ring System" />
               <div className="space-y-4">
                 {body.rings.map((ring: SystemBodyRing) => (
@@ -227,7 +223,7 @@ export default async function Page({ params }: Props) {
                   </div>
                 ))}
               </div>
-            </div>
+            </Panel>
           )}
         </div>
       </div>

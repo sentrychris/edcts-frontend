@@ -47,7 +47,7 @@ const Input: FunctionComponent<Props> = ({
           className={`h-[37px] w-full border bg-transparent pl-4 text-xs uppercase tracking-wider text-neutral-200 placeholder-neutral-600 outline-none transition-colors focus:outline-none ${
             error
               ? "border-red-900/60 focus:border-red-500"
-              : "border-orange-900/30 focus:border-orange-500/60"
+              : "border-orange-900/20 focus:border-orange-500/60"
           } ${extraStyling ?? ""}`}
           placeholder={placeholder ?? "Enter value"}
           value={value.toString()}

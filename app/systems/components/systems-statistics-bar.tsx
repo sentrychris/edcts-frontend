@@ -7,7 +7,9 @@ import { formatNumber } from "@/core/string-utils";
 import { getResource } from "@/core/api";
 import { statisticsState } from "../lib/state";
 import LatestSystem from "./latest-system";
-import PanelCorners from "@/components/panel-corners";
+import Panel from "@/components/panel";
+import Heading from "@/components/heading";
+import { cn } from "@/core/cn";
 
 interface Props {
   callInterval?: number;
@@ -68,17 +70,9 @@ const SystemsStatisticsBar: FunctionComponent<Props> = ({
   ];
 
   return (
-    <div className={"fx-panel-scan fx-border-breathe relative mb-4 border border-orange-900/20 bg-black/50 backdrop-blur backdrop-filter " + className}>
-      <PanelCorners className="z-10" />
+    <Panel variant="muted" className={cn("fx-panel-scan fx-border-breathe mb-4", className)} cornerClassName="z-10">
 
-      {/* Section header */}
-      <div className="flex items-center gap-3 border-b border-orange-900/20 px-5 py-4">
-        <i className="icarus-terminal-route text-glow__orange" style={{ fontSize: "1.25rem" }}></i>
-        <div className="flex-1">
-          <h2 className="text-glow__orange font-bold uppercase tracking-wide">Cartographic Database</h2>
-          <p className="text-xs uppercase tracking-wider text-neutral-500">Systems Intelligence</p>
-        </div>
-      </div>
+      <Heading bordered icon="icarus-terminal-route" title="Cartographic Database" subtitle="Systems Intelligence" className="px-5 py-4" />
 
       <div className="flex items-stretch divide-x divide-orange-900/20">
         {stats.map(({ icon, label, value }) => (
@@ -95,7 +89,7 @@ const SystemsStatisticsBar: FunctionComponent<Props> = ({
           <LatestSystem className="text-xs" />
         </div>
       </div>
-    </div>
+    </Panel>
   );
 };
 

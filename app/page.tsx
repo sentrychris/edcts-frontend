@@ -5,7 +5,7 @@ import GalnetList from "./galnet/components/galnet-sidebar";
 import SystemsTable from "./systems/components/systems-table";
 import SystemsStatisticsBar from "./systems/components/systems-statistics-bar";
 import ShipDisplay from "@/components/ship-display";
-import PanelCorners from "@/components/panel-corners";
+import Panel from "@/components/panel";
 
 export default async function Home() {
   const news = await getCollection<Galnet>("galnet/news", {
@@ -23,8 +23,7 @@ export default async function Home() {
   return (
     <>
       {/* ── System Masthead ── */}
-      <div className="fx-border-breathe relative mb-3 border border-orange-900/40 bg-black/50 backdrop-blur backdrop-filter px-8 py-4">
-        <PanelCorners size="lg" />
+      <Panel className="fx-border-breathe mb-3 px-8 py-4" corners="lg">
 
         {/* Status row */}
         <div className="mb-6 flex flex-wrap items-center justify-between gap-2 text-xs uppercase tracking-widest text-neutral-600">
@@ -63,7 +62,7 @@ export default async function Home() {
           </span>
           <span className="h-px flex-1 bg-neutral-800"></span>
         </div>
-      </div>
+      </Panel>
 
       {/* ── Content Grid ── */}
       <div className="grid grid-cols-1 gap-x-5 md:grid-cols-2 lg:grid-cols-3">

@@ -136,7 +136,7 @@ const SidebarAudio = ({ articles }: Props) => {
 
           <button
             onClick={toggle}
-            className="flex h-8 w-8 items-center justify-center border border-orange-900/60 text-glow__orange transition-all hover:border-orange-500 hover:bg-orange-900/20"
+            className="flex h-8 w-8 items-center justify-center border border-orange-900/40 text-glow__orange transition-all hover:border-orange-500 hover:bg-orange-900/20"
             aria-label={isPlaying ? "Pause" : "Play"}
           >
             {isPlaying ? (

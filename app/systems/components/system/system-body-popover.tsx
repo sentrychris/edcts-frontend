@@ -6,6 +6,7 @@ import type { SystemBodyRing, MappedSystemBody } from "@/core/interfaces/SystemB
 import type SystemMap from "../../lib/system-map";
 import { XMarkIcon, CheckIcon } from "@heroicons/react/24/outline";
 import PanelCorners from "@/components/panel-corners";
+import SectionHeader from "@/components/section-header";
 import { SystemBodyType } from "@/core/constants/system";
 import { formatDate, formatNumber } from "@/core/string-utils";
 import Link from "next/link";
@@ -32,12 +33,6 @@ const StatRow = ({ label, value }: StatRowProps) => (
 const Yes = () => <span className="text-green-400">Yes</span>;
 const No = () => <span className="text-red-400/80">No</span>;
 
-const SectionHeader = ({ icon, title }: { icon: string; title: string }) => (
-  <div className="mb-3 flex items-center gap-2 border-b border-orange-900/20 pb-2.5 text-xs uppercase tracking-widest text-neutral-600">
-    <i className={`${icon} text-orange-500/50`}></i>
-    <span>{title}</span>
-  </div>
-);
 
 const MIN_WIDTH = 260;
 const MIN_HEIGHT = 200;

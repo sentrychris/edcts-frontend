@@ -2,7 +2,7 @@ import type { Metadata, ResolvingMetadata } from "next";
 import { settings } from "@/core/config";
 import StationDetail from "../components/station/station-detail";
 import StationMarket from "../components/station/station-market";
-import PanelCorners from "@/components/panel-corners";
+import Panel from "@/components/panel";
 
 interface Props {
   params: {
@@ -30,8 +30,7 @@ export default async function Page({ params }: { params: { slug: string } }) {
   return (
     <>
       {/* ── Logistics Terminal ── */}
-      <div className="relative mb-5 border border-orange-900/40 bg-black/50 backdrop-blur backdrop-filter px-6 py-4">
-        <PanelCorners />
+      <Panel className="mb-5 px-6 py-4">
 
         <div className="flex flex-wrap items-center justify-between gap-2 text-xs uppercase tracking-widest text-neutral-600">
           <div className="flex items-center gap-4">
@@ -46,7 +45,7 @@ export default async function Page({ params }: { params: { slug: string } }) {
             <span>BEACON: ACTIVE</span>
           </div>
         </div>
-      </div>
+      </Panel>
 
       <StationDetail params={params} />
       <StationMarket slug={params.slug} />

@@ -3,8 +3,7 @@
 import type { FunctionComponent } from "react";
 import type { Galnet } from "@/core/interfaces/Galnet";
 import type { Pagination } from "@/core/interfaces/Pagination";
-import { useState } from "react";
-import { getCollection } from "@/core/api";
+import { usePaginatedCollection } from "@/core/hooks/paginated-collection";
 import PaginationLinks from "@/components/pagination-links";
 import Link from "next/link";
 
@@ -13,17 +12,7 @@ interface Props {
 }
 
 const GalnetList: FunctionComponent<Props> = ({ articles }) => {
-  const { data, meta, links } = articles;
-  const [rows, setRows] = useState(data);
-  const [metadata, setMetadata] = useState(meta);
-  const [navigation, setNavigation] = useState(links);
-
-  const paginate = async (link: string) => {
-    const { data, meta, links } = await getCollection<Galnet>(link);
-    setRows(data);
-    setMetadata(meta);
-    setNavigation(links);
-  };
+  const { rows, meta, links, paginate } = usePaginatedCollection<Galnet>(articles);
 
   return (
     <>
@@ -59,7 +48,7 @@ const GalnetList: FunctionComponent<Props> = ({ articles }) => {
       </div>
 
       <div className="py-4">
-        <PaginationLinks metadata={metadata} links={navigation} paginate={paginate} />
+        <PaginationLinks metadata={meta} links={links} paginate={paginate} />
       </div>
     </>
   );

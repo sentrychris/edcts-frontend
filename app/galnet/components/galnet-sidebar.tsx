@@ -4,7 +4,9 @@ import { useState, type FunctionComponent } from "react";
 import type { Pagination } from "@/core/interfaces/Pagination";
 import type { Galnet } from "@/core/interfaces/Galnet";
 import Link from "next/link";
-import PanelCorners from "@/components/panel-corners";
+import Panel from "@/components/panel";
+import Heading from "@/components/heading";
+import { cn } from "@/core/cn";
 
 interface Props {
   className?: string;
@@ -32,23 +34,16 @@ const GalnetSidebar: FunctionComponent<Props> = ({ className, articles }) => {
   const totalSlices = Math.ceil(articles.data.length / itemsPerSlice);
 
   return (
-    <div className={"fx-border-breathe relative border border-orange-900/20 bg-black/50 backdrop-blur backdrop-filter " + (className ?? "")}>
-      {/* Corner bracket accents */}
-      <PanelCorners className="z-10" />
+    <Panel variant="muted" className={cn("fx-border-breathe", className)} cornerClassName="z-10">
 
       <div className="p-4">
         {/* Section header */}
-        <div className="mb-4 flex items-center gap-3 border-b border-orange-900/20 pb-4">
-          <i className="icarus-terminal-notifications text-glow__orange" style={{ fontSize: "1.25rem" }}></i>
-          <div className="flex-1">
-            <h2 className="text-glow__orange font-bold uppercase tracking-wide">Galnet Comms</h2>
-            <p className="text-xs uppercase tracking-wider text-neutral-500">Uplink Channel</p>
-          </div>
+        <Heading bordered icon="icarus-terminal-notifications" title="Galnet Comms" subtitle="Uplink Channel" className="mb-4 pb-4">
           <span className="flex items-center gap-1.5 text-xs uppercase tracking-wider text-neutral-500">
             <span className="fx-dot-orange h-1.5 w-1.5"></span>
             Live
           </span>
-        </div>
+        </Heading>
 
       {slicedArticles.map((article, i) => (
         <div key={article.id} className="group relative border-b border-orange-900/20 py-4">
@@ -98,7 +93,7 @@ const GalnetSidebar: FunctionComponent<Props> = ({ className, articles }) => {
         </button>
       </div>
       </div>
-    </div>
+    </Panel>
   );
 };
 

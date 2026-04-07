@@ -7,6 +7,7 @@ import type { Links, Meta } from "@/core/interfaces/Pagination";
 import { formatDate, formatNumber } from "@/core/string-utils";
 import Link from "next/link";
 import Table from "@/components/table";
+import Heading from "@/components/heading";
 
 type SystemStar = Required<MappedSystemBody>;
 
@@ -162,13 +163,7 @@ const SystemStarsTable: FunctionComponent<Props> = ({ stars, dispatcher }) => {
   };
 
   const header = (
-    <div className="flex items-center gap-3 border-b border-orange-900/20 px-5 py-4">
-      <i className="icarus-terminal-star text-glow__orange" style={{ fontSize: "1.25rem" }}></i>
-      <div>
-        <h2 className="text-glow__orange font-bold uppercase tracking-wide">Main Sequence Stars</h2>
-        <p className="text-xs uppercase tracking-wider text-neutral-500">Stellar Classification Data</p>
-      </div>
-    </div>
+    <Heading bordered icon="icarus-terminal-star" title="Main Sequence Stars" subtitle="Stellar Classification Data" className="px-5 py-4" />
   );
 
   return (

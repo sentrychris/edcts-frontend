@@ -3,9 +3,9 @@
 import type { FunctionComponent } from "react";
 import type { System } from "@/core/interfaces/System";
 import type { MappedSystemBody } from "@/core/interfaces/SystemBody";
-import { useEffect, useState } from "react";
+import { useMemo, useState } from "react";
 import { systemDispatcher } from "@/core/events/SystemDispatcher";
-import { getResource } from "@/core/api";
+import { useResource } from "@/core/hooks/resource";
 import { systemState } from "../../lib/state";
 import Loader from "@/components/loader";
 import TrackSystemVisit from "@/components/sidebar/track-system-visit";
@@ -23,33 +23,16 @@ interface Props {
 }
 
 const SystemDetail: FunctionComponent<Props> = ({ params }) => {
-  const [system, setSystem] = useState<System>(systemState);
-  const [isLoading, setLoading] = useState<boolean>(true);
-  const [systemMap, setSystemMap] = useState<SystemMap>();
+  const { slug } = params;
+  const { data, isLoading } = useResource<System>(`systems/${slug}`, {
+    withInformation: 1,
+    withBodies: 1,
+    withStations: 1,
+  });
+  const system = data ?? systemState;
+  const systemMap = useMemo(() => (data ? new SystemMap(data) : undefined), [data]);
   const [selectedBody, setSelectedBody] = useState<MappedSystemBody | null>(null);
   const [isPanelOpen, setIsPanelOpen] = useState<boolean>(false);
-  const { slug } = params;
-
-  useEffect(() => {
-    if (slug) {
-      getResource<System>(`systems/${slug}`, {
-        params: {
-          withInformation: 1,
-          withBodies: 1,
-          withStations: 1,
-        },
-      })
-        .then((response) => {
-          const { data: system } = response;
-
-          setSystem(system);
-          setSystemMap(new SystemMap(system));
-        })
-        .finally(() => {
-          setLoading(false);
-        });
-    }
-  }, [slug]);
 
   return (
     <>

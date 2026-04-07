@@ -4,7 +4,7 @@ import { settings } from "@/core/config";
 import { getCollection, getResource } from "@/core/api";
 import dynamic from "next/dynamic";
 import GalnetSidebar from "../../components/galnet-sidebar";
-import PanelCorners from "@/components/panel-corners";
+import Panel from "@/components/panel";
 
 const GalnetArticle = dynamic(() => import("../../components/galnet-article"), {
   ssr: false,
@@ -60,8 +60,7 @@ export default async function Page({ params }: { params: { slug: string } }) {
   return (
     <>
       {/* ── Galnet Terminal status bar ── */}
-      <div className="relative mb-5 border border-orange-900/40 bg-black/50 backdrop-blur backdrop-filter px-6 py-4">
-        <PanelCorners />
+      <Panel className="mb-5 px-6 py-4">
 
         <div className="flex flex-wrap items-center justify-between gap-2 text-xs uppercase tracking-widest text-neutral-600">
           <div className="flex items-center gap-4">
@@ -76,7 +75,7 @@ export default async function Page({ params }: { params: { slug: string } }) {
             <span>UPLINK: ACTIVE</span>
           </div>
         </div>
-      </div>
+      </Panel>
 
       <div className="grid grid-cols-12 gap-5">
         {/* ── Sidebar ── */}

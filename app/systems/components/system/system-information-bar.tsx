@@ -1,7 +1,7 @@
 import type { FunctionComponent } from "react";
 import type { SystemInformation } from "@/core/interfaces/System";
 import { formatNumber } from "@/core/string-utils";
-import { renderAllegianceText, renderSecurityText } from "../../lib/render-utils";
+import { renderAllegianceText, renderSecurityText } from "@/core/render-utils";
 
 interface Props {
   information: SystemInformation;

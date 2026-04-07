@@ -2,42 +2,18 @@
 
 import type { FunctionComponent } from "react";
 import type { Station } from "@/core/interfaces/Station";
-import { useEffect, useState } from "react";
-import { getResource } from "@/core/api";
+import { useResource } from "@/core/hooks/resource";
 import Loader from "@/components/loader";
 import Link from "next/link";
 import { CheckIcon, XMarkIcon } from "@heroicons/react/24/outline";
-import { stationIconByType, renderAllegianceText } from "@/app/systems/lib/render-utils";
+import { stationIconByType, renderAllegianceText } from "@/core/render-utils";
 import { formatDate, formatNumber } from "@/core/string-utils";
-import PanelCorners from "@/components/panel-corners";
+import Panel from "@/components/panel";
+import Heading from "@/components/heading";
 
 interface Props {
   params: { slug: string };
 }
-
-const stationState: Station = {
-  id: 0,
-  name: "",
-  type: "",
-  body: null,
-  distance_to_arrival: 0,
-  controlling_faction: "",
-  allegiance: "",
-  government: "",
-  economy: "",
-  second_economy: null,
-  has_market: false,
-  has_shipyard: false,
-  has_outfitting: false,
-  other_services: [],
-  last_updated: {
-    information: null,
-    market: null,
-    shipyard: null,
-    outfitting: null,
-  },
-  slug: "",
-};
 
 const coreServices = [
   { label: "Market", key: "has_market" as const },
@@ -52,18 +28,11 @@ interface PanelProps {
   children: React.ReactNode;
 }
 
-const Panel = ({ icon, title, subtitle, children }: PanelProps) => (
-  <div className="relative border border-orange-900/40 bg-black/50 backdrop-blur backdrop-filter">
-    <PanelCorners />
-    <div className="flex items-center gap-3 border-b border-orange-900/20 px-5 py-4">
-      <i className={`${icon} text-glow__orange`} style={{ fontSize: "1.25rem" }}></i>
-      <div>
-        <h3 className="text-glow__orange font-bold uppercase tracking-wide">{title}</h3>
-        {subtitle && <p className="text-xs uppercase tracking-wider text-neutral-500">{subtitle}</p>}
-      </div>
-    </div>
+const StationPanel = ({ icon, title, subtitle, children }: PanelProps) => (
+  <Panel>
+    <Heading bordered icon={icon} title={title} subtitle={subtitle} className="px-5 py-4" />
     <div className="px-5 py-4">{children}</div>
-  </div>
+  </Panel>
 );
 
 const StatRow = ({ label, children }: { label: string; children: React.ReactNode }) => (
@@ -74,33 +43,17 @@ const StatRow = ({ label, children }: { label: string; children: React.ReactNode
 );
 
 const StationDetail: FunctionComponent<Props> = ({ params }) => {
-  const [station, setStation] = useState<Station>(stationState);
-  const [isLoading, setLoading] = useState<boolean>(true);
   const { slug } = params;
-
-  useEffect(() => {
-    if (slug) {
-      getResource<Station>(`stations/${slug}`, {
-        params: { withSystem: 1 },
-      })
-        .then((response) => {
-          setStation(response.data);
-        })
-        .finally(() => {
-          setLoading(false);
-        });
-    }
-  }, [slug]);
+  const { data: station, isLoading } = useResource<Station>(`stations/${slug}`, { withSystem: 1 });
 
   return (
     <>
       {isLoading && <Loader visible={isLoading} />}
 
-      {!isLoading && (
+      {!isLoading && station && (
         <div className="space-y-5 text-xs uppercase tracking-wider">
           {/* ── Station Masthead ── */}
-          <div className="relative border border-orange-900/40 bg-black/50 backdrop-blur backdrop-filter px-6 py-6">
-            <PanelCorners size="lg" />
+          <Panel className="px-6 py-6" corners="lg">
 
             <div className="flex items-center gap-4">
               <i
@@ -131,11 +84,11 @@ const StationDetail: FunctionComponent<Props> = ({ params }) => {
               </span>
               <span className="h-px flex-1 bg-neutral-800"></span>
             </div>
-          </div>
+          </Panel>
 
           {/* ── Station Details + Controlling Faction ── */}
           <div className="grid grid-cols-1 gap-5 md:grid-cols-2">
-            <Panel
+            <StationPanel
               icon={stationIconByType(station.type)}
               title="Station Details"
               subtitle="Docking & Navigation"
@@ -151,9 +104,9 @@ const StationDetail: FunctionComponent<Props> = ({ params }) => {
                   {formatNumber(station.distance_to_arrival)} LS
                 </StatRow>
               )}
-            </Panel>
+            </StationPanel>
 
-            <Panel
+            <StationPanel
               icon="icarus-terminal-system-authority-solid"
               title="Controlling Faction"
               subtitle="Political Authority"
@@ -169,11 +122,11 @@ const StationDetail: FunctionComponent<Props> = ({ params }) => {
               <StatRow label="Government">
                 {station.government || "Unknown"}
               </StatRow>
-            </Panel>
+            </StationPanel>
           </div>
 
           {/* ── Economy ── */}
-          <Panel icon="icarus-terminal-economy" title="Economy" subtitle="Trade & Commerce">
+          <StationPanel icon="icarus-terminal-economy" title="Economy" subtitle="Trade & Commerce">
             <div className="grid grid-cols-1 gap-x-8 md:grid-cols-2">
               <StatRow label="Primary Economy">
                 {station.economy || "None"}
@@ -184,10 +137,10 @@ const StationDetail: FunctionComponent<Props> = ({ params }) => {
                 </StatRow>
               )}
             </div>
-          </Panel>
+          </StationPanel>
 
           {/* ── Services ── */}
-          <Panel icon="icarus-terminal-outpost" title="Services" subtitle="Available Facilities">
+          <StationPanel icon="icarus-terminal-outpost" title="Services" subtitle="Available Facilities">
             <div className="space-y-5">
               <div>
                 <p className="mb-3 text-xs uppercase tracking-widest text-neutral-600">Core Services</p>
@@ -220,7 +173,7 @@ const StationDetail: FunctionComponent<Props> = ({ params }) => {
                 </div>
               )}
             </div>
-          </Panel>
+          </StationPanel>
         </div>
       )}
     </>

@@ -1,7 +1,8 @@
 "use client";
 
 import { type FunctionComponent, useState } from "react";
-import PanelCorners from "./panel-corners";
+import Panel from "./panel";
+import Heading from "./heading";
 
 const SHIP_SYSTEMS = [
   { id: "shields", label: "SHIELDS", icon: "icarus-terminal-shield", defaultActive: true },
@@ -20,26 +21,20 @@ const ShipDisplay: FunctionComponent = () => {
   };
 
   return (
-    <div className="fx-border-breathe relative border border-orange-900/20 bg-black/50 backdrop-blur backdrop-filter">
-      <PanelCorners className="z-10" />
+    <Panel variant="muted" className="fx-border-breathe" cornerClassName="z-10">
 
       <div className="p-4">
         {/* Section header */}
-        <div className="mb-4 flex items-center gap-3 border-b border-orange-900/20 pb-4">
-          <i className="icarus-terminal-scan text-glow__orange" style={{ fontSize: "1.25rem" }}></i>
-          <div className="flex-1">
-            <h2 className="text-glow__orange font-bold uppercase tracking-wide">Ship Profile</h2>
-            <p className="text-xs uppercase tracking-wider text-neutral-500">Cobra Mk III — Holographic</p>
-          </div>
+        <Heading bordered icon="icarus-terminal-scan" title="Ship Profile" subtitle="Cobra Mk III — Holographic" className="mb-4 pb-4">
           <span className="flex items-center gap-1.5 text-xs uppercase tracking-wider text-neutral-500">
             <span className="fx-dot-orange h-1.5 w-1.5"></span>
             Active
           </span>
-        </div>
+        </Heading>
 
         {/* Holographic viewport */}
         <div
-          className="fx-panel-scan relative mb-4 overflow-hidden border border-orange-900/30 bg-black/80"
+          className="fx-panel-scan relative mb-4 overflow-hidden border border-orange-900/20 bg-black/80"
           style={{ height: "220px" }}
         >
           {/* Faint grid overlay */}
@@ -247,7 +242,7 @@ const ShipDisplay: FunctionComponent = () => {
           })}
         </div>
       </div>
-    </div>
+    </Panel>
   );
 };
 

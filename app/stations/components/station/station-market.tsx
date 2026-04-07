@@ -8,6 +8,9 @@ import Loader from "@/components/loader";
 import Filter from "@/components/filter";
 import Table from "@/components/table";
 import { formatDate, formatNumber } from "@/core/string-utils";
+import Heading from "@/components/heading";
+import { cn } from "@/core/cn";
+import { prettifyName, stockBracketLabel } from "@/app/stations/lib/market-utils";
 
 const PER_PAGE = 15;
 
@@ -41,16 +44,6 @@ interface Props {
 
 type MarketView = "all" | "for_sale" | "in_demand";
 
-function prettifyName(name: string): string {
-  return name.replace(/([A-Z]+)([A-Z][a-z])/g, "$1 $2").replace(/([a-z])([A-Z])/g, "$1 $2");
-}
-
-function stockBracketLabel(bracket: number): string {
-  if (bracket === 1) return "Low";
-  if (bracket === 2) return "Med";
-  if (bracket === 3) return "High";
-  return "—";
-}
 
 const StationMarket: FunctionComponent<Props> = ({ slug }) => {
   const [market, setMarket] = useState<MarketData | null>(null);
@@ -175,26 +168,21 @@ const StationMarket: FunctionComponent<Props> = ({ slug }) => {
   };
 
   const tabClass = (tab: MarketView) =>
-    "whitespace-nowrap px-4 py-2.5 text-xs font-bold uppercase tracking-widest border transition-colors " +
-    (view === tab
-      ? "border-orange-500/60 text-glow__orange bg-orange-900/20"
-      : "border-orange-900/20 text-neutral-500 hover:border-neutral-600 hover:text-neutral-300");
+    cn(
+      "whitespace-nowrap px-4 py-2.5 text-xs font-bold uppercase tracking-widest border transition-colors",
+      view === tab
+        ? "border-orange-500/60 text-glow__orange bg-orange-900/20"
+        : "border-orange-900/20 text-neutral-500 hover:border-neutral-600 hover:text-neutral-300",
+    );
 
   const marketHeader = (
-    <div className="flex items-center justify-between gap-3 border-b border-orange-900/20 px-5 py-4">
-      <div className="flex items-center gap-3">
-        <i className="icarus-terminal-cargo text-glow__orange" style={{ fontSize: "1.25rem" }}></i>
-        <div>
-          <h2 className="text-glow__orange font-bold uppercase tracking-wide">Market Data</h2>
-          <p className="text-xs uppercase tracking-wider text-neutral-500">Commodity Exchange</p>
-        </div>
-      </div>
+    <Heading bordered icon="icarus-terminal-cargo" title="Market Data" subtitle="Commodity Exchange" className="px-5 py-4">
       {market?.last_updated && (
         <span className="text-xs uppercase tracking-widest text-neutral-600">
           Updated {formatDate(market.last_updated)}
         </span>
       )}
-    </div>
+    </Heading>
   );
 
   return (

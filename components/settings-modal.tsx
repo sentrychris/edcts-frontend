@@ -243,7 +243,7 @@ const SettingsModal: FunctionComponent<Props> = ({ onClose }) => {
         <PanelCorners className="z-10" />
 
         {/* Header — sticky */}
-        <div className="sticky top-0 z-10 flex items-center gap-3 border-b border-orange-900/30 bg-black/95 px-5 py-4">
+        <div className="sticky top-0 z-10 flex items-center gap-3 border-b border-orange-900/20 bg-black/95 px-5 py-4">
           <i className="icarus-terminal-settings text-glow__orange text-lg" />
           <div className="flex-1">
             <h2 className="text-glow__orange text-sm font-bold uppercase tracking-widest">Interface Settings</h2>
@@ -368,7 +368,7 @@ const SettingsModal: FunctionComponent<Props> = ({ onClose }) => {
           </p>
           <button
             onClick={reset}
-            className="flex items-center gap-1.5 border border-orange-900/30 px-3 py-1.5 text-xs uppercase tracking-widest text-neutral-600 transition-all duration-150 hover:border-orange-500/40 hover:text-orange-400"
+            className="flex items-center gap-1.5 border border-orange-900/20 px-3 py-1.5 text-xs uppercase tracking-widest text-neutral-600 transition-all duration-150 hover:border-orange-500/40 hover:text-orange-400"
           >
             <i className="icarus-terminal-sync text-xs" />
             Reset

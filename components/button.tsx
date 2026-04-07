@@ -34,7 +34,7 @@ const Button: FunctionComponent<Props> = ({
       spinnerClasses = "fill-red-600 text-white";
       break;
     case "elite":
-      themeClasses = "fx-btn-sweep fx-btn-sweep--elite border border-orange-900/60 bg-transparent text-glow__orange hover:border-orange-500 hover:text-orange-300";
+      themeClasses = "fx-btn-sweep fx-btn-sweep--elite border border-orange-900/40 bg-transparent text-glow__orange hover:border-orange-500 hover:text-orange-300";
       spinnerClasses = "fill-orange-500 text-neutral-700";
       break;
     default:

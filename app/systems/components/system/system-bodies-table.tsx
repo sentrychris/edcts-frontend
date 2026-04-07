@@ -7,6 +7,7 @@ import { formatDate } from "@/core/string-utils";
 import Link from "next/link";
 import Table from "@/components/table";
 import type { Links, Meta } from "@/core/interfaces/Pagination";
+import Heading from "@/components/heading";
 
 type SystemBody = Required<MappedSystemBody>;
 
@@ -161,13 +162,7 @@ const SystemBodiesTable: FunctionComponent<Props> = ({ bodies, systemSlug }) => 
   };
 
   const header = (
-    <div className="flex items-center gap-3 border-b border-orange-900/20 px-5 py-4">
-      <i className="icarus-terminal-system-orbits text-glow__orange" style={{ fontSize: "1.25rem" }}></i>
-      <div>
-        <h2 className="text-glow__orange font-bold uppercase tracking-wide">Orbital Bodies</h2>
-        <p className="text-xs uppercase tracking-wider text-neutral-500">Planetary Survey Records</p>
-      </div>
-    </div>
+    <Heading bordered icon="icarus-terminal-system-orbits" title="Orbital Bodies" subtitle="Planetary Survey Records" className="px-5 py-4" />
   );
 
   return <Table header={header} columns={columns} data={rows} meta={meta} links={links} page={handlePage} />;

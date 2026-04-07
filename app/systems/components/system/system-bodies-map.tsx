@@ -11,7 +11,7 @@ import { systemDispatcher } from "@/core/events/SystemDispatcher";
 import Link from "next/link";
 import SystemBodySVG from "./system-body-svg";
 import SystemMapStatistics from "./system-map-statistics";
-import { stationIconByType } from "../../lib/render-utils";
+import { stationIconByType } from "@/core/render-utils";
 
 interface Props {
   systemMap: SystemMap;

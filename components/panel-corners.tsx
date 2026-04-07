@@ -1,4 +1,5 @@
 import { memo } from "react";
+import { cn } from "@/core/cn";
 
 interface Props {
   /** Corner size: sm = h-3 w-3, md = h-4 w-4 (default), lg = h-5 w-5 */
@@ -17,8 +18,8 @@ const sizes: Record<NonNullable<Props["size"]>, string> = {
   lg: "h-5 w-5",
 };
 
-const PanelCorners = ({ size = "md", color = "border-orange-500", bottom = true, className = "" }: Props) => {
-  const base = `pointer-events-none absolute ${sizes[size]} ${color}${className ? ` ${className}` : ""}`;
+const PanelCorners = ({ size = "md", color = "border-orange-500", bottom = true, className }: Props) => {
+  const base = cn("pointer-events-none absolute", sizes[size], color, className);
 
   return (
     <>
