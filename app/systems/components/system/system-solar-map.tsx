@@ -171,6 +171,18 @@ function scaleOrbitRadius(au: number, maxAu: number): number {
   return 55 + t * 345;
 }
 
+// Orbit radius for bodies that orbit a planet (moons, sub-moons …).
+// Uses semi_major_axis (AU) and maps to a tighter pixel range so moons
+// appear close to — but clearly separated from — their parent body.
+function scaleChildOrbitRadius(sma: number): number {
+  if (sma <= 0) return 20;
+  const logMin = Math.log(0.0003);
+  const logMax = Math.log(0.3);
+  const logVal = Math.log(sma);
+  const t = Math.min(1, Math.max(0, (logVal - logMin) / (logMax - logMin)));
+  return 20 + t * 60; // 20 – 80 px before zoom
+}
+
 // ─── Canvas drawing helpers ───────────────────────────────────────────────────
 
 function drawStarfield(ctx: CanvasRenderingContext2D, w: number, h: number): void {
@@ -220,10 +232,11 @@ function drawOrbitRing(
   orbitPx: number,
   yScale: number,
   zoom: number,
+  isChild: boolean = false,
 ): void {
   ctx.beginPath();
   ctx.ellipse(cx, cy, orbitPx * zoom, orbitPx * yScale * zoom, 0, 0, Math.PI * 2);
-  ctx.strokeStyle = "rgba(250,150,0,0.13)";
+  ctx.strokeStyle = isChild ? "rgba(250,150,0,0.07)" : "rgba(250,150,0,0.13)";
   ctx.setLineDash([3, 9]);
   ctx.lineWidth = 0.8;
   ctx.stroke();
@@ -396,6 +409,7 @@ interface OrbitalBody {
   isBlackHole: boolean;
   textureKey: string | null;
   texOffset: number; // px: fixed random offset for planets, base for star animation
+  parentIndex: number; // -1 = orbits canvas centre; ≥0 = index of parent in array
 }
 
 interface Props {
@@ -493,46 +507,68 @@ const SystemSolarMap: FunctionComponent<Props> = ({ params }) => {
       .finally(() => setLoading(false));
   }, [slug]);
 
-  // Build orbital bodies list once system data is loaded
+  // Build orbital bodies list once system data is loaded.
+  // Uses a recursive DFS over each star's _children tree so that moons and
+  // sub-moons are included and orbit their correct parent body.
   useEffect(() => {
     if (!systemMap) return;
 
-    const allBodies: MappedSystemBody[] = [
+    // maxAu is computed from star-orbiting bodies only (top-level scale).
+    const starOrbitingBodies = [
       ...systemMap.stars.filter((s) => s._type !== SystemBodyType.Null),
       ...systemMap.planets.filter((p) => p._orbits_star),
     ];
-
-    const maxAu = allBodies.reduce(
+    const maxAu = starOrbitingBodies.reduce(
       (max, b) => Math.max(max, (b.distance_to_arrival ?? 0) / 499, b.semi_major_axis ?? 0),
       0.1,
     );
 
-    orbitalBodiesRef.current = allBodies.map((body) => {
+    const result: OrbitalBody[] = [];
+
+    function addBody(body: MappedSystemBody, parentIndex: number, orbitsStar: boolean): void {
+      if (body._type === SystemBodyType.Null) return;
+
       const isMainStar = body.is_main_star === 1 && body._type === SystemBodyType.Star;
       const isBlackHole = body.sub_type?.toLowerCase().includes("black hole") ?? false;
 
-      const dtaAu = (body.distance_to_arrival ?? 0) / 499;
-      const au = dtaAu > 0 ? dtaAu : (body.semi_major_axis ?? 0);
+      let orbitPx: number;
+      if (isMainStar) {
+        orbitPx = 0;
+      } else if (orbitsStar) {
+        const dtaAu = (body.distance_to_arrival ?? 0) / 499;
+        const au = dtaAu > 0 ? dtaAu : (body.semi_major_axis ?? 0);
+        orbitPx = scaleOrbitRadius(au, maxAu);
+      } else {
+        orbitPx = scaleChildOrbitRadius(body.semi_major_axis ?? 0);
+      }
 
-      const orbitPx = isMainStar ? 0 : scaleOrbitRadius(au, maxAu);
       const period = body.orbital_period && body.orbital_period > 0 ? body.orbital_period : 365;
-      const angularVelocity = (2 * Math.PI) / period;
+      const idx = result.length;
 
-      return {
+      result.push({
         body,
         orbitPx,
         startAngle: Math.random() * Math.PI * 2,
-        angularVelocity,
+        angularVelocity: (2 * Math.PI) / period,
         color: getBodyColor(body),
         displayRadius: getDisplayRadius(body, isMainStar),
         isMainStar,
         isBlackHole,
         textureKey: getTextureKey(body),
-        // Stars: seed is 0 (animation drives the scroll).
-        // Planets: random fixed offset so each body shows a different texture region.
         texOffset: isMainStar ? 0 : Math.random() * 512,
-      };
-    });
+        parentIndex,
+      });
+
+      for (const child of body._children ?? []) {
+        addBody(child, idx, body._type === SystemBodyType.Star);
+      }
+    }
+
+    for (const star of systemMap.stars.filter((s) => s._type !== SystemBodyType.Null)) {
+      addBody(star, -1, true);
+    }
+
+    orbitalBodiesRef.current = result;
   }, [systemMap]);
 
   // Draw starfield on background canvas
@@ -571,27 +607,43 @@ const SystemSolarMap: FunctionComponent<Props> = ({ params }) => {
     const bodies = orbitalBodiesRef.current;
     const selected = selectedBodyRef.current;
 
-    type PositionedBody = { ob: OrbitalBody; x: number; y: number };
-    const positioned: PositionedBody[] = bodies.map((ob) => {
+    // Pass 1 – compute screen positions in DFS order (parents always precede children)
+    const xs = new Array<number>(bodies.length);
+    const ys = new Array<number>(bodies.length);
+    for (let i = 0; i < bodies.length; i++) {
+      const ob = bodies[i];
       const angle = ob.startAngle + ob.angularVelocity * timeRef.current;
-      const x = cx + ob.orbitPx * Math.cos(angle) * zoom;
-      const y = cy + ob.orbitPx * Math.sin(angle) * yScale * zoom;
-      return { ob, x, y };
-    });
-
-    for (const { ob } of positioned) {
-      if (ob.orbitPx > 0) {
-        drawOrbitRing(ctx, cx, cy, ob.orbitPx, yScale, zoom);
+      const dx = ob.orbitPx * Math.cos(angle) * zoom;
+      const dy = ob.orbitPx * Math.sin(angle) * yScale * zoom;
+      if (ob.parentIndex === -1) {
+        xs[i] = cx + dx;
+        ys[i] = cy + dy;
+      } else {
+        xs[i] = xs[ob.parentIndex] + dx;
+        ys[i] = ys[ob.parentIndex] + dy;
       }
     }
 
-    positioned.sort((a, b) => a.y - b.y);
+    // Pass 2 – draw orbit rings (moon rings centred on their parent's screen position)
+    for (let i = 0; i < bodies.length; i++) {
+      const ob = bodies[i];
+      if (ob.orbitPx <= 0) continue;
+      if (ob.parentIndex === -1) {
+        drawOrbitRing(ctx, cx, cy, ob.orbitPx, yScale, zoom, false);
+      } else {
+        drawOrbitRing(ctx, xs[ob.parentIndex], ys[ob.parentIndex], ob.orbitPx, yScale, zoom, true);
+      }
+    }
 
-    for (const { ob, x, y } of positioned) {
+    // Pass 3 – painter's sort by Y then draw bodies
+    const order = bodies.map((_, i) => i).sort((a, b) => ys[a] - ys[b]);
+    for (const i of order) {
+      const ob = bodies[i];
+      const x = xs[i];
+      const y = ys[i];
       const isSelected = selected !== null && ob.body.id64 === selected.id64;
       const scaledRadius = ob.displayRadius * Math.max(0.6, zoom);
       const texture = ob.textureKey ? (texturesRef.current[ob.textureKey] ?? null) : null;
-      // Stars scroll based on sim-time; planets use their fixed random offset
       const texScrollX = ob.isMainStar ? timeRef.current * 1.5 + ob.texOffset : ob.texOffset;
       drawBody(ctx, x, y, scaledRadius, ob.color, isSelected, ob.isMainStar, ob.isBlackHole, texture, texScrollX);
 
@@ -650,14 +702,20 @@ const SystemSolarMap: FunctionComponent<Props> = ({ params }) => {
 
     let closestBody: MappedSystemBody | null = null;
     let closestDist = Infinity;
+    const bodies = orbitalBodiesRef.current;
+    const xs = new Array<number>(bodies.length);
+    const ys = new Array<number>(bodies.length);
 
-    for (const ob of orbitalBodiesRef.current) {
+    for (let i = 0; i < bodies.length; i++) {
+      const ob = bodies[i];
       const angle = ob.startAngle + ob.angularVelocity * timeRef.current;
-      const x = cx + ob.orbitPx * Math.cos(angle) * zoom;
-      const y = cy + ob.orbitPx * Math.sin(angle) * yScale * zoom;
-      const hitRadius = Math.max(14, ob.displayRadius * Math.max(0.6, zoom) + 4);
-      const dist = Math.hypot(clickX - x, clickY - y);
+      const dx = ob.orbitPx * Math.cos(angle) * zoom;
+      const dy = ob.orbitPx * Math.sin(angle) * yScale * zoom;
+      xs[i] = ob.parentIndex === -1 ? cx + dx : xs[ob.parentIndex] + dx;
+      ys[i] = ob.parentIndex === -1 ? cy + dy : ys[ob.parentIndex] + dy;
 
+      const hitRadius = Math.max(14, ob.displayRadius * Math.max(0.6, zoom) + 4);
+      const dist = Math.hypot(clickX - xs[i], clickY - ys[i]);
       if (dist < hitRadius && dist < closestDist) {
         closestDist = dist;
         closestBody = ob.body;
