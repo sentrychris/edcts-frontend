@@ -183,6 +183,35 @@ function scaleChildOrbitRadius(sma: number): number {
   return 20 + t * 60; // 20 – 80 px before zoom
 }
 
+// ─── Kepler orbital mechanics ────────────────────────────────────────────────
+// Solve Kepler's equation M = E - e·sin(E) via Newton-Raphson iteration.
+// Returns eccentric anomaly E given mean anomaly M and eccentricity e.
+function solveKepler(M: number, e: number): number {
+  if (e < 0.001) return M;
+  let E = M;
+  for (let i = 0; i < 12; i++) {
+    const dE = (M - E + e * Math.sin(E)) / (1 - e * Math.cos(E));
+    E += dE;
+    if (Math.abs(dE) < 1e-8) break;
+  }
+  return E;
+}
+
+// Convert eccentric anomaly E to true anomaly ν.
+function trueAnomaly(E: number, e: number): number {
+  return 2 * Math.atan2(Math.sqrt(1 + e) * Math.sin(E / 2), Math.sqrt(1 - e) * Math.cos(E / 2));
+}
+
+// Compute normalised (unit semi-major-axis) orbital position (x, y) given
+// mean anomaly M, eccentricity e, and argument of periapsis ω (radians).
+// Returns [x, y] in the ecliptic plane before inclination is applied.
+function keplerPosition(M: number, e: number, omega: number): [number, number] {
+  const E = solveKepler(M, e);
+  const nu = trueAnomaly(E, e);
+  const r = 1 - e * Math.cos(E); // normalised radius (semi-major = 1)
+  return [r * Math.cos(nu + omega), r * Math.sin(nu + omega)];
+}
+
 // ─── Canvas drawing helpers ───────────────────────────────────────────────────
 
 function drawStarfield(ctx: CanvasRenderingContext2D, w: number, h: number): void {
@@ -233,9 +262,21 @@ function drawOrbitRing(
   yScale: number,
   zoom: number,
   isChild: boolean = false,
+  eccentricity: number = 0,
+  argOfPeriapsis: number = 0,
+  inclination: number = 0,
 ): void {
+  const bodyYScale = Math.cos(inclination) * yScale;
+  // Sample the orbital path via mean anomaly so eccentric orbits render correctly
+  const N = 96;
   ctx.beginPath();
-  ctx.ellipse(cx, cy, orbitPx * zoom, orbitPx * yScale * zoom, 0, 0, Math.PI * 2);
+  for (let k = 0; k <= N; k++) {
+    const M = (k / N) * Math.PI * 2;
+    const [xOrb, yOrb] = keplerPosition(M, eccentricity, argOfPeriapsis);
+    const sx = cx + xOrb * orbitPx * zoom;
+    const sy = cy + yOrb * orbitPx * bodyYScale * zoom;
+    if (k === 0) ctx.moveTo(sx, sy); else ctx.lineTo(sx, sy);
+  }
   ctx.strokeStyle = isChild ? "rgba(250,150,0,0.07)" : "rgba(250,150,0,0.13)";
   ctx.setLineDash([3, 9]);
   ctx.lineWidth = 0.8;
@@ -410,6 +451,9 @@ interface OrbitalBody {
   textureKey: string | null;
   texOffset: number; // px: fixed random offset for planets, base for star animation
   parentIndex: number; // -1 = orbits canvas centre; ≥0 = index of parent in array
+  eccentricity: number; // 0–<1
+  inclination: number; // radians
+  argOfPeriapsis: number; // radians
 }
 
 interface Props {
@@ -427,12 +471,19 @@ const SystemSolarMap: FunctionComponent<Props> = ({ params }) => {
 
   // Animation state via refs (avoids stale closure in RAF)
   const isPausedRef = useRef<boolean>(false);
-  const speedRef = useRef<number>(1);
+  const speedRef = useRef<number>(20);
   const zoomRef = useRef<number>(1);
   const tiltRef = useRef<number>(0.5); // cos of viewing elevation
   const timeRef = useRef<number>(0);
   const lastFrameRef = useRef<number>(0);
   const selectedBodyRef = useRef<MappedSystemBody | null>(null);
+
+  // Pan state — refs for the RAF loop, matching pattern of other anim state
+  const panXRef = useRef<number>(0);
+  const panYRef = useRef<number>(0);
+  const isDraggingRef = useRef<boolean>(false);
+  const dragStartRef = useRef<{ x: number; y: number; panX: number; panY: number } | null>(null);
+  const hasDraggedRef = useRef<boolean>(false);
 
   const [system, setSystem] = useState<System>(systemState);
   const [systemMap, setSystemMap] = useState<SystemMap | null>(null);
@@ -471,9 +522,10 @@ const SystemSolarMap: FunctionComponent<Props> = ({ params }) => {
     };
   }, []);
   const [isPaused, setIsPaused] = useState<boolean>(false);
-  const [speed, setSpeed] = useState<number>(1);
+  const [speed, setSpeed] = useState<number>(20);
   const [zoom, setZoom] = useState<number>(1);
   const [tiltDeg, setTiltDeg] = useState<number>(60);
+  const [isDragging, setIsDragging] = useState<boolean>(false);
 
   const { slug } = params;
 
@@ -542,7 +594,39 @@ const SystemSolarMap: FunctionComponent<Props> = ({ params }) => {
         orbitPx = scaleChildOrbitRadius(body.semi_major_axis ?? 0);
       }
 
-      const period = body.orbital_period && body.orbital_period > 0 ? body.orbital_period : 365;
+      // Period resolution — several data quality issues to handle:
+      //
+      // 1. BARYCENTER DATA (e.g. Pluto/Charon in Sol):
+      //    orbital_period=6.39d, semi_major_axis=1e-5 AU (offset from mutual barycenter),
+      //    but distance_to_arrival=20518 ls (≈41 AU from star). The stored orbital data
+      //    is relative to the local barycenter, not the star. Detect this when
+      //    semi_major_axis << distance_to_arrival/499 and use Kepler from DTA instead.
+      //
+      // 2. RETROGRADE ORBITS (e.g. Triton): orbital_period is stored negative.
+      //    Use Math.abs().
+      //
+      // 3. MISSING PERIOD: estimate via Kepler's third law from the best available
+      //    distance value (semi_major_axis, then distance_to_arrival).
+      const dtaAu = (body.distance_to_arrival ?? 0) / 499;
+      const sma = body.semi_major_axis ?? 0;
+      const rawPeriod = body.orbital_period ? Math.abs(body.orbital_period) : 0;
+
+      let period: number;
+      if (rawPeriod > 0) {
+        const isBarycenterData = orbitsStar && dtaAu > 0 && sma > 0 && sma < dtaAu / 100;
+        period = isBarycenterData
+          ? Math.pow(dtaAu, 1.5) * 365.25  // Kepler from heliocentric distance
+          : rawPeriod;
+      } else {
+        // No period stored — estimate via Kepler's third law.
+        // For star-orbiting: prefer sma when plausibly heliocentric, else use dta.
+        const keplerAu = orbitsStar
+          ? (sma > 0 && sma >= dtaAu / 100 ? sma : dtaAu > 0 ? dtaAu : 1)
+          : (sma > 0 ? sma : 0.001);
+        period = orbitsStar
+          ? Math.pow(keplerAu, 1.5) * 365.25
+          : Math.pow(keplerAu, 1.5) * 11550; // moon: assumes ~Jupiter-mass parent
+      }
       const idx = result.length;
 
       result.push({
@@ -557,6 +641,9 @@ const SystemSolarMap: FunctionComponent<Props> = ({ params }) => {
         textureKey: getTextureKey(body),
         texOffset: isMainStar ? 0 : Math.random() * 512,
         parentIndex,
+        eccentricity: Math.min(0.99, Math.max(0, body.orbital_eccentricity ?? 0)),
+        inclination: ((body.orbital_inclination ?? 0) * Math.PI) / 180,
+        argOfPeriapsis: ((body.arg_of_periapsis ?? 0) * Math.PI) / 180,
       });
 
       for (const child of body._children ?? []) {
@@ -595,13 +682,13 @@ const SystemSolarMap: FunctionComponent<Props> = ({ params }) => {
     lastFrameRef.current = timestamp;
 
     if (!isPausedRef.current && dt > 0 && dt < 0.5) {
-      timeRef.current += dt * speedRef.current * 10;
+      timeRef.current += dt * speedRef.current; // sim-days per real-second
     }
 
     ctx.clearRect(0, 0, canvas.width, canvas.height);
 
-    const cx = canvas.width / 2;
-    const cy = canvas.height / 2;
+    const cx = canvas.width / 2 + panXRef.current;
+    const cy = canvas.height / 2 + panYRef.current;
     const yScale = tiltRef.current;
     const zoom = zoomRef.current;
     const bodies = orbitalBodiesRef.current;
@@ -612,9 +699,11 @@ const SystemSolarMap: FunctionComponent<Props> = ({ params }) => {
     const ys = new Array<number>(bodies.length);
     for (let i = 0; i < bodies.length; i++) {
       const ob = bodies[i];
-      const angle = ob.startAngle + ob.angularVelocity * timeRef.current;
-      const dx = ob.orbitPx * Math.cos(angle) * zoom;
-      const dy = ob.orbitPx * Math.sin(angle) * yScale * zoom;
+      const M = ob.startAngle + ob.angularVelocity * timeRef.current;
+      const [xOrb, yOrb] = keplerPosition(M, ob.eccentricity, ob.argOfPeriapsis);
+      const bodyYScale = Math.cos(ob.inclination) * yScale;
+      const dx = ob.orbitPx * xOrb * zoom;
+      const dy = ob.orbitPx * yOrb * bodyYScale * zoom;
       if (ob.parentIndex === -1) {
         xs[i] = cx + dx;
         ys[i] = cy + dy;
@@ -629,9 +718,9 @@ const SystemSolarMap: FunctionComponent<Props> = ({ params }) => {
       const ob = bodies[i];
       if (ob.orbitPx <= 0) continue;
       if (ob.parentIndex === -1) {
-        drawOrbitRing(ctx, cx, cy, ob.orbitPx, yScale, zoom, false);
+        drawOrbitRing(ctx, cx, cy, ob.orbitPx, yScale, zoom, false, ob.eccentricity, ob.argOfPeriapsis, ob.inclination);
       } else {
-        drawOrbitRing(ctx, xs[ob.parentIndex], ys[ob.parentIndex], ob.orbitPx, yScale, zoom, true);
+        drawOrbitRing(ctx, xs[ob.parentIndex], ys[ob.parentIndex], ob.orbitPx, yScale, zoom, true, ob.eccentricity, ob.argOfPeriapsis, ob.inclination);
       }
     }
 
@@ -686,17 +775,17 @@ const SystemSolarMap: FunctionComponent<Props> = ({ params }) => {
     return () => observer.disconnect();
   }, [drawBg]);
 
-  // Click to select body
-  const handleCanvasClick = useCallback((e: React.MouseEvent<HTMLCanvasElement>) => {
+  // Body selection (shared between click and pointer-up after no drag)
+  const selectBodyAtClientPos = useCallback((clientX: number, clientY: number) => {
     const canvas = canvasRef.current;
     if (!canvas) return;
 
     const rect = canvas.getBoundingClientRect();
-    const clickX = (e.clientX - rect.left) * (canvas.width / rect.width);
-    const clickY = (e.clientY - rect.top) * (canvas.height / rect.height);
+    const clickX = (clientX - rect.left) * (canvas.width / rect.width);
+    const clickY = (clientY - rect.top) * (canvas.height / rect.height);
 
-    const cx = canvas.width / 2;
-    const cy = canvas.height / 2;
+    const cx = canvas.width / 2 + panXRef.current;
+    const cy = canvas.height / 2 + panYRef.current;
     const yScale = tiltRef.current;
     const zoom = zoomRef.current;
 
@@ -708,9 +797,11 @@ const SystemSolarMap: FunctionComponent<Props> = ({ params }) => {
 
     for (let i = 0; i < bodies.length; i++) {
       const ob = bodies[i];
-      const angle = ob.startAngle + ob.angularVelocity * timeRef.current;
-      const dx = ob.orbitPx * Math.cos(angle) * zoom;
-      const dy = ob.orbitPx * Math.sin(angle) * yScale * zoom;
+      const M = ob.startAngle + ob.angularVelocity * timeRef.current;
+      const [xOrb, yOrb] = keplerPosition(M, ob.eccentricity, ob.argOfPeriapsis);
+      const bodyYScale = Math.cos(ob.inclination) * yScale;
+      const dx = ob.orbitPx * xOrb * zoom;
+      const dy = ob.orbitPx * yOrb * bodyYScale * zoom;
       xs[i] = ob.parentIndex === -1 ? cx + dx : xs[ob.parentIndex] + dx;
       ys[i] = ob.parentIndex === -1 ? cy + dy : ys[ob.parentIndex] + dy;
 
@@ -724,6 +815,37 @@ const SystemSolarMap: FunctionComponent<Props> = ({ params }) => {
 
     setSelectedBody(closestBody);
   }, []);
+
+  // Pan — pointer events distinguish drag from click
+  const handlePointerDown = useCallback((e: React.PointerEvent<HTMLCanvasElement>) => {
+    isDraggingRef.current = true;
+    hasDraggedRef.current = false;
+    dragStartRef.current = { x: e.clientX, y: e.clientY, panX: panXRef.current, panY: panYRef.current };
+    setIsDragging(true);
+    (e.target as HTMLCanvasElement).setPointerCapture(e.pointerId);
+  }, []);
+
+  const handlePointerMove = useCallback((e: React.PointerEvent<HTMLCanvasElement>) => {
+    if (!isDraggingRef.current || !dragStartRef.current) return;
+    const dx = e.clientX - dragStartRef.current.x;
+    const dy = e.clientY - dragStartRef.current.y;
+    if (Math.hypot(dx, dy) > 4) hasDraggedRef.current = true;
+    panXRef.current = dragStartRef.current.panX + dx;
+    panYRef.current = dragStartRef.current.panY + dy;
+  }, []);
+
+  const handlePointerUp = useCallback((e: React.PointerEvent<HTMLCanvasElement>) => {
+    if (!isDraggingRef.current) return;
+    isDraggingRef.current = false;
+    setIsDragging(false);
+    dragStartRef.current = null;
+    if (!hasDraggedRef.current) selectBodyAtClientPos(e.clientX, e.clientY);
+  }, [selectBodyAtClientPos]);
+
+  const handleResetPan = () => {
+    panXRef.current = 0;
+    panYRef.current = 0;
+  };
 
   const handleZoom = (delta: number) => {
     const next = Math.max(0.3, Math.min(3, zoomRef.current + delta));
@@ -762,8 +884,11 @@ const SystemSolarMap: FunctionComponent<Props> = ({ params }) => {
       {/* Solar system canvas */}
       <canvas
         ref={canvasRef}
-        className="absolute inset-0 h-full w-full cursor-crosshair"
-        onClick={handleCanvasClick}
+        className={`absolute inset-0 h-full w-full ${isDragging ? "cursor-grabbing" : "cursor-grab"}`}
+        onPointerDown={handlePointerDown}
+        onPointerMove={handlePointerMove}
+        onPointerUp={handlePointerUp}
+        onPointerLeave={handlePointerUp}
       />
 
       {/* ── HUD corner brackets on canvas viewport ── */}
@@ -876,7 +1001,7 @@ const SystemSolarMap: FunctionComponent<Props> = ({ params }) => {
             {/* Speed */}
             <div className="flex items-center gap-1.5">
               <span className="text-xs uppercase tracking-widest text-neutral-600">Spd</span>
-              {([0.1, 0.5, 1, 5, 20] as const).map((s) => (
+              {([1, 5, 20, 100, 500] as const).map((s) => (
                 <button
                   key={s}
                   onClick={() => handleSpeed(s)}
@@ -925,6 +1050,15 @@ const SystemSolarMap: FunctionComponent<Props> = ({ params }) => {
                 +
               </button>
             </div>
+
+            {/* Reset pan */}
+            <button
+              onClick={handleResetPan}
+              className="border border-orange-900/20 px-2 py-0.5 text-xs uppercase tracking-wider text-neutral-600 hover:border-orange-900/40 hover:text-neutral-400"
+              title="Re-centre map"
+            >
+              ⌖ Centre
+            </button>
 
             {/* Tilt */}
             <div className="hidden items-center gap-2 sm:flex">
