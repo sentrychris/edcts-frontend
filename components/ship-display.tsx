@@ -3,6 +3,7 @@
 import { type FunctionComponent, useState } from "react";
 import Panel from "./panel";
 import Heading from "./heading";
+import { cn } from "@/core/cn";
 
 const SHIP_SYSTEMS = [
   { id: "shields", label: "SHIELDS", icon: "icarus-terminal-shield", defaultActive: true },
@@ -221,11 +222,7 @@ const ShipDisplay: FunctionComponent = () => {
               >
                 {/* LED indicator */}
                 <span
-                  className="h-1.5 w-1.5 flex-shrink-0 rounded-full transition-all duration-200"
-                  style={{
-                    backgroundColor: isActive ? "rgb(249,115,22)" : "rgb(60,35,15)",
-                    boxShadow: isActive ? "0 0 5px rgb(249,115,22), 0 0 10px rgba(249,115,22,0.4)" : "none",
-                  }}
+                  className={cn("h-1.5 w-1.5 flex-shrink-0 rounded-full transition-all duration-200", isActive ? "fx-dot-green" : "bg-orange-500/50")}
                 />
                 <i
                   className={`${system.icon} flex-shrink-0 transition-colors duration-200`}
