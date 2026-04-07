@@ -22,7 +22,7 @@ export default async function Home() {
   return (
     <>
       {/* ── System Masthead ── */}
-      <div className="fx-border-breathe relative mb-3 border border-orange-900/40 bg-black/50 backdrop-blur backdrop-filter px-8 py-8">
+      <div className="fx-border-breathe relative mb-3 border border-orange-900/40 bg-black/50 backdrop-blur backdrop-filter px-8 py-4">
         {/* Corner bracket accents */}
         <span className="absolute -left-px -top-px h-5 w-5 border-l-2 border-t-2 border-orange-500" />
         <span className="absolute -right-px -top-px h-5 w-5 border-r-2 border-t-2 border-orange-500" />

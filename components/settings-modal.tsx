@@ -1,26 +1,16 @@
 "use client";
 
 import { type FunctionComponent, useEffect, useRef } from "react";
-import { useSettings, THEMES, type ThemeId } from "@/core/contexts/settings-context";
+import { useSettings, THEMES } from "@/core/contexts/settings-context";
 
 interface Props {
   onClose: () => void;
 }
 
-// Approximate preview colour for each theme's hue-rotate on orange-500 (#f97316)
-const THEME_PREVIEW_COLORS: Record<ThemeId, string> = {
-  commander: "rgb(249,115,22)",
-  cartograph: "rgb(22,200,180)",
-  viper:      "rgb(132,200,22)",
-  void:       "rgb(130,22,249)",
-  combat:     "rgb(249,22,72)",
-};
-
 const SettingsModal: FunctionComponent<Props> = ({ onClose }) => {
   const { settings, setTheme, toggleGreyscale, toggleCrt } = useSettings();
   const backdropRef = useRef<HTMLDivElement>(null);
 
-  // Close on Escape
   useEffect(() => {
     const handler = (e: KeyboardEvent) => {
       if (e.key === "Escape") onClose();
@@ -37,7 +27,7 @@ const SettingsModal: FunctionComponent<Props> = ({ onClose }) => {
         if (e.target === backdropRef.current) onClose();
       }}
     >
-      <div className="relative w-full max-w-md border border-orange-900/40 bg-black/90 backdrop-blur">
+      <div className="relative w-full max-w-lg border border-orange-900/40 bg-black/90 backdrop-blur">
         {/* Corner accents */}
         <span className="pointer-events-none absolute -left-px -top-px z-10 h-4 w-4 border-l-2 border-t-2 border-orange-500" />
         <span className="pointer-events-none absolute -right-px -top-px z-10 h-4 w-4 border-r-2 border-t-2 border-orange-500" />
@@ -60,55 +50,50 @@ const SettingsModal: FunctionComponent<Props> = ({ onClose }) => {
           </button>
         </div>
 
-        <div className="space-y-6 px-5 py-5">
-          {/* Theme selection */}
+        <div className="space-y-5 px-5 py-5">
+          {/* Theme grid */}
           <section>
             <h3 className="mb-3 text-xs font-bold uppercase tracking-widest text-neutral-500">
               Colour Theme
             </h3>
-            <div className="grid grid-cols-1 gap-2">
+            <div className="grid grid-cols-2 gap-2">
               {THEMES.map((theme) => {
                 const active = settings.themeId === theme.id;
-                const previewColor = THEME_PREVIEW_COLORS[theme.id];
+                const c = theme.preview;
                 return (
                   <button
                     key={theme.id}
                     onClick={() => setTheme(theme.id)}
-                    className="group flex items-center gap-3 border px-3 py-2.5 text-left transition-all duration-150"
+                    className="group flex items-center gap-2.5 border px-3 py-2.5 text-left transition-all duration-150"
                     style={{
-                      borderColor: active ? `${previewColor}70` : "rgba(60,40,20,0.4)",
-                      backgroundColor: active ? `${previewColor}12` : "transparent",
+                      borderColor: active ? `${c}70` : "rgba(60,40,20,0.4)",
+                      backgroundColor: active ? `${c}12` : "transparent",
                     }}
                   >
-                    {/* Colour swatch */}
+                    {/* Swatch */}
                     <span
-                      className="h-4 w-4 flex-shrink-0 rounded-sm"
+                      className="h-3.5 w-3.5 flex-shrink-0 rounded-sm"
                       style={{
-                        backgroundColor: previewColor,
-                        boxShadow: active
-                          ? `0 0 6px ${previewColor}, 0 0 14px ${previewColor}60`
-                          : "none",
-                        opacity: active ? 1 : 0.45,
+                        backgroundColor: c,
+                        boxShadow: active ? `0 0 5px ${c}, 0 0 12px ${c}55` : "none",
+                        opacity: active ? 1 : 0.4,
                       }}
                     />
-                    <span className="flex-1">
+                    <span className="min-w-0 flex-1">
                       <span
-                        className="block text-xs font-bold uppercase tracking-widest transition-colors"
-                        style={{ color: active ? previewColor : "rgb(100,80,60)" }}
+                        className="block truncate text-xs font-bold uppercase tracking-widest"
+                        style={{ color: active ? c : "rgb(100,80,60)" }}
                       >
                         {theme.label}
                       </span>
-                      <span className="block text-xs uppercase tracking-wider text-neutral-600">
+                      <span className="block truncate text-xs uppercase tracking-wider text-neutral-600">
                         {theme.description}
                       </span>
                     </span>
                     {active && (
                       <span
                         className="h-1.5 w-1.5 flex-shrink-0 rounded-full"
-                        style={{
-                          backgroundColor: previewColor,
-                          boxShadow: `0 0 5px ${previewColor}`,
-                        }}
+                        style={{ backgroundColor: c, boxShadow: `0 0 5px ${c}` }}
                       />
                     )}
                   </button>
