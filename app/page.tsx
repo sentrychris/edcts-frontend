@@ -4,6 +4,7 @@ import { getCollection } from "@/core/api";
 import GalnetList from "./galnet/components/galnet-sidebar";
 import SystemsTable from "./systems/components/systems-table";
 import SystemsStatisticsBar from "./systems/components/systems-statistics-bar";
+import ShipDisplay from "@/components/ship-display";
 
 export default async function Home() {
   const news = await getCollection<Galnet>("galnet/news", {
@@ -71,7 +72,8 @@ export default async function Home() {
       <div className="grid grid-cols-1 gap-x-5 md:grid-cols-2 lg:grid-cols-3">
         {/* ── Galnet Panel ── */}
         <div className="col-span-1 pt-3">
-          <GalnetList articles={news} />
+          <ShipDisplay />
+          <GalnetList className="mt-4" articles={news} />
         </div>
 
         {/* ── Systems Panel ── */}
