@@ -9,6 +9,7 @@ import Link from "next/link";
 import { CheckIcon, XMarkIcon } from "@heroicons/react/24/outline";
 import { stationIconByType, renderAllegianceText } from "@/app/systems/lib/render-utils";
 import { formatDate, formatNumber } from "@/core/string-utils";
+import PanelCorners from "@/components/panel-corners";
 
 interface Props {
   params: { slug: string };
@@ -53,10 +54,7 @@ interface PanelProps {
 
 const Panel = ({ icon, title, subtitle, children }: PanelProps) => (
   <div className="relative border border-orange-900/40 bg-black/50 backdrop-blur backdrop-filter">
-    <span className="pointer-events-none absolute -left-px -top-px h-4 w-4 border-l-2 border-t-2 border-orange-500" />
-    <span className="pointer-events-none absolute -right-px -top-px h-4 w-4 border-r-2 border-t-2 border-orange-500" />
-    <span className="pointer-events-none absolute -bottom-px -left-px h-4 w-4 border-b-2 border-l-2 border-orange-500" />
-    <span className="pointer-events-none absolute -bottom-px -right-px h-4 w-4 border-b-2 border-r-2 border-orange-500" />
+    <PanelCorners />
     <div className="flex items-center gap-3 border-b border-orange-900/20 px-5 py-4">
       <i className={`${icon} text-glow__orange`} style={{ fontSize: "1.25rem" }}></i>
       <div>
@@ -102,10 +100,7 @@ const StationDetail: FunctionComponent<Props> = ({ params }) => {
         <div className="space-y-5 text-xs uppercase tracking-wider">
           {/* ── Station Masthead ── */}
           <div className="relative border border-orange-900/40 bg-black/50 backdrop-blur backdrop-filter px-6 py-6">
-            <span className="absolute -left-px -top-px h-5 w-5 border-l-2 border-t-2 border-orange-500" />
-            <span className="absolute -right-px -top-px h-5 w-5 border-r-2 border-t-2 border-orange-500" />
-            <span className="absolute -bottom-px -left-px h-5 w-5 border-b-2 border-l-2 border-orange-500" />
-            <span className="absolute -bottom-px -right-px h-5 w-5 border-b-2 border-r-2 border-orange-500" />
+            <PanelCorners size="lg" />
 
             <div className="flex items-center gap-4">
               <i

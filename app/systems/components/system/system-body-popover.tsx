@@ -5,6 +5,7 @@ import type { SystemDispatcher } from "@/core/events/SystemDispatcher";
 import type { SystemBodyRing, MappedSystemBody } from "@/core/interfaces/SystemBody";
 import type SystemMap from "../../lib/system-map";
 import { XMarkIcon, CheckIcon } from "@heroicons/react/24/outline";
+import PanelCorners from "@/components/panel-corners";
 import { SystemBodyType } from "@/core/constants/system";
 import { formatDate, formatNumber } from "@/core/string-utils";
 import Link from "next/link";
@@ -152,9 +153,7 @@ const SystemBodyPopover: FunctionComponent<Props> = ({ body, system, dispatcher,
         }`}
         onMouseDown={onDragHandleMouseDown}
       >
-        {/* Corner bracket accents */}
-        <span className="pointer-events-none absolute -left-px -top-px h-4 w-4 border-l-2 border-t-2 border-orange-500" />
-        <span className="pointer-events-none absolute -right-px -top-px h-4 w-4 border-r-2 border-t-2 border-orange-500" />
+        <PanelCorners bottom={false} />
 
         <div className="flex items-start justify-between gap-3">
           <div className="flex min-w-0 items-center gap-3">

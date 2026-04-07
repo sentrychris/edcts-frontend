@@ -3,6 +3,7 @@
 import { useEffect, useRef, useState } from "react";
 import type { Galnet } from "@/core/interfaces/Galnet";
 import Link from "next/link";
+import PanelCorners from "@/components/panel-corners";
 
 interface Props {
   articles: Pick<Galnet, "title" | "slug" | "audio_file">[];
@@ -71,11 +72,7 @@ const SidebarAudio = ({ articles }: Props) => {
 
       {/* Player panel */}
       <div className="relative border border-orange-900/20 p-3">
-        {/* Corner brackets */}
-        <span className="pointer-events-none absolute -left-px -top-px h-3 w-3 border-l-2 border-t-2 border-orange-500/70" />
-        <span className="pointer-events-none absolute -right-px -top-px h-3 w-3 border-r-2 border-t-2 border-orange-500/70" />
-        <span className="pointer-events-none absolute -bottom-px -left-px h-3 w-3 border-b-2 border-l-2 border-orange-500/70" />
-        <span className="pointer-events-none absolute -bottom-px -right-px h-3 w-3 border-b-2 border-r-2 border-orange-500/70" />
+        <PanelCorners size="sm" color="border-orange-500/70" />
 
         {/* Track info */}
         <div className="mb-3 min-h-[2.5rem]">

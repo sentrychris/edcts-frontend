@@ -1,5 +1,6 @@
 import type { FunctionComponent } from "react";
 import type { System } from "@/core/interfaces/System";
+import PanelCorners from "@/components/panel-corners";
 
 interface Props {
   system: System;
@@ -9,11 +10,7 @@ interface Props {
 const SystemHeader: FunctionComponent<Props> = ({ system, special }) => {
   return (
     <div className="fx-border-breathe fx-panel-scan relative mb-5 border border-orange-900/40 bg-black/50 backdrop-blur backdrop-filter px-6 py-6">
-      {/* Corner bracket accents */}
-      <span className="absolute -left-px -top-px h-5 w-5 border-l-2 border-t-2 border-orange-500" />
-      <span className="absolute -right-px -top-px h-5 w-5 border-r-2 border-t-2 border-orange-500" />
-      <span className="absolute -bottom-px -left-px h-5 w-5 border-b-2 border-l-2 border-orange-500" />
-      <span className="absolute -bottom-px -right-px h-5 w-5 border-b-2 border-r-2 border-orange-500" />
+      <PanelCorners size="lg" />
 
       <div className="flex items-center justify-between uppercase">
         <div className="flex items-center gap-4">

@@ -3,6 +3,7 @@ import type { Galnet } from "@/core/interfaces/Galnet";
 import { settings } from "@/core/config";
 import { getCollection } from "@/core/api";
 import GalnetList from "./components/galnet-list";
+import PanelCorners from "@/components/panel-corners";
 
 interface Props {
   params: {
@@ -38,10 +39,7 @@ export default async function Page() {
     <>
       {/* ── Galnet Terminal status bar ── */}
       <div className="relative mb-5 border border-orange-900/40 bg-black/50 backdrop-blur backdrop-filter px-6 py-4">
-        <span className="absolute -left-px -top-px h-4 w-4 border-l-2 border-t-2 border-orange-500" />
-        <span className="absolute -right-px -top-px h-4 w-4 border-r-2 border-t-2 border-orange-500" />
-        <span className="absolute -bottom-px -left-px h-4 w-4 border-b-2 border-l-2 border-orange-500" />
-        <span className="absolute -bottom-px -right-px h-4 w-4 border-b-2 border-r-2 border-orange-500" />
+        <PanelCorners />
 
         <div className="flex flex-wrap items-center justify-between gap-2 text-xs uppercase tracking-widest text-neutral-600">
           <div className="flex items-center gap-4">
@@ -60,10 +58,7 @@ export default async function Page() {
 
       {/* ── Article list ── */}
       <div className="relative border border-orange-900/40 bg-black/50 backdrop-blur backdrop-filter">
-        <span className="pointer-events-none absolute -left-px -top-px h-4 w-4 border-l-2 border-t-2 border-orange-500" />
-        <span className="pointer-events-none absolute -right-px -top-px h-4 w-4 border-r-2 border-t-2 border-orange-500" />
-        <span className="pointer-events-none absolute -bottom-px -left-px h-4 w-4 border-b-2 border-l-2 border-orange-500" />
-        <span className="pointer-events-none absolute -bottom-px -right-px h-4 w-4 border-b-2 border-r-2 border-orange-500" />
+        <PanelCorners />
 
         <div className="flex items-center gap-3 border-b border-orange-900/20 px-5 py-4">
           <i className="icarus-terminal-notifications text-glow__orange" style={{ fontSize: "1.25rem" }}></i>

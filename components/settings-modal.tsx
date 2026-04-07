@@ -8,6 +8,7 @@ import {
   useRef,
 } from "react";
 import { useSettings, THEMES } from "@/core/contexts/settings-context";
+import PanelCorners from "@/components/panel-corners";
 
 interface Props {
   onClose: () => void;
@@ -239,11 +240,7 @@ const SettingsModal: FunctionComponent<Props> = ({ onClose }) => {
       onClick={(e) => { if (e.target === backdropRef.current) onClose(); }}
     >
       <div className="relative w-full max-w-xl max-h-[90vh] overflow-y-auto border border-orange-900/40 bg-black/90 backdrop-blur">
-        {/* Corner accents */}
-        <span className="pointer-events-none absolute -left-px -top-px z-10 h-4 w-4 border-l-2 border-t-2 border-orange-500" />
-        <span className="pointer-events-none absolute -right-px -top-px z-10 h-4 w-4 border-r-2 border-t-2 border-orange-500" />
-        <span className="pointer-events-none absolute -bottom-px -left-px z-10 h-4 w-4 border-b-2 border-l-2 border-orange-500" />
-        <span className="pointer-events-none absolute -bottom-px -right-px z-10 h-4 w-4 border-b-2 border-r-2 border-orange-500" />
+        <PanelCorners className="z-10" />
 
         {/* Header — sticky */}
         <div className="sticky top-0 z-10 flex items-center gap-3 border-b border-orange-900/30 bg-black/95 px-5 py-4">

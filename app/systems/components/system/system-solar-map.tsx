@@ -10,6 +10,7 @@ import { SystemBodyType } from "@/core/constants/system";
 import SystemMap from "../../lib/system-map";
 import { systemState } from "../../lib/state";
 import Loader from "@/components/loader";
+import PanelCorners from "@/components/panel-corners";
 
 // ─── Color utilities ──────────────────────────────────────────────────────────
 
@@ -1153,7 +1154,7 @@ const SystemSolarMap: FunctionComponent<Props> = ({ params }) => {
           className="fx-wipe-in absolute right-0 z-20 w-72 overflow-y-auto border-l border-orange-900/25 bg-black/88 backdrop-blur backdrop-filter"
           style={{ top: "82px", bottom: "42px" }}
         >
-          {/* Corner brackets */}
+          {/* Corner brackets — uses top-0/bottom-0 (not -px) because this panel has overflow-y-auto */}
           <span className="pointer-events-none absolute -left-px top-0 h-4 w-4 border-l-2 border-t-2 border-orange-500" />
           <span className="pointer-events-none absolute -right-px top-0 h-4 w-4 border-r-2 border-t-2 border-orange-500" />
           <span className="pointer-events-none absolute -left-px bottom-0 h-4 w-4 border-b-2 border-l-2 border-orange-500" />
@@ -1344,10 +1345,7 @@ const SystemSolarMap: FunctionComponent<Props> = ({ params }) => {
       {!isLoading && systemMap && systemMap.items.length === 0 && (
         <div className="absolute inset-0 flex items-center justify-center">
           <div className="relative border border-orange-900/30 bg-black/80 p-8 backdrop-blur backdrop-filter">
-            <span className="pointer-events-none absolute -left-px -top-px h-4 w-4 border-l-2 border-t-2 border-orange-500" />
-            <span className="pointer-events-none absolute -right-px -top-px h-4 w-4 border-r-2 border-t-2 border-orange-500" />
-            <span className="pointer-events-none absolute -bottom-px -left-px h-4 w-4 border-b-2 border-l-2 border-orange-500" />
-            <span className="pointer-events-none absolute -bottom-px -right-px h-4 w-4 border-b-2 border-r-2 border-orange-500" />
+            <PanelCorners />
             <div className="text-glow__orange mb-2 text-center text-sm font-bold uppercase tracking-widest">
               No Telemetry Available
             </div>

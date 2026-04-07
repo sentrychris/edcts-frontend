@@ -9,6 +9,7 @@ import { usePathname } from "next/navigation";
 import { getResource } from "@/core/api";
 import Link from "next/link";
 import Image from "next/image";
+import PanelCorners from "./panel-corners";
 
 const navItems = [
   { name: "Home", href: "/" },
@@ -111,11 +112,7 @@ const MainNavigation: FunctionComponent = () => {
                     leaveTo="transform opacity-0 scale-95"
                   >
                     <MenuItems className="absolute right-0 z-10 mt-2 w-52 origin-top-right border border-orange-900/40 bg-black/95 backdrop-blur focus:outline-none">
-                      {/* Corner bracket accents */}
-                      <div className="pointer-events-none absolute -left-px -top-px h-3 w-3 border-l-2 border-t-2 border-orange-500" />
-                      <div className="pointer-events-none absolute -right-px -top-px h-3 w-3 border-r-2 border-t-2 border-orange-500" />
-                      <div className="pointer-events-none absolute -bottom-px -left-px h-3 w-3 border-b-2 border-l-2 border-orange-500" />
-                      <div className="pointer-events-none absolute -bottom-px -right-px h-3 w-3 border-b-2 border-r-2 border-orange-500" />
+                      <PanelCorners size="sm" />
                       <MenuItem>
                         {({ active }) => (
                           <Link

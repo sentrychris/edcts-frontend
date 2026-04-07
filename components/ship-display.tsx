@@ -1,6 +1,7 @@
 "use client";
 
 import { type FunctionComponent, useState } from "react";
+import PanelCorners from "./panel-corners";
 
 const SHIP_SYSTEMS = [
   { id: "shields", label: "SHIELDS", icon: "icarus-terminal-shield", defaultActive: true },
@@ -20,11 +21,7 @@ const ShipDisplay: FunctionComponent = () => {
 
   return (
     <div className="fx-border-breathe relative border border-orange-900/20 bg-black/50 backdrop-blur backdrop-filter">
-      {/* Corner bracket accents */}
-      <span className="pointer-events-none absolute -left-px -top-px z-10 h-4 w-4 border-l-2 border-t-2 border-orange-500" />
-      <span className="pointer-events-none absolute -right-px -top-px z-10 h-4 w-4 border-r-2 border-t-2 border-orange-500" />
-      <span className="pointer-events-none absolute -bottom-px -left-px z-10 h-4 w-4 border-b-2 border-l-2 border-orange-500" />
-      <span className="pointer-events-none absolute -bottom-px -right-px z-10 h-4 w-4 border-b-2 border-r-2 border-orange-500" />
+      <PanelCorners className="z-10" />
 
       <div className="p-4">
         {/* Section header */}

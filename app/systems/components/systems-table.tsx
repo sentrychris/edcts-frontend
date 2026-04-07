@@ -8,6 +8,7 @@ import { getCollection } from "@/core/api";
 import { useDebounce } from "@/core/hooks/debounce";
 import { renderAllegianceText, renderSecurityText } from "../lib/render-utils";
 import Link from "next/link";
+import PanelCorners from "@/components/panel-corners";
 import Filter from "@/components/filter";
 import Table from "@/components/table";
 
@@ -181,10 +182,7 @@ const SystemsTable: FunctionComponent<Props> = ({ className = "", systems }) => 
     <div className={className}>
       {/* ── Query Panel ── */}
       <div className="relative mb-4 border border-orange-900/20 bg-black/50 backdrop-blur backdrop-filter">
-        <span className="absolute -left-px -top-px h-4 w-4 border-l-2 border-t-2 border-orange-500" />
-        <span className="absolute -right-px -top-px h-4 w-4 border-r-2 border-t-2 border-orange-500" />
-        <span className="absolute -bottom-px -left-px h-4 w-4 border-b-2 border-l-2 border-orange-500" />
-        <span className="absolute -bottom-px -right-px h-4 w-4 border-b-2 border-r-2 border-orange-500" />
+        <PanelCorners />
 
         <div className="flex items-center gap-3 border-b border-orange-900/20 px-4 py-3">
           <i className="icarus-terminal-route text-glow__orange" style={{ fontSize: "1.2rem" }}></i>
