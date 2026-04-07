@@ -75,7 +75,7 @@ export default async function RootLayout({ children }: { children: React.ReactNo
               <div className="relative z-10 flex h-screen flex-col overflow-hidden">
                 <NewsTicker articles={articles} />
                 <div className="flex min-h-0 flex-1">
-                  <Sidebar articles={articles} />
+                  <Sidebar articles={articles} user={session?.user ?? null} />
                   <main className="main-content min-w-0 flex-1 overflow-y-auto px-6 py-6 text-neutral-200 text-glow__white md:px-5">
                     {children}
                     <Footer />

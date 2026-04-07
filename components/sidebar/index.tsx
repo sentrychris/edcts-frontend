@@ -3,18 +3,21 @@
 import { type FunctionComponent, useEffect, useState } from "react";
 import { createPortal } from "react-dom";
 import type { Galnet } from "@/core/interfaces/Galnet";
+import type { SessionUser } from "@/core/interfaces/Auth";
 import SidebarNav from "./sidebar-nav";
 import SidebarAudio from "./sidebar-audio";
 import SidebarRecentSystems from "./sidebar-recent-systems";
+import SidebarUser from "./sidebar-user";
 import SettingsModal from "@/components/settings-modal";
 
 interface Props {
   articles: Pick<Galnet, "title" | "slug" | "audio_file">[];
+  user: SessionUser | null;
 }
 
 const STORAGE_KEY = "edcts_sidebar_collapsed";
 
-const Sidebar: FunctionComponent<Props> = ({ articles }) => {
+const Sidebar: FunctionComponent<Props> = ({ articles, user }) => {
   const [collapsed, setCollapsed] = useState(false);
   const [settingsOpen, setSettingsOpen] = useState(false);
 
@@ -57,6 +60,9 @@ const Sidebar: FunctionComponent<Props> = ({ articles }) => {
 
       {/* ── Navigation ── */}
       <SidebarNav collapsed={collapsed} />
+
+      {/* ── User / Commander ── */}
+      <SidebarUser user={user} collapsed={collapsed} />
 
       {/* ── Galnet Audio + Recent Systems (hidden when collapsed) ── */}
       {!collapsed && (
