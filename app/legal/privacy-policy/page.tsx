@@ -3,7 +3,7 @@ import Heading from "@/components/heading";
 export default async function Page() {
   return (
     <>
-      <div className="mt-4 grid grid-cols-1 bg-transparent backdrop-blur backdrop-filter">
+      <div className="p-5 grid grid-cols-1 bg-black/50 backdrop-blur backdrop-filter">
         <Heading
           icon="icarus-terminal-shield"
           iconSize="1.5rem"
@@ -64,7 +64,7 @@ export default async function Page() {
 
             <h3 className="my-4 mt-12 text-2xl">3. Google Analytics</h3>
             <p className="text mb-4">
-              We use Google Analytics to collect information about how users interact with our
+              We may use Google Analytics to collect information about how users interact with our
               website. This includes data such as:
             </p>
             <ul className="ms-8 list-disc">
@@ -277,7 +277,7 @@ export default async function Page() {
           </section>
 
           <footer className="footer mt-8">
-            <p className="text">Effective Date: 29th August 2024</p>
+            <p className="text">Effective Date: 08th April 2026</p>
           </footer>
         </div>
       </div>

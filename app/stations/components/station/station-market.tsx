@@ -119,7 +119,11 @@ const StationMarket: FunctionComponent<Props> = ({ slug }) => {
   const columns = {
     displayName: {
       title: "Commodity",
-      render: (c: Commodity) => <span className="text-glow__white">{c.displayName}</span>,
+      render: (c: Commodity) => <div className="flex items-center gap-2">
+        <i className="icarus-terminal-inventory text-glow__blue"></i>
+        <span className="text-glow__white">{c.displayName}</span>
+      </div>
+      ,
     },
     buyPrice: {
       title: "Buy Price",

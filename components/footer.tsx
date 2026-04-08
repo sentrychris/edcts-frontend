@@ -53,16 +53,9 @@ const Footer: FunctionComponent = () => {
             >
               Privacy Policy
             </Link>
-            <span className="text-neutral-700">■</span>
-            <Link
-              href="/legal/privacy-policy"
-              className="text-glow__orange transition-colors hover:text-orange-300"
-            >
-              Terms & Conditions
-            </Link>
           </div>
           <p className="text-neutral-600 text-center">
-            <span className="text-orange-500/60">Elite: Dangerous</span> © 2012–2026 Frontier Developments plc.
+            <span className="text-orange-500/60">Elite: Dangerous</span> © 2012 – {new Date().getFullYear()} Frontier Developments plc.
           </p>
           <p className="text-neutral-700 text-center">
             This website is not officially affiliated with or endorsed by Frontier Developments.
