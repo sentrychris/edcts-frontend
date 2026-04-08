@@ -59,7 +59,7 @@ const StationDetail: FunctionComponent<Props> = ({ params, initialData = null })
       {!loading && station && (
         <div className="space-y-5 text-xs uppercase tracking-wider">
           {/* ── Station Masthead ── */}
-          <Panel className="px-6 py-6" corners="lg">
+          <Panel className="px-4 py-4 md:px-6 md:py-6" corners="lg">
 
             <div className="flex items-center gap-4">
               <i

@@ -9,7 +9,7 @@ interface Props {
 
 const SystemHeader: FunctionComponent<Props> = ({ system, special }) => {
   return (
-    <Panel className="fx-border-breathe fx-panel-scan mb-5 px-6 py-6" corners="lg">
+    <Panel className="fx-border-breathe fx-panel-scan mb-5 px-4 py-4 md:px-6 md:py-6" corners="lg">
 
       <div className="flex items-center justify-between uppercase">
         <div className="flex items-center gap-4">

@@ -61,14 +61,14 @@ export default async function Page() {
   return (
     <>
       {/* ── Commander Terminal ── */}
-      <Panel className="mb-5 px-6 py-4">
+      <Panel className="mb-5 px-4 py-3 md:px-6 md:py-4">
         <div className="flex flex-wrap items-center justify-between gap-2 text-xs uppercase tracking-widest text-neutral-600">
-          <div className="flex items-center gap-4">
+          <div className="flex items-center gap-3">
             <span>MODULE:CMDR</span>
-            <span className="text-neutral-800">■</span>
-            <span>DATABASE:FRONTIER</span>
-            <span className="text-neutral-800">■</span>
-            <span>CLASS:RESTRICTED</span>
+            <span className="hidden sm:inline text-neutral-800">■</span>
+            <span className="hidden sm:inline">DATABASE:FRONTIER</span>
+            <span className="hidden md:inline text-neutral-800">■</span>
+            <span className="hidden md:inline">CLASS:RESTRICTED</span>
           </div>
           <div className="flex items-center gap-2">
             <span className="fx-dot-orange h-1.5 w-1.5"></span>

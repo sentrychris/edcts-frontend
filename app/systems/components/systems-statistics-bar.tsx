@@ -72,16 +72,16 @@ const SystemsStatisticsBar: FunctionComponent<Props> = ({
   return (
     <Panel variant="muted" className={cn("fx-panel-scan fx-border-breathe mb-4", className)} cornerClassName="z-10">
 
-      <Heading bordered icon="icarus-terminal-route" title="Cartographic Database" subtitle="Systems Intelligence" className="px-5 py-4" />
+      <Heading bordered icon="icarus-terminal-route" title="Cartographic Database" subtitle="Systems Intelligence" className="px-4 py-3 md:px-5 md:py-4" />
 
       <div className="flex items-stretch divide-x divide-orange-900/20">
         {stats.map(({ icon, label, value }) => (
-          <div key={label} className="flex flex-1 flex-col gap-2 px-5 py-4">
+          <div key={label} className="flex flex-1 flex-col gap-2 px-3 py-3 md:px-5 md:py-4">
             <div className="flex items-center gap-2 text-xs uppercase tracking-widest text-neutral-600">
               <i className={`${icon} text-orange-500/60`}></i>
               {label}
             </div>
-            <span className="fx-data-flicker text-glow__orange text-xl font-bold tracking-wide">{value}</span>
+            <span className="fx-data-flicker text-glow__orange text-base font-bold tracking-wide md:text-xl">{value}</span>
           </div>
         ))}
 

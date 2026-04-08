@@ -23,16 +23,16 @@ export default async function Home() {
   return (
     <>
       {/* ── System Masthead ── */}
-      <Panel className="fx-border-breathe mb-3 px-8 py-4" corners="lg">
+      <Panel className="fx-border-breathe mb-3 px-4 py-4 md:px-8" corners="lg">
 
         {/* Status row */}
         <div className="mb-6 flex flex-wrap items-center justify-between gap-2 text-xs uppercase tracking-widest text-neutral-600">
-          <div className="flex items-center gap-4">
+          <div className="flex items-center gap-3 flex-wrap">
             <span>SYS:EDCS-001</span>
-            <span className="text-neutral-800">■</span>
-            <span>SECTOR:CORE SYSTEMS</span>
-            <span className="text-neutral-800">■</span>
-            <span>CLASS:UNRESTRICTED</span>
+            <span className="hidden sm:inline text-neutral-800">■</span>
+            <span className="hidden sm:inline">SECTOR:CORE SYSTEMS</span>
+            <span className="hidden md:inline text-neutral-800">■</span>
+            <span className="hidden md:inline">CLASS:UNRESTRICTED</span>
           </div>
           <div className="flex items-center gap-2">
             <span className="fx-dot-green h-1.5 w-1.5"></span>
@@ -42,13 +42,13 @@ export default async function Home() {
 
         {/* Main title */}
         <div className="text-center">
-          <p className="mb-3 text-xs uppercase tracking-[0.5em] text-neutral-500">
+          <p className="mb-3 text-xs uppercase tracking-[0.2em] sm:tracking-[0.5em] text-neutral-500">
             frontier developments ── universal cartographics
           </p>
           <h1 className="text-glow__orange fx-glitch fx-holo-heading mb-3 text-3xl font-bold uppercase tracking-[0.2em] md:text-4xl">
             ED:CS Terminal
           </h1>
-          <p className="text-xs uppercase tracking-[0.35em] text-neutral-500">
+          <p className="text-xs uppercase tracking-[0.15em] sm:tracking-[0.35em] text-neutral-500">
             cartographic data ── galnet communications ── system intelligence
           </p>
         </div>
@@ -73,7 +73,7 @@ export default async function Home() {
         </div>
 
         {/* ── Systems Panel ── */}
-        <div className="col-span-1 hidden pt-3 md:block lg:col-span-2">
+        <div className="col-span-1 pt-3 lg:col-span-2">
           <SystemsStatisticsBar className="fx-fade-in" callInterval={10000} flushCache={0} />
           <SystemsTable systems={systems} />
         </div>

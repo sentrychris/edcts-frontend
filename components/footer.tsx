@@ -15,7 +15,7 @@ const Footer: FunctionComponent = () => {
     <footer className="border-t border-orange-900/20 bg-transparent backdrop-blur backdrop-filter mt-6">
 
       {/* ── Ship Status Readouts ── */}
-      <div className="scrollbar-hide lg:px-18 flex items-center gap-6 overflow-x-auto border-b border-orange-900/20 px-6 py-3 md:px-12">
+      <div className="scrollbar-hide lg:px-18 flex items-center gap-6 overflow-x-auto border-b border-orange-900/20 px-6 py-3 md:px-12 overflow-x-hidden">
         {statusReadouts.map(({ icon, label, color }) => (
           <div key={label} className="flex shrink-0 items-center gap-2 text-xs uppercase tracking-widest text-neutral-500">
             <span className={`h-1.5 w-1.5 ${color === "bg-orange-500" ? "fx-dot-orange" : "fx-dot-green"}`}></span>
@@ -26,10 +26,10 @@ const Footer: FunctionComponent = () => {
       </div>
 
       {/* ── Footer Body ── */}
-      <div className="grid grid-cols-3 gap-8 px-6 py-3">
+      <div className="grid grid-cols-1 gap-6 px-6 py-4 md:grid-cols-3 md:gap-8 md:py-3">
 
         {/* Left — System Identifier */}
-        <div className="flex flex-col gap-3 text-[0.65em]">
+        <div className="flex flex-col items-center gap-3 text-[0.65em] md:items-start">
           <div className="flex items-center gap-3">
             <i className="icarus-terminal-logo text-glow__orange text-2xl"></i>
             <div>
@@ -70,7 +70,7 @@ const Footer: FunctionComponent = () => {
         </div>
 
         {/* Right — Attribution + Data Sources */}
-        <div className="flex flex-col gap-3 text-[0.65em] uppercase tracking-widest items-end">
+        <div className="flex flex-col gap-3 text-[0.65em] uppercase tracking-widest items-center md:items-end">
           <div className="flex items-center gap-1 text-neutral-500">
             <i className="icarus-terminal-shield text-glow__orange"></i>
             <span>Made by</span>
