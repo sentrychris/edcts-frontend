@@ -9,6 +9,7 @@ import { auth } from "@/core/auth";
 import SvgFilters from "@/components/svg-filters";
 import MainBackground from "@/components/main-background";
 import Sidebar from "@/components/sidebar";
+import MobileNav from "@/components/mobile-nav";
 import NewsTicker from "./galnet/components/galnet-ticker";
 import Footer from "@/components/footer";
 import { SettingsProvider } from "@/core/contexts/settings-context";
@@ -75,6 +76,7 @@ export default async function RootLayout({ children }: { children: React.ReactNo
               <MainBackground />
               <div className="relative z-10 flex h-screen flex-col overflow-hidden">
                 <NewsTicker articles={articles} />
+                <MobileNav user={(session?.user as SessionUser) ?? null} />
                 <div className="flex min-h-0 flex-1">
                   <Sidebar articles={articles} user={(session?.user as SessionUser) ?? null} />
                   <main className="main-content min-w-0 flex-1 overflow-y-auto p-3 text-neutral-200 text-glow__white">
