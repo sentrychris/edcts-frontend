@@ -293,26 +293,10 @@ function makeGalaxyTexture(gl: WebGLRenderingContext): WebGLTexture {
     }
   };
 
-  drawArm(0.4,             1.00); // Sagittarius / Perseus analogue
-  drawArm(0.4 + Math.PI,  1.00); // opposite arm
-  drawArm(1.85,            0.52); // minor arm
-  drawArm(1.85 + Math.PI, 0.52); // minor arm opposite
-
-  // Galactic bar — elongated orange-gold ellipse, tilted
-  ctx.save();
-  ctx.translate(cx, cy);
-  ctx.rotate(0.52);
-  ctx.scale(2.55, 0.58);
-  const bar = ctx.createRadialGradient(0, 0, 0, 0, 0, SIZE * 0.138);
-  bar.addColorStop(0,    "rgba(255,210,85,0.80)");
-  bar.addColorStop(0.35, "rgba(235,148,42,0.48)");
-  bar.addColorStop(0.75, "rgba(195,88,18,0.16)");
-  bar.addColorStop(1,    "rgba(0,0,0,0)");
-  ctx.fillStyle = bar;
-  ctx.beginPath();
-  ctx.arc(0, 0, SIZE * 0.138, 0, Math.PI * 2);
-  ctx.fill();
-  ctx.restore();
+  drawArm(0.4,             0.02); // Sagittarius / Perseus analogue
+  drawArm(0.4 + Math.PI,   0.02); // opposite arm
+  drawArm(1.85,            0.01); // minor arm
+  drawArm(1.85 + Math.PI,  0.01); // minor arm opposite
 
   // Inner bulge — warm orange disk
   const bulge = ctx.createRadialGradient(cx, cy, 0, cx, cy, SIZE * 0.22);
