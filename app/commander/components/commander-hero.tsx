@@ -17,7 +17,7 @@ const CommanderHero: FunctionComponent<Props> = ({ profile }) => {
 
         {/* ── Avatar placeholder ── */}
         <div className="fx-chamfer relative flex h-24 w-24 shrink-0 items-center justify-center border border-orange-900/40 bg-black/60 md:h-32 md:w-32">
-          <i className="icarus-terminal-commander text-4xl text-orange-500/30 md:text-5xl"></i>
+          <i className="icarus-terminal-shield text-4xl text-orange-500/30 md:text-5xl"></i>
           <div className="absolute bottom-0 left-0 right-0 border-t border-orange-900/20 py-1 text-center text-[0.55rem] uppercase tracking-widest text-neutral-700">
             NO IMG
           </div>
@@ -28,7 +28,7 @@ const CommanderHero: FunctionComponent<Props> = ({ profile }) => {
           <Heading
             title={`CMDR ${commander.name}`}
             subtitle="Pilot Federation Registry"
-            icon="icarus-terminal-commander"
+            icon="icarus-terminal-shield"
             iconSize="1.4rem"
             bordered
             className="mb-4 pb-4"

@@ -156,7 +156,7 @@ export default async function Page({ params }: Props) {
 
           {/* Discovery */}
           <Panel variant="muted" className="fx-chamfer p-5">
-            <SectionHeader icon="icarus-terminal-commander" title="Discovery Record" />
+            <SectionHeader icon="icarus-terminal-scan" title="Discovery Record" />
             <StatRow label="Discovered By" value={<span className="text-glow__orange">CMDR {body.discovery?.commander ?? "Unknown"}</span>} />
             <StatRow label="Discovery Date" value={formatDate(body.discovery?.date)} />
           </Panel>

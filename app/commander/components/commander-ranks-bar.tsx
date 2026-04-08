@@ -19,8 +19,8 @@ const tiles: RankTile[] = [
   { key: "trade", label: "Trade", icon: "icarus-terminal-credits" },
   { key: "explore", label: "Exploration", icon: "icarus-terminal-route" },
   { key: "cqc", label: "CQC", icon: "icarus-terminal-target" },
-  { key: "empire", label: "Empire", icon: "icarus-terminal-commander" },
-  { key: "federation", label: "Federation", icon: "icarus-terminal-commander" },
+  { key: "empire", label: "Empire", icon: "icarus-terminal-shield" },
+  { key: "federation", label: "Federation", icon: "icarus-terminal-shield" },
   { key: "soldier", label: "Mercenary", icon: "icarus-terminal-target" },
   { key: "exobiologist", label: "Exobiology", icon: "icarus-terminal-planet" },
 ];

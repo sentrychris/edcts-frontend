@@ -28,7 +28,7 @@ const SidebarUser: FunctionComponent<Props> = ({ user, collapsed }) => {
             title={`CMDR ${user.commander?.name ?? user.name}`}
             aria-label="View commander"
           >
-            <i className="icarus-terminal-commander text-base"></i>
+            <i className="icarus-terminal-shield text-base"></i>
           </Link>
         ) : (
           <button
@@ -37,7 +37,7 @@ const SidebarUser: FunctionComponent<Props> = ({ user, collapsed }) => {
             title="Login with Frontier"
             aria-label="Login with Frontier"
           >
-            <i className="icarus-terminal-commander text-base"></i>
+            <i className="icarus-terminal-shield text-base"></i>
           </button>
         )}
       </div>
@@ -50,7 +50,7 @@ const SidebarUser: FunctionComponent<Props> = ({ user, collapsed }) => {
       <div className="shrink-0 border-b border-orange-900/20 px-4 py-4">
         {/* Header row */}
         <div className="mb-3 flex items-center gap-2 text-xs uppercase tracking-widest text-neutral-600">
-          <i className="icarus-terminal-commander text-orange-500/40 text-sm"></i>
+          <i className="icarus-terminal-shield text-orange-500/50 text-sm"></i>
           <span>Commander Identified</span>
           <span className="ml-auto flex items-center gap-1.5">
             <span className="fx-dot-green h-1.5 w-1.5"></span>
@@ -76,7 +76,7 @@ const SidebarUser: FunctionComponent<Props> = ({ user, collapsed }) => {
           href="/commander"
           className="fx-btn-sweep flex w-full items-center justify-center gap-2 border border-orange-900/40 py-2 text-xs font-bold uppercase tracking-widest text-orange-500/70 transition-colors hover:border-orange-500/60 hover:text-orange-400"
         >
-          <i className="icarus-terminal-commander text-xs"></i>
+          <i className="icarus-terminal-shield text-xs"></i>
           View CMDR
         </Link>
       </div>
@@ -88,7 +88,7 @@ const SidebarUser: FunctionComponent<Props> = ({ user, collapsed }) => {
     <div className="shrink-0 border-b border-orange-900/20 px-4 py-4">
       {/* Header row */}
       <div className="mb-3 flex items-center gap-2 text-xs uppercase tracking-widest text-neutral-600">
-        <i className="icarus-terminal-commander text-orange-500/20 text-sm"></i>
+        <i className="icarus-terminal-shield text-orange-500/20 text-sm"></i>
         <span>Commander</span>
         <span className="ml-auto flex items-center gap-1.5">
           <span className="h-1.5 w-1.5 rounded-full bg-neutral-800"></span>

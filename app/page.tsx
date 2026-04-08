@@ -57,7 +57,7 @@ export default async function Home() {
         <div className="mt-6 flex items-center gap-6 border-t border-orange-900/20  pt-4 text-xs uppercase tracking-widest text-neutral-700">
           <span className="h-px flex-1 bg-neutral-800"></span>
           <span className="flex items-center gap-2">
-            <i className="icarus-terminal-commander"></i>
+            <i className="icarus-terminal-shield"></i>
             CMDR ACCESS VERIFIED
           </span>
           <span className="h-px flex-1 bg-neutral-800"></span>

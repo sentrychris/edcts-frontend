@@ -213,7 +213,7 @@ const SystemBodyPopover: FunctionComponent<Props> = ({ body, system, dispatcher,
 
         {/* Discovery */}
         <section>
-          <SectionHeader icon="icarus-terminal-commander" title="Discovery Record" />
+          <SectionHeader icon="icarus-terminal-scan" title="Discovery Record" />
           <StatRow
             label="Discovered By"
             value={<span className="text-glow__orange">CMDR {body.discovered_by ?? "Unknown"}</span>}
