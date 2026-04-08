@@ -293,10 +293,10 @@ function makeGalaxyTexture(gl: WebGLRenderingContext): WebGLTexture {
     }
   };
 
-  drawArm(0.4,              0.03); // Sagittarius / Perseus analogue
-  drawArm(0.4 + Math.PI,   0.03); // opposite arm
-  drawArm(1.85,             0.01); // minor arm
-  drawArm(1.85 + Math.PI,  0.01); // minor arm opposite
+  drawArm(0.4,             1.00); // Sagittarius / Perseus analogue
+  drawArm(0.4 + Math.PI,  1.00); // opposite arm
+  drawArm(1.85,            0.52); // minor arm
+  drawArm(1.85 + Math.PI, 0.52); // minor arm opposite
 
   // Galactic bar — elongated orange-gold ellipse, tilted
   ctx.save();
@@ -315,35 +315,35 @@ function makeGalaxyTexture(gl: WebGLRenderingContext): WebGLTexture {
   ctx.restore();
 
   // Inner bulge — warm orange disk
-  // const bulge = ctx.createRadialGradient(cx, cy, 0, cx, cy, SIZE * 0.22);
-  // bulge.addColorStop(0,    "rgba(255,232,128,0.92)");
-  // bulge.addColorStop(0.10, "rgba(255,168,52,0.78)");
-  // bulge.addColorStop(0.26, "rgba(212,108,22,0.42)");
-  // bulge.addColorStop(0.52, "rgba(145,68,10,0.16)");
-  // bulge.addColorStop(0.80, "rgba(80,38,6,0.05)");
-  // bulge.addColorStop(1,    "rgba(0,0,0,0)");
-  // ctx.fillStyle = bulge;
-  // ctx.fillRect(0, 0, SIZE, SIZE);
+  const bulge = ctx.createRadialGradient(cx, cy, 0, cx, cy, SIZE * 0.22);
+  bulge.addColorStop(0,    "rgba(255,232,128,0.92)");
+  bulge.addColorStop(0.10, "rgba(255,168,52,0.78)");
+  bulge.addColorStop(0.26, "rgba(212,108,22,0.42)");
+  bulge.addColorStop(0.52, "rgba(145,68,10,0.16)");
+  bulge.addColorStop(0.80, "rgba(80,38,6,0.05)");
+  bulge.addColorStop(1,    "rgba(0,0,0,0)");
+  ctx.fillStyle = bulge;
+  ctx.fillRect(0, 0, SIZE, SIZE);
 
   // Bright core point
-  // const core = ctx.createRadialGradient(cx, cy, 0, cx, cy, SIZE * 0.052);
-  // core.addColorStop(0,    "rgba(255,255,238,1.0)");
-  // core.addColorStop(0.22, "rgba(255,246,165,0.92)");
-  // core.addColorStop(0.56, "rgba(255,192,68,0.46)");
-  // core.addColorStop(1,    "rgba(255,132,14,0)");
-  // ctx.fillStyle = core;
-  // ctx.fillRect(0, 0, SIZE, SIZE);
+  const core = ctx.createRadialGradient(cx, cy, 0, cx, cy, SIZE * 0.052);
+  core.addColorStop(0,    "rgba(255,255,238,1.0)");
+  core.addColorStop(0.22, "rgba(255,246,165,0.92)");
+  core.addColorStop(0.56, "rgba(255,192,68,0.46)");
+  core.addColorStop(1,    "rgba(255,132,14,0)");
+  ctx.fillStyle = core;
+  ctx.fillRect(0, 0, SIZE, SIZE);
 
-  // const tex = gl.createTexture()!;
-  // gl.bindTexture(gl.TEXTURE_2D, tex);
-  // gl.texImage2D(gl.TEXTURE_2D, 0, gl.RGBA, gl.RGBA, gl.UNSIGNED_BYTE, off);
-  // gl.texParameteri(gl.TEXTURE_2D, gl.TEXTURE_MIN_FILTER, gl.LINEAR_MIPMAP_LINEAR);
-  // gl.texParameteri(gl.TEXTURE_2D, gl.TEXTURE_MAG_FILTER, gl.LINEAR);
-  // gl.texParameteri(gl.TEXTURE_2D, gl.TEXTURE_WRAP_S, gl.CLAMP_TO_EDGE);
-  // gl.texParameteri(gl.TEXTURE_2D, gl.TEXTURE_WRAP_T, gl.CLAMP_TO_EDGE);
-  // gl.generateMipmap(gl.TEXTURE_2D);
-  // gl.bindTexture(gl.TEXTURE_2D, null);
-  // return tex;
+  const tex = gl.createTexture()!;
+  gl.bindTexture(gl.TEXTURE_2D, tex);
+  gl.texImage2D(gl.TEXTURE_2D, 0, gl.RGBA, gl.RGBA, gl.UNSIGNED_BYTE, off);
+  gl.texParameteri(gl.TEXTURE_2D, gl.TEXTURE_MIN_FILTER, gl.LINEAR_MIPMAP_LINEAR);
+  gl.texParameteri(gl.TEXTURE_2D, gl.TEXTURE_MAG_FILTER, gl.LINEAR);
+  gl.texParameteri(gl.TEXTURE_2D, gl.TEXTURE_WRAP_S, gl.CLAMP_TO_EDGE);
+  gl.texParameteri(gl.TEXTURE_2D, gl.TEXTURE_WRAP_T, gl.CLAMP_TO_EDGE);
+  gl.generateMipmap(gl.TEXTURE_2D);
+  gl.bindTexture(gl.TEXTURE_2D, null);
+  return tex;
 }
 
 function buildDisk(gl: WebGLRenderingContext): { posBuf: WebGLBuffer; uvBuf: WebGLBuffer } {
