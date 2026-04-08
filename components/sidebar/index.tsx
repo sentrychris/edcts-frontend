@@ -20,11 +20,16 @@ const STORAGE_KEY = "edcts_sidebar_collapsed";
 const Sidebar: FunctionComponent<Props> = ({ articles, user }) => {
   const [collapsed, setCollapsed] = useState(false);
   const [settingsOpen, setSettingsOpen] = useState(false);
+  const [isFullscreen, setIsFullscreen] = useState(false);
 
   useEffect(() => {
     if (localStorage.getItem(STORAGE_KEY) === "true") {
       setCollapsed(true);
     }
+
+    const onFullscreenChange = () => setIsFullscreen(!!document.fullscreenElement);
+    document.addEventListener("fullscreenchange", onFullscreenChange);
+    return () => document.removeEventListener("fullscreenchange", onFullscreenChange);
   }, []);
 
   const toggle = () => {
@@ -32,6 +37,14 @@ const Sidebar: FunctionComponent<Props> = ({ articles, user }) => {
       localStorage.setItem(STORAGE_KEY, String(!prev));
       return !prev;
     });
+  };
+
+  const toggleFullscreen = () => {
+    if (!document.fullscreenElement) {
+      document.documentElement.requestFullscreen();
+    } else {
+      document.exitFullscreen();
+    }
   };
 
   return (
@@ -85,6 +98,14 @@ const Sidebar: FunctionComponent<Props> = ({ articles, user }) => {
               <i className="icarus-terminal-settings text-sm"></i>
             </button>
             <button
+              onClick={toggleFullscreen}
+              className="flex w-full items-center justify-center py-1 text-neutral-700 transition-colors hover:text-orange-400"
+              aria-label={isFullscreen ? "Exit fullscreen" : "Enter fullscreen"}
+              title={isFullscreen ? "Exit fullscreen" : "Fullscreen"}
+            >
+              <i className="icarus-terminal-fullscreen-window text-sm"></i>
+            </button>
+            <button
               onClick={toggle}
               className="flex w-full items-center justify-center py-1 text-neutral-700 transition-colors hover:text-orange-400"
               aria-label="Expand sidebar"
@@ -107,6 +128,14 @@ const Sidebar: FunctionComponent<Props> = ({ articles, user }) => {
                 title="Settings"
               >
                 <i className="icarus-terminal-settings text-sm"></i>
+              </button>
+              <button
+                onClick={toggleFullscreen}
+                className="text-neutral-700 transition-colors hover:text-orange-400"
+                aria-label={isFullscreen ? "Exit fullscreen" : "Enter fullscreen"}
+                title={isFullscreen ? "Exit fullscreen" : "Fullscreen"}
+              >
+                <i className="icarus-terminal-fullscreen-window text-sm"></i>
               </button>
               <button
                 onClick={toggle}
