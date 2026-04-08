@@ -36,6 +36,7 @@ const AuthCallback: FunctionComponent<{ csrf: string }> = ({ csrf }) => {
 
         if (result?.ok) {
           router.push("/");
+          router.refresh();
         } else {
           console.error("Sign-in failed:", result?.error);
           // Optionally redirect to an error page
