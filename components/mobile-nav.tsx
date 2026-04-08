@@ -1,11 +1,13 @@
 "use client";
 
 import { type FunctionComponent, useState } from "react";
+import { createPortal } from "react-dom";
 import type { SessionUser } from "@/core/interfaces/Auth";
 import type { AuthorizationServerInformation } from "@/core/interfaces/Auth";
 import { getResource } from "@/core/api";
 import { usePathname } from "next/navigation";
 import Link from "next/link";
+import SettingsModal from "@/components/settings-modal";
 
 interface Props {
   user: SessionUser | null;
@@ -19,6 +21,7 @@ const navItems = [
 
 const MobileNav: FunctionComponent<Props> = ({ user }) => {
   const [open, setOpen] = useState(false);
+  const [settingsOpen, setSettingsOpen] = useState(false);
   const pathname = usePathname();
 
   const isActive = (href: string) =>
@@ -101,7 +104,7 @@ const MobileNav: FunctionComponent<Props> = ({ user }) => {
             <Link
               href="/commander"
               onClick={() => setOpen(false)}
-              className="fx-btn-sweep flex w-full items-center justify-center gap-2 border border-orange-900/40 py-2 text-xs font-bold uppercase tracking-widest text-orange-500/70 transition-colors hover:border-orange-500/60 hover:text-orange-400"
+              className="fx-btn-sweep mb-2 flex w-full items-center justify-center gap-2 border border-orange-900/40 py-2 text-xs font-bold uppercase tracking-widest text-orange-500/70 transition-colors hover:border-orange-500/60 hover:text-orange-400"
             >
               <i className="icarus-terminal-shield text-xs"></i>
               CMDR {user.commander?.name ?? user.name}
@@ -109,13 +112,27 @@ const MobileNav: FunctionComponent<Props> = ({ user }) => {
           ) : (
             <button
               onClick={async () => { await login(); setOpen(false); }}
-              className="fx-btn-sweep flex w-full items-center justify-center gap-2 border border-orange-900/40 py-2 text-xs font-bold uppercase tracking-widest text-neutral-500 transition-colors hover:border-orange-500/40 hover:text-orange-400"
+              className="fx-btn-sweep mb-2 flex w-full items-center justify-center gap-2 border border-orange-900/40 py-2 text-xs font-bold uppercase tracking-widest text-neutral-500 transition-colors hover:border-orange-500/40 hover:text-orange-400"
             >
               <i className="icarus-terminal-planet text-xs"></i>
               Login with Frontier
             </button>
           )}
+
+          {/* Settings */}
+          <button
+            onClick={() => { setSettingsOpen(true); setOpen(false); }}
+            className="fx-btn-sweep flex w-full items-center justify-center gap-2 border border-orange-900/40 py-2 text-xs font-bold uppercase tracking-widest text-neutral-500 transition-colors hover:border-orange-500/40 hover:text-orange-400"
+          >
+            <i className="icarus-terminal-settings text-xs"></i>
+            Interface Settings
+          </button>
         </div>
+      )}
+
+      {settingsOpen && createPortal(
+        <SettingsModal onClose={() => setSettingsOpen(false)} />,
+        document.body,
       )}
     </div>
   );

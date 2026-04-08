@@ -51,14 +51,14 @@ export default async function Page({ params }: Props) {
   return (
     <>
       {/* ── Survey Terminal header ── */}
-      <div className="fx-chamfer relative mb-5 border border-orange-900/40 bg-black/50 backdrop-blur backdrop-filter px-6 py-4">
+      <div className="fx-chamfer relative mb-5 border border-orange-900/40 bg-black/50 backdrop-blur backdrop-filter px-4 py-3 md:px-6 md:py-4">
         <div className="flex flex-wrap items-center justify-between gap-2 text-xs uppercase tracking-widest text-neutral-600">
-          <div className="flex items-center gap-4">
+          <div className="flex items-center gap-3">
             <span>MODULE:SURVEY</span>
-            <span className="text-neutral-800">■</span>
-            <span>DATABASE:{isStar ? "STELLAR" : "PLANETARY"}</span>
-            <span className="text-neutral-800">■</span>
-            <span>CLASS:UNRESTRICTED</span>
+            <span className="hidden sm:inline text-neutral-800">■</span>
+            <span className="hidden sm:inline">DATABASE:{isStar ? "STELLAR" : "PLANETARY"}</span>
+            <span className="hidden md:inline text-neutral-800">■</span>
+            <span className="hidden md:inline">CLASS:UNRESTRICTED</span>
           </div>
           <div className="flex items-center gap-2">
             <span className="fx-dot-orange h-1.5 w-1.5" />
