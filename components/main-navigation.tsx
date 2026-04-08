@@ -14,6 +14,7 @@ import PanelCorners from "./panel-corners";
 const navItems = [
   { name: "Home", href: "/" },
   { name: "Star Systems", href: "/systems" },
+  { name: "Galaxy Map", href: "/galaxy-map" },
   { name: "Galnet News", href: "/galnet" },
 ];
 
