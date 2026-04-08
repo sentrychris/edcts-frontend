@@ -15,6 +15,12 @@ function readFromStorage(): RecentSystem[] {
   return stored ? (JSON.parse(stored) as RecentSystem[]) : [];
 }
 
+export function clearRecentSystems(): void {
+  if (typeof window === "undefined") return;
+  localStorage.removeItem(STORAGE_KEY);
+  window.dispatchEvent(new CustomEvent(UPDATE_EVENT));
+}
+
 export function trackSystemVisit(name: string, slug: string): void {
   if (typeof window === "undefined") return;
 

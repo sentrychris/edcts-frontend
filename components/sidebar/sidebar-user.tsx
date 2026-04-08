@@ -4,6 +4,7 @@ import type { FunctionComponent } from "react";
 import type { SessionUser } from "@/core/interfaces/Auth";
 import type { AuthorizationServerInformation } from "@/core/interfaces/Auth";
 import { getResource } from "@/core/api";
+import { signOut } from "next-auth/react";
 import Link from "next/link";
 
 interface Props {
@@ -15,6 +16,11 @@ const SidebarUser: FunctionComponent<Props> = ({ user, collapsed }) => {
   const login = async () => {
     const { data } = await getResource<AuthorizationServerInformation>("auth/frontier/login");
     window.location.href = data.authorization_url;
+  };
+
+  const logout = async () => {
+    document.cookie = "cmdr_token=; path=/; expires=Thu, 01 Jan 1970 00:00:00 GMT";
+    await signOut({ callbackUrl: "/" });
   };
 
   /* ── Collapsed state ── */
@@ -71,14 +77,23 @@ const SidebarUser: FunctionComponent<Props> = ({ user, collapsed }) => {
           <span>STATUS: ACTIVE</span>
         </div>
 
-        {/* View CMDR button */}
-        <Link
-          href="/commander"
-          className="fx-btn-sweep flex w-full items-center justify-center gap-2 border border-orange-900/40 py-2 text-xs font-bold uppercase tracking-widest text-orange-500/70 transition-colors hover:border-orange-500/60 hover:text-orange-400"
-        >
-          <i className="icarus-terminal-shield text-xs"></i>
-          View CMDR
-        </Link>
+        {/* View CMDR / Logout buttons */}
+        <div className="flex gap-2">
+          <Link
+            href="/commander"
+            className="fx-btn-sweep flex flex-1 items-center justify-center gap-2 border border-orange-900/40 py-2 text-xs font-bold uppercase tracking-widest text-orange-500/70 transition-colors hover:border-orange-500/60 hover:text-orange-400"
+          >
+            <i className="icarus-terminal-shield text-xs"></i>
+            View CMDR
+          </Link>
+          <button
+            onClick={logout}
+            className="fx-btn-sweep fx-btn-sweep--danger border border-red-900/40 px-3 py-2 text-xs font-bold uppercase tracking-widest text-red-900/60 transition-colors hover:border-red-500/60 hover:text-red-400"
+            title="Logout"
+          >
+            <i className="icarus-terminal-warning text-xs"></i>
+          </button>
+        </div>
       </div>
     );
   }

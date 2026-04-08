@@ -1,7 +1,8 @@
 "use client";
 
 import Link from "next/link";
-import { useRecentSystems } from "@/core/hooks/use-recent-systems";
+import { XMarkIcon } from "@heroicons/react/24/outline";
+import { clearRecentSystems, useRecentSystems } from "@/core/hooks/use-recent-systems";
 
 const SidebarRecentSystems = () => {
   const systems = useRecentSystems();
@@ -11,6 +12,15 @@ const SidebarRecentSystems = () => {
       <div className="mb-3 flex items-center gap-2 border-b border-orange-900/20 pb-3 text-xs uppercase tracking-widest text-neutral-600">
         <i className="icarus-terminal-system-orbits text-orange-500/50"></i>
         <span>Recently Surveyed</span>
+        {systems.length > 0 && (
+          <button
+            onClick={clearRecentSystems}
+            className="ml-auto text-neutral-600 transition-colors hover:text-red-500"
+            title="Clear recently surveyed"
+          >
+            <XMarkIcon className="h-3.5 w-3.5" />
+          </button>
+        )}
       </div>
 
       {systems.length === 0 ? (
