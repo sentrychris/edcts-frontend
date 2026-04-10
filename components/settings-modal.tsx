@@ -222,7 +222,7 @@ const SettingsModal: FunctionComponent<Props> = ({ onClose }) => {
   const {
     settings,
     setTheme, setHue, setSaturate, setBrightness, setContrast,
-    toggleGreyscale, toggleCrt, toggleChromaticAberration, togglePhosphorAfterglow, reset,
+    toggleGreyscale, toggleCrt, toggleChromaticAberration, togglePhosphorAfterglow, toggleTypewriterMode, setDataDensity, setGrainIntensity, setVignetteIntensity, reset,
   } = useSettings();
 
   const backdropRef = useRef<HTMLDivElement>(null);
@@ -239,7 +239,7 @@ const SettingsModal: FunctionComponent<Props> = ({ onClose }) => {
       className="fixed inset-0 z-50 flex items-center justify-center bg-black/70 backdrop-blur-sm"
       onClick={(e) => { if (e.target === backdropRef.current) onClose(); }}
     >
-      <div className="relative w-full max-w-xl max-h-[90vh] overflow-y-auto border border-orange-900/40 bg-black/90 backdrop-blur">
+      <div className="relative w-full max-w-3xl border border-orange-900/40 bg-black/90 backdrop-blur">
         <PanelCorners className="z-10" />
 
         {/* Header — sticky */}
@@ -254,7 +254,10 @@ const SettingsModal: FunctionComponent<Props> = ({ onClose }) => {
           </button>
         </div>
 
-        <div className="space-y-6 px-5 py-5">
+        <div className="grid grid-cols-2 items-start gap-6 px-5 py-5">
+
+          {/* ── Left column — colour ── */}
+          <div className="space-y-6">
 
           {/* ── Preset themes ── */}
           <section>
@@ -309,14 +312,20 @@ const SettingsModal: FunctionComponent<Props> = ({ onClose }) => {
             </div>
           </section>
 
+          </div>{/* /left column */}
+
+          {/* ── Right column — effects & behaviour ── */}
+          <div className="space-y-6">
+
           {/* ── Display options ── */}
           <section>
             <h3 className="mb-3 text-xs font-bold uppercase tracking-widest text-neutral-500">Display Options</h3>
-            <div className="space-y-2">
+            <div className="grid grid-cols-2 gap-2 items-start">
 
+              {/* ── Toggles 2×2 ── */}
               <button
                 onClick={toggleGreyscale}
-                className="flex w-full items-center gap-3 border px-3 py-2.5 text-left transition-all duration-150"
+                className="flex w-full items-center gap-2 border px-3 py-2.5 text-left transition-all duration-150"
                 style={{
                   borderColor: settings.greyscale ? "rgba(180,180,180,0.4)" : "rgba(60,40,20,0.4)",
                   backgroundColor: settings.greyscale ? "rgba(180,180,180,0.06)" : "transparent",
@@ -327,10 +336,7 @@ const SettingsModal: FunctionComponent<Props> = ({ onClose }) => {
                   boxShadow: settings.greyscale ? "0 0 5px rgb(200,200,200)" : "none",
                 }} />
                 <i className="icarus-terminal-color-picker flex-shrink-0" style={{ color: settings.greyscale ? "rgb(200,200,200)" : "rgb(80,55,30)" }} />
-                <span className="flex-1">
-                  <span className="block text-xs font-bold uppercase tracking-widest" style={{ color: settings.greyscale ? "rgb(200,200,200)" : "rgb(100,80,60)" }}>Greyscale</span>
-                  <span className="block text-xs uppercase tracking-wider text-neutral-600">Strip all colour from the interface</span>
-                </span>
+                <span className="flex-1 text-xs font-bold uppercase tracking-widest" style={{ color: settings.greyscale ? "rgb(200,200,200)" : "rgb(100,80,60)" }}>Greyscale</span>
                 <span className="text-xs uppercase tracking-widest" style={{ color: settings.greyscale ? "rgb(200,200,200)" : "rgb(60,40,20)" }}>
                   {settings.greyscale ? "ON" : "OFF"}
                 </span>
@@ -338,7 +344,7 @@ const SettingsModal: FunctionComponent<Props> = ({ onClose }) => {
 
               <button
                 onClick={toggleCrt}
-                className="flex w-full items-center gap-3 border px-3 py-2.5 text-left transition-all duration-150"
+                className="flex w-full items-center gap-2 border px-3 py-2.5 text-left transition-all duration-150"
                 style={{
                   borderColor: settings.crtMode ? "rgba(249,115,22,0.45)" : "rgba(60,40,20,0.4)",
                   backgroundColor: settings.crtMode ? "rgba(249,115,22,0.06)" : "transparent",
@@ -349,10 +355,7 @@ const SettingsModal: FunctionComponent<Props> = ({ onClose }) => {
                   boxShadow: settings.crtMode ? "0 0 5px rgb(249,115,22)" : "none",
                 }} />
                 <i className="icarus-terminal-fullscreen-window flex-shrink-0" style={{ color: settings.crtMode ? "rgb(251,146,60)" : "rgb(80,55,30)" }} />
-                <span className="flex-1">
-                  <span className="block text-xs font-bold uppercase tracking-widest" style={{ color: settings.crtMode ? "rgb(200,130,60)" : "rgb(100,80,60)" }}>CRT Mode</span>
-                  <span className="block text-xs uppercase tracking-wider text-neutral-600">Scanlines + vignette overlay</span>
-                </span>
+                <span className="flex-1 text-xs font-bold uppercase tracking-widest" style={{ color: settings.crtMode ? "rgb(200,130,60)" : "rgb(100,80,60)" }}>CRT Mode</span>
                 <span className="text-xs uppercase tracking-widest" style={{ color: settings.crtMode ? "rgb(200,130,60)" : "rgb(60,40,20)" }}>
                   {settings.crtMode ? "ON" : "OFF"}
                 </span>
@@ -360,7 +363,7 @@ const SettingsModal: FunctionComponent<Props> = ({ onClose }) => {
 
               <button
                 onClick={togglePhosphorAfterglow}
-                className="flex w-full items-center gap-3 border px-3 py-2.5 text-left transition-all duration-150"
+                className="flex w-full items-center gap-2 border px-3 py-2.5 text-left transition-all duration-150"
                 style={{
                   borderColor: settings.phosphorAfterglow ? "rgba(249,115,22,0.45)" : "rgba(60,40,20,0.4)",
                   backgroundColor: settings.phosphorAfterglow ? "rgba(249,115,22,0.06)" : "transparent",
@@ -371,10 +374,7 @@ const SettingsModal: FunctionComponent<Props> = ({ onClose }) => {
                   boxShadow: settings.phosphorAfterglow ? "0 0 5px rgb(249,115,22)" : "none",
                 }} />
                 <i className="icarus-terminal-star flex-shrink-0" style={{ color: settings.phosphorAfterglow ? "rgb(251,146,60)" : "rgb(80,55,30)" }} />
-                <span className="flex-1">
-                  <span className="block text-xs font-bold uppercase tracking-widest" style={{ color: settings.phosphorAfterglow ? "rgb(200,130,60)" : "rgb(100,80,60)" }}>Phosphor Afterglow</span>
-                  <span className="block text-xs uppercase tracking-wider text-neutral-600">Slow decay on opacity &amp; colour transitions</span>
-                </span>
+                <span className="flex-1 text-xs font-bold uppercase tracking-widest" style={{ color: settings.phosphorAfterglow ? "rgb(200,130,60)" : "rgb(100,80,60)" }}>Phosphor</span>
                 <span className="text-xs uppercase tracking-widest" style={{ color: settings.phosphorAfterglow ? "rgb(200,130,60)" : "rgb(60,40,20)" }}>
                   {settings.phosphorAfterglow ? "ON" : "OFF"}
                 </span>
@@ -382,7 +382,7 @@ const SettingsModal: FunctionComponent<Props> = ({ onClose }) => {
 
               <button
                 onClick={toggleChromaticAberration}
-                className="flex w-full items-center gap-3 border px-3 py-2.5 text-left transition-all duration-150"
+                className="flex w-full items-center gap-2 border px-3 py-2.5 text-left transition-all duration-150"
                 style={{
                   borderColor: settings.chromaticAberration ? "rgba(249,115,22,0.45)" : "rgba(60,40,20,0.4)",
                   backgroundColor: settings.chromaticAberration ? "rgba(249,115,22,0.06)" : "transparent",
@@ -393,16 +393,134 @@ const SettingsModal: FunctionComponent<Props> = ({ onClose }) => {
                   boxShadow: settings.chromaticAberration ? "0 0 5px rgb(249,115,22)" : "none",
                 }} />
                 <i className="icarus-terminal-settings flex-shrink-0" style={{ color: settings.chromaticAberration ? "rgb(251,146,60)" : "rgb(80,55,30)" }} />
-                <span className="flex-1">
-                  <span className="block text-xs font-bold uppercase tracking-widest" style={{ color: settings.chromaticAberration ? "rgb(200,130,60)" : "rgb(100,80,60)" }}>Chromatic Aberration</span>
-                  <span className="block text-xs uppercase tracking-wider text-neutral-600">RGB channel separation — lens distortion effect</span>
-                </span>
+                <span className="flex-1 text-xs font-bold uppercase tracking-widest" style={{ color: settings.chromaticAberration ? "rgb(200,130,60)" : "rgb(100,80,60)" }}>Chromatic</span>
                 <span className="text-xs uppercase tracking-widest" style={{ color: settings.chromaticAberration ? "rgb(200,130,60)" : "rgb(60,40,20)" }}>
                   {settings.chromaticAberration ? "ON" : "OFF"}
                 </span>
               </button>
+
+              {/* ── Sliders — full width ── */}
+              <div
+                className="col-span-2 border px-3 py-2.5"
+                style={{ borderColor: settings.vignetteIntensity > 0 ? "rgba(249,115,22,0.45)" : "rgba(60,40,20,0.4)",
+                         backgroundColor: settings.vignetteIntensity > 0 ? "rgba(249,115,22,0.06)" : "transparent" }}
+              >
+                <div className="mb-3 flex items-center gap-3">
+                  <span className="h-1.5 w-1.5 flex-shrink-0 rounded-full" style={{
+                    backgroundColor: settings.vignetteIntensity > 0 ? "rgb(249,115,22)" : "rgb(60,35,15)",
+                    boxShadow: settings.vignetteIntensity > 0 ? "0 0 5px rgb(249,115,22)" : "none",
+                  }} />
+                  <i className="icarus-terminal-camera flex-shrink-0" style={{ color: settings.vignetteIntensity > 0 ? "rgb(251,146,60)" : "rgb(80,55,30)" }} />
+                  <span className="flex-1">
+                    <span className="block text-xs font-bold uppercase tracking-widest" style={{ color: settings.vignetteIntensity > 0 ? "rgb(200,130,60)" : "rgb(100,80,60)" }}>Vignette</span>
+                    <span className="block text-xs uppercase tracking-wider text-neutral-600">Lens edge darkening — 0 disables</span>
+                  </span>
+                </div>
+                <SliderRow
+                  label="Intensity"
+                  value={settings.vignetteIntensity}
+                  min={0} max={1} step={0.01}
+                  onChange={setVignetteIntensity}
+                  format={(v) => v === 0 ? "OFF" : v.toFixed(2)}
+                />
+              </div>
+
+              <div
+                className="col-span-2 border px-3 py-2.5"
+                style={{ borderColor: settings.grainIntensity > 0 ? "rgba(249,115,22,0.45)" : "rgba(60,40,20,0.4)",
+                         backgroundColor: settings.grainIntensity > 0 ? "rgba(249,115,22,0.06)" : "transparent" }}
+              >
+                <div className="mb-3 flex items-center gap-3">
+                  <span className="h-1.5 w-1.5 flex-shrink-0 rounded-full" style={{
+                    backgroundColor: settings.grainIntensity > 0 ? "rgb(249,115,22)" : "rgb(60,35,15)",
+                    boxShadow: settings.grainIntensity > 0 ? "0 0 5px rgb(249,115,22)" : "none",
+                  }} />
+                  <i className="icarus-terminal-star flex-shrink-0" style={{ color: settings.grainIntensity > 0 ? "rgb(251,146,60)" : "rgb(80,55,30)" }} />
+                  <span className="flex-1">
+                    <span className="block text-xs font-bold uppercase tracking-widest" style={{ color: settings.grainIntensity > 0 ? "rgb(200,130,60)" : "rgb(100,80,60)" }}>Film Grain</span>
+                    <span className="block text-xs uppercase tracking-wider text-neutral-600">Animated noise overlay — 0 disables</span>
+                  </span>
+                </div>
+                <SliderRow
+                  label="Intensity"
+                  value={settings.grainIntensity}
+                  min={0} max={1} step={0.01}
+                  onChange={setGrainIntensity}
+                  format={(v) => v === 0 ? "OFF" : v.toFixed(2)}
+                />
+              </div>
+
             </div>
           </section>
+
+          {/* ── Interface Protocol ── */}
+          <section>
+            <h3 className="mb-3 text-xs font-bold uppercase tracking-widest text-neutral-500">Interface Protocol</h3>
+            <div className="space-y-2">
+
+              {/* Data Density — segmented control */}
+              <div
+                className="border px-3 py-2.5"
+                style={{ borderColor: "rgba(60,40,20,0.4)" }}
+              >
+                <div className="mb-2.5 flex items-center gap-3">
+                  <i className="icarus-terminal-route flex-shrink-0" style={{ color: "rgb(80,55,30)" }} />
+                  <span className="flex-1">
+                    <span className="block text-xs font-bold uppercase tracking-widest" style={{ color: "rgb(100,80,60)" }}>Data Density</span>
+                    <span className="block text-xs uppercase tracking-wider text-neutral-600">Padding scale across the interface</span>
+                  </span>
+                </div>
+                <div className="flex">
+                  {(["compact", "normal", "expanded"] as const).map((d, i) => {
+                    const active = settings.dataDensity === d;
+                    return (
+                      <button
+                        key={d}
+                        onClick={() => setDataDensity(d)}
+                        className="flex-1 py-1.5 text-center text-[0.6rem] uppercase tracking-widest transition-all duration-150"
+                        style={{
+                          borderTop:    "1px solid",
+                          borderBottom: "1px solid",
+                          borderLeft:   "1px solid",
+                          borderRight:  i === 2 ? "1px solid" : "none",
+                          borderColor:  active ? "rgba(249,115,22,0.5)" : "rgba(60,40,20,0.4)",
+                          backgroundColor: active ? "rgba(249,115,22,0.1)" : "transparent",
+                          color: active ? "rgb(251,146,60)" : "rgb(80,60,40)",
+                        }}
+                      >
+                        {d}
+                      </button>
+                    );
+                  })}
+                </div>
+              </div>
+
+              <button
+                onClick={toggleTypewriterMode}
+                className="flex w-full items-center gap-3 border px-3 py-2.5 text-left transition-all duration-150"
+                style={{
+                  borderColor: settings.typewriterMode ? "rgba(249,115,22,0.45)" : "rgba(60,40,20,0.4)",
+                  backgroundColor: settings.typewriterMode ? "rgba(249,115,22,0.06)" : "transparent",
+                }}
+              >
+                <span className="h-1.5 w-1.5 flex-shrink-0 rounded-full" style={{
+                  backgroundColor: settings.typewriterMode ? "rgb(249,115,22)" : "rgb(60,35,15)",
+                  boxShadow: settings.typewriterMode ? "0 0 5px rgb(249,115,22)" : "none",
+                }} />
+                <i className="icarus-terminal-edit flex-shrink-0" style={{ color: settings.typewriterMode ? "rgb(251,146,60)" : "rgb(80,55,30)" }} />
+                <span className="flex-1">
+                  <span className="block text-xs font-bold uppercase tracking-widest" style={{ color: settings.typewriterMode ? "rgb(200,130,60)" : "rgb(100,80,60)" }}>Typewriter Mode</span>
+                  <span className="block text-xs uppercase tracking-wider text-neutral-600">Text renders character by character</span>
+                </span>
+                <span className="text-xs uppercase tracking-widest" style={{ color: settings.typewriterMode ? "rgb(200,130,60)" : "rgb(60,40,20)" }}>
+                  {settings.typewriterMode ? "ON" : "OFF"}
+                </span>
+              </button>
+
+            </div>
+          </section>
+
+          </div>{/* /right column */}
         </div>
 
         {/* Footer */}

@@ -1,6 +1,7 @@
 "use client";
 
 import { type FunctionComponent, type ReactNode, useEffect } from "react";
+import GrainOverlay from "@/components/grain-overlay";
 import { useSettings } from "@/core/contexts/settings-context";
 
 const ThemeWrapper: FunctionComponent<{ children: ReactNode }> = ({ children }) => {
@@ -21,6 +22,16 @@ const ThemeWrapper: FunctionComponent<{ children: ReactNode }> = ({ children }) 
     document.documentElement.classList.toggle("phosphor-enabled", settings.phosphorAfterglow);
   }, [settings.phosphorAfterglow]);
 
+  useEffect(() => {
+    document.documentElement.classList.toggle("typewriter-mode", settings.typewriterMode);
+  }, [settings.typewriterMode]);
+
+  useEffect(() => {
+    const html = document.documentElement;
+    html.classList.remove("density-compact", "density-normal", "density-expanded");
+    if (settings.dataDensity !== "normal") html.classList.add(`density-${settings.dataDensity}`);
+  }, [settings.dataDensity]);
+
   return (
     <>
       {children}
@@ -38,8 +49,10 @@ const ThemeWrapper: FunctionComponent<{ children: ReactNode }> = ({ children }) 
           </filter>
         </defs>
       </svg>
-      {settings.phosphorAfterglow && <div className="phosphor-overlay" aria-hidden="true" />}
-      {settings.crtMode && <div className="crt-overlay" aria-hidden="true" />}
+      {settings.grainIntensity > 0    && <GrainOverlay intensity={settings.grainIntensity} />}
+      {settings.phosphorAfterglow      && <div className="phosphor-overlay" aria-hidden="true" />}
+      {settings.vignetteIntensity > 0  && <div className="vignette-overlay" style={{ opacity: settings.vignetteIntensity }} aria-hidden="true" />}
+      {settings.crtMode                && <div className="crt-overlay" aria-hidden="true" />}
     </>
   );
 };
