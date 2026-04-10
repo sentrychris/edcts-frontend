@@ -68,7 +68,7 @@ const Footer: FunctionComponent = () => {
             <i className="icarus-terminal-shield text-glow__orange"></i>
             <span>Made by</span>
             <a
-              href="https://github.com.sentrychris"
+              href="https://github.com/sentrychris"
               className="text-glow__orange"
             >
               Chris Korovin
