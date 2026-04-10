@@ -706,3 +706,24 @@ html.phosphor-enabled * {
   96%  { opacity: 0.98; }
   100% { opacity: 1; }
 }
+
+/* ════════════════════════════════════════════════════════
+   BOOT SEQUENCE — scanning beam + reticle ring animations
+   ════════════════════════════════════════════════════════ */
+
+@keyframes boot-scan {
+  0%   { top: 0%;   opacity: 0; }
+  3%   { opacity: 1; }
+  97%  { opacity: 1; }
+  100% { top: 100%; opacity: 0; }
+}
+
+@keyframes boot-spin {
+  from { transform: rotate(0deg); }
+  to   { transform: rotate(360deg); }
+}
+
+@keyframes boot-spin-rev {
+  from { transform: rotate(0deg); }
+  to   { transform: rotate(-360deg); }
+}

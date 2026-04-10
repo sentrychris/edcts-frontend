@@ -51,6 +51,7 @@ export interface Settings {
   chromaticAberration: boolean;
   phosphorAfterglow: boolean;
   typewriterMode: boolean;
+  bootSequence: boolean;
   dataDensity: DataDensity;
   grainIntensity: number;    // 0–1; 0 = disabled
   vignetteIntensity: number; // 0–1; 0 = disabled
@@ -68,6 +69,7 @@ interface SettingsContextValue {
   toggleChromaticAberration: () => void;
   togglePhosphorAfterglow: () => void;
   toggleTypewriterMode: () => void;
+  toggleBootSequence: () => void;
   setDataDensity: (d: DataDensity) => void;
   setGrainIntensity: (v: number) => void;
   setVignetteIntensity: (v: number) => void;
@@ -87,6 +89,7 @@ export const DEFAULT_SETTINGS: Settings = {
   chromaticAberration: false,
   phosphorAfterglow: false,
   typewriterMode: false,
+  bootSequence: false,
   dataDensity: "normal",
   grainIntensity: 0,
   vignetteIntensity: 0.55,
@@ -131,13 +134,14 @@ export const SettingsProvider: FunctionComponent<{ children: ReactNode }> = ({ c
   const toggleChromaticAberration = () => persist({ ...settings, chromaticAberration: !settings.chromaticAberration });
   const togglePhosphorAfterglow   = () => persist({ ...settings, phosphorAfterglow:   !settings.phosphorAfterglow });
   const toggleTypewriterMode      = () => persist({ ...settings, typewriterMode:      !settings.typewriterMode });
+  const toggleBootSequence        = () => persist({ ...settings, bootSequence:        !settings.bootSequence });
   const setDataDensity            = (d: DataDensity) => persist({ ...settings, dataDensity: d });
   const setGrainIntensity         = (v: number)      => persist({ ...settings, grainIntensity:    Math.max(0, Math.min(1, v)) });
   const setVignetteIntensity      = (v: number)      => persist({ ...settings, vignetteIntensity: Math.max(0, Math.min(1, v)) });
   const reset                     = () => persist(DEFAULT_SETTINGS);
 
   return (
-    <SettingsContext.Provider value={{ settings, setTheme, setHue, setSaturate, setBrightness, setContrast, toggleGreyscale, toggleCrt, toggleChromaticAberration, togglePhosphorAfterglow, toggleTypewriterMode, setDataDensity, setGrainIntensity, setVignetteIntensity, reset }}>
+    <SettingsContext.Provider value={{ settings, setTheme, setHue, setSaturate, setBrightness, setContrast, toggleGreyscale, toggleCrt, toggleChromaticAberration, togglePhosphorAfterglow, toggleTypewriterMode, toggleBootSequence, setDataDensity, setGrainIntensity, setVignetteIntensity, reset }}>
       {children}
     </SettingsContext.Provider>
   );

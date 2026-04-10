@@ -222,7 +222,7 @@ const SettingsModal: FunctionComponent<Props> = ({ onClose }) => {
   const {
     settings,
     setTheme, setHue, setSaturate, setBrightness, setContrast,
-    toggleGreyscale, toggleCrt, toggleChromaticAberration, togglePhosphorAfterglow, toggleTypewriterMode, setDataDensity, setGrainIntensity, setVignetteIntensity, reset,
+    toggleGreyscale, toggleCrt, toggleChromaticAberration, togglePhosphorAfterglow, toggleTypewriterMode, toggleBootSequence, setDataDensity, setGrainIntensity, setVignetteIntensity, reset,
   } = useSettings();
 
   const backdropRef = useRef<HTMLDivElement>(null);
@@ -236,14 +236,14 @@ const SettingsModal: FunctionComponent<Props> = ({ onClose }) => {
   return (
     <div
       ref={backdropRef}
-      className="fixed inset-0 z-50 flex items-center justify-center bg-black/70 backdrop-blur-sm"
+      className="fixed inset-0 z-50 flex items-center justify-center bg-black/70 p-4 backdrop-blur-sm"
       onClick={(e) => { if (e.target === backdropRef.current) onClose(); }}
     >
-      <div className="relative w-full max-w-3xl border border-orange-900/40 bg-black/90 backdrop-blur">
+      <div className="relative flex w-full max-w-3xl max-h-[90vh] flex-col border border-orange-900/40 bg-black/90 backdrop-blur">
         <PanelCorners className="z-10" />
 
-        {/* Header — sticky */}
-        <div className="sticky top-0 z-10 flex items-center gap-3 border-b border-orange-900/20 bg-black/95 px-5 py-4">
+        {/* Header */}
+        <div className="flex flex-shrink-0 items-center gap-3 border-b border-orange-900/20 bg-black/95 px-5 py-4">
           <i className="icarus-terminal-settings text-glow__orange text-lg" />
           <div className="flex-1">
             <h2 className="text-glow__orange text-sm font-bold uppercase tracking-widest">Interface Settings</h2>
@@ -254,7 +254,8 @@ const SettingsModal: FunctionComponent<Props> = ({ onClose }) => {
           </button>
         </div>
 
-        <div className="grid grid-cols-2 items-start gap-6 px-5 py-5">
+        <div className="overflow-y-auto">
+        <div className="grid grid-cols-1 items-start gap-6 px-5 py-5 md:grid-cols-2">
 
           {/* ── Left column — colour ── */}
           <div className="space-y-6">
@@ -517,11 +518,34 @@ const SettingsModal: FunctionComponent<Props> = ({ onClose }) => {
                 </span>
               </button>
 
+              <button
+                onClick={toggleBootSequence}
+                className="flex w-full items-center gap-3 border px-3 py-2.5 text-left transition-all duration-150"
+                style={{
+                  borderColor: settings.bootSequence ? "rgba(249,115,22,0.45)" : "rgba(60,40,20,0.4)",
+                  backgroundColor: settings.bootSequence ? "rgba(249,115,22,0.06)" : "transparent",
+                }}
+              >
+                <span className="h-1.5 w-1.5 flex-shrink-0 rounded-full" style={{
+                  backgroundColor: settings.bootSequence ? "rgb(249,115,22)" : "rgb(60,35,15)",
+                  boxShadow: settings.bootSequence ? "0 0 5px rgb(249,115,22)" : "none",
+                }} />
+                <i className="icarus-terminal-power flex-shrink-0" style={{ color: settings.bootSequence ? "rgb(251,146,60)" : "rgb(80,55,30)" }} />
+                <span className="flex-1">
+                  <span className="block text-xs font-bold uppercase tracking-widest" style={{ color: settings.bootSequence ? "rgb(200,130,60)" : "rgb(100,80,60)" }}>Boot Sequence</span>
+                  <span className="block text-xs uppercase tracking-wider text-neutral-600">System initialisation on every load</span>
+                </span>
+                <span className="text-xs uppercase tracking-widest" style={{ color: settings.bootSequence ? "rgb(200,130,60)" : "rgb(60,40,20)" }}>
+                  {settings.bootSequence ? "ON" : "OFF"}
+                </span>
+              </button>
+
             </div>
           </section>
 
           </div>{/* /right column */}
         </div>
+        </div>{/* /scroll wrapper */}
 
         {/* Footer */}
         <div className="flex items-center justify-between border-t border-orange-900/20 px-5 py-3">

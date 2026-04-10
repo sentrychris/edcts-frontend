@@ -2,6 +2,7 @@
 
 import { type FunctionComponent, type ReactNode, useEffect } from "react";
 import GrainOverlay from "@/components/grain-overlay";
+import BootSequence from "@/components/boot-sequence";
 import { useSettings } from "@/core/contexts/settings-context";
 
 const ThemeWrapper: FunctionComponent<{ children: ReactNode }> = ({ children }) => {
@@ -35,6 +36,7 @@ const ThemeWrapper: FunctionComponent<{ children: ReactNode }> = ({ children }) 
   return (
     <>
       {children}
+      <BootSequence />
       {/* SVG filter definition — always in DOM, display:none */}
       <svg style={{ display: "none" }} aria-hidden="true">
         <defs>
