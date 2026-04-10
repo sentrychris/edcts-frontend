@@ -222,7 +222,7 @@ const SettingsModal: FunctionComponent<Props> = ({ onClose }) => {
   const {
     settings,
     setTheme, setHue, setSaturate, setBrightness, setContrast,
-    toggleGreyscale, toggleCrt, reset,
+    toggleGreyscale, toggleCrt, toggleChromaticAberration, togglePhosphorAfterglow, reset,
   } = useSettings();
 
   const backdropRef = useRef<HTMLDivElement>(null);
@@ -355,6 +355,50 @@ const SettingsModal: FunctionComponent<Props> = ({ onClose }) => {
                 </span>
                 <span className="text-xs uppercase tracking-widest" style={{ color: settings.crtMode ? "rgb(200,130,60)" : "rgb(60,40,20)" }}>
                   {settings.crtMode ? "ON" : "OFF"}
+                </span>
+              </button>
+
+              <button
+                onClick={togglePhosphorAfterglow}
+                className="flex w-full items-center gap-3 border px-3 py-2.5 text-left transition-all duration-150"
+                style={{
+                  borderColor: settings.phosphorAfterglow ? "rgba(249,115,22,0.45)" : "rgba(60,40,20,0.4)",
+                  backgroundColor: settings.phosphorAfterglow ? "rgba(249,115,22,0.06)" : "transparent",
+                }}
+              >
+                <span className="h-1.5 w-1.5 flex-shrink-0 rounded-full" style={{
+                  backgroundColor: settings.phosphorAfterglow ? "rgb(249,115,22)" : "rgb(60,35,15)",
+                  boxShadow: settings.phosphorAfterglow ? "0 0 5px rgb(249,115,22)" : "none",
+                }} />
+                <i className="icarus-terminal-star flex-shrink-0" style={{ color: settings.phosphorAfterglow ? "rgb(251,146,60)" : "rgb(80,55,30)" }} />
+                <span className="flex-1">
+                  <span className="block text-xs font-bold uppercase tracking-widest" style={{ color: settings.phosphorAfterglow ? "rgb(200,130,60)" : "rgb(100,80,60)" }}>Phosphor Afterglow</span>
+                  <span className="block text-xs uppercase tracking-wider text-neutral-600">Slow decay on opacity &amp; colour transitions</span>
+                </span>
+                <span className="text-xs uppercase tracking-widest" style={{ color: settings.phosphorAfterglow ? "rgb(200,130,60)" : "rgb(60,40,20)" }}>
+                  {settings.phosphorAfterglow ? "ON" : "OFF"}
+                </span>
+              </button>
+
+              <button
+                onClick={toggleChromaticAberration}
+                className="flex w-full items-center gap-3 border px-3 py-2.5 text-left transition-all duration-150"
+                style={{
+                  borderColor: settings.chromaticAberration ? "rgba(249,115,22,0.45)" : "rgba(60,40,20,0.4)",
+                  backgroundColor: settings.chromaticAberration ? "rgba(249,115,22,0.06)" : "transparent",
+                }}
+              >
+                <span className="h-1.5 w-1.5 flex-shrink-0 rounded-full" style={{
+                  backgroundColor: settings.chromaticAberration ? "rgb(249,115,22)" : "rgb(60,35,15)",
+                  boxShadow: settings.chromaticAberration ? "0 0 5px rgb(249,115,22)" : "none",
+                }} />
+                <i className="icarus-terminal-settings flex-shrink-0" style={{ color: settings.chromaticAberration ? "rgb(251,146,60)" : "rgb(80,55,30)" }} />
+                <span className="flex-1">
+                  <span className="block text-xs font-bold uppercase tracking-widest" style={{ color: settings.chromaticAberration ? "rgb(200,130,60)" : "rgb(100,80,60)" }}>Chromatic Aberration</span>
+                  <span className="block text-xs uppercase tracking-wider text-neutral-600">RGB channel separation — lens distortion effect</span>
+                </span>
+                <span className="text-xs uppercase tracking-widest" style={{ color: settings.chromaticAberration ? "rgb(200,130,60)" : "rgb(60,40,20)" }}>
+                  {settings.chromaticAberration ? "ON" : "OFF"}
                 </span>
               </button>
             </div>

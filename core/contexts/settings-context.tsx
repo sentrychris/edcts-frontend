@@ -46,6 +46,8 @@ export interface Settings {
   contrast: number;   // 0.5–2.0
   greyscale: boolean;
   crtMode: boolean;
+  chromaticAberration: boolean;
+  phosphorAfterglow: boolean;
 }
 
 interface SettingsContextValue {
@@ -57,6 +59,8 @@ interface SettingsContextValue {
   setContrast: (v: number) => void;
   toggleGreyscale: () => void;
   toggleCrt: () => void;
+  toggleChromaticAberration: () => void;
+  togglePhosphorAfterglow: () => void;
   reset: () => void;
 }
 
@@ -70,6 +74,8 @@ export const DEFAULT_SETTINGS: Settings = {
   contrast: 0.95,
   greyscale: false,
   crtMode: true,
+  chromaticAberration: false,
+  phosphorAfterglow: false,
 };
 
 const SettingsContext = createContext<SettingsContextValue | null>(null);
@@ -106,12 +112,14 @@ export const SettingsProvider: FunctionComponent<{ children: ReactNode }> = ({ c
   const setSaturate   = (v: number)  => persist({ ...settings, saturate:   v });
   const setBrightness = (v: number)  => persist({ ...settings, brightness: v });
   const setContrast   = (v: number)  => persist({ ...settings, contrast:   v });
-  const toggleGreyscale = ()         => persist({ ...settings, greyscale:  !settings.greyscale });
-  const toggleCrt       = ()         => persist({ ...settings, crtMode:    !settings.crtMode });
-  const reset           = ()         => persist(DEFAULT_SETTINGS);
+  const toggleGreyscale           = () => persist({ ...settings, greyscale:           !settings.greyscale });
+  const toggleCrt                 = () => persist({ ...settings, crtMode:              !settings.crtMode });
+  const toggleChromaticAberration = () => persist({ ...settings, chromaticAberration: !settings.chromaticAberration });
+  const togglePhosphorAfterglow   = () => persist({ ...settings, phosphorAfterglow:   !settings.phosphorAfterglow });
+  const reset                     = () => persist(DEFAULT_SETTINGS);
 
   return (
-    <SettingsContext.Provider value={{ settings, setTheme, setHue, setSaturate, setBrightness, setContrast, toggleGreyscale, toggleCrt, reset }}>
+    <SettingsContext.Provider value={{ settings, setTheme, setHue, setSaturate, setBrightness, setContrast, toggleGreyscale, toggleCrt, toggleChromaticAberration, togglePhosphorAfterglow, reset }}>
       {children}
     </SettingsContext.Provider>
   );

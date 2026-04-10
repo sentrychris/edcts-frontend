@@ -532,6 +532,44 @@ button.text-glow__orange:hover {
 }
 
 /* ════════════════════════════════════════════════════════
+   PHOSPHOR AFTERGLOW — persistent glow decay
+   Adds a slow exponential-curve fade to opacity, colour,
+   and shadow transitions so changing elements linger like
+   real CRT phosphor before decaying to their new value.
+   ════════════════════════════════════════════════════════ */
+
+/* cubic-bezier(0, 0.8, 0.25, 1): fast initial change,
+   long slow tail — matches the P43 green phosphor decay curve */
+html.phosphor-enabled * {
+  transition:
+    opacity          0.45s cubic-bezier(0, 0.8, 0.25, 1),
+    color            0.4s  cubic-bezier(0, 0.8, 0.25, 1),
+    background-color 0.4s  cubic-bezier(0, 0.8, 0.25, 1),
+    text-shadow      0.5s  cubic-bezier(0, 0.8, 0.25, 1),
+    box-shadow       0.5s  cubic-bezier(0, 0.8, 0.25, 1);
+}
+
+/* Warm amber radial bloom — base phosphor excitation at screen centre */
+.phosphor-overlay {
+  position: fixed;
+  inset: 0;
+  z-index: 9998;
+  pointer-events: none;
+  background: radial-gradient(
+    ellipse at 50% 45%,
+    rgba(249, 115, 22, 0.028) 0%,
+    rgba(249, 115, 22, 0.010) 38%,
+    transparent 68%
+  );
+  animation: phosphor-breathe 4s ease-in-out infinite;
+}
+
+@keyframes phosphor-breathe {
+  0%, 100% { opacity: 0.45; }
+  50%       { opacity: 1.0;  }
+}
+
+/* ════════════════════════════════════════════════════════
    CRT OVERLAY — scanlines + vignette + phosphor flicker
    ════════════════════════════════════════════════════════ */
 

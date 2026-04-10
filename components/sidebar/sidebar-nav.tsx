@@ -8,7 +8,7 @@ interface Props {
 }
 
 const navItems = [
-  { name: "Home", href: "/", icon: "icarus-terminal-route" },
+  { name: "Home", href: "/", icon: "icarus-terminal-ship" },
   { name: "Star Systems", href: "/systems", icon: "icarus-terminal-system-orbits" },
   { name: "Galaxy Map", href: "/galaxy-map", icon: "icarus-terminal-star" },
   { name: "Route Plotter", href: "/route-plotter", icon: "icarus-terminal-route" },
