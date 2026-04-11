@@ -59,14 +59,14 @@ const SystemsStatisticsBar: FunctionComponent<Props> = ({
     },
     {
       icon: "icarus-terminal-scan",
-      label: "EDDN",
+      label: "EDDN Service",
       value: <span className="text-green-400 uppercase text-sm">
         online
       </span>,
     },
     {
       icon: "icarus-terminal-system-bodies",
-      label: "EDSM",
+      label: "EDSM Service",
       value: <span className="text-green-400 uppercase text-sm">
         Online
       </span>,
