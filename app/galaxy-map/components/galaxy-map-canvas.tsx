@@ -1,6 +1,5 @@
 "use client";
 
-import Link from "next/link";
 import { useEffect, useRef, useState } from "react";
 import { getBoxelDataFromId64 } from "@/core/string-utils";
 import { settings } from "@/core/config";
@@ -137,31 +136,6 @@ const FRAG_SRC = `
   }
 `;
 
-// ── Picking shaders — encodes index+1 as RGB; enlarged min size for easier click targets ──
-
-const PICK_VERT = `
-  attribute vec3 a_position;
-  attribute vec3 a_pickColor;
-  attribute float a_size;
-  uniform mat4 u_mvp;
-  varying vec3 v_pickColor;
-  void main() {
-    gl_Position = u_mvp * vec4(a_position, 1.0);
-    v_pickColor = a_pickColor;
-    float sz = clamp(a_size * (8000.0 / max(gl_Position.w, 1.0)), 0.5, 8.0);
-    gl_PointSize = max(sz, 6.0);
-  }
-`;
-
-const PICK_FRAG = `
-  precision mediump float;
-  varying vec3 v_pickColor;
-  void main() {
-    if (length(gl_PointCoord - vec2(0.5)) * 2.0 > 1.0) discard;
-    gl_FragColor = vec4(v_pickColor, 1.0);
-  }
-`;
-
 // ── Galaxy disk shaders — textured flat plane in the XZ galactic plane ──
 
 const DISK_VERT = `
@@ -196,23 +170,22 @@ const STAR_CLASSES: [number, number, number, number, number][] = [
   [0.52, 1.00, 0.65, 0.25, 2.0], // K — orange
   [1.00, 1.00, 0.38, 0.10, 1.6], // M — red
 ];
-const CLASS_NAMES = ["O", "B", "A", "F", "G", "K", "M"];
 
 function hashFloat(n: number): number {
   const x = Math.sin(n * 127.1 + 311.7) * 43758.5453;
   return x - Math.floor(x);
 }
 
-function starAppearance(id64: number): [number, number, number, number, string] {
+function starAppearance(id64: number): [number, number, number, number] {
   const h1 = hashFloat(id64), h2 = hashFloat(id64 * 1.3 + 7.5), h3 = hashFloat(id64 * 2.7 + 13.1);
   for (let i = 0; i < STAR_CLASSES.length; i++) {
     const [thr, r, g, b, sz] = STAR_CLASSES[i];
     if (h1 < thr) {
       const lum = 0.55 + h2 * 0.45;
-      return [r * lum, g * lum, b * lum, sz * (0.8 + h3 * 0.4), CLASS_NAMES[i]];
+      return [r * lum, g * lum, b * lum, sz * (0.8 + h3 * 0.4)];
     }
   }
-  return [0.60, 0.20, 0.05, 1.4, "M"];
+  return [0.60, 0.20, 0.05, 1.4];
 }
 
 // ── Background starfield (seeded, deterministic) ──
@@ -346,28 +319,6 @@ function buildDisk(gl: WebGLRenderingContext): { posBuf: WebGLBuffer; uvBuf: Web
 
 // ── Types ──
 
-interface SystemEntry {
-  id64: number;
-  slug: string;
-  name: string;
-  x: number;
-  y: number;
-  z: number;
-  starClass: string;
-}
-
-interface Hovered {
-  name: string;
-  cx: number;
-  cy: number;
-}
-
-interface Selected {
-  system: SystemEntry;
-  cx: number;
-  cy: number;
-}
-
 type Status = "loading" | "error" | "ready";
 
 interface GlState {
@@ -381,14 +332,6 @@ interface GlState {
   pointCount: number;
   // Starfield
   sfPos: WebGLBuffer; sfCol: WebGLBuffer; sfCount: number;
-  // Picking
-  pickProg: WebGLProgram;
-  pickUMvp: WebGLUniformLocation;
-  pickAPos: number; pickAColor: number; pickASize: number;
-  pickColBuf: WebGLBuffer;
-  pickFb: WebGLFramebuffer;
-  pickTex: WebGLTexture;
-  pickW: number; pickH: number;
   // Galaxy disk
   diskProg: WebGLProgram;
   diskUMvp: WebGLUniformLocation;
@@ -408,81 +351,14 @@ export default function GalaxyMapCanvas() {
   const phiRef     = useRef(0.45);
   const radiusRef  = useRef(85000);
   const targetRef  = useRef({ x: 0, y: 0, z: 0 });
-  const systemsRef = useRef<SystemEntry[]>([]);
   const dragRef    = useRef<{ x: number; y: number; button: number } | null>(null);
-  const downRef    = useRef<{ x: number; y: number } | null>(null);
   const autoRef    = useRef(true);
   const pausedRef  = useRef(false);
-  const flyRef     = useRef<{ x: number; y: number; z: number; radius: number } | null>(null);
   const autoTimer  = useRef<ReturnType<typeof setTimeout> | null>(null);
-  const hoverTimer = useRef<ReturnType<typeof setTimeout> | null>(null);
 
-  const [status,        setStatus]        = useState<Status>("loading");
-  const [count,         setCount]         = useState(0);
-  const [hovered,       setHovered]       = useState<Hovered | null>(null);
-  const [selected,      setSelected]      = useState<Selected | null>(null);
-  const [paused,        setPaused]        = useState(false);
-  const [searchQuery,   setSearchQuery]   = useState("");
-  const [searchResults, setSearchResults] = useState<SystemEntry[]>([]);
-
-  // ── GPU picking — render star indices to offscreen framebuffer, read one pixel ──
-  const doPick = (cssX: number, cssY: number): SystemEntry | null => {
-    const s = glRef.current;
-    const canvas = canvasRef.current;
-    if (!s || !canvas) return null;
-    const { gl } = s;
-
-    const rect  = canvas.getBoundingClientRect();
-    const pickX = Math.round(cssX - rect.left);
-    const pickY = Math.round(cssY - rect.top);
-    const pickW = Math.round(rect.width);
-    const pickH = Math.round(rect.height);
-
-    if (s.pickW !== pickW || s.pickH !== pickH) {
-      gl.bindTexture(gl.TEXTURE_2D, s.pickTex);
-      gl.texImage2D(gl.TEXTURE_2D, 0, gl.RGBA, pickW, pickH, 0, gl.RGBA, gl.UNSIGNED_BYTE, null);
-      s.pickW = pickW;
-      s.pickH = pickH;
-    }
-
-    gl.bindFramebuffer(gl.FRAMEBUFFER, s.pickFb);
-    gl.viewport(0, 0, pickW, pickH);
-    gl.disable(gl.BLEND);
-    gl.clearColor(0, 0, 0, 0);
-    gl.clear(gl.COLOR_BUFFER_BIT);
-
-    const { x: tx, y: ty, z: tz } = targetRef.current;
-    const mvp = buildMvp(thetaRef.current, phiRef.current, radiusRef.current, tx, ty, tz, pickW / pickH);
-
-    gl.useProgram(s.pickProg);
-    gl.uniformMatrix4fv(s.pickUMvp, false, mvp);
-
-    gl.bindBuffer(gl.ARRAY_BUFFER, s.posBuf);
-    gl.enableVertexAttribArray(s.pickAPos);
-    gl.vertexAttribPointer(s.pickAPos, 3, gl.FLOAT, false, 0, 0);
-
-    gl.bindBuffer(gl.ARRAY_BUFFER, s.pickColBuf);
-    gl.enableVertexAttribArray(s.pickAColor);
-    gl.vertexAttribPointer(s.pickAColor, 3, gl.FLOAT, false, 0, 0);
-
-    gl.bindBuffer(gl.ARRAY_BUFFER, s.sizeBuf);
-    gl.enableVertexAttribArray(s.pickASize);
-    gl.vertexAttribPointer(s.pickASize, 1, gl.FLOAT, false, 0, 0);
-
-    gl.drawArrays(gl.POINTS, 0, s.pointCount);
-
-    const px = new Uint8Array(4);
-    gl.readPixels(pickX, pickH - pickY - 1, 1, 1, gl.RGBA, gl.UNSIGNED_BYTE, px);
-
-    gl.bindFramebuffer(gl.FRAMEBUFFER, null);
-    gl.viewport(0, 0, canvas.width, canvas.height);
-    gl.enable(gl.BLEND);
-    gl.blendFunc(gl.SRC_ALPHA, gl.ONE);
-    gl.clearColor(0, 0, 0, 1);
-
-    const idx = px[0] | (px[1] << 8) | (px[2] << 16);
-    return idx === 0 ? null : (systemsRef.current[idx - 1] ?? null);
-  };
+  const [status, setStatus] = useState<Status>("loading");
+  const [count,  setCount]  = useState(0);
+  const [paused, setPaused] = useState(false);
 
   // ── Draw one frame ──
   const draw = () => {
@@ -555,20 +431,6 @@ export default function GalaxyMapCanvas() {
 
   const startLoop = () => {
     const loop = () => {
-      // Animated fly-to: lerp camera target and zoom
-      const fly = flyRef.current;
-      if (fly) {
-        const speed = 0.09;
-        const dx = fly.x - targetRef.current.x;
-        const dy = fly.y - targetRef.current.y;
-        const dz = fly.z - targetRef.current.z;
-        const dr = fly.radius - radiusRef.current;
-        targetRef.current.x += dx * speed;
-        targetRef.current.y += dy * speed;
-        targetRef.current.z += dz * speed;
-        radiusRef.current   += dr * speed;
-        if (Math.hypot(dx, dy, dz) < 50 && Math.abs(dr) < 100) flyRef.current = null;
-      }
       if (autoRef.current) thetaRef.current += 0.0003;
       draw();
       rafRef.current = requestAnimationFrame(loop);
@@ -595,86 +457,33 @@ export default function GalaxyMapCanvas() {
     }
   };
 
-  // Search: scans systemsRef for first 8 name matches (early-exit, fast even at 197k)
-  const handleSearch = (q: string) => {
-    setSearchQuery(q);
-    if (!q.trim()) { setSearchResults([]); return; }
-    const lower = q.toLowerCase();
-    const results: SystemEntry[] = [];
-    for (const sys of systemsRef.current) {
-      if (sys.name.toLowerCase().includes(lower)) {
-        results.push(sys);
-        if (results.length >= 8) break;
-      }
-    }
-    setSearchResults(results);
-  };
-
-  const flyToSystem = (sys: SystemEntry) => {
-    flyRef.current = { x: sys.x, y: sys.y, z: sys.z, radius: 4000 };
-    setSearchQuery("");
-    setSearchResults([]);
-    setSelected({ system: sys, cx: 0, cy: 0 });
-    // Pause auto-rotate while the user explores the selected system
-    pausedRef.current = true;
-    setPaused(true);
-    autoRef.current = false;
-  };
-
   // ── Pointer controls ──
   const onPointerDown = (e: React.PointerEvent) => {
     (e.target as HTMLElement).setPointerCapture(e.pointerId);
     dragRef.current = { x: e.clientX, y: e.clientY, button: e.button };
-    downRef.current = { x: e.clientX, y: e.clientY };
-    setHovered(null);
     pauseAutoRotate();
   };
 
   const onPointerMove = (e: React.PointerEvent) => {
-    if (dragRef.current) {
-      const dx = e.clientX - dragRef.current.x;
-      const dy = e.clientY - dragRef.current.y;
-      dragRef.current = { x: e.clientX, y: e.clientY, button: dragRef.current.button };
-      if (dragRef.current.button === 2) {
-        // Right-drag: pan camera
-        const theta = thetaRef.current, phi = phiRef.current, panScale = radiusRef.current * 0.0006;
-        targetRef.current.x += (dx *  Math.cos(theta) - dy * -Math.sin(theta) * Math.cos(phi)) * panScale;
-        targetRef.current.y += (-dy * Math.sin(phi)) * panScale;
-        targetRef.current.z += (dx * -Math.sin(theta) - dy * -Math.cos(theta) * Math.cos(phi)) * panScale;
-      } else {
-        // Left-drag: orbit
-        thetaRef.current -= dx * 0.005;
-        phiRef.current = Math.max(0.05, Math.min(Math.PI - 0.05, phiRef.current + dy * 0.005));
-      }
+    if (!dragRef.current) return;
+    const dx = e.clientX - dragRef.current.x;
+    const dy = e.clientY - dragRef.current.y;
+    dragRef.current = { x: e.clientX, y: e.clientY, button: dragRef.current.button };
+    if (dragRef.current.button === 2) {
+      // Right-drag: pan camera
+      const theta = thetaRef.current, phi = phiRef.current, panScale = radiusRef.current * 0.0006;
+      targetRef.current.x += (dx *  Math.cos(theta) - dy * -Math.sin(theta) * Math.cos(phi)) * panScale;
+      targetRef.current.y += (-dy * Math.sin(phi)) * panScale;
+      targetRef.current.z += (dx * -Math.sin(theta) - dy * -Math.cos(theta) * Math.cos(phi)) * panScale;
     } else {
-      // Hover pick — debounced 80 ms
-      const cx = e.clientX, cy = e.clientY;
-      if (hoverTimer.current) clearTimeout(hoverTimer.current);
-      hoverTimer.current = setTimeout(() => {
-        const sys = doPick(cx, cy);
-        if (sys) {
-          const rect = canvasRef.current?.getBoundingClientRect();
-          if (rect) setHovered({ name: sys.name, cx: cx - rect.left, cy: cy - rect.top });
-        } else {
-          setHovered(null);
-        }
-      }, 80);
+      // Left-drag: orbit
+      thetaRef.current -= dx * 0.005;
+      phiRef.current = Math.max(0.05, Math.min(Math.PI - 0.05, phiRef.current + dy * 0.005));
     }
   };
 
-  const onPointerUp = (e: React.PointerEvent) => {
-    const down = downRef.current;
-    if (down && Math.hypot(e.clientX - down.x, e.clientY - down.y) < 4 && dragRef.current?.button !== 2) {
-      const sys = doPick(e.clientX, e.clientY);
-      const rect = canvasRef.current?.getBoundingClientRect();
-      if (sys && rect) {
-        setSelected({ system: sys, cx: e.clientX - rect.left, cy: e.clientY - rect.top });
-      } else {
-        setSelected(null);
-      }
-    }
+  const onPointerUp = () => {
     dragRef.current = null;
-    downRef.current = null;
     pauseAutoRotate();
   };
 
@@ -696,10 +505,9 @@ export default function GalaxyMapCanvas() {
     gl.blendFunc(gl.SRC_ALPHA, gl.ONE);
     gl.clearColor(0, 0, 0, 1);
 
-    let prog: WebGLProgram, pickProg: WebGLProgram, diskProg: WebGLProgram;
+    let prog: WebGLProgram, diskProg: WebGLProgram;
     try {
       prog     = createProgram(gl, VERT_SRC, FRAG_SRC);
-      pickProg = createProgram(gl, PICK_VERT, PICK_FRAG);
       diskProg = createProgram(gl, DISK_VERT, DISK_FRAG);
     } catch (err) {
       console.error(err);
@@ -707,57 +515,33 @@ export default function GalaxyMapCanvas() {
       return;
     }
 
-    // Picking framebuffer (starts 1×1, resized lazily in doPick)
-    const pickTex = gl.createTexture()!;
-    gl.bindTexture(gl.TEXTURE_2D, pickTex);
-    gl.texImage2D(gl.TEXTURE_2D, 0, gl.RGBA, 1, 1, 0, gl.RGBA, gl.UNSIGNED_BYTE, null);
-    gl.texParameteri(gl.TEXTURE_2D, gl.TEXTURE_MIN_FILTER, gl.NEAREST);
-    gl.texParameteri(gl.TEXTURE_2D, gl.TEXTURE_MAG_FILTER, gl.NEAREST);
-    const pickFb = gl.createFramebuffer()!;
-    gl.bindFramebuffer(gl.FRAMEBUFFER, pickFb);
-    gl.framebufferTexture2D(gl.FRAMEBUFFER, gl.COLOR_ATTACHMENT0, gl.TEXTURE_2D, pickTex, 0);
-    gl.bindFramebuffer(gl.FRAMEBUFFER, null);
-
     const sf      = buildStarfield(gl, 3500);
     const diskTex = makeGalaxyTexture(gl);
     const disk    = buildDisk(gl);
 
-    fetch(`${settings.api.url}/system/slugid64s`)
-      .then((r) => { if (!r.ok) throw new Error(`HTTP ${r.status}`); return r.json() as Promise<Record<string, number>>; })
+    fetch(`${settings.api.url}/system/id64s`)
+      .then((r) => { if (!r.ok) throw new Error(`HTTP ${r.status}`); return r.json() as Promise<number[]>; })
       .then((data) => {
-        const entries = Object.entries(data);
-        const systems: SystemEntry[] = [];
-        const positions:  number[] = [];
-        const colors:     number[] = [];
-        const sizes:      number[] = [];
-        const pickColors: number[] = [];
+        const positions: number[] = [];
+        const colors:    number[] = [];
+        const sizes:     number[] = [];
+        let plotted = 0;
 
-        let idx = 0;
-        for (const [key, id64] of entries) {
+        for (const id64 of data) {
           if (!id64) continue;
           const coords = id64ToCoords(id64);
           if (!coords) continue;
 
-          // Key format: "{id64}-{slug}" — first hyphen separates the id64 number from slug
-          const slug = key.slice(key.indexOf("-") + 1);
-          const name = slug.replace(/-/g, " ").replace(/\b\w/g, (c) => c.toUpperCase());
           const isSol = Math.abs(coords[0]) < 100 && Math.abs(coords[1]) < 100 && Math.abs(coords[2]) < 100;
+          const [r, g, b, sz] = isSol ? [1.0, 0.95, 0.75, 5.0] : starAppearance(id64);
 
-          const [r, g, b, sz, cls] = isSol ? [1.0, 0.95, 0.75, 5.0, "G"] : starAppearance(id64);
-
-          systems.push({ id64, slug, name, x: coords[0], y: coords[1], z: coords[2], starClass: isSol ? "G" : cls });
           positions.push(...coords);
           colors.push(r, g, b);
           sizes.push(sz);
-
-          // Encode 1-based index as RGB (supports up to ~16 M systems)
-          const id = idx + 1;
-          pickColors.push((id & 0xff) / 255, ((id >> 8) & 0xff) / 255, ((id >> 16) & 0xff) / 255);
-          idx++;
+          plotted++;
         }
 
-        systemsRef.current = systems;
-        setCount(systems.length);
+        setCount(plotted);
 
         const upload = (data: number[]) => {
           const buf = gl.createBuffer()!;
@@ -766,10 +550,9 @@ export default function GalaxyMapCanvas() {
           return buf;
         };
 
-        const posBuf     = upload(positions);
-        const colBuf     = upload(colors);
-        const sizeBuf    = upload(sizes);
-        const pickColBuf = upload(pickColors);
+        const posBuf  = upload(positions);
+        const colBuf  = upload(colors);
+        const sizeBuf = upload(sizes);
 
         glRef.current = {
           gl, prog,
@@ -778,14 +561,8 @@ export default function GalaxyMapCanvas() {
           aPos:   gl.getAttribLocation(prog, "a_position"),
           aColor: gl.getAttribLocation(prog, "a_color"),
           aSize:  gl.getAttribLocation(prog, "a_size"),
-          posBuf, colBuf, sizeBuf, pointCount: systems.length,
+          posBuf, colBuf, sizeBuf, pointCount: plotted,
           sfPos: sf.posBuf, sfCol: sf.colBuf, sfCount: sf.count,
-          pickProg,
-          pickUMvp:   gl.getUniformLocation(pickProg, "u_mvp")!,
-          pickAPos:   gl.getAttribLocation(pickProg, "a_position"),
-          pickAColor: gl.getAttribLocation(pickProg, "a_pickColor"),
-          pickASize:  gl.getAttribLocation(pickProg, "a_size"),
-          pickColBuf, pickFb, pickTex, pickW: 0, pickH: 0,
           diskProg,
           diskUMvp: gl.getUniformLocation(diskProg, "u_mvp")!,
           diskUTex: gl.getUniformLocation(diskProg, "u_tex")!,
@@ -801,29 +578,16 @@ export default function GalaxyMapCanvas() {
 
     return () => {
       cancelAnimationFrame(rafRef.current);
-      if (autoTimer.current)  clearTimeout(autoTimer.current);
-      if (hoverTimer.current) clearTimeout(hoverTimer.current);
+      if (autoTimer.current) clearTimeout(autoTimer.current);
     };
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
-
-  // ── Tooltip: edge-clamp so it stays inside the canvas ──
-  const tooltipStyle = (cx: number, cy: number): React.CSSProperties => {
-    const OFFSET = 14, W = 180, H = 32;
-    let left = cx + OFFSET;
-    let top  = cy - H / 2;
-    if (left + W > (canvasRef.current?.clientWidth ?? 9999)) left = cx - W - OFFSET;
-    if (top < 0) top = 4;
-    return { left, top };
-  };
-
-  const isOver = hovered && !dragRef.current;
 
   return (
     <div className="relative w-full select-none" style={{ height: "68vh", minHeight: "420px" }}>
       <canvas
         ref={canvasRef}
-        className={`h-full w-full ${isOver ? "cursor-crosshair" : "cursor-grab active:cursor-grabbing"}`}
+        className="h-full w-full cursor-grab active:cursor-grabbing"
         onPointerDown={onPointerDown}
         onPointerMove={onPointerMove}
         onPointerUp={onPointerUp}
@@ -831,56 +595,6 @@ export default function GalaxyMapCanvas() {
         onWheel={onWheel}
         onContextMenu={(e) => e.preventDefault()}
       />
-
-      {/* ── Hover tooltip ── */}
-      {isOver && (
-        <div
-          className="pointer-events-none absolute z-10 border border-orange-900/40 bg-black/80 px-2 py-1 text-xs uppercase tracking-widest text-orange-400 backdrop-blur"
-          style={tooltipStyle(hovered.cx, hovered.cy)}
-        >
-          {hovered.name}
-        </div>
-      )}
-
-      {/* ── Selected system panel ── */}
-      {selected && (
-        <div className="absolute bottom-16 left-4 z-20 w-60 border border-orange-900/40 bg-black/95 backdrop-blur">
-          <span className="absolute left-0 top-0 h-2.5 w-2.5 border-l border-t border-orange-500/50" />
-          <span className="absolute right-0 top-0 h-2.5 w-2.5 border-r border-t border-orange-500/50" />
-          <span className="absolute bottom-0 left-0 h-2.5 w-2.5 border-b border-l border-orange-500/50" />
-          <span className="absolute bottom-0 right-0 h-2.5 w-2.5 border-b border-r border-orange-500/50" />
-          <div className="p-4">
-            <div className="mb-1 flex items-center justify-between">
-              <span className="text-xs uppercase tracking-widest text-neutral-600">System Identified</span>
-              <button
-                onClick={() => setSelected(null)}
-                className="text-neutral-700 transition-colors hover:text-orange-400"
-                aria-label="Close"
-              >
-                ✕
-              </button>
-            </div>
-            <p className="text-glow__orange mb-3 font-bold uppercase tracking-wide">
-              {selected.system.name}
-            </p>
-            <div className="mb-3 grid grid-cols-3 gap-1 text-xs uppercase tracking-widest text-neutral-600">
-              <span>X {Math.round(selected.system.x)}</span>
-              <span>Y {Math.round(selected.system.y)}</span>
-              <span>Z {Math.round(selected.system.z)}</span>
-            </div>
-            <div className="mb-3 flex items-center gap-2 text-xs uppercase tracking-widest text-neutral-600">
-              <span>Class</span>
-              <span className="text-orange-400">{selected.system.starClass}</span>
-            </div>
-            <Link
-              href={`/systems/${selected.system.slug}`}
-              className="block border border-orange-900/40 px-3 py-1.5 text-center text-xs uppercase tracking-widest text-neutral-400 transition-colors hover:border-orange-500/60 hover:text-orange-400"
-            >
-              View System Data →
-            </Link>
-          </div>
-        </div>
-      )}
 
       {/* ── Loading / error overlays ── */}
       {status === "loading" && (
@@ -899,30 +613,6 @@ export default function GalaxyMapCanvas() {
       {/* ── HUD (shown once data is loaded) ── */}
       {status === "ready" && (
         <>
-          {/* Top-left: system search */}
-          <div className="absolute left-4 top-4 z-10 w-56">
-            <input
-              type="text"
-              value={searchQuery}
-              onChange={(e) => handleSearch(e.target.value)}
-              placeholder="Search system..."
-              className="w-full border border-orange-900/40 bg-black/80 px-3 py-1.5 text-xs uppercase tracking-widest text-orange-300 placeholder-neutral-700 backdrop-blur focus:border-orange-500/60 focus:outline-none"
-            />
-            {searchResults.length > 0 && (
-              <div className="absolute top-full mt-0.5 w-full border border-orange-900/40 bg-black/95 backdrop-blur">
-                {searchResults.map((sys) => (
-                  <button
-                    key={sys.id64}
-                    onClick={() => flyToSystem(sys)}
-                    className="block w-full px-3 py-2 text-left text-xs uppercase tracking-widest text-neutral-400 transition-colors hover:bg-orange-900/20 hover:text-orange-300"
-                  >
-                    {sys.name}
-                  </button>
-                ))}
-              </div>
-            )}
-          </div>
-
           {/* Top-right: axis labels */}
           <div className="absolute right-4 top-4 flex flex-col gap-1 text-right text-xs uppercase tracking-widest text-neutral-700">
             <span>X — Galactic East</span>
