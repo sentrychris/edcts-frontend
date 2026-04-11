@@ -58,14 +58,18 @@ const SystemsStatisticsBar: FunctionComponent<Props> = ({
       value: formatNumber(statistics.cartographical.systems),
     },
     {
-      icon: "icarus-terminal-star",
-      label: "Primary Stars",
-      value: formatNumber(statistics.cartographical.stars),
+      icon: "icarus-terminal-scan",
+      label: "EDDN Listener",
+      value: <span className="text-green-400 uppercase text-sm">
+        online
+      </span>,
     },
     {
       icon: "icarus-terminal-system-bodies",
-      label: "Orbital Bodies",
-      value: formatNumber(statistics.cartographical.bodies),
+      label: "EDSM API",
+      value: <span className="text-green-400 uppercase text-sm">
+        Online
+      </span>,
     },
   ];
 
