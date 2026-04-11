@@ -18,6 +18,7 @@ const navItems = [
   { name: "Star Systems", href: "/systems", icon: "icarus-terminal-system-orbits" },
   { name: "Galaxy Map", href: "/galaxy-map", icon: "icarus-terminal-star" },
   { name: "Route Plotter", href: "/route-plotter", icon: "icarus-terminal-route" },
+  { name: "Distance Search", href: "/distance-search", icon: "icarus-terminal-scan" },
   { name: "Galnet News", href: "/galnet", icon: "icarus-terminal-notifications" },
 ];
 
