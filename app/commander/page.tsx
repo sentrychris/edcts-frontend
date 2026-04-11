@@ -8,6 +8,7 @@ import CommanderHero from "./components/commander-hero";
 import CommanderRanksBar from "./components/commander-ranks-bar";
 import CommanderFleet from "./components/commander-fleet";
 import CommanderInfoGrid from "./components/commander-info-grid";
+import CommanderLoadout from "./components/commander-loadout";
 
 export async function generateMetadata(
   _props: unknown,
@@ -90,8 +91,9 @@ export default async function Page() {
             <div className="xl:col-span-2">
               <CommanderFleet ships={profile.ships} currentShipId={profile.commander.currentShipId} />
             </div>
-            <div>
+            <div className="space-y-5">
               <CommanderInfoGrid profile={profile} />
+              {profile.loadout && <CommanderLoadout loadout={profile.loadout} />}
             </div>
           </div>
         </div>

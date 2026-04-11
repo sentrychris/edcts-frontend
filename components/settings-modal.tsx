@@ -143,7 +143,7 @@ const HueWheel: FunctionComponent<{ hue: number; onChange: (h: number) => void }
       />
       <div className="text-center">
         <span className="text-glow__orange block text-sm font-bold tabular-nums">{hue}°</span>
-        <span className="block text-[0.5rem] uppercase tracking-[0.4em] text-neutral-600">Hue Rotate</span>
+        <span className="block text-[0.6rem] uppercase tracking-[0.4em] text-neutral-600">Hue Rotate</span>
       </div>
     </div>
   );
@@ -207,7 +207,7 @@ const SliderRow: FunctionComponent<SliderProps> = ({
         </div>
       </div>
 
-      <div className="flex justify-between text-[0.5rem] uppercase tracking-widest text-neutral-700">
+      <div className="flex justify-between text-[0.6rem] uppercase tracking-widest text-neutral-700">
         <span>{format(min)}</span>
         <span>{format(max)}</span>
       </div>
@@ -549,7 +549,7 @@ const SettingsModal: FunctionComponent<Props> = ({ onClose }) => {
 
         {/* Footer */}
         <div className="flex items-center justify-between border-t border-orange-900/20 px-5 py-3">
-          <p className="text-[0.55rem] uppercase tracking-widest text-neutral-700">
+          <p className="text-[0.65rem] uppercase tracking-widest text-neutral-700">
             Settings persist across sessions ■ ESC to close
           </p>
           <button

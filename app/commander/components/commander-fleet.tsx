@@ -54,12 +54,12 @@ const CommanderFleet: FunctionComponent<Props> = ({ ships, currentShipId }) => {
                       </span>
                     )}
                     {isActive && (
-                      <span className="ml-auto shrink-0 border border-orange-500/30 px-1.5 py-0.5 text-[0.5rem] uppercase tracking-widest text-orange-400/70">
+                      <span className="ml-auto shrink-0 border border-orange-500/30 px-1.5 py-0.5 text-[0.6rem] uppercase tracking-widest text-orange-400/70">
                         Active
                       </span>
                     )}
                   </div>
-                  <div className="mt-0.5 flex flex-wrap gap-x-3 gap-y-0.5 text-[0.55rem] uppercase tracking-widest text-neutral-700">
+                  <div className="mt-0.5 flex flex-wrap gap-x-3 gap-y-0.5 text-[0.65rem] uppercase tracking-widest text-neutral-700">
                     {ship.starsystem && (
                       <span>
                         <i className="icarus-terminal-route mr-0.5 text-orange-500/20"></i>

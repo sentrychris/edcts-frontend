@@ -41,7 +41,7 @@ const CommanderRanksBar: FunctionComponent<Props> = ({ rank }) => {
               className="flex flex-col border border-orange-900/20 bg-black/40 p-3"
             >
               {/* Icon + category */}
-              <div className="mb-2 flex items-center gap-1.5 text-[0.55rem] uppercase tracking-widest text-neutral-700">
+              <div className="mb-2 flex items-center gap-1.5 text-[0.65rem] uppercase tracking-widest text-neutral-700">
                 <i className={`${icon} text-orange-500/30`}></i>
                 <span>{label}</span>
               </div>
@@ -58,7 +58,7 @@ const CommanderRanksBar: FunctionComponent<Props> = ({ rank }) => {
                   style={{ width: `${progress}%` }}
                 />
               </div>
-              <p className="mt-1 text-right text-[0.5rem] uppercase tracking-widest text-neutral-800">
+              <p className="mt-1 text-right text-[0.6rem] uppercase tracking-widest text-neutral-800">
                 {progress}%
               </p>
             </div>

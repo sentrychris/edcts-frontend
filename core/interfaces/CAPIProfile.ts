@@ -58,10 +58,45 @@ export interface CAPISquadron {
   joined: string;
 }
 
+export interface CAPILoadoutWeapon {
+  name: string;
+  id: number;
+  locName: string;
+  locDescription?: string;
+  health?: number;
+  value?: number;
+  ammo?: {
+    clip: number;
+    hopper: number;
+  };
+}
+
+export interface CAPILoadoutSuit {
+  name: string;
+  suitId: number;
+  locName: string;
+}
+
+export interface CAPILoadout {
+  loadoutSlotId: number;
+  name: string;
+  suit: CAPILoadoutSuit;
+  slots: Partial<{
+    PrimaryWeapon1: CAPILoadoutWeapon;
+    PrimaryWeapon2: CAPILoadoutWeapon;
+    SecondaryWeapon: CAPILoadoutWeapon;
+  }>;
+  state: {
+    oxygenRemaining: number;
+    energy: number;
+  };
+}
+
 export interface CAPIProfile {
   commander: CAPICommander;
   ship: CAPIShip;
   lastSystem: { name: string };
   squadron?: CAPISquadron;
   ships: Record<string, CAPIShipSummary>;
+  loadout?: CAPILoadout;
 }

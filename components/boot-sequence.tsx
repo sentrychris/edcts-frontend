@@ -247,7 +247,7 @@ const BootSequence: FunctionComponent = () => {
         {/* ── Loader phase ── */}
         {showLoader && (
           <div className="relative z-10 flex flex-col items-center">
-            <p className="text-glow__orange mb-4 text-[0.5rem] uppercase tracking-widest fx-cursor">
+            <p className="text-glow__orange mb-4 text-[0.6rem] uppercase tracking-widest fx-cursor">
               INITIALIZING SYSTEMS
             </p>
             {/* Inline arrow loader — overrides .elite-loader absolute positioning */}
@@ -290,7 +290,7 @@ const BootSequence: FunctionComponent = () => {
 
             <div className="space-y-1.5">
               {CHECKS.slice(0, checks).map((check, i) => (
-                <div key={i} className="flex items-center justify-between gap-4 text-[0.55rem] uppercase tracking-wider">
+                <div key={i} className="flex items-center justify-between gap-4 text-[0.65rem] uppercase tracking-wider">
                   <span className="text-orange-700/70">&gt; {check}</span>
                   <span
                     className="flex-shrink-0 font-bold"

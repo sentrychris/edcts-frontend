@@ -17,7 +17,7 @@ const CommanderInfoGrid: FunctionComponent<Props> = ({ profile }) => {
       <div className="space-y-4">
         {/* Credits */}
         <div className="border border-orange-900/20 bg-black/40 p-3">
-          <p className="mb-1 text-[0.55rem] uppercase tracking-widest text-neutral-700">Credits Balance</p>
+          <p className="mb-1 text-[0.65rem] uppercase tracking-widest text-neutral-700">Credits Balance</p>
           <p className="text-sm font-bold uppercase tracking-wide text-orange-400/80">
             {commander.credits.toLocaleString()} CR
           </p>
@@ -25,7 +25,7 @@ const CommanderInfoGrid: FunctionComponent<Props> = ({ profile }) => {
 
         {/* Last system */}
         <div className="border border-orange-900/20 bg-black/40 p-3">
-          <p className="mb-1 text-[0.55rem] uppercase tracking-widest text-neutral-700">Last Known System</p>
+          <p className="mb-1 text-[0.65rem] uppercase tracking-widest text-neutral-700">Last Known System</p>
           <p className="text-sm font-bold uppercase tracking-wide text-orange-400/80">
             {lastSystem.name}
           </p>
@@ -33,7 +33,7 @@ const CommanderInfoGrid: FunctionComponent<Props> = ({ profile }) => {
 
         {/* Capabilities */}
         <div className="border border-orange-900/20 bg-black/40 p-3">
-          <p className="mb-2 text-[0.55rem] uppercase tracking-widest text-neutral-700">DLC Access</p>
+          <p className="mb-2 text-[0.65rem] uppercase tracking-widest text-neutral-700">DLC Access</p>
           <div className="space-y-1.5">
             <div className="flex items-center justify-between text-[0.6rem] uppercase tracking-widest">
               <span className="text-neutral-600">Horizons</span>
@@ -54,7 +54,7 @@ const CommanderInfoGrid: FunctionComponent<Props> = ({ profile }) => {
         {/* Squadron */}
         {squadron ? (
           <div className="border border-orange-900/20 bg-black/40 p-3">
-            <p className="mb-2 text-[0.55rem] uppercase tracking-widest text-neutral-700">Squadron</p>
+            <p className="mb-2 text-[0.65rem] uppercase tracking-widest text-neutral-700">Squadron</p>
             <p className="mb-1 text-[0.7rem] font-bold uppercase tracking-wide text-orange-400/80">
               [{squadron.tag}] {squadron.name}
             </p>
@@ -65,7 +65,7 @@ const CommanderInfoGrid: FunctionComponent<Props> = ({ profile }) => {
           </div>
         ) : (
           <div className="border border-orange-900/20 bg-black/40 p-3">
-            <p className="mb-1 text-[0.55rem] uppercase tracking-widest text-neutral-700">Squadron</p>
+            <p className="mb-1 text-[0.65rem] uppercase tracking-widest text-neutral-700">Squadron</p>
             <p className="text-[0.6rem] uppercase tracking-widest text-neutral-800">Not enlisted</p>
           </div>
         )}

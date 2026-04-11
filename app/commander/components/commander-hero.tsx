@@ -18,7 +18,7 @@ const CommanderHero: FunctionComponent<Props> = ({ profile }) => {
         {/* ── Avatar placeholder ── */}
         <div className="fx-chamfer relative flex h-24 w-24 shrink-0 items-center justify-center border border-orange-900/40 bg-black/60 md:h-32 md:w-32">
           <i className="icarus-terminal-shield text-4xl text-orange-500/30 md:text-5xl"></i>
-          <div className="absolute bottom-0 left-0 right-0 border-t border-orange-900/20 py-1 text-center text-[0.55rem] uppercase tracking-widest text-neutral-700">
+          <div className="absolute bottom-0 left-0 right-0 border-t border-orange-900/20 py-1 text-center text-[0.65rem] uppercase tracking-widest text-neutral-700">
             NO IMG
           </div>
         </div>
@@ -58,7 +58,7 @@ const CommanderHero: FunctionComponent<Props> = ({ profile }) => {
             </div>
             <div>
               <p className="mb-0.5 text-neutral-700">Net Worth</p>
-              <p className="text-orange-400/60">—</p>
+              <p className="text-orange-400/60">{commander.credits.toLocaleString()} CR</p>
             </div>
           </div>
 
@@ -79,7 +79,7 @@ const CommanderHero: FunctionComponent<Props> = ({ profile }) => {
               {/* Hull + shield bars */}
               <div className="mt-3 space-y-1.5">
                 <div>
-                  <div className="mb-0.5 flex items-center justify-between text-[0.55rem] uppercase tracking-widest text-neutral-700">
+                  <div className="mb-0.5 flex items-center justify-between text-[0.65rem] uppercase tracking-widest text-neutral-700">
                     <span>Hull</span>
                     <span>{Math.round(ship.health.hull)}%</span>
                   </div>
@@ -91,7 +91,7 @@ const CommanderHero: FunctionComponent<Props> = ({ profile }) => {
                   </div>
                 </div>
                 <div>
-                  <div className="mb-0.5 flex items-center justify-between text-[0.55rem] uppercase tracking-widest text-neutral-700">
+                  <div className="mb-0.5 flex items-center justify-between text-[0.65rem] uppercase tracking-widest text-neutral-700">
                     <span>Shield</span>
                     <span>{ship.health.shieldup ? "UP" : "DOWN"}</span>
                   </div>
