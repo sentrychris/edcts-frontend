@@ -60,7 +60,7 @@ export default async function Page() {
         </div>
       </Panel>
 
-      <SystemsStatisticsBar className="fx-fade-in" callInterval={10000} flushCache={0} />
+      <SystemsStatisticsBar className="fx-fade-in" callInterval={10000} flushCache={1} />
       <SystemsTable systems={systems} />
     </>
   );
