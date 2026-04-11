@@ -48,37 +48,7 @@ export default function DistanceResults3D({ results, originName, searchLy }: Pro
   const lastMouse = useRef({ x: 0, y: 0 });
   const lastTouch = useRef({ x: 0, y: 0 });
 
-  if (results.length === 0) return null;
-
-  // Centre on the origin (first result, distance ≈ 0)
-  const origin = results[0];
-  const ox = origin.coords.x;
-  const oy = origin.coords.y;
-  const oz = origin.coords.z;
-
-  const centred = results.map((r) => ({
-    x: r.coords.x - ox,
-    y: r.coords.y - oy,
-    z: r.coords.z - oz,
-  }));
-
-  const maxExtent = Math.max(
-    ...centred.flatMap((c) => [Math.abs(c.x), Math.abs(c.y), Math.abs(c.z)]),
-    1,
-  );
-  const baseScale = (Math.min(SVG_W, SVG_H) * 0.36) / maxExtent;
-  const scale = baseScale * zoom;
-
-  const projected = centred.map((c) => project(c.x, c.y, c.z, rotX, rotY, scale));
-
-  // Floor plane at bottom of point cloud
-  const floorY = Math.max(...centred.map((c) => c.y)) + maxExtent * 0.2;
-  const shadows = centred.map((c) => project(c.x, floorY, c.z, rotX, rotY, scale));
-
-  // Max distance for normalising colour opacity
-  const maxDist = results[results.length - 1]?.distance ?? 1;
-
-  // ── Drag / touch handlers ──
+  // ── Drag / touch handlers — defined before any early return ──
 
   const onMouseDown = useCallback((e: React.MouseEvent) => {
     isDragging.current = true;
@@ -118,6 +88,36 @@ export default function DistanceResults3D({ results, originName, searchLy }: Pro
       setRotX((r) => r + dy * 0.008);
     }
   }, []);
+
+  if (results.length === 0) return null;
+
+  // Centre on the origin (first result, distance ≈ 0)
+  const origin = results[0];
+  const ox = origin.coords.x;
+  const oy = origin.coords.y;
+  const oz = origin.coords.z;
+
+  const centred = results.map((r) => ({
+    x: r.coords.x - ox,
+    y: r.coords.y - oy,
+    z: r.coords.z - oz,
+  }));
+
+  const maxExtent = Math.max(
+    ...centred.flatMap((c) => [Math.abs(c.x), Math.abs(c.y), Math.abs(c.z)]),
+    1,
+  );
+  const baseScale = (Math.min(SVG_W, SVG_H) * 0.36) / maxExtent;
+  const scale = baseScale * zoom;
+
+  const projected = centred.map((c) => project(c.x, c.y, c.z, rotX, rotY, scale));
+
+  // Floor plane at bottom of point cloud
+  const floorY = Math.max(...centred.map((c) => c.y)) + maxExtent * 0.2;
+  const shadows = centred.map((c) => project(c.x, floorY, c.z, rotX, rotY, scale));
+
+  // Max distance for normalising colour opacity
+  const maxDist = results[results.length - 1]?.distance ?? 1;
 
   const resetView = () => {
     setRotX(-0.35);
