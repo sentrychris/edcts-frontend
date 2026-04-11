@@ -4,10 +4,14 @@ import { useEffect, useRef, useState } from "react";
 import { getBoxelDataFromId64 } from "@/core/string-utils";
 import { settings } from "@/core/config";
 
-// ── Coordinate offsets — maps id64 sector/boxel space to game light-year coords (Sol = 0,0,0) ──
-const BASE_X = 49985;
-const BASE_Y = 40985;
-const BASE_Z = 24105;
+// ── Coordinate offsets — maps id64 sector/boxel space to galactic coords (Sgr A* = 0,0,0) ──
+// Derived from Sagittarius A* id64 20578934: sector (39,32,39), boxel (0,0,0), size 640
+const BASE_X = 50240;
+const BASE_Y = 41280;
+const BASE_Z = 50240;
+
+// Sol id64 — used to give it a distinct appearance regardless of coordinate origin
+const SOL_ID64 = 10477373803;
 
 function id64ToCoords(id64: number): [number, number, number] | null {
   try {
@@ -532,7 +536,7 @@ export default function GalaxyMapCanvas() {
           const coords = id64ToCoords(id64);
           if (!coords) continue;
 
-          const isSol = Math.abs(coords[0]) < 100 && Math.abs(coords[1]) < 100 && Math.abs(coords[2]) < 100;
+          const isSol = id64 === SOL_ID64;
           const [r, g, b, sz] = isSol ? [1.0, 0.95, 0.75, 5.0] : starAppearance(id64);
 
           positions.push(...coords);
