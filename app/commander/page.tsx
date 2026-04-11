@@ -9,6 +9,7 @@ import CommanderRanksBar from "./components/commander-ranks-bar";
 import CommanderFleet from "./components/commander-fleet";
 import CommanderInfoGrid from "./components/commander-info-grid";
 import CommanderLoadout from "./components/commander-loadout";
+import CommanderApiKeys from "./components/commander-api-keys";
 
 export async function generateMetadata(
   _props: unknown,
@@ -43,6 +44,30 @@ async function getCAPIProfile(accessToken: string): Promise<CAPIProfile> {
   return data as CAPIProfile;
 }
 
+async function getCommanderApiKeyStatus(accessToken: string): Promise<{ hasInaraKey: boolean; hasEdsmKey: boolean }> {
+  try {
+    const response = await fetch(`${settings.api.url}/auth/me`, {
+      headers: {
+        Authorization: `Bearer ${accessToken}`,
+        Accept: "application/json",
+      },
+      cache: "no-store",
+    });
+
+    if (!response.ok) {
+      return { hasInaraKey: false, hasEdsmKey: false };
+    }
+
+    const { commander } = await response.json();
+    return {
+      hasInaraKey: !!commander?.api?.inara,
+      hasEdsmKey: !!commander?.api?.edsm,
+    };
+  } catch {
+    return { hasInaraKey: false, hasEdsmKey: false };
+  }
+}
+
 export default async function Page() {
   const session = await auth();
 
@@ -53,11 +78,21 @@ export default async function Page() {
   let profile: CAPIProfile | null = null;
   let error: string | null = null;
 
-  try {
-    profile = await getCAPIProfile(session.user.accessToken);
-  } catch {
+  const [capiResult, apiKeyStatus] = await Promise.allSettled([
+    getCAPIProfile(session.user.accessToken),
+    getCommanderApiKeyStatus(session.user.accessToken),
+  ]);
+
+  if (capiResult.status === "fulfilled") {
+    profile = capiResult.value;
+  } else {
     error = "Unable to load commander profile. Please try again later.";
   }
+
+  const { hasInaraKey, hasEdsmKey } =
+    apiKeyStatus.status === "fulfilled"
+      ? apiKeyStatus.value
+      : { hasInaraKey: false, hasEdsmKey: false };
 
   return (
     <>
@@ -88,12 +123,17 @@ export default async function Page() {
           <CommanderHero profile={profile} />
           <CommanderRanksBar rank={profile.commander.rank} />
           <div className="grid grid-cols-1 gap-5 xl:grid-cols-3">
-            <div className="xl:col-span-2">
+            <div className="xl:col-span-2 space-y-5">
               <CommanderFleet ships={profile.ships} currentShipId={profile.commander.currentShipId} />
+              {profile.loadout && <CommanderLoadout loadout={profile.loadout} />}
             </div>
             <div className="space-y-5">
               <CommanderInfoGrid profile={profile} />
-              {profile.loadout && <CommanderLoadout loadout={profile.loadout} />}
+              <CommanderApiKeys
+                accessToken={session.user.accessToken}
+                hasInaraKey={hasInaraKey}
+                hasEdsmKey={hasEdsmKey}
+              />
             </div>
           </div>
         </div>
