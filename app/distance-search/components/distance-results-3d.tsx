@@ -1,6 +1,7 @@
 "use client";
 
-import { useCallback, useRef, useState } from "react";
+import { useCallback, useEffect, useRef, useState } from "react";
+import Link from "next/link";
 import type { SystemDistance } from "@/core/interfaces/SystemDistance";
 import Panel from "@/components/panel";
 import Heading from "@/components/heading";
@@ -19,6 +20,8 @@ interface Point2D {
 
 const SVG_W = 800;
 const SVG_H = 480;
+const CLICK_THRESHOLD_SQ = 25; // 5px movement = drag vs click
+const PICK_RADIUS_SQ = 400; // 20 SVG-unit hit radius
 
 function project(cx: number, cy: number, cz: number, rotX: number, rotY: number, scale: number): Point2D {
   const cosY = Math.cos(rotY);
@@ -39,20 +42,35 @@ function project(cx: number, cy: number, cz: number, rotX: number, rotY: number,
   return { x: px, y: py, depth: z2 };
 }
 
+function truncateName(name: string, max = 14): string {
+  return name.length > max ? name.slice(0, max - 1) + "…" : name;
+}
+
 export default function DistanceResults3D({ results, originName, searchLy }: Props) {
   const [rotX, setRotX] = useState(-0.35);
   const [rotY, setRotY] = useState(0.4);
   const [zoom, setZoom] = useState(1);
+  const [selected, setSelected] = useState<SystemDistance | null>(null);
 
   const isDragging = useRef(false);
   const lastMouse = useRef({ x: 0, y: 0 });
   const lastTouch = useRef({ x: 0, y: 0 });
+  const mouseDownPos = useRef({ x: 0, y: 0 });
+  const projectedRef = useRef<Point2D[]>([]);
+  const resultsRef = useRef<SystemDistance[]>([]);
+  const svgRef = useRef<SVGSVGElement>(null);
 
-  // ── Drag / touch handlers — defined before any early return ──
+  // Reset selected when results change (page navigation)
+  useEffect(() => {
+    setSelected(null);
+  }, [results]);
+
+  // ── Interaction handlers — all defined before any early return ──
 
   const onMouseDown = useCallback((e: React.MouseEvent) => {
     isDragging.current = true;
     lastMouse.current = { x: e.clientX, y: e.clientY };
+    mouseDownPos.current = { x: e.clientX, y: e.clientY };
   }, []);
 
   const onMouseMove = useCallback((e: React.MouseEvent) => {
@@ -64,7 +82,38 @@ export default function DistanceResults3D({ results, originName, searchLy }: Pro
     setRotX((r) => r + dy * 0.008);
   }, []);
 
-  const onMouseUp = useCallback(() => {
+  const onMouseUp = useCallback((e: React.MouseEvent) => {
+    isDragging.current = false;
+    const dx = e.clientX - mouseDownPos.current.x;
+    const dy = e.clientY - mouseDownPos.current.y;
+    if (dx * dx + dy * dy > CLICK_THRESHOLD_SQ) return;
+
+    const svgEl = svgRef.current;
+    if (!svgEl) return;
+    const rect = svgEl.getBoundingClientRect();
+    const svgX = ((e.clientX - rect.left) / rect.width) * SVG_W;
+    const svgY = ((e.clientY - rect.top) / rect.height) * SVG_H;
+
+    const pts = projectedRef.current;
+    const sys = resultsRef.current;
+    let closest = -1;
+    let closestDist = Infinity;
+    pts.forEach((p, i) => {
+      const d = (p.x - svgX) ** 2 + (p.y - svgY) ** 2;
+      if (d < PICK_RADIUS_SQ && d < closestDist) {
+        closestDist = d;
+        closest = i;
+      }
+    });
+
+    if (closest >= 0) {
+      setSelected((prev) => (prev?.id === sys[closest].id ? null : sys[closest]));
+    } else {
+      setSelected(null);
+    }
+  }, []);
+
+  const onMouseLeave = useCallback(() => {
     isDragging.current = false;
   }, []);
 
@@ -91,7 +140,7 @@ export default function DistanceResults3D({ results, originName, searchLy }: Pro
 
   if (results.length === 0) return null;
 
-  // Centre on the origin (first result, distance ≈ 0)
+  // Centre on the origin (distance ≈ 0)
   const origin = results[0];
   const ox = origin.coords.x;
   const oy = origin.coords.y;
@@ -112,11 +161,14 @@ export default function DistanceResults3D({ results, originName, searchLy }: Pro
 
   const projected = centred.map((c) => project(c.x, c.y, c.z, rotX, rotY, scale));
 
+  // Sync refs for click detection (safe to assign during render for refs used in event handlers)
+  projectedRef.current = projected;
+  resultsRef.current = results;
+
   // Floor plane at bottom of point cloud
   const floorY = Math.max(...centred.map((c) => c.y)) + maxExtent * 0.2;
   const shadows = centred.map((c) => project(c.x, floorY, c.z, rotX, rotY, scale));
 
-  // Max distance for normalising colour opacity
   const maxDist = results[results.length - 1]?.distance ?? 1;
 
   const resetView = () => {
@@ -125,7 +177,7 @@ export default function DistanceResults3D({ results, originName, searchLy }: Pro
     setZoom(1);
   };
 
-  // Sort back-to-front for painter's algorithm
+  // Back-to-front for painter's algorithm
   const sortedIndices = projected
     .map((p, i) => ({ depth: p.depth, i }))
     .sort((a, b) => b.depth - a.depth)
@@ -156,17 +208,18 @@ export default function DistanceResults3D({ results, originName, searchLy }: Pro
 
       {/* ── Canvas ── */}
       <div
-        className="cursor-grab select-none active:cursor-grabbing"
+        className="relative cursor-grab select-none active:cursor-grabbing"
         onMouseDown={onMouseDown}
         onMouseMove={onMouseMove}
         onMouseUp={onMouseUp}
-        onMouseLeave={onMouseUp}
+        onMouseLeave={onMouseLeave}
         onWheel={onWheel}
         onTouchStart={onTouchStart}
         onTouchMove={onTouchMove}
-        onTouchEnd={onMouseUp}
+        onTouchEnd={() => { isDragging.current = false; }}
       >
         <svg
+          ref={svgRef}
           viewBox={`0 0 ${SVG_W} ${SVG_H}`}
           className="h-auto w-full"
           style={{ minHeight: 280 }}
@@ -182,6 +235,13 @@ export default function DistanceResults3D({ results, originName, searchLy }: Pro
             </filter>
             <filter id="ds-glow-node" x="-60%" y="-60%" width="220%" height="220%">
               <feGaussianBlur stdDeviation="3" result="blur" />
+              <feMerge>
+                <feMergeNode in="blur" />
+                <feMergeNode in="SourceGraphic" />
+              </feMerge>
+            </filter>
+            <filter id="ds-glow-sel" x="-80%" y="-80%" width="260%" height="260%">
+              <feGaussianBlur stdDeviation="4" result="blur" />
               <feMerge>
                 <feMergeNode in="blur" />
                 <feMergeNode in="SourceGraphic" />
@@ -241,37 +301,21 @@ export default function DistanceResults3D({ results, originName, searchLy }: Pro
               />
             ))}
 
-          {/* ── Nodes (back-to-front) ── */}
+          {/* ── Nodes + labels (back-to-front) ── */}
           {sortedIndices.map((i) => {
             const r = results[i];
             const p = projected[i];
-            const isOrigin = i === 0;
+            const isOrigin = r.distance < 0.01;
+            const isSelected = selected?.id === r.id;
             const distRatio = r.distance / maxDist;
-            // Closer systems are brighter/more opaque
             const nodeOpacity = isOrigin ? 1 : 0.35 + (1 - distRatio) * 0.55;
 
             return (
-              <g key={`node-${i}`}>
+              <g key={`node-${i}`} style={{ cursor: "pointer" }}>
                 {isOrigin ? (
                   <>
-                    {/* Outer pulse ring */}
-                    <circle
-                      cx={p.x}
-                      cy={p.y}
-                      r={13}
-                      fill="none"
-                      stroke="#4ade80"
-                      strokeWidth="1"
-                      strokeOpacity="0.2"
-                    />
-                    <circle
-                      cx={p.x}
-                      cy={p.y}
-                      r={8}
-                      fill="#4ade80"
-                      fillOpacity="0.9"
-                      filter="url(#ds-glow-origin)"
-                    />
+                    <circle cx={p.x} cy={p.y} r={13} fill="none" stroke="#4ade80" strokeWidth="1" strokeOpacity="0.2" />
+                    <circle cx={p.x} cy={p.y} r={8} fill="#4ade80" fillOpacity="0.9" filter="url(#ds-glow-origin)" />
                     <text
                       x={p.x + 14}
                       y={p.y - 3}
@@ -300,19 +344,86 @@ export default function DistanceResults3D({ results, originName, searchLy }: Pro
                     </text>
                   </>
                 ) : (
-                  <circle
-                    cx={p.x}
-                    cy={p.y}
-                    r={3.5}
-                    fill="#f97316"
-                    fillOpacity={nodeOpacity}
-                    filter="url(#ds-glow-node)"
-                  />
+                  <>
+                    {/* Selection ring */}
+                    {isSelected && (
+                      <circle cx={p.x} cy={p.y} r={9} fill="none" stroke="#f97316" strokeWidth="1" strokeOpacity="0.6" filter="url(#ds-glow-sel)" />
+                    )}
+                    <circle
+                      cx={p.x}
+                      cy={p.y}
+                      r={isSelected ? 4.5 : 3.5}
+                      fill={isSelected ? "#fb923c" : "#f97316"}
+                      fillOpacity={isSelected ? 1 : nodeOpacity}
+                      filter="url(#ds-glow-node)"
+                    />
+                    {/* Node label */}
+                    <text
+                      x={p.x + 9}
+                      y={p.y - 2}
+                      textAnchor="start"
+                      dominantBaseline="auto"
+                      fontSize="9"
+                      fontFamily="Jura, monospace"
+                      letterSpacing="0.08em"
+                      fill={isSelected ? "#fb923c" : "#f97316"}
+                      fillOpacity={isSelected ? 1 : 0.75}
+                      filter="url(#ds-glow-label)"
+                    >
+                      {truncateName(r.name)}
+                    </text>
+                    <text
+                      x={p.x + 9}
+                      y={p.y + 9}
+                      textAnchor="start"
+                      fontSize="7.5"
+                      fontFamily="Jura, monospace"
+                      letterSpacing="0.08em"
+                      fill={isSelected ? "#fb923c" : "#f97316"}
+                      fillOpacity={isSelected ? 0.85 : 0.5}
+                    >
+                      {r.distance.toFixed(2)} LY
+                    </text>
+                  </>
                 )}
               </g>
             );
           })}
         </svg>
+
+        {/* ── Selected system info box ── */}
+        {selected && (
+          <div className="pointer-events-none absolute right-3 top-3 w-52 border border-orange-500/30 bg-black/85 p-3 backdrop-blur-sm">
+            <div className="mb-2 flex items-start justify-between gap-2">
+              <Link
+                href={`/systems/${selected.slug}`}
+                className="pointer-events-auto block truncate text-xs font-bold uppercase tracking-widest text-orange-400 transition-colors hover:text-orange-300"
+              >
+                {selected.name}
+              </Link>
+              <button
+                onClick={() => setSelected(null)}
+                className="pointer-events-auto shrink-0 text-neutral-600 transition-colors hover:text-neutral-300"
+              >
+                <i className="icarus-terminal-close text-xs"></i>
+              </button>
+            </div>
+            <div className="space-y-1 text-xs tabular-nums text-neutral-600">
+              <p>
+                <span className="uppercase tracking-widest text-neutral-700">Dist </span>
+                <span className="text-neutral-400">{selected.distance.toFixed(2)} ly</span>
+              </p>
+              <p>
+                <span className="uppercase tracking-widest text-neutral-700">X </span>
+                <span className="text-neutral-500">{selected.coords.x.toFixed(2)}</span>
+                <span className="mx-1.5 text-neutral-700">Y</span>
+                <span className="text-neutral-500">{selected.coords.y.toFixed(2)}</span>
+                <span className="mx-1.5 text-neutral-700">Z</span>
+                <span className="text-neutral-500">{selected.coords.z.toFixed(2)}</span>
+              </p>
+            </div>
+          </div>
+        )}
       </div>
 
       {/* ── Legend ── */}
@@ -330,7 +441,7 @@ export default function DistanceResults3D({ results, originName, searchLy }: Pro
           <span className="text-neutral-600">Distant</span>
         </div>
         <div className="ml-auto text-neutral-800">
-          {results.length} systems · {searchLy} ly radius
+          {results.length} systems · {searchLy} ly radius · click node to inspect
         </div>
       </div>
     </Panel>

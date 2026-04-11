@@ -1,40 +1,49 @@
+"use client";
+
 import Link from "next/link";
+import type { Pagination } from "@/core/interfaces/Pagination";
 import type { SystemDistance } from "@/core/interfaces/SystemDistance";
 import Panel from "@/components/panel";
 import Heading from "@/components/heading";
 
 interface Props {
-  results: SystemDistance[];
+  pagination: Pagination<SystemDistance>;
   originName: string;
   searchLy: number;
+  onPageChange: (page: number) => void;
 }
 
-export default function DistanceResultsList({ results, originName, searchLy }: Props) {
-  const nearest = results[1] ?? null;
-  const farthest = results[results.length - 1] ?? null;
-  const systemCount = results.length - 1; // exclude origin
+export default function DistanceResultsList({ pagination, originName, searchLy, onPageChange }: Props) {
+  const { data: results, meta, links } = pagination;
+  const nonOrigin = results.filter((s) => s.distance >= 0.01);
+  const farthest = nonOrigin[nonOrigin.length - 1] ?? null;
+  const hasPrev = !!links.prev;
+  const hasNext = !!links.next;
+  const currentPage = meta.current_page;
 
   return (
-    <Panel className="overflow-hidden">
+    <Panel className="flex h-full flex-col overflow-hidden">
       {/* ── Header ── */}
-      <div className="border-b border-orange-900/20 px-4 py-3 md:px-5 md:py-4">
+      <div className="shrink-0 border-b border-orange-900/20 px-4 py-3 md:px-5 md:py-4">
         <Heading
           icon="icarus-terminal-route"
           title="Nearby Systems"
-          subtitle={`${systemCount} found within ${searchLy} ly`}
+          subtitle={`Within ${searchLy} ly · Page ${currentPage}`}
         />
       </div>
 
       {/* ── Summary stats ── */}
-      <div className="grid grid-cols-2 gap-px border-b border-orange-900/20 bg-orange-900/10">
+      <div className="grid shrink-0 grid-cols-2 gap-px border-b border-orange-900/20 bg-orange-900/10">
         <div className="bg-black/50 px-4 py-3">
-          <p className="text-xs uppercase tracking-widest text-neutral-600">Systems Found</p>
-          <p className="mt-0.5 font-bold text-neutral-200">{systemCount}</p>
+          <p className="text-xs uppercase tracking-widest text-neutral-600">Search Radius</p>
+          <p className="mt-0.5 font-bold text-neutral-200">
+            {searchLy} <span className="text-xs font-normal text-neutral-500">ly</span>
+          </p>
         </div>
         <div className="bg-black/50 px-4 py-3">
-          <p className="text-xs uppercase tracking-widest text-neutral-600">Farthest</p>
+          <p className="text-xs uppercase tracking-widest text-neutral-600">Farthest (page)</p>
           <p className="mt-0.5 font-bold text-neutral-200">
-            {farthest && farthest.slug !== results[0].slug ? (
+            {farthest ? (
               <>
                 {farthest.distance.toFixed(2)}{" "}
                 <span className="text-xs font-normal text-neutral-500">ly</span>
@@ -47,9 +56,9 @@ export default function DistanceResultsList({ results, originName, searchLy }: P
       </div>
 
       {/* ── System list ── */}
-      <div className="divide-y divide-orange-900/10 overflow-y-auto" style={{ maxHeight: "420px" }}>
-        {results.map((system, i) => {
-          const isOrigin = i === 0;
+      <div className="min-h-0 flex-1 divide-y divide-orange-900/10 overflow-y-auto">
+        {results.map((system) => {
+          const isOrigin = system.distance < 0.01;
 
           return (
             <div
@@ -80,9 +89,7 @@ export default function DistanceResultsList({ results, originName, searchLy }: P
                   {isOrigin ? (
                     <span className="text-green-400/70">Origin · {originName}</span>
                   ) : (
-                    <>
-                      <span>{system.distance.toFixed(2)} ly</span>
-                    </>
+                    <span>{system.distance.toFixed(2)} ly</span>
                   )}
                 </div>
               </div>
@@ -96,6 +103,25 @@ export default function DistanceResultsList({ results, originName, searchLy }: P
             </div>
           );
         })}
+      </div>
+
+      {/* ── Pagination controls ── */}
+      <div className="flex shrink-0 items-center justify-between border-t border-orange-900/20 px-4 py-3">
+        <button
+          onClick={() => onPageChange(currentPage - 1)}
+          disabled={!hasPrev}
+          className="text-xs uppercase tracking-widest text-neutral-500 transition-colors hover:text-orange-400 disabled:pointer-events-none disabled:opacity-30"
+        >
+          ← Prev
+        </button>
+        <span className="text-xs uppercase tracking-widest text-neutral-700">Page {currentPage}</span>
+        <button
+          onClick={() => onPageChange(currentPage + 1)}
+          disabled={!hasNext}
+          className="text-xs uppercase tracking-widest text-neutral-500 transition-colors hover:text-orange-400 disabled:pointer-events-none disabled:opacity-30"
+        >
+          Next →
+        </button>
       </div>
     </Panel>
   );

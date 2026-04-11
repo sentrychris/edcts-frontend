@@ -1,6 +1,7 @@
 "use client";
 
 import { useState } from "react";
+import type { Pagination } from "@/core/interfaces/Pagination";
 import type { SystemDistance } from "@/core/interfaces/SystemDistance";
 import { getCollection } from "@/core/api";
 import Panel from "@/components/panel";
@@ -15,29 +16,40 @@ interface Props {
 }
 
 export default function DistanceSearchView({ initialSlug, initialLy }: Props) {
-  const [results, setResults] = useState<SystemDistance[] | null>(null);
+  const [pagination, setPagination] = useState<Pagination<SystemDistance> | null>(null);
   const [originName, setOriginName] = useState("");
-  const [searchLy, setSearchLy] = useState(initialLy);
+  const [currentSlug, setCurrentSlug] = useState(initialSlug);
+  const [currentLy, setCurrentLy] = useState(initialLy);
   const [isLoading, setIsLoading] = useState(false);
   const [error, setError] = useState<string | null>(null);
 
-  const handleSubmit = async (slug: string, name: string, ly: number) => {
+  const fetchPage = async (slug: string, ly: number, page: number) => {
     setIsLoading(true);
     setError(null);
-    setResults(null);
-    setOriginName(name);
-    setSearchLy(ly);
 
     try {
-      const { data } = await getCollection<SystemDistance>("system/search/distance", {
-        params: { slug, ly, limit: 100 },
+      const data = await getCollection<SystemDistance>("system/search/distance", {
+        params: { slug, ly, limit: 10, page },
       });
-      setResults(data);
+      setPagination(data);
     } catch {
       setError("No systems found. Verify the system name or try increasing the search radius.");
+      setPagination(null);
     } finally {
       setIsLoading(false);
     }
+  };
+
+  const handleSubmit = async (slug: string, name: string, ly: number) => {
+    setCurrentSlug(slug);
+    setCurrentLy(ly);
+    setOriginName(name);
+    setPagination(null);
+    await fetchPage(slug, ly, 1);
+  };
+
+  const handlePageChange = (page: number) => {
+    fetchPage(currentSlug, currentLy, page);
   };
 
   return (
@@ -82,13 +94,22 @@ export default function DistanceSearchView({ initialSlug, initialLy }: Props) {
       )}
 
       {/* ── Results ── */}
-      {results && !isLoading && (
-        <div className="grid grid-cols-1 gap-5 xl:grid-cols-3">
+      {pagination && !isLoading && (
+        <div className="grid grid-cols-1 gap-5 xl:grid-cols-3 xl:items-stretch">
           <div className="xl:col-span-2">
-            <DistanceResults3D results={results} originName={originName} searchLy={searchLy} />
+            <DistanceResults3D
+              results={pagination.data}
+              originName={originName}
+              searchLy={currentLy}
+            />
           </div>
-          <div>
-            <DistanceResultsList results={results} originName={originName} searchLy={searchLy} />
+          <div className="flex flex-col">
+            <DistanceResultsList
+              pagination={pagination}
+              originName={originName}
+              searchLy={currentLy}
+              onPageChange={handlePageChange}
+            />
           </div>
         </div>
       )}
